@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using NoteTaker.Model;
+using System.Windows;
 
 namespace NoteTaker.ViewModel
 {
@@ -54,12 +55,13 @@ namespace NoteTaker.ViewModel
                 {
                     if (error != null)
                     {
-                        // Report error here
+                        // Report error here 
                         return;
                     }
 
                     WelcomeTitle = item.Title;
-                });
+                });           
+            MessageBox.Show(Clipboard.GetText());
         }
 
         ////public override void Cleanup()
@@ -68,5 +70,7 @@ namespace NoteTaker.ViewModel
 
         ////    base.Cleanup();
         ////}
+
+
     }
 }
