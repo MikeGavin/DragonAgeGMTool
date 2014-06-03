@@ -13,6 +13,7 @@ namespace NoteTaker.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
@@ -58,10 +59,9 @@ namespace NoteTaker.ViewModel
                         // Report error here 
                         return;
                     }
-
                     WelcomeTitle = item.Title;
                 });           
-            MessageBox.Show(Clipboard.GetText());
+            //MessageBox.Show(Clipboard.GetText());
         }
 
         ////public override void Cleanup()
