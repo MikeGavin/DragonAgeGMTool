@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using NoteTaker.Model;
 using System.Windows;
+using System.Windows.Input;
 
 namespace NoteTaker.ViewModel
 {
@@ -14,13 +15,19 @@ namespace NoteTaker.ViewModel
     {
         private readonly IDataService _dataService;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        //public event System.EventHandler Paste_CanExecuteChanged;
+        
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
         public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
         private string _welcomeTitle = string.Empty;
+
+        private void Paste_CanExecuteChanged(object sender, System.EventArgs e)
+        {
+            WelcomeTitle = Clipboard.GetText(); 
+        }
 
         /// <summary>
         /// Gets the WelcomeTitle property.
@@ -60,7 +67,9 @@ namespace NoteTaker.ViewModel
                         return;
                     }
                     WelcomeTitle = item.Title;
-                });           
+                });
+
+            ApplicationCommands.Paste.CanExecuteChanged += new System.EventHandler(Paste_CanExecuteChanged);
             //MessageBox.Show(Clipboard.GetText());
         }
 
