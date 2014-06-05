@@ -6,7 +6,8 @@ namespace NoteTaker
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MahApps.Metro.Controls.MetroWindow
+
     {
         /// <summary>
         /// Initializes a new instance of the MainWindow class.

@@ -1,8 +1,9 @@
-﻿<Window x:Class="NoteTaker.MainWindow"
+﻿<controls:MetroWindow x:Class="NoteTaker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         Height="300"
@@ -29,4 +30,4 @@
                    TextWrapping="Wrap" />
 
     </Grid>
-</Window>
+    </controls:MetroWindow>
