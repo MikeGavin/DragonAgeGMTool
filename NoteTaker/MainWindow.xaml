@@ -6,11 +6,11 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
-        Height="300"
-        Width="300"
+        Height="344"
+        Width="870"
         Title="MVVM Light Application"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,7 +27,15 @@
                    Text="{Binding WelcomeTitle}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   TextWrapping="Wrap" />
+                   TextWrapping="Wrap" Margin="189,-103,404,-349" Width="269" />
+        <TabControl HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="862">
+            <TabItem Header="TabItem" controls:ControlsHelper.HeaderFontSize="10">
+                <Grid ClipToBounds="True"/>
+            </TabItem>
+            <TabItem Header="TabItem" controls:ControlsHelper.HeaderFontSize="10">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
-    </controls:MetroWindow>
+</controls:MetroWindow>
