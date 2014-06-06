@@ -20,6 +20,9 @@
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
         <TextBlock FontSize="36"
                    FontWeight="Bold"
@@ -27,7 +30,7 @@
                    Text="{Binding WelcomeTitle}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   TextWrapping="Wrap" Margin="189,-103,404,-349" Width="269" />
+                   TextWrapping="Wrap" Margin="189,208,404,-38" Width="269" />
         <TabControl HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="862">
             <TabItem Header="TabItem" controls:ControlsHelper.HeaderFontSize="10">
                 <Grid ClipToBounds="True"/>

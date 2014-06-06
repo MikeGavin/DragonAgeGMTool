@@ -20,13 +20,13 @@ namespace NoteTaker.ViewModel
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        //public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
         private string _welcomeTitle = string.Empty;
 
         private void Paste_CanExecuteChanged(object sender, System.EventArgs e)
         {
-            WelcomeTitle = Clipboard.GetText(); 
+            WelcomeTitle = Clipboard.GetText();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace NoteTaker.ViewModel
                 }
 
                 _welcomeTitle = value;
-                RaisePropertyChanged(WelcomeTitlePropertyName);
+                RaisePropertyChanged();
             }
         }
 
