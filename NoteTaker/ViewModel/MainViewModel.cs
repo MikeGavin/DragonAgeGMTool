@@ -14,7 +14,7 @@ namespace NoteTaker.ViewModel
     public class MainViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
         //public event System.EventHandler Paste_CanExecuteChanged;
         
         /// <summary>
