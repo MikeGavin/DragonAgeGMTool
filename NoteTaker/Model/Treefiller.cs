@@ -27,7 +27,7 @@ namespace NoteTaker.Model
         public QuickItem filltree()
         {
 
-            SQLiteConnection QuickNotesDB = new SQLiteConnection("Data Source=" + @"C:\Users\michael.gavin\Documents\Visual Studio 2013\Projects\SQL Lite Test\SQL Lite Test\bin\Debug\database.db ;Version=3;New=True;Compress=True;");
+            SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\database.db ;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
 
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM QuickNotes";

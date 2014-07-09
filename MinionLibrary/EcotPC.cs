@@ -21,10 +21,10 @@ namespace Minion
               
         private List<Lists.EcotPCCommand> CommandList = new List<Lists.EcotPCCommand>() 
         { 
-            //new Lists.EcotPCCommand() { Name = "MachineInfo", Tool = "PAExec", Command = @"-accepteula -s -realtime wmic computersystem get systemtype, username, totalphysicalmemory /format:csv" },
-            //new Lists.EcotPCCommand() { Name = "Bittness", Tool = "PAExec", Command = @"-accepteula -s -realtime wmic os get OSArchitecture /format:csv" },
-            //new Lists.EcotPCCommand() { Name = "IE", Tool = "PAExec", Command = @"WMIC DATAFILE WHERE ""Name='c:\\program files\\internet explorer\\iexplore.exe'"" GET Version" },
-            //new Lists.EcotPCCommand() { Name = "Image", Tool = "PAExec", Command = @"-accepteula -s -dfr REG query hklm\Software\ecot /v ""Image Version""" },                   
+            new Lists.EcotPCCommand() { Name = "MachineInfo", Tool = "PAExec", Command = @"-accepteula -s -realtime wmic computersystem get systemtype, username, totalphysicalmemory /format:csv" },
+            new Lists.EcotPCCommand() { Name = "Bittness", Tool = "PAExec", Command = @"-accepteula -s -realtime wmic os get OSArchitecture /format:csv" },
+            new Lists.EcotPCCommand() { Name = "IE", Tool = "PAExec", Command = @"WMIC DATAFILE WHERE ""Name='c:\\program files\\internet explorer\\iexplore.exe'"" GET Version" },
+            new Lists.EcotPCCommand() { Name = "Image", Tool = "PAExec", Command = @"-accepteula -s -dfr REG query hklm\Software\ecot /v ""Image Version""" },                   
         };
 
         #region Constructors and Deconstructors
@@ -39,25 +39,25 @@ namespace Minion
             }
 
             #region Removed Database Code
-            SQLiteConnection minion = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Minion.sqlite", Environment.CurrentDirectory));
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Version";
-            pullall.Connection = minion;
+            //SQLiteConnection minion = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Minion.sqlite", Environment.CurrentDirectory));
+            //SQLiteCommand pullall = new SQLiteCommand();
+            //pullall.CommandText = "SELECT * FROM Version";
+            //pullall.Connection = minion;
 
-            try
-            {
-                log.Debug(string.Format("Opening Database: {0}", minion.ConnectionString.ToString()));
-                minion.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
-                    CommandList.Add(new Lists.EcotPCCommand() { Name = reader["Name"].ToString(), Tool = reader["Tool"].ToString(), Command = reader["Command"].ToString() });
-                minion.Close();
-                log.Debug(string.Format("Closing Database: {0}", minion.ConnectionString.ToString()));
-            }
-            catch (Exception e)
-            {
-                log.Fatal(e);
-            }
+            //try
+            //{
+            //    log.Debug(string.Format("Opening Database: {0}", minion.ConnectionString.ToString()));
+            //    minion.Open();
+            //    SQLiteDataReader reader = pullall.ExecuteReader();
+            //    while (reader.Read())
+            //        CommandList.Add(new Lists.EcotPCCommand() { Name = reader["Name"].ToString(), Tool = reader["Tool"].ToString(), Command = reader["Command"].ToString() });
+            //    minion.Close();
+            //    log.Debug(string.Format("Closing Database: {0}", minion.ConnectionString.ToString()));
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Fatal(e);
+            //}
             #endregion
 
             var token = tokenSource.Token;
