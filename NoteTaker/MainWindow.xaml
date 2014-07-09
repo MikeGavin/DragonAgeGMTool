@@ -76,12 +76,26 @@
                 <DataTemplate>
                     <Grid>
                         <!--<UserControl:UserControl1 HorizontalAlignment="Left" Margin="5,0,0,0"/>-->
+                        <TextBox Text="{Binding Text}" SpellCheck.IsEnabled="True"></TextBox>
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
         <TextBlock Height="41" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="10,5,702,0" Foreground="White" FontSize="30"/>
         <TreeView ItemsSource="{Binding Root.SubItems}" HorizontalAlignment="Left" Height="268" Margin="697,46,0,0" VerticalAlignment="Top" Width="165">
+
+            <TreeView.ItemContainerStyle>
+                <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
                     <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>

@@ -35,6 +35,10 @@ namespace NoteTaker.ViewModel
 
         private QuickItem root;
         public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
+        public QuickItem SelectedQuickItem
+        {
+            get { return Root.SubItems.First(i => i.IsSelected); }
+        }
 
         private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
         public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
@@ -104,24 +108,23 @@ namespace NoteTaker.ViewModel
             //Populate Tree!
             
             var temp = new Treefiller();
-            root = temp.filltree();
-
-
-            
-  
-            
+            root = temp.filltree();                    
 
         }
 
         public void CloseNote()
         {
             Notes.Remove(SelectedNote);
+            
+            var test = SelectedQuickItem.Title;
         }
 
         public async void NewNote()
         {
             Notes.Add(new Note());
             SelectedNote = Notes.Last();
+            
+            
 
         }
 

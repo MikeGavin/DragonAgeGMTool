@@ -14,8 +14,10 @@ namespace NoteTaker.Model
             this.SubItems = new ObservableCollection<QuickItem>();
         }
 
+        
         public string Title { get; set; }
         public string Content { get; set; }
+        public bool IsSelected { get; set; }
 
         public ObservableCollection<QuickItem> SubItems { get; set; }
     }

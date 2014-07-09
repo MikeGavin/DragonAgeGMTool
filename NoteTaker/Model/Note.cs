@@ -26,6 +26,8 @@ namespace NoteTaker.Model
         #region Public Properties
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
+        private string text;
+        public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
         #endregion
 
         private ObservableCollection<EcotPC> _MinionCollection = new ObservableCollection<EcotPC>();
@@ -50,6 +52,7 @@ namespace NoteTaker.Model
 
         public Note()
         {
+            Text = "Test";
             MinionIPInputEnabeled = true;
             Minion_CloseCommand = new RelayCommand(CloseMinion);
             Minion_ConnectCommand = new RelayCommand(ConnectMinion);
