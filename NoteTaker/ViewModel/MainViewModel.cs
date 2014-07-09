@@ -1,7 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Minion;
 using NoteTaker.Model;
+using System.Collections.ObjectModel;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using System.Linq;
+using NoteTaker.Helpers;
 
 namespace NoteTaker.ViewModel
 {
@@ -13,21 +20,39 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
+        private string windowTitle = string.Format("NoteTaker {0}", System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
+        public string WindowTitle
+        {
+            get { return windowTitle; }
+            set { windowTitle = value; RaisePropertyChanged(); }
+        }
+        
+
+        private string _Log2Interface;
+        public string Log2Interface { get { return _Log2Interface; } set { Log2Interface = value.Substring(value.IndexOf("]") + 1); ; _Log2Interface += value; RaisePropertyChanged(); } }
+
+        private QuickItem root;
+        public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
+
+        private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
+        public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
+
+        private Note _SelectedNote;
+        public Note SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
+
+        public RelayCommand CloseNoteCommand { get; set; }
+        public RelayCommand NewNoteCommand { get; set; }
+
         private readonly IDataService _dataService;
-        
-        //public event System.EventHandler Paste_CanExecuteChanged;
-        
+
         /// <summary>
         /// The <see cref="WelcomeTitle" /> property's name.
         /// </summary>
-        //public const string WelcomeTitlePropertyName = "WelcomeTitle";
+        public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
         private string _welcomeTitle = string.Empty;
-
-        private void Paste_CanExecuteChanged(object sender, System.EventArgs e)
-        {
-            WelcomeTitle = Clipboard.GetText();
-        }
 
         /// <summary>
         /// Gets the WelcomeTitle property.
@@ -48,7 +73,7 @@ namespace NoteTaker.ViewModel
                 }
 
                 _welcomeTitle = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged(WelcomeTitlePropertyName);
             }
         }
 
@@ -57,20 +82,49 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
+            CloseNoteCommand = new RelayCommand(CloseNote);
+            NewNoteCommand = new RelayCommand(NewNote);
+            NewNote();
+            NewNote();        
+
             _dataService = dataService;
             _dataService.GetData(
                 (item, error) =>
                 {
                     if (error != null)
                     {
-                        // Report error here 
+                        // Report error here
                         return;
                     }
+
                     WelcomeTitle = item.Title;
                 });
+        
+            
+            //Populate Tree!
+            root = new QuickItem() { Title = "Menu" };
 
-            ApplicationCommands.Paste.CanExecuteChanged += new System.EventHandler(Paste_CanExecuteChanged);
-            //MessageBox.Show(Clipboard.GetText());
+            QuickItem childItem1 = new QuickItem() { Title = "Child item #1" };
+            childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.1", Content = "Blah blah blah blah"});
+            childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.2", Content = "Blah blah blah blah" });
+            root.SubItems.Add(childItem1);
+            root.SubItems.Add(new QuickItem() { Title = "Child item #2", Content = "Blah blah blah blah"});
+            
+  
+            
+
+        }
+
+        public void CloseNote()
+        {
+            Notes.Remove(SelectedNote);
+        }
+
+        public async void NewNote()
+        {
+            Notes.Add(new Note());
+            SelectedNote = Notes.Last();
+
         }
 
         ////public override void Cleanup()

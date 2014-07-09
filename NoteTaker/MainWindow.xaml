@@ -4,41 +4,90 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:ignore="http://www.ignore.com"
+        xmlns:vm="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         Height="344"
         Width="870"
-        Title="MVVM Light Application"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        Title="{Binding WindowTitle}"
+        DataContext="{Binding Main, Source={StaticResource Locator}}" SaveWindowPosition="True" ShowTitleBar="False">
 
     <Window.Resources>
         <ResourceDictionary>
+            <Style x:Key="FontAwesome">
+                <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/Resources/#FontAwesome" />
+            </Style>
+            <BooleanToVisibilityConverter x:Key="visibilityConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid x:Name="LayoutRoot">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <TextBlock FontSize="36"
-                   FontWeight="Bold"
-                   Foreground="Purple"
-                   Text="{Binding WelcomeTitle}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap" Margin="189,208,404,-38" Width="269" />
-        <TabControl HorizontalAlignment="Left" Height="120" VerticalAlignment="Top" Width="862">
-            <TabItem Header="TabItem" controls:ControlsHelper.HeaderFontSize="10">
-                <Grid ClipToBounds="True"/>
-            </TabItem>
-            <TabItem Header="TabItem" controls:ControlsHelper.HeaderFontSize="10">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
+        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" HorizontalAlignment="Left" Height="314" VerticalAlignment="Top" Width="605" Margin="0,46,0,-46">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Width="105">
+                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseNoteCommand}"
+                            Content="x"
+                            DockPanel.Dock="Right"
+                            Focusable="False"
+                            FontWeight="Bold"  
+                            Margin="0,1,0,0"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            Width="15" Height="15" 
+                            BorderThickness="0"
+                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                           
+                            >
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="RosyBrown"/>
+                                            <!--Does not work with current button style-->
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <TextBlock Name="test" Text="Note Name" FontSize="15" VerticalAlignment="Center">
+                            <!--<TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                            <Setter Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>-->
+                        </TextBlock>
+                    </DockPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <!--<UserControl:UserControl1 HorizontalAlignment="Left" Margin="5,0,0,0"/>-->
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
         </TabControl>
+        <TextBlock Height="41" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="10,5,702,0" Foreground="White" FontSize="30"/>
+        <TreeView ItemsSource="{Binding Root.SubItems}" HorizontalAlignment="Left" Height="268" Margin="697,46,0,0" VerticalAlignment="Top" Width="165">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
 
+        </TreeView>
     </Grid>
 </controls:MetroWindow>

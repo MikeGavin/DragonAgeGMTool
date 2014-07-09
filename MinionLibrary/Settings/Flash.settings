@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Minion.Settings" GeneratedClassName="Flash">
+  <Profiles />
+  <Settings>
+    <Setting Name="name" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Flash</Value>
+    </Setting>
+    <Setting Name="uninstall_APP" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -h -c -f -csrc "\\fs1\HelpDesk\PLUGINS\Uninstallers\uninstall_flash_player.exe" uninstall_flash_player.exe -uninstall</Value>
+    </Setting>
+    <Setting Name="install" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -h -c -f -csrc "\\fs1\HelpDesk\PLUGINS\install_flash_player_13_active_x.exe" install_flash_player_13_active_x.exe -install -au 2</Value>
+    </Setting>
+    <Setting Name="uninstall_WMIC" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-realtime wmic product where "name like 'Adobe Flash%%'" call uninstall /nointeractive</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

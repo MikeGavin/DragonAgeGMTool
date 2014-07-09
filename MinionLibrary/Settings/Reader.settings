@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Minion.Settings" GeneratedClassName="Reader">
+  <Profiles />
+  <Settings>
+    <Setting Name="uninstall_APP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -realtime -h c:\temp\AdbeArCleaner.exe /silent /product=1</Value>
+    </Setting>
+    <Setting Name="install" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -realtime -h c:\temp\AdbeRdr11006_en_US.exe /sAll /msi /norestart ALLUSERS=1 EULA_ACCEPT=YES</Value>
+    </Setting>
+    <Setting Name="uninstall_WMIC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -realtime -h wmic product where "name like 'Adobe Reader%%'" call uninstall /nointeractive</Value>
+    </Setting>
+    <Setting Name="Install_Location" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PROGRAMS\Adobe_Reader\AdbeRdr11006_en_US.exe</Value>
+    </Setting>
+    <Setting Name="Uninstall_Location" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PROGRAMS\Adobe_Reader\AdbeArCleaner.exe</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

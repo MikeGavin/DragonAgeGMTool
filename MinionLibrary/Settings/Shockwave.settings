@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Minion.Settings" GeneratedClassName="Shockwave">
+  <Profiles />
+  <Settings>
+    <Setting Name="install_msi" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -h msiexec /i c:\temp\sw_lic_full_installer.msi /qn</Value>
+    </Setting>
+    <Setting Name="uninstall_app" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -h c:\temp\sw_uninstaller.exe /s</Value>
+    </Setting>
+    <Setting Name="msi_location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\sw_lic_full_installer.msi</Value>
+    </Setting>
+    <Setting Name="uninstaller_location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\uninstallers\sw_uninstaller.exe</Value>
+    </Setting>
+    <Setting Name="name" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Shockwave</Value>
+    </Setting>
+    <Setting Name="uninstall_WMIC" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -h wmic product where "name like 'Adobe Shockwave%%'" call uninstall /nointeractive</Value>
+    </Setting>
+    <Setting Name="remotedir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\temp\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

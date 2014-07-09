@@ -5,9 +5,9 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteTaker", "NoteTaker\NoteTaker.csproj", "{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minion", "..\..\..\..\..\..\Minion\Minion3\MinionLibrary\Minion.csproj", "{CF254321-9193-4378-A528-9D02C6DE1454}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minion3", "..\..\Minion\Minion3\Minion3\Minion3.csproj", "{88CC0D84-1FF9-42AF-BD0C-70357CB06056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minion3", "..\..\..\..\..\..\Minion\Minion3\Minion3\Minion3.csproj", "{88CC0D84-1FF9-42AF-BD0C-70357CB06056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minion", "MinionLibrary\Minion.csproj", "{CF254321-9193-4378-A528-9D02C6DE1454}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -18,12 +18,12 @@ Global
 		SccProjectUniqueName1 = NoteTaker\\NoteTaker.csproj
 		SccProjectName1 = NoteTaker
 		SccLocalPath1 = NoteTaker
-		SccProjectUniqueName2 = ..\\..\\..\\..\\..\\..\\Minion\\Minion3\\MinionLibrary\\Minion.csproj
-		SccProjectName2 = ../../Minion/Minion3/MinionLibrary
-		SccLocalPath2 = ..\\..\\..\\..\\..\\..\\Minion\\Minion3\\MinionLibrary
-		SccProjectUniqueName3 = ..\\..\\..\\..\\..\\..\\Minion\\Minion3\\Minion3\\Minion3.csproj
-		SccProjectName3 = ../../Minion/Minion3/Minion3
-		SccLocalPath3 = ..\\..\\..\\..\\..\\..\\Minion\\Minion3\\Minion3
+		SccProjectUniqueName2 = ..\\..\\Minion\\Minion3\\Minion3\\Minion3.csproj
+		SccProjectName2 = ../../Minion/Minion3/Minion3
+		SccLocalPath2 = ..\\..\\Minion\\Minion3\\Minion3
+		SccProjectUniqueName3 = MinionLibrary\\Minion.csproj
+		SccProjectName3 = MinionLibrary
+		SccLocalPath3 = MinionLibrary
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -37,18 +37,18 @@ Global
 		{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Beta|Any CPU.Build.0 = Beta|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF254321-9193-4378-A528-9D02C6DE1454}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Beta|Any CPU.ActiveCfg = Release|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Beta|Any CPU.Build.0 = Release|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88CC0D84-1FF9-42AF-BD0C-70357CB06056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF254321-9193-4378-A528-9D02C6DE1454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

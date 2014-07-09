@@ -1,0 +1,138 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Minion.Settings" GeneratedClassName="Java">
+  <Profiles />
+  <Settings>
+    <Setting Name="RA_Location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\Uninstallers\javara\</Value>
+    </Setting>
+    <Setting Name="RA_Uninstall" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-h -accepteula -dfr c:\temp\Javara\JavaRa.exe /uninstallall /silent</Value>
+    </Setting>
+    <Setting Name="MSI_51_Location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\JAVA_51_MSI</Value>
+    </Setting>
+    <Setting Name="MSI_51_Argument" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -s -i 1 -realtime msiexec /i c:\temp\JAVA_51_MSI\jre1.7.0_51.msi /qr  JAVAUPDATE=0 JU=0 AUTOUPDATECHECK=0</Value>
+    </Setting>
+    <Setting Name="MSI_51_Target" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\temp\JAVA_51_MSI</Value>
+    </Setting>
+    <Setting Name="Name" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Java</Value>
+    </Setting>
+    <Setting Name="RA_Target" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\temp\JavaRA</Value>
+    </Setting>
+    <Setting Name="Install_51_Manual" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -i 1 -s -c -f -csrc "\\fs1\HelpDesk\PLUGINS\jre-7u51-windows-i586.exe" jre-7u51-windows-i586.exe</Value>
+    </Setting>
+    <Setting Name="RA_Purge" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-i -h -s c:\temp\Javara\JavaRa.exe /purge</Value>
+    </Setting>
+    <Setting Name="uninstall_SEARCH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -h wmic product where "name like 'Java%%'" call uninstall /NOINTERACTIVE</Value>
+    </Setting>
+    <Setting Name="MSI_45_Location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\JAVA_45_MSI</Value>
+    </Setting>
+    <Setting Name="MSI_40_Location" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\JAVA_40_MSI</Value>
+    </Setting>
+    <Setting Name="Install_45_Manual" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -i 1 -s -c -f -csrc "\\fs1\HelpDesk\PLUGINS\jre-7u45-windows-i586.exe" jre-7u45-windows-i586.exe</Value>
+    </Setting>
+    <Setting Name="Install_40_Manual" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -realtime -i 1 -s -c -f -csrc "\\fs1\HelpDesk\PLUGINS\jre-7u40-windows-i586.exe" jre-7u40-windows-i586.exe</Value>
+    </Setting>
+    <Setting Name="MSI_45_Argument" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -i 1 -s -realtime msiexec /i c:\temp\JAVA_45_MSI\jre1.7.0_45.msi /qr JAVAUPDATE=0 JU=0 AUTOUPDATECHECK=0</Value>
+    </Setting>
+    <Setting Name="MSI_40_Argument" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-accepteula -i 1 -s -realtime msiexec /i c:\temp\JAVA_40_MSI\jre1.7.0_40.msi /qr JAVAUPDATE=0 JU=0 AUTOUPDATECHECK=0</Value>
+    </Setting>
+    <Setting Name="MSI_45_Target" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\temp\JAVA_45_MSI</Value>
+    </Setting>
+    <Setting Name="MSI_40_Target" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\temp\JAVA_40_MSI</Value>
+    </Setting>
+    <Setting Name="uninstall_51" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217051FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_45" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217045FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_40" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217040FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_25" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217025FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_21" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217025FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_17" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217017FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_16" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217016FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_15" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217015FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_14" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217015FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_13" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217015FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_12" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217012FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_11" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217011FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_10" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217010FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_09" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217009FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_08" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217008FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_07" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217007FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_06" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217006FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_05" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /X {26A24AE4-039D-4CA4-87B4-2F83217005FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_04" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217004FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_03" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217003FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_02" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217002FF} /qr</Value>
+    </Setting>
+    <Setting Name="uninstall_55" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217055FF} /qr</Value>
+    </Setting>
+    <Setting Name="MSI_55_Location" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\fs1\HelpDesk\PLUGINS\JAVA_55_MSI</Value>
+    </Setting>
+    <Setting Name="MSI_55_Argument" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -s -i 1 -realtime msiexec /i c:\temp\JAVA_55_MSI\jre1.7.0_55.msi /qr  JAVAUPDATE=0 JU=0 AUTOUPDATECHECK=0</Value>
+    </Setting>
+    <Setting Name="uninstall_01" Type="System.String" Scope="User">
+      <Value Profile="(Default)">-accepteula -i 1 -realtime -s msiexec.exe /x {26A24AE4-039D-4CA4-87B4-2F83217001FF} /qr</Value>
+    </Setting>
+    <Setting Name="MSI_55_Target" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\temp\JAVA_55_MSI</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
