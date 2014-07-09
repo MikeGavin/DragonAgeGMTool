@@ -102,13 +102,11 @@ namespace NoteTaker.ViewModel
         
             
             //Populate Tree!
-            root = new QuickItem() { Title = "Menu" };
+            
+            var temp = new Treefiller();
+            root = temp.filltree();
 
-            QuickItem childItem1 = new QuickItem() { Title = "Child item #1" };
-            childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.1", Content = "Blah blah blah blah"});
-            childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.2", Content = "Blah blah blah blah" });
-            root.SubItems.Add(childItem1);
-            root.SubItems.Add(new QuickItem() { Title = "Child item #2", Content = "Blah blah blah blah"});
+
             
   
             

@@ -88,9 +88,11 @@
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\Note.cs" />
+    <Compile Include="Model\Treefiller.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="Controls\NoteControl.xaml">
