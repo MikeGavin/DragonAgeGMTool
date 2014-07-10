@@ -35,10 +35,8 @@ namespace NoteTaker.ViewModel
 
         private QuickItem root;
         public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
-        public QuickItem SelectedQuickItem
-        {
-            get { return Root.SubItems.First(i => i.IsSelected); }
-        }
+        private QuickItem selectedQuickItem;
+        public QuickItem SelectedQuickItem { get { return selectedQuickItem; } set { selectedQuickItem = value; RaisePropertyChanged(); } }
 
         private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
         public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
@@ -48,7 +46,12 @@ namespace NoteTaker.ViewModel
 
         public RelayCommand CloseNoteCommand { get; set; }
         public RelayCommand NewNoteCommand { get; set; }
-
+        public RelayCommand AppendQuickItemCommand { get; set; }
+        private RelayCommand<DragEventArgs> _dropCommand; 
+        public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
+        private RelayCommand _CopyQuickItemCommand;
+        public RelayCommand CopyQuickItemCommand { get { return _CopyQuickItemCommand ?? (_CopyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+  
         private readonly IDataService _dataService;
 
         /// <summary>
@@ -88,6 +91,7 @@ namespace NoteTaker.ViewModel
         {
             CloseNoteCommand = new RelayCommand(CloseNote);
             NewNoteCommand = new RelayCommand(NewNote);
+            AppendQuickItemCommand = new RelayCommand(AppendQuickItem);
             NewNote();
             NewNote();        
 
@@ -126,6 +130,34 @@ namespace NoteTaker.ViewModel
             
             
 
+        }
+
+        public void AppendQuickItem()
+        {
+            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
+            if (SelectedQuickItem.SubItems.Count > 0)
+                return;
+            else
+                SelectedNote.Text += SelectedQuickItem.Content;
+        }
+
+        
+
+        public void CopyQuickItem()
+        {
+            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
+            if (selectedQuickItem !=null)
+            { 
+            if (SelectedQuickItem.SubItems.Count > 0)
+                return;
+            else
+                SelectedNote.Text += SelectedQuickItem.Content;
+            }
+        }
+
+        private static void Drop(DragEventArgs e)
+        {
+            // do something here
         }
 
         ////public override void Cleanup()

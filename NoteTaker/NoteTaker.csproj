@@ -85,6 +85,7 @@
       <DependentUpon>NoteControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />

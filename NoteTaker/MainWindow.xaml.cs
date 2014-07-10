@@ -3,6 +3,9 @@ using NoteTaker.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
+using System.Windows.Input;
+using System.Windows.Controls;
+using System;
 
 namespace NoteTaker
 {
@@ -12,6 +15,7 @@ namespace NoteTaker
     public partial class MainWindow : MetroWindow
 
     {
+        System.Windows.Point startPoint;
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
