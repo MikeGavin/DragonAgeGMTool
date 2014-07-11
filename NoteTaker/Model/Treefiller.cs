@@ -27,10 +27,10 @@ namespace NoteTaker.Model
         public QuickItem filltree()
         {
 
-            SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\database.db ;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
+            SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
 
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM QuickNotes";
+            pullall.CommandText = "SELECT * FROM HD_Calls";
             pullall.Connection = QuickNotesDB;
 
             try
@@ -38,7 +38,7 @@ namespace NoteTaker.Model
                 QuickNotesDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (reader.Read())
-                    CommandList.Add(new DBPull() { Step = reader["Step"].ToString(), SubStep = reader["SubStep"].ToString(), Verbage = reader["Verbage"].ToString() });
+                    CommandList.Add(new DBPull() { Verbage = reader["QuickNotes_Verbage"].ToString(), Root_Folder = reader["QuickNotes_Root_Folder"].ToString(), Sub_Folder_1 = reader["QuickNotes_1"].ToString(), Sub_Folder_2 = reader["QuickNotes_2"].ToString(), Sub_Folder_3 = reader["QuickNotes_3"].ToString(), Sub_Folder_4 = reader["QuickNotes_4"].ToString() });
                 QuickNotesDB.Close();
             }
             catch
@@ -47,23 +47,43 @@ namespace NoteTaker.Model
             }
 
 
-            List<DBPull> uniqueitems = CommandList.GroupBy(s => s.Step).Select(p => p.First()).ToList();
-
-            //List<DBPull> uniqueitems2 = CommandList.GroupBy(s => s.SubStep).Select(p => p.First()).ToList() ;
+            List<DBPull> Root_uniqueitems = CommandList.GroupBy(s => s.Root_Folder).Select(p => p.First()).ToList();
+            List<DBPull> Sub1uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_1).Select(p => p.First()).ToList();
+            List<DBPull> Sub2uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_2).Select(p => p.First()).ToList();
+            List<DBPull> Sub3uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_3).Select(p => p.First()).ToList();
+            List<DBPull> Sub4uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_4).Select(p => p.First()).ToList();
 
             root = new QuickItem() { Title = "Menu" };
 
-            foreach (DBPull item in uniqueitems)
+            foreach (DBPull item in Root_uniqueitems)
             {
-                QuickItem childItem1 = new QuickItem() { Title = item.Step, Content = item.SubStep};
+                QuickItem childItem1 = new QuickItem() { Title = item.Root_Folder };
 
-                foreach (DBPull item2 in CommandList)
-                 {
-                    if (item2.Step == childItem1.Title && item2.SubStep != string.Empty)
-                     childItem1.SubItems.Add(new QuickItem() { Title = item2.SubStep, Content = item2.Verbage});
-                 }
+
+                foreach (DBPull item1 in CommandList)
+                {
+                    if (item1.Root_Folder == childItem1.Title && item1.Sub_Folder_2 != string.Empty | item1.Sub_Folder_2 == "NULL")
+                    {
+                        childItem1.SubItems.Add(new QuickItem() { Title = item1.Sub_Folder_2, Content = item1.Verbage });
+                    }
+                }
+
                 root.SubItems.Add(childItem1);
             }
+
+            //foreach (DBPull item in Sub1uniqueitems)
+            //{
+            //    QuickItem childItem2 = new QuickItem() { Title = item.Sub_Folder_1 };
+
+            //    foreach (DBPull item2 in CommandList)
+            //    {
+            //        if (item2.Sub_Folder_1 == childItem2.Title)
+            //        {
+            //            childItem2.SubItems.Add(new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage });
+            //        }
+            //    }
+            //    root.SubItems.Add(childItem2);
+            //}
             
             //QuickItem childItem1 = new QuickItem() { Title = "Child item #1" };
             //childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.1", Content = "Blah blah blah blah"});

@@ -8,8 +8,11 @@ namespace Notemaker.Model
 {
     class DBPull
     {
-        public string Step { get; set; }
-        public string SubStep { get; set; }
+        public string Root_Folder { get; set; }
+        public string Sub_Folder_1 { get; set; }
+        public string Sub_Folder_2 { get; set; }
+        public string Sub_Folder_3 { get; set; }
+        public string Sub_Folder_4 { get; set; }
         public string Verbage { get; set; }
     }
 }
