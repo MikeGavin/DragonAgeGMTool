@@ -31,7 +31,7 @@
 
     <Grid x:Name="LayoutRoot">
 
-        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" HorizontalAlignment="Left" Height="314" VerticalAlignment="Top" Width="605" Margin="0,46,0,-46">
+        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" Margin="0,46,257,0">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="105">
@@ -80,12 +80,12 @@
                 <DataTemplate>
                     <Grid>
                         <!--<UserControl:UserControl1 HorizontalAlignment="Left" Margin="5,0,0,0"/>-->
-                        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True">
+                        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Drop">
                                     <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
                                 </i:EventTrigger>
-                                </i:Interaction.Triggers>
+                            </i:Interaction.Triggers>
                         </TextBox>
                     </Grid>
                 </DataTemplate>
@@ -94,10 +94,9 @@
         <TextBlock Height="41" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="10,5,702,0" Foreground="White" FontSize="30"/>
 
         <TreeView ItemsSource="{Binding Root.SubItems}" HorizontalAlignment="Left" Height="268" Margin="697,46,0,0" VerticalAlignment="Top" Width="165">
-    <i:Interaction.Behaviors>
+            <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
-                
-    </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}"/>
