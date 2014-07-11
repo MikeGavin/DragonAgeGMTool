@@ -94,6 +94,9 @@
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Treefiller.cs" />
+    <Compile Include="UserControls\Note.xaml.cs">
+      <DependentUpon>Note.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="Controls\NoteControl.xaml">
@@ -115,6 +118,10 @@
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Note.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

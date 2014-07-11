@@ -9,9 +9,9 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
         xmlns:helpers="clr-namespace:NoteTaker.Helpers"
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
-                      
+        xmlns:UserControls="clr-namespace:NoteTaker.UserControls"
         mc:Ignorable="d ignore"
-        Height="344"
+        Height="501"
         Width="870"
         Title="{Binding WindowTitle}"
         DataContext="{Binding Main, Source={StaticResource Locator}}" SaveWindowPosition="True" ShowTitleBar="False">
@@ -29,9 +29,9 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Height="458" VerticalAlignment="Top">
 
-        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" Margin="0,46,257,0">
+        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,46,2,2">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="105">
@@ -73,57 +73,18 @@
                                 </Style>
                             </TextBlock.Style>-->
                         </TextBlock>
+
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <!--<UserControl:UserControl1 HorizontalAlignment="Left" Margin="5,0,0,0"/>-->
-                        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Drop">
-                                    <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                    </Grid>
+                    <UserControls:Note HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
         <TextBlock Height="41" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="10,5,702,0" Foreground="White" FontSize="30"/>
 
-        <TreeView ItemsSource="{Binding Root.SubItems}" HorizontalAlignment="Left" Height="268" Margin="697,46,0,0" VerticalAlignment="Top" Width="165">
-            <i:Interaction.Behaviors>
-                <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
-            </i:Interaction.Behaviors>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}"/>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
-                    <mvvmcmd:EventToCommand Command="{Binding CopyQuickItemCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <TreeView.ItemContainerStyle>
-                <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
-                    <!--<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="FontWeight" Value="Bold"/>
-                        </Trigger>
 
-                    </Style.Triggers>-->
-                </Style>
-            </TreeView.ItemContainerStyle>
-
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
-                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-
-        </TreeView>
     </Grid>
 </controls:MetroWindow>

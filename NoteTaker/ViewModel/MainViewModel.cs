@@ -33,11 +33,6 @@ namespace NoteTaker.ViewModel
         private string _Log2Interface;
         public string Log2Interface { get { return _Log2Interface; } set { Log2Interface = value.Substring(value.IndexOf("]") + 1); ; _Log2Interface += value; RaisePropertyChanged(); } }
 
-        private QuickItem root;
-        public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
-        private QuickItem selectedQuickItem;
-        public QuickItem SelectedQuickItem { get { return selectedQuickItem; } set { selectedQuickItem = value; RaisePropertyChanged(); } }
-
         private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
         public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
 
@@ -46,11 +41,11 @@ namespace NoteTaker.ViewModel
 
         public RelayCommand CloseNoteCommand { get; set; }
         public RelayCommand NewNoteCommand { get; set; }
-        public RelayCommand AppendQuickItemCommand { get; set; }
+        
         private RelayCommand<DragEventArgs> _dropCommand; 
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
-        private RelayCommand _CopyQuickItemCommand;
-        public RelayCommand CopyQuickItemCommand { get { return _CopyQuickItemCommand ?? (_CopyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+
+
   
         private readonly IDataService _dataService;
 
@@ -91,7 +86,6 @@ namespace NoteTaker.ViewModel
         {
             CloseNoteCommand = new RelayCommand(CloseNote);
             NewNoteCommand = new RelayCommand(NewNote);
-            AppendQuickItemCommand = new RelayCommand(AppendQuickItem);
             NewNote();
             NewNote();        
 
@@ -106,53 +100,18 @@ namespace NoteTaker.ViewModel
                     }
 
                     WelcomeTitle = item.Title;
-                });
-        
-            
-            //Populate Tree!
-            
-            var temp = new Treefiller();
-            root = temp.filltree();                    
-
+                });          
         }
 
         public void CloseNote()
         {
             Notes.Remove(SelectedNote);
-            
-            var test = SelectedQuickItem.Title;
         }
 
         public async void NewNote()
         {
             Notes.Add(new Note());
             SelectedNote = Notes.Last();
-            
-            
-
-        }
-
-        public void AppendQuickItem()
-        {
-            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
-            if (SelectedQuickItem.SubItems.Count > 0)
-                return;
-            else
-                SelectedNote.Text += SelectedQuickItem.Content;
-        }
-
-        
-
-        public void CopyQuickItem()
-        {
-            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
-            if (selectedQuickItem !=null)
-            { 
-            if (SelectedQuickItem.SubItems.Count > 0)
-                return;
-            else
-                SelectedNote.Text += SelectedQuickItem.Content;
-            }
         }
 
         private static void Drop(DragEventArgs e)

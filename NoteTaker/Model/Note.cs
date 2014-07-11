@@ -9,6 +9,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NoteTaker.Model
 {
@@ -29,6 +30,14 @@ namespace NoteTaker.Model
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
         #endregion
+
+        private QuickItem root;
+        public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
+        private QuickItem selectedQuickItem;
+        public QuickItem SelectedQuickItem { get { return selectedQuickItem; } set { selectedQuickItem = value; RaisePropertyChanged(); } }
+        public RelayCommand AppendQuickItemCommand { get; set; }
+        private RelayCommand _CopyQuickItemCommand;
+        public RelayCommand CopyQuickItemCommand { get { return _CopyQuickItemCommand ?? (_CopyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
 
         private ObservableCollection<EcotPC> _MinionCollection = new ObservableCollection<EcotPC>();
         public ObservableCollection<EcotPC> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
@@ -52,6 +61,7 @@ namespace NoteTaker.Model
 
         public Note()
         {
+            AppendQuickItemCommand = new RelayCommand(AppendQuickItem);
             Text = "Test";
             MinionIPInputEnabeled = true;
             Minion_CloseCommand = new RelayCommand(CloseMinion);
@@ -62,7 +72,10 @@ namespace NoteTaker.Model
             Minion_GetShockwaveCommand = new RelayCommand(GetShockwave);
             Minion_GetReaderCommand = new RelayCommand(GetReader);
             Minion_GetQuicktimeCommand = new RelayCommand(GetQuicktime);
-            
+            //Populate Tree!
+
+            var temp = new Treefiller();
+            root = temp.filltree();     
         }
 
         public void CloseMinion()
@@ -123,6 +136,28 @@ namespace NoteTaker.Model
         public async void GetQuicktime()
         {
             await SelectedMinion.Get_Quicktime();
+        }
+
+        public void AppendQuickItem()
+        {
+            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
+            if (SelectedQuickItem.SubItems.Count > 0)
+                return;
+            else
+                Text += System.Environment.NewLine + SelectedQuickItem.Content;
+        }
+
+
+        public void CopyQuickItem()
+        {
+            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
+            if (selectedQuickItem != null)
+            {
+                if (SelectedQuickItem.SubItems.Count > 0)
+                    return;
+                else
+                    Clipboard.SetText(SelectedQuickItem.Content);
+            }
         }
     }
 }

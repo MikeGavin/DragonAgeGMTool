@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="NoteTaker.UserControls.Note"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
+             xmlns:helpers="clr-namespace:NoteTaker.Helpers"
+             xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid Margin="0,0,-441,-53">
+        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,182,0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Drop">
+                    <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <TreeView ItemsSource="{Binding Root.SubItems}" Height="300" Margin="559,0,0,0">
+            <i:Interaction.Behaviors>
+                <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                    <mvvmcmd:EventToCommand Command="{Binding CopyQuickItemCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <TreeView.ItemContainerStyle>
+                <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
+                    <!--<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+
+                    </Style.Triggers>-->
+                </Style>
+            </TreeView.ItemContainerStyle>
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+
+        </TreeView>
+    </Grid>
+</UserControl>
