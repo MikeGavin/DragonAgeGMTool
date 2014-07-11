@@ -62,28 +62,23 @@ namespace NoteTaker.Model
 
                 foreach (DBPull item1 in CommandList)
                 {
-                    if (item1.Root_Folder == childItem1.Title && item1.Sub_Folder_2 != string.Empty | item1.Sub_Folder_2 == "NULL")
+                    if (item1.Root_Folder == childItem1.Title && item1.Sub_Folder_1 != string.Empty)
                     {
-                        childItem1.SubItems.Add(new QuickItem() { Title = item1.Sub_Folder_2, Content = item1.Verbage });
+                        childItem1.SubItems.Add(new QuickItem() { Title = item1.Sub_Folder_1, Content = item1.Verbage });
+                    }
+                    else
+                    {
+
+
                     }
                 }
 
                 root.SubItems.Add(childItem1);
+
             }
 
-            //foreach (DBPull item in Sub1uniqueitems)
-            //{
-            //    QuickItem childItem2 = new QuickItem() { Title = item.Sub_Folder_1 };
 
-            //    foreach (DBPull item2 in CommandList)
-            //    {
-            //        if (item2.Sub_Folder_1 == childItem2.Title)
-            //        {
-            //            childItem2.SubItems.Add(new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage });
-            //        }
-            //    }
-            //    root.SubItems.Add(childItem2);
-            //}
+
             
             //QuickItem childItem1 = new QuickItem() { Title = "Child item #1" };
             //childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.1", Content = "Blah blah blah blah"});
