@@ -6,18 +6,17 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
              xmlns:helpers="clr-namespace:NoteTaker.Helpers"
              xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d">
 
-    <Grid Margin="0,0,-441,-53">
-        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,182,0">
+    <Grid MinWidth="400" Grid.IsSharedSizeScope="True" Height="Auto">
+        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,205,0" Background="#FF343434" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
-        <TreeView ItemsSource="{Binding Root.SubItems}" Height="300" Margin="559,0,0,0">
+        <TreeView ItemsSource="{Binding Root.SubItems}" Margin="0,0,0,0" Width="Auto" Height="Auto" HorizontalAlignment="Right" Background="AliceBlue" MinWidth="200">
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
@@ -32,13 +31,12 @@
             <TreeView.ItemContainerStyle>
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
-                    <!--<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                     <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="FontWeight" Value="Bold"/>
                         </Trigger>
-
-                    </Style.Triggers>-->
+                    </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
 

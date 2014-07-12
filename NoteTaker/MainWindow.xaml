@@ -11,7 +11,7 @@
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:NoteTaker.UserControls"
         mc:Ignorable="d ignore"
-        Height="501"
+        Height="639.3"
         Width="870"
         Title="{Binding WindowTitle}"
         DataContext="{Binding Main, Source={StaticResource Locator}}" SaveWindowPosition="True" ShowTitleBar="False">
@@ -29,9 +29,11 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot" Height="458" VerticalAlignment="Top">
+    <Grid x:Name="LayoutRoot" VerticalAlignment="Stretch" Height="Auto">
 
-        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,46,2,2">
+
+
+        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,27,2,2" MinWidth="410" BorderThickness="1">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="105">
@@ -45,8 +47,10 @@
                             VerticalContentAlignment="Center"
                             Width="15" Height="15" 
                             BorderThickness="0"
-                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                           
+                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"
+                            
                             >
+                            
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
                                     <Setter Property="Visibility" Value="Hidden"/>
@@ -79,11 +83,19 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <UserControls:Note HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0"/>
+
+                    <UserControls:Note />
+
+
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <TextBlock Height="41" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="10,5,702,0" Foreground="White" FontSize="30"/>
+        <ToolBarPanel HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="213">
+            <ToolBar HorizontalAlignment="Left" Width="750" Margin="0,0,0,0">
+                <TextBlock Height="24" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="0,0,0,0" Foreground="White" FontSize="30"/>
+            </ToolBar>
+        </ToolBarPanel>
+
 
 
     </Grid>
