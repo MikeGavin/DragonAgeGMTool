@@ -9,7 +9,6 @@ using System.Net;
 using System.Threading;
 using Minion.Lists;
 using System.IO;
-using System.Data.SQLite;
 
 
 namespace Minion
