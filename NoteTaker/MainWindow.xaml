@@ -14,7 +14,7 @@
         Height="639.3"
         Width="870"
         Title="{Binding WindowTitle}"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" SaveWindowPosition="True" ShowTitleBar="False">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" ShowTitleBar="False" SizeToContent="WidthAndHeight" SaveWindowPosition="True">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -28,12 +28,16 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl/>
+    </controls:MetroWindow.Flyouts>
 
-    <Grid x:Name="LayoutRoot" VerticalAlignment="Stretch" Height="Auto">
-
-
-
-        <TabControl ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,27,2,2" MinWidth="410" BorderThickness="1">
+    <Grid x:Name="LayoutRoot" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="1" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" Margin="0" MinWidth="410" MinHeight="200" BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="105">
@@ -84,19 +88,17 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
 
-                    <UserControls:Note />
+                    <UserControls:Note/>
 
 
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
         <ToolBarPanel HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="213">
-            <ToolBar HorizontalAlignment="Left" Width="750" Margin="0,0,0,0">
+            <ToolBar Grid.Row="0" HorizontalAlignment="Left" Width="750" Margin="0,0,0,0">
                 <TextBlock Height="24" TextWrapping="Wrap" Text="&#xF01A;" VerticalAlignment="Top" Style="{DynamicResource FontAwesome}" Margin="0,0,0,0" Foreground="White" FontSize="30"/>
             </ToolBar>
         </ToolBarPanel>
-
-
-
     </Grid>
+
 </controls:MetroWindow>

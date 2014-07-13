@@ -9,14 +9,22 @@
              mc:Ignorable="d">
 
     <Grid MinWidth="400" Grid.IsSharedSizeScope="True" Height="Auto">
-        <TextBox Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,205,0" Background="#FF343434" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Grid.Column="0" Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,0,2" Background="#FF343434" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
-        <TreeView ItemsSource="{Binding Root.SubItems}" Margin="0,0,0,0" Width="Auto" Height="Auto" HorizontalAlignment="Right" Background="AliceBlue" MinWidth="200">
+        <TreeView Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Root.SubItems}" Margin="0,0,0,2" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200">
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
@@ -47,5 +55,11 @@
             </TreeView.ItemTemplate>
 
         </TreeView>
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0">
+        <Expander  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
+            <TextBox Height="200"></TextBox>
+        </Expander>
+        </StackPanel>
     </Grid>
+
 </UserControl>
