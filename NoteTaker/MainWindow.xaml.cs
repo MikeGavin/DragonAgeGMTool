@@ -14,8 +14,7 @@ namespace NoteTaker
     /// </summary>
     public partial class MainWindow : MetroWindow
 
-    {
-        System.Windows.Point startPoint;
+    {       
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
@@ -31,6 +30,14 @@ namespace NoteTaker
                     metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
                     metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
                 });
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            if (SettingsFlyout.IsOpen == false)
+                SettingsFlyout.IsOpen = true;
+            else
+                SettingsFlyout.IsOpen = false;
         }
     }
 }

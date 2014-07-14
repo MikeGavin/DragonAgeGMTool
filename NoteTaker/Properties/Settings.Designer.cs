@@ -22,5 +22,17 @@ namespace NoteTaker.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public string QuickNotes {
+            get {
+                return ((string)(this["QuickNotes"]));
+            }
+            set {
+                this["QuickNotes"] = value;
+            }
+        }
     }
 }
