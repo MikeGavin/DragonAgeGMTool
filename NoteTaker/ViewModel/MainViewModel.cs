@@ -41,6 +41,7 @@ namespace NoteTaker.ViewModel
 
         public RelayCommand CloseNoteCommand { get; set; }
         public RelayCommand NewNoteCommand { get; set; }
+        public RelayCommand<RoutedEventArgs> SelectNoteCommand { get; set; }
         
         private RelayCommand<DragEventArgs> _dropCommand; 
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
@@ -86,6 +87,7 @@ namespace NoteTaker.ViewModel
         {
             CloseNoteCommand = new RelayCommand(CloseNote);
             NewNoteCommand = new RelayCommand(NewNote);
+            SelectNoteCommand = new RelayCommand<RoutedEventArgs>(SelectNote);
             NewNote();     
 
             _dataService = dataService;
@@ -118,9 +120,14 @@ namespace NoteTaker.ViewModel
             // do something here
         }
 
+        private void SelectNote(RoutedEventArgs e)
+        {
+           
+        }
+
         ////public override void Cleanup()
         ////{
-        ////    // Clean up if needed
+        ////    // Clean up if needed4
 
         ////    base.Cleanup();
         ////}
