@@ -20,7 +20,24 @@
 
     <Window.Resources>
         <ResourceDictionary>
-            
+            <Style x:Key="EditableTabHeaderControl" 
+	TargetType="{x:Type helpers:EditableTabHeaderControl}">
+                <!-- The template specified earlier will come here !-->
+            </Style>
+            <Style x:Key="ItemContainerStyle" TargetType="TabItem">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <helpers:EditableTabHeaderControl
+                   Style="{StaticResource EditableTabHeaderControl}">
+                                <helpers:EditableTabHeaderControl.Content>
+                                    <Binding Path="Name" Mode="TwoWay"/>
+                                </helpers:EditableTabHeaderControl.Content>
+                            </helpers:EditableTabHeaderControl>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Style x:Key="FontAwesome">
                 <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/Resources/#FontAwesome" />
             </Style>
@@ -91,12 +108,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TabControl Name ="Tabs" Grid.Row="1" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0">
-            
             <TabControl.ItemTemplate>
-                
+                             
                 <DataTemplate>
-                    
-                    <DockPanel Width="Auto" Margin="0">                       
+                    <UserControls:EditableTextBlockUC
+               Text="{Binding Title, Mode=TwoWay}"
+                />
+                    <!--<DockPanel Width="Auto" Margin="0">                       
                         <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseNoteCommand}"
                             Content="X"
                             DockPanel.Dock="Right"
@@ -109,7 +127,6 @@
                             BorderThickness="0"
                             FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                          
                             >
-
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
                                     <Setter Property="Visibility" Value="Hidden"/>
@@ -117,19 +134,18 @@
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
+                                        --><!--<Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Foreground" Value="RosyBrown"/>
-                                            <!--Does not work with current button style-->
-                                        </Trigger>
+                                            Does not work with current button style
+                                        </Trigger>--><!--
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                         </Button>
 
-                        <Label Content="Note Name" FontSize="14" VerticalAlignment="Center" Margin="0">
-                            <Label.Style>
-                                <Style TargetType="Label" BasedOn="{StaticResource EditableLabelStyle}">
-                                    
+                        <TextBlock Text="Note Name" FontSize="14" VerticalAlignment="Center" Margin="0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
                                             <Setter Property="Foreground" Value="#CC119EDA"/>
@@ -139,12 +155,12 @@
                                         </DataTrigger>                                       
                                     </Style.Triggers>
                                 </Style>
-                            </Label.Style>
-                        </Label>
-
-                    </DockPanel>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DockPanel>-->
                 </DataTemplate>
             </TabControl.ItemTemplate>
+            
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     

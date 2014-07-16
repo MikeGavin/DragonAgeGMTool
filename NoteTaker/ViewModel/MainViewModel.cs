@@ -88,7 +88,7 @@ namespace NoteTaker.ViewModel
             CloseNoteCommand = new RelayCommand(CloseNote);
             NewNoteCommand = new RelayCommand(NewNote);
             SelectNoteCommand = new RelayCommand<RoutedEventArgs>(SelectNote);
-            NewNote();     
+            //NewNote();     
 
             _dataService = dataService;
             _dataService.GetData(

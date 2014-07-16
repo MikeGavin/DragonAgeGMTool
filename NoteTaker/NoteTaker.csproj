@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
@@ -155,6 +156,9 @@
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Treefiller.cs" />
+    <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
+      <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Minion.xaml.cs">
       <DependentUpon>Minion.xaml</DependentUpon>
     </Compile>
@@ -182,6 +186,10 @@
     <Page Include="Skins\MainSkin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\EditableTextBlockUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Minion.xaml">
       <SubType>Designer</SubType>
