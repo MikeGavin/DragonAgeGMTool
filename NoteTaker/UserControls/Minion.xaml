@@ -20,9 +20,15 @@
 
     </UserControl.Resources>
 
-    <Grid HorizontalAlignment="Left" Width="623">
-        <TextBox Height="300" TextWrapping="Wrap" Text="{Binding History, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="199" Margin="0,0,0,-13"/>
-        <GroupBox Header="Machine" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="287" Width="196">
+    <Grid HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="3" Height="300" TextWrapping="Wrap" Text="{Binding History, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="199" Margin="0,0,0,-13"/>
+        <GroupBox Grid.Column="0" Header="Machine" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="287" Width="196">
             <Grid HorizontalAlignment="Right" Height="251" Margin="0,0,-2,-1" VerticalAlignment="Top" Width="186">
                 <Label Content="Name" HorizontalAlignment="Left" Margin="-1,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
                 <TextBox HorizontalAlignment="Left" Height="23" Margin="46,0,0,0" TextWrapping="Wrap" Text="{Binding PCName, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
@@ -43,7 +49,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="Software" HorizontalAlignment="Left" Margin="201,0,0,0" VerticalAlignment="Top" Height="287" Width="218">
+        <GroupBox Grid.Column="1" Header="Software" HorizontalAlignment="Left" Margin="201,0,0,0" VerticalAlignment="Top" Height="287" Width="218">
             <Grid HorizontalAlignment="Left" Height="251" VerticalAlignment="Top" Width="213">
                 <Label Content="IE" HorizontalAlignment="Left" Margin="-1,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
                 <TextBox HorizontalAlignment="Left" Height="23" Margin="46,0,0,0" TextWrapping="Wrap" Text="{Binding IEVersion, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True" />

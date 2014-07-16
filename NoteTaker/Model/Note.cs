@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace NoteTaker.Model
 {
@@ -29,9 +30,14 @@ namespace NoteTaker.Model
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
+        private bool isExpanded;
+        public bool IsExpanded { get { return isExpanded; } set { isExpanded = value; RaisePropertyChanged(); } }
+        
         #endregion
 
         private static int number = 0;
+
+
 
         private QuickItem root;
         public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
@@ -49,8 +55,10 @@ namespace NoteTaker.Model
 
         private string _NewMinionIPAddress = "10.39.";
         public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
-
-        public bool MinionIPInputEnabeled { get; set; }
+        private bool minionIPInputEnabeled = false;
+        public bool MinionIPInputEnabeled { get { return minionIPInputEnabeled; } set { minionIPInputEnabeled = value; RaisePropertyChanged(); } }
+        private bool minionConnecting = false;
+        public bool MinionConnecting { get { return minionConnecting; } set { minionConnecting = value; RaisePropertyChanged(); } }
 
         public RelayCommand Minion_CloseCommand { get; set; }
         public RelayCommand Minion_ConnectCommand { get; set; }
@@ -63,7 +71,7 @@ namespace NoteTaker.Model
 
         public Note()
         {
-            
+            PropertyChanged += Note_PropertyChanged;
             AppendQuickItemCommand = new RelayCommand(AppendQuickItem);
             Text = "Test";
             MinionIPInputEnabeled = true;
@@ -79,17 +87,36 @@ namespace NoteTaker.Model
 
             Title = string.Format("Note {0}", ++number);
             var temp = new Treefiller();
-            root = temp.filltree();     
+            root = temp.filltree();
+            MinionCollection.Add(new EcotPC(System.Net.IPAddress.Parse("10.39.8.32")));
+
+        }
+
+        //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).
+        void Note_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+           Regex rex = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b");
+
+           MatchCollection mc = rex.Matches(Text);
+
+           foreach (Match m in mc)
+           {
+               MessageBox.Show(m.ToString());
+           }
 
         }
 
         public void CloseMinion()
         {
             MinionCollection.Remove(SelectedMinion);
+            if (MinionCollection.Count <= 0)
+                IsExpanded = false;
         }
 
         public async void ConnectMinion()
         {
+            MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }
             MinionIPInputEnabeled = false;
             if (Minion.Tool.IP.IPv4_Check(NewMinionIPAddress) == true)
@@ -111,6 +138,7 @@ namespace NoteTaker.Model
                 Helpers.MetroMessageBox.Show("Error!", "Invalid IP address format!");
             }
             MinionIPInputEnabeled = true;
+            MinionConnecting = false;
         }
 
         public async void GetJava()
