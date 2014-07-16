@@ -5,5 +5,11 @@
     <Setting Name="QuickNotes" Type="System.String" Scope="User">
       <Value Profile="(Default)">Visible</Value>
     </Setting>
+    <Setting Name="NoteFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="TabFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

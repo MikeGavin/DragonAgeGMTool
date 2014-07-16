@@ -22,15 +22,15 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" Text="{Binding Text}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,0,2" Background="#FF2F2F2F" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto">
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" Background="#FF2F2F2F" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
-        <ComboBox Visibility="{Binding Path=QuickNotes, Source={x:Static Properties:Settings.Default}}" Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="2,0,2,-5" BorderThickness="0"/>
-        <TreeView Visibility="{Binding Path=QuickNotes, Source={x:Static Properties:Settings.Default}}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Root.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200">
+        <ComboBox Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
+        <TreeView Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Root.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200">
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
@@ -61,7 +61,7 @@
             </TreeView.ItemTemplate>
 
         </TreeView>
-        <ListBox Visibility="{Binding Path=QuickNotes, Source={x:Static Properties:Settings.Default}}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="2,0,0,2" ItemsSource="{Binding Root.SubItems}">
+        <ListBox Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding Root.SubItems}">
         </ListBox>
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" Background="#FF2F2F2F" BorderThickness="0" BorderBrush="#FF2F2F2F">

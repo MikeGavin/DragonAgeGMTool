@@ -1,4 +1,4 @@
-﻿using Notemaker.Model;
+﻿using NoteTaker.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;

@@ -20,6 +20,10 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+
+        private string quicknoteVisibility;
+        public string QuicknoteVisibility { get { return quicknoteVisibility; } set { quicknoteVisibility = value; RaisePropertyChanged(); } }
+        
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         private string windowTitle = string.Format("NoteTaker {0}", System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
@@ -41,44 +45,15 @@ namespace NoteTaker.ViewModel
 
         public RelayCommand CloseNoteCommand { get; set; }
         public RelayCommand NewNoteCommand { get; set; }
-        public RelayCommand<RoutedEventArgs> SelectNoteCommand { get; set; }
         
         private RelayCommand<DragEventArgs> _dropCommand; 
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
 
+        private RelayCommand _QuickNoteToggleCommand;
+        public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
 
   
         private readonly IDataService _dataService;
-
-        /// <summary>
-        /// The <see cref="WelcomeTitle" /> property's name.
-        /// </summary>
-        public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-        private string _welcomeTitle = string.Empty;
-
-        /// <summary>
-        /// Gets the WelcomeTitle property.
-        /// Changes to that property's value raise the PropertyChanged event. 
-        /// </summary>
-        public string WelcomeTitle
-        {
-            get
-            {
-                return _welcomeTitle;
-            }
-
-            set
-            {
-                if (_welcomeTitle == value)
-                {
-                    return;
-                }
-
-                _welcomeTitle = value;
-                RaisePropertyChanged(WelcomeTitlePropertyName);
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -87,21 +62,9 @@ namespace NoteTaker.ViewModel
         {
             CloseNoteCommand = new RelayCommand(CloseNote);
             NewNoteCommand = new RelayCommand(NewNote);
-            SelectNoteCommand = new RelayCommand<RoutedEventArgs>(SelectNote);
-            //NewNote();     
-
-            _dataService = dataService;
-            _dataService.GetData(
-                (item, error) =>
-                {
-                    if (error != null)
-                    {
-                        // Report error here
-                        return;
-                    }
-
-                    WelcomeTitle = item.Title;
-                });          
+            NewNote();
+            //Load user settings.
+            QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
         }
 
         public void CloseNote()
@@ -112,17 +75,24 @@ namespace NoteTaker.ViewModel
         public async void NewNote()
         {
             Notes.Add(new Note());
-            SelectedNote = Notes.Last();
+            SelectedNote = Notes.Last();   
+        }
+
+        public async void QuickNoteToggle()
+        {
+            if (QuicknoteVisibility == "Visible")
+            {
+                QuicknoteVisibility = "Collapsed";
+            }
+            else
+            {
+                QuicknoteVisibility = "Visible";
+            }
         }
 
         private static void Drop(DragEventArgs e)
         {
             // do something here
-        }
-
-        private void SelectNote(RoutedEventArgs e)
-        {
-           
         }
 
         ////public override void Cleanup()

@@ -31,6 +31,8 @@ namespace NoteTaker.Model
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
         #endregion
 
+        private static int number = 0;
+
         private QuickItem root;
         public QuickItem Root { get { return root; } set { root = value; RaisePropertyChanged(); } }
         private QuickItem selectedQuickItem;
@@ -61,6 +63,7 @@ namespace NoteTaker.Model
 
         public Note()
         {
+            
             AppendQuickItemCommand = new RelayCommand(AppendQuickItem);
             Text = "Test";
             MinionIPInputEnabeled = true;
@@ -74,8 +77,10 @@ namespace NoteTaker.Model
             Minion_GetQuicktimeCommand = new RelayCommand(GetQuicktime);
             //Populate Tree!
 
+            Title = string.Format("Note {0}", ++number);
             var temp = new Treefiller();
             root = temp.filltree();     
+
         }
 
         public void CloseMinion()

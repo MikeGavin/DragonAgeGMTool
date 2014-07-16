@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Notemaker.Model
+namespace NoteTaker.Model
 {
     class DBPull
     {
