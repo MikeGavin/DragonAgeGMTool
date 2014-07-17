@@ -59,6 +59,7 @@
                     <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
+            
 
         </TreeView>
         <ListBox Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding Root.SubItems}">

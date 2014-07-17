@@ -26,11 +26,11 @@ namespace NoteTaker.ViewModel
         
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        private string windowTitle = string.Format("NoteTaker {0}", System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
-        public string WindowTitle
+        private string version = string.Format("NoteTaker {0}", System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
+        public string Version
         {
-            get { return windowTitle; }
-            set { windowTitle = value; RaisePropertyChanged(); }
+            get { return version; }
+            set { version = value; RaisePropertyChanged(); }
         }
         
 
