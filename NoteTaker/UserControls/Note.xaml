@@ -74,15 +74,15 @@
                                     <KeyBinding Command="{Binding Minion_ConnectCommand}" Key="Return"/>
                                 </TextBox.InputBindings>
                             </TextBox>
+                            
                             <controls:ProgressRing IsActive="{Binding MinionConnecting, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="14" Height="14" HorizontalAlignment="Right" Foreground="White"/>
                         </Grid>
                     </Grid>
                 </Expander.Header>
                 <Grid Height="Auto" Width="Auto">
                 <TabControl ItemsSource="{Binding MinionCollection}" SelectedItem="{Binding SelectedMinion}">
-                    <TabControl.ItemTemplate>
-
-                        <DataTemplate>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
                             <DockPanel Width="Auto" Margin="0">
                                 <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.Minion_CloseCommand}"
                             Content="X"
@@ -132,8 +132,8 @@
 
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <UserControls:Minion></UserControls:Minion>
-                        </DataTemplate>
+                                <UserControls:Minion></UserControls:Minion>
+                            </DataTemplate>
                     </TabControl.ContentTemplate>
                 </TabControl>
                 </Grid>

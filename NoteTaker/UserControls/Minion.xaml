@@ -12,6 +12,15 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="IsReadOnly" Value="True"/>
             </Style>
+            <Style x:Key="StaffHide" TargetType="Control">
+                <Setter Property="BorderThickness" Value="0"/>
+                
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsStaff}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 
                 
@@ -40,12 +49,13 @@
                 <TextBox HorizontalAlignment="Left" Height="23" Margin="46,60,0,0" TextWrapping="Wrap" Text="{Binding RAM, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
                 <Label Content="OS" HorizontalAlignment="Left" Margin="-1,122,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
                 <TextBox HorizontalAlignment="Left" Height="23" Margin="46,122,0,0" TextWrapping="Wrap" Text="{Binding OSBit, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="BOD" HorizontalAlignment="Left" Margin="-1,152,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,153,0,0" TextWrapping="Wrap" Text="{Binding BOD, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="Image" HorizontalAlignment="Left" Margin="-1,183,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,184,0,0" TextWrapping="Wrap" Text="{Binding Image, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="VPN" HorizontalAlignment="Left" Margin="-1,214,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,215,0,0" TextWrapping="Wrap" Text="{Binding VPN, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
+                <Label Style="{StaticResource StaffHide}" Content="BOD" HorizontalAlignment="Left" Margin="-1,152,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
+                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,153,0,0" TextWrapping="Wrap" Text="{Binding BOD, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True">
+                </TextBox>
+                <Label Style="{StaticResource StaffHide}" Content="Image" HorizontalAlignment="Left" Margin="-1,183,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
+                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,184,0,0" TextWrapping="Wrap" Text="{Binding Image, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
+                <Label Style="{StaticResource StaffHide}" Content="VPN" HorizontalAlignment="Left" Margin="-1,214,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
+                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,215,0,0" TextWrapping="Wrap" Text="{Binding VPN, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
             </Grid>
         </GroupBox>
 

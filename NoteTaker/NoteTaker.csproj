@@ -165,6 +165,9 @@
     <Compile Include="UserControls\Note.xaml.cs">
       <DependentUpon>Note.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Test.xaml.cs">
+      <DependentUpon>Test.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="Controls\NoteControl.xaml">
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Note.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Test.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

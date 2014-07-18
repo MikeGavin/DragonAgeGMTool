@@ -144,6 +144,9 @@ namespace NoteTaker.Model
                     MinionCollection.Add(new EcotPC(IPAddress.Parse(NewMinionIPAddress)));
                     SelectedMinion = MinionCollection.Last();
                     NewMinionIPAddress = "10.39.";
+                    IsExpanded = true;
+                    
+                    var test = MinionCollection.Last().GetType().GetProperties();
                 }
                 else
                 {
