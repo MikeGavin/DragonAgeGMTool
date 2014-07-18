@@ -26,17 +26,9 @@ namespace NoteTaker.ViewModel
         
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        private string version = string.Format("NoteTaker {0}", System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString());
-        public string Version
-        {
-            get { return version; }
-            set { version = value; RaisePropertyChanged(); }
-        }
+        private string version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+        public string Version { get { return version; } protected set { version = value; RaisePropertyChanged(); }}
         
-
-        private string _Log2Interface;
-        public string Log2Interface { get { return _Log2Interface; } set { Log2Interface = value.Substring(value.IndexOf("]") + 1); ; _Log2Interface += value; RaisePropertyChanged(); } }
-
         private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
         public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
 
