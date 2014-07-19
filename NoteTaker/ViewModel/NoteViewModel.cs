@@ -41,12 +41,13 @@ namespace NoteTaker.ViewModel
         private QuickItem _selectedQuickItem;
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
         private RelayCommand _appendQuickItem;
-        public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(CopyQuickItem)); } }
+        public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
         private RelayCommand _copyQuickItemCommand;
         public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
 
-        private MinionViewModel _minion;
-        public MinionViewModel Minion { get { return _minion; } set { _minion = value; RaisePropertyChanged(); } }
+        // local minion instance for this note.
+        private MinionViewModel _noteMinion;
+        public MinionViewModel NoteMinion { get { return _noteMinion  ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
 
         public NoteViewModel()
         {
@@ -57,8 +58,7 @@ namespace NoteTaker.ViewModel
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             var temp = new Treefiller();
-            _root = temp.filltree();
-            
+            _root = temp.filltree();          
         }
 
         //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).

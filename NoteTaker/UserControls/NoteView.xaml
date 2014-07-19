@@ -68,13 +68,13 @@
         </ListBox>
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">
-                <Expander.DataContext>
-                    <ViewModel:MinionViewModel/>
-                </Expander.DataContext>
+                
                 <Expander.Header>
                     <Grid>
                         <Grid>
-                            <TextBox x:Name="IPInput" IsEnabled="{Binding Path=MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  Text="{Binding Path=NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
+                            <TextBox x:Name="IPInput" IsEnabled="{Binding NoteMinion.MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" 
+                                     Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  Text="{Binding NoteMinion.NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                     VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding Minion_ConnectCommand}" Key="Return"/>
                                 </TextBox.InputBindings>
@@ -84,7 +84,7 @@
                         </Grid>
                     </Grid>
                 </Expander.Header>
-                <UserControls:MinionView></UserControls:MinionView>
+                <UserControls:MinionView/>
             </Expander>
         </StackPanel>
     </Grid>
