@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="NoteTaker.UserControls.MinionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:UserControls="clr-namespace:NoteTaker.UserControls"
+             xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel"
+             xmlns:helpers="clr-namespace:NoteTaker.Helpers"
+             xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+             xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <!--<UserControl.DataContext>
+        <ViewModel:MinionViewModel/>
+    </UserControl.DataContext>-->
+    <Grid Height="Auto" Width="Auto">
+
+        <TabControl ItemsSource="{Binding MinionCollection, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedMinion}">
+            
+        <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Width="Auto" Margin="0">
+                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.Minion_CloseCommand}"
+                            Content="X"
+                            DockPanel.Dock="Right"
+                            Focusable="False"
+                            FontWeight="Bold"  
+                            Margin="0,1,0,0"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            Width="15" Height="15" 
+                            BorderThickness="0"
+                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                          
+                            >
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+
+                                        
+        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Foreground" Value="RosyBrown"/>
+                                            <!--Does not work with current button style-->
+                                        </Trigger>
+        
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <controls:ProgressRing IsActive="True" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DockPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        
+
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <UserControls:EcotPCView/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+</UserControl>

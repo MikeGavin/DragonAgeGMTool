@@ -21,26 +21,26 @@ namespace NoteTaker.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
-        private string quicknoteVisibility;
-        public string QuicknoteVisibility { get { return quicknoteVisibility; } set { quicknoteVisibility = value; RaisePropertyChanged(); } }
+        private string _quicknoteVisibility;
+        public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
         
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        private string version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
-        public string Version { get { return version; } protected set { version = value; RaisePropertyChanged(); }}
+        private string _version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+        public string Version { get { return _version; } protected set { _version = value; RaisePropertyChanged(); }}
         
-        private ObservableCollection<Note> _Notes = new ObservableCollection<Note>();
-        public ObservableCollection<Note> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
+        private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
+        public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
 
-        private Note _SelectedNote;
-        public Note SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
-
-        public RelayCommand CloseNoteCommand { get; set; }
-        public RelayCommand NewNoteCommand { get; set; }
+        private NoteViewModel _SelectedNote;
+        public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
         
+        private RelayCommand _closeNoteCommand;
+        public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(CloseNote)); } }
+        private RelayCommand _newNoteCommand;
+        public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }        
         private RelayCommand<DragEventArgs> _dropCommand; 
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
-
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
 
@@ -52,8 +52,6 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
-            CloseNoteCommand = new RelayCommand(CloseNote);
-            NewNoteCommand = new RelayCommand(NewNote);
             NewNote();
             //Load user settings.
             QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
@@ -66,7 +64,7 @@ namespace NoteTaker.ViewModel
 
         public async void NewNote()
         {
-            Notes.Add(new Note());
+            Notes.Add(new NoteViewModel());
             SelectedNote = Notes.Last();   
         }
 

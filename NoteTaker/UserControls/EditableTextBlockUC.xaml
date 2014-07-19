@@ -31,16 +31,9 @@
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
                             <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
-                        
-                        <!--<Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="RosyBrown"/>
-                                            Does not work with current button style
-                                        </Trigger>-->
-                       
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-
+                     </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </DockPanel>
 </UserControl>

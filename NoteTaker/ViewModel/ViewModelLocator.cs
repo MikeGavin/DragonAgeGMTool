@@ -55,6 +55,22 @@ namespace NoteTaker.ViewModel
             }
         }
 
+        public NoteViewModel Note
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<NoteViewModel>();
+            }
+        }
+
+        public MinionViewModel Minion
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MinionViewModel>();
+            }
+        }
+
         /// <summary>
         /// Cleans up all the resources.
         /// </summary>

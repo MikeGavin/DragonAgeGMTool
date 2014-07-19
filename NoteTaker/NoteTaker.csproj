@@ -154,19 +154,20 @@
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="Model\Note.cs" />
+    <Compile Include="ViewModel\MinionViewModel.cs" />
+    <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
       <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Minion.xaml.cs">
-      <DependentUpon>Minion.xaml</DependentUpon>
+    <Compile Include="UserControls\EcotPCView.xaml.cs">
+      <DependentUpon>EcotPCView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Note.xaml.cs">
-      <DependentUpon>Note.xaml</DependentUpon>
+    <Compile Include="UserControls\NoteView.xaml.cs">
+      <DependentUpon>NoteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Test.xaml.cs">
-      <DependentUpon>Test.xaml</DependentUpon>
+    <Compile Include="UserControls\MinionView.xaml.cs">
+      <DependentUpon>MinionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -194,15 +195,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Minion.xaml">
+    <Page Include="UserControls\EcotPCView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Note.xaml">
+    <Page Include="UserControls\NoteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Test.xaml">
+    <Page Include="UserControls\MinionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

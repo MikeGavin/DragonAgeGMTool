@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="NoteTaker.UserControls.Note"
+﻿<UserControl x:Class="NoteTaker.UserControls.NoteView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,8 +8,10 @@
              xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                      xmlns:Properties="clr-namespace:NoteTaker.Properties" 
+             xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel" 
              xmlns:UserControls="clr-namespace:NoteTaker.UserControls"
-             mc:Ignorable="d" Margin="0">
+             mc:Ignorable="d" Margin="0"
+             >
 
     <Grid MinWidth="400" Grid.IsSharedSizeScope="True" >
         <Grid.RowDefinitions>
@@ -66,10 +68,13 @@
         </ListBox>
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">
+                <Expander.DataContext>
+                    <ViewModel:MinionViewModel/>
+                </Expander.DataContext>
                 <Expander.Header>
                     <Grid>
                         <Grid>
-                            <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
+                            <TextBox x:Name="IPInput" IsEnabled="{Binding Path=MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  Text="{Binding Path=NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding Minion_ConnectCommand}" Key="Return"/>
                                 </TextBox.InputBindings>
@@ -79,64 +84,7 @@
                         </Grid>
                     </Grid>
                 </Expander.Header>
-                <Grid Height="Auto" Width="Auto">
-                <TabControl ItemsSource="{Binding MinionCollection}" SelectedItem="{Binding SelectedMinion}">
-                        <TabControl.ItemTemplate>
-                            <DataTemplate>
-                            <DockPanel Width="Auto" Margin="0">
-                                <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.Minion_CloseCommand}"
-                            Content="X"
-                            DockPanel.Dock="Right"
-                            Focusable="False"
-                            FontWeight="Bold"  
-                            Margin="0,1,0,0"
-                            Padding="0"
-                            VerticalContentAlignment="Center"
-                            Width="15" Height="15" 
-                            BorderThickness="0"
-                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                          
-                            >
-                                    <Button.Style>
-                                        <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-
-                                                <!--<Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="RosyBrown"/>
-                                            Does not work with current button style
-                                        </Trigger>-->
-
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                    <controls:ProgressRing IsActive="True" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                                                        <Setter Property="Foreground" Value="Red"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    
-                                </DockPanel>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                                <UserControls:Minion></UserControls:Minion>
-                            </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-                </Grid>
+                <UserControls:MinionView></UserControls:MinionView>
             </Expander>
         </StackPanel>
     </Grid>

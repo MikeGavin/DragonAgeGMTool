@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace NoteTaker.UserControls
 {
     /// <summary>
-    /// Interaction logic for Test.xaml
+    /// Interaction logic for Minion.xaml
     /// </summary>
-    public partial class Test : UserControl
+    public partial class EcotPCView : UserControl
     {
-        public Test()
+        public EcotPCView()
         {
             InitializeComponent();
         }
