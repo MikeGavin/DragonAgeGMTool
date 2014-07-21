@@ -3,16 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" Width="728" Height="168">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="IsReadOnly" Value="True"/>
             </Style>
+            <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Padding" Value="2"/>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
             <Style x:Key="StaffHide" TargetType="Control">
                 <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Padding" Value="2"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsStaff}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -25,57 +34,66 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <Grid HorizontalAlignment="Left">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="3" Height="300" TextWrapping="Wrap" Text="{Binding History, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" HorizontalAlignment="Right" Width="199" Margin="0,0,0,-13"/>
-        <GroupBox Grid.Column="0" Header="Machine" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="287" Width="196">
-            <Grid HorizontalAlignment="Right" Height="251" Margin="0,0,-2,-1" VerticalAlignment="Top" Width="186">
-                <Label Content="Name" HorizontalAlignment="Left" Margin="-1,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,0,0,0" TextWrapping="Wrap" Text="{Binding PCName, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="User" HorizontalAlignment="Left" Margin="-1,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,29,0,0" TextWrapping="Wrap" Text="{Binding CurrentUser, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="Chip" HorizontalAlignment="Left" Margin="-1,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,91,0,0" TextWrapping="Wrap" Text="{Binding ChipStyle, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="RAM" HorizontalAlignment="Left" Margin="-1,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,60,0,0" TextWrapping="Wrap" Text="{Binding RAM, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="OS" HorizontalAlignment="Left" Margin="-1,122,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,122,0,0" TextWrapping="Wrap" Text="{Binding OSBit, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Style="{StaticResource StaffHide}" Content="BOD" HorizontalAlignment="Left" Margin="-1,152,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,153,0,0" TextWrapping="Wrap" Text="{Binding BOD, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Style="{StaticResource StaffHide}" Content="Image" HorizontalAlignment="Left" Margin="-1,183,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,184,0,0" TextWrapping="Wrap" Text="{Binding Image, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Style="{StaticResource StaffHide}" Content="VPN" HorizontalAlignment="Left" Margin="-1,214,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox Style="{StaticResource StaffHide}" HorizontalAlignment="Left" Height="23" Margin="46,215,0,0" TextWrapping="Wrap" Text="{Binding VPN, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Grid.Column="1" Header="Software" HorizontalAlignment="Right" Margin="0" VerticalAlignment="Top" Height="287" Width="218">
-            <Grid HorizontalAlignment="Left" Height="251" VerticalAlignment="Top" Width="213">
-                <Label Content="IE" HorizontalAlignment="Left" Margin="-1,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,0,0,0" TextWrapping="Wrap" Text="{Binding IEVersion, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True" />
-                <Label Content="Java" HorizontalAlignment="Left" Margin="-1,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,29,0,0" TextWrapping="Wrap" Text="{Binding Java, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="Flash" HorizontalAlignment="Left" Margin="-1,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,60,0,0" TextWrapping="Wrap" Text="{Binding Flash, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="SW" HorizontalAlignment="Left" Margin="-1,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,91,0,0" TextWrapping="Wrap" Text="{Binding Shockwave, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="Reader&#xD;&#xA;" HorizontalAlignment="Left" Margin="-1,122,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,122,0,0" TextWrapping="Wrap" Text="{Binding Reader, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Label Content="QT" HorizontalAlignment="Left" Margin="0,152,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.077" BorderThickness="0" />
-                <TextBox HorizontalAlignment="Left" Height="23" Margin="46,153,0,0" TextWrapping="Wrap" Text="{Binding Quicktime, Mode=OneWay, NotifyOnSourceUpdated=True}" VerticalAlignment="Top" Width="130" IsReadOnly="True"/>
-                <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.GetIECommand}" Content="" HorizontalAlignment="Left" Margin="176,1,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-                <Button Command="{Binding DataContext.GetJavaCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Content="" HorizontalAlignment="Left" Margin="176,29,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-                <Button Command="{Binding DataContext.GetFlashCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Content="" HorizontalAlignment="Left" Margin="176,59,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-                <Button Command="{Binding DataContext.GetShockwaveCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Content="" HorizontalAlignment="Left" Margin="176,90,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-                <Button Command="{Binding DataContext.GetReaderCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Content="" HorizontalAlignment="Left" Margin="176,122,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-                <Button Command="{Binding DataContext.GetQuicktimeCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Content="" HorizontalAlignment="Left" Margin="176,153,0,0" VerticalAlignment="Top" Width="23" Style="{DynamicResource MetroCircleButtonStyle}" Height="23"/>
-            </Grid>
-        </GroupBox>
+        <StackPanel Grid.Column="0">
+            <Label Content="Name"/>
+            <Label Content="User"/>
+            <Label Content="Chip"/>
+            <Label Content="RAM"/>
+            <Label Content="OSBit"/>
+            <Label Content="BOD" Style="{StaticResource StaffHide}"/>
+            <Label Content="Image" Style="{StaticResource StaffHide}"/>
+            <Label Content="VPN" Style="{StaticResource StaffHide}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <Label Content="TEST!">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}"/>
+                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+                
+            </Label>
+            
+            <Label Content="{Binding CurrentUser}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <Label Content="{Binding ChipStyle}"/>
+            <Label Content="{Binding RAM}"/>
+            <Label Content="{Binding OSBit}"/>
+            <Label Content="{Binding BOD}" Style="{StaticResource StaffHide}"/>
+            <Label Content="{Binding Image}" Style="{StaticResource StaffHide}"/>
+            <Label Content="{Binding VPN}" Style="{StaticResource StaffHide}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+            <Label Content="IE"/>
+            <Label Content="Java"/>
+            <Label Content="Flash"/>
+            <Label Content="Shockwave"/>
+            <Label Content="Reader"/>
+            <Label Content="Quicktime"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3">
+            <Label Content="{Binding IEVersion}"/>
+            <Label Content="{Binding Java}"/>
+            <Label Content="{Binding Flash}"/>
+            <Label Content="{Binding Shockwave}"/>
+            <Label Content="{Binding Reader}"/>
+            <Label Content="{Binding Quicktime}"/>
+        </StackPanel>
+        <TextBlock Grid.Column="4" Text="{Binding History}"/>
+        
     </Grid>
 </UserControl>

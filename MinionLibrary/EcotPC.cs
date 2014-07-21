@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading;
 using Minion.Lists;
 using System.IO;
+using System.Collections.ObjectModel;
 
 
 namespace Minion
@@ -143,6 +144,9 @@ namespace Minion
         #endregion
 
         #region Machine Properties
+        private ObservableCollection<ProperityItem> _machine = new ObservableCollection<ProperityItem>();
+        public ObservableCollection<ProperityItem> Machine { get { return _machine; } set { _machine = value; RaisePropertyChanged(); } }
+
         protected IPAddress _IPAddress;
         public IPAddress IPAddress { get { return _IPAddress; } protected set { _IPAddress = value; RaisePropertyChanged(); } }
 
