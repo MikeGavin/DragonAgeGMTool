@@ -141,29 +141,41 @@ namespace Minion
         protected string _History;
         public string History { get { return _History; } protected set { _History += value + Environment.NewLine; RaisePropertyChanged(); } }
 
+        protected void ListUpdate(ObservableCollection<ProperityItem> items, string val, [CallerMemberName] string prop = "")
+        {
+            var result = items.Where(p => p.Name == prop).FirstOrDefault();
+            if (result == null)
+            {
+                items.Add(new ProperityItem { Name = prop, Info = val });
+            }
+            else
+            {
+                result.Info = val;
+            }
+        }
         #endregion
 
         #region Machine Properties
-        private ObservableCollection<ProperityItem> _machine = new ObservableCollection<ProperityItem>();
+        protected ObservableCollection<ProperityItem> _machine = new ObservableCollection<ProperityItem>();
         public ObservableCollection<ProperityItem> Machine { get { return _machine; } set { _machine = value; RaisePropertyChanged(); } }
 
         protected IPAddress _IPAddress;
         public IPAddress IPAddress { get { return _IPAddress; } protected set { _IPAddress = value; RaisePropertyChanged(); } }
 
         protected string _Name;
-        public string PCName { get { return _Name; } protected set { _Name = value; RaisePropertyChanged(); } }
+        public string PCName { get { return _Name; } protected set { _Name = value; RaisePropertyChanged(); ListUpdate(Machine, value); } }
 
         protected string _CurrentUser;
-        public string CurrentUser { get { return _CurrentUser; } protected set { _CurrentUser = value; RaisePropertyChanged(); } }
+        public string CurrentUser { get { return _CurrentUser; } protected set { _CurrentUser = value; RaisePropertyChanged(); ListUpdate(Machine, value); } }
 
         protected string _ChipStyle;
-        public string ChipStyle { get { return _ChipStyle; } set { _ChipStyle = value; RaisePropertyChanged(); } }
+        public string ChipStyle { get { return _ChipStyle; } set { _ChipStyle = value; RaisePropertyChanged(); ListUpdate(Machine, value); } }
         
         protected string _RAM;
-        public string RAM { get { return _RAM; } set { _RAM = value; RaisePropertyChanged(); } }
+        public string RAM { get { return _RAM; } set { _RAM = value; RaisePropertyChanged(); ListUpdate(Machine, value); } }
 
         protected string _OSBit;
-        public string OSBit { get { return _OSBit; } set { _OSBit = value; RaisePropertyChanged(); } }
+        public string OSBit { get { return _OSBit; } set { _OSBit = value; RaisePropertyChanged(); ListUpdate(Machine, value); } }
 
         protected bool x64;
 
@@ -218,6 +230,7 @@ namespace Minion
             ChipStyle = InfoArray[1];
             RAM = BytesToString(Convert.ToInt64(InfoArray[2]));
             CurrentUser = InfoArray[3].ToLower().Replace("ecotoh\\", string.Empty);
+
 
             log.Debug("Name: {0} ChipStyle: {1} RAM: {2} CurrentUser {3}", PCName, ChipStyle, RAM, CurrentUser);
 
@@ -464,6 +477,8 @@ namespace Minion
             return true;
         }
 
+        #region Tools
+
         /// <summary>
         /// Used to launch a local instance of dameware to connect to the remote machine.
         /// </summary>
@@ -543,7 +558,7 @@ namespace Minion
             try
             {
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=<JNLPFILE>");
-                await assoc.Run();               
+                await assoc.Run();
                 var paexec = new Tool.PAExec(IPAddress, @"ftype jnlpfile=""c:\Program Files (x86)\Java\jre7\bin\javaws.exe"" ""%1""");
                 await paexec.Run();
                 return true;
@@ -561,7 +576,7 @@ namespace Minion
             await bg.Run();
             //Fix theme too
             var theme = new Tool.PAExec(IPAddress, @"-i 1 -s -accepteula cmd.exe /c c:\windows\resources\themes\ecot.theme");
-            await theme.Run();      
+            await theme.Run();
         }
 
         public async Task FileCleanup()
@@ -625,8 +640,8 @@ namespace Minion
         }
 
         protected async Task ProfileBackup()
-        {           
-            var desktop = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Desktop c:\temp\profilebackup\{0}\Desktop /E /R:0", CurrentUser));            
+        {
+            var desktop = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Desktop c:\temp\profilebackup\{0}\Desktop /E /R:0", CurrentUser));
             var documents = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Documents c:\temp\profilebackup\{0}\Documents /E /R:0", CurrentUser));
             History = @"Backuping up \Desktop for " + CurrentUser;
             await desktop.Run();
@@ -642,7 +657,8 @@ namespace Minion
             await reboot.Run();
             History = "Sent reboot command.";
         }
-    }
+    } 
+        #endregion
 
 
 

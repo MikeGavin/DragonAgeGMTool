@@ -75,7 +75,7 @@
                                      Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
                                      VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
                                 <TextBox.InputBindings>
-                                    <KeyBinding Command="{Binding Minion_ConnectCommand}" Key="Return"/>
+                                    <KeyBinding Command="{Binding AddCommand}" Key="Return"/>
                                 </TextBox.InputBindings>
                             </TextBox>
                             
@@ -83,7 +83,7 @@
                         </Grid>
                     </Grid>
                 </Expander.Header>
-                <UserControls:MinionView/>
+                <UserControls:MinionView HorizontalAlignment="Left"/>
             </Expander>
         </StackPanel>
     </Grid>

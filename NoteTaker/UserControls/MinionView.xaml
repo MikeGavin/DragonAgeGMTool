@@ -21,7 +21,7 @@
         <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="Auto" Margin="0">
-                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.Minion_CloseCommand}"
+                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}"
                             Content="X"
                             DockPanel.Dock="Right"
                             Focusable="False"

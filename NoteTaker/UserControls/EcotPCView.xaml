@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="NoteTaker.UserControls.EcotPCView"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Width="728" Height="168">
+             xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel" x:Class="NoteTaker.UserControls.EcotPCView" 
+             mc:Ignorable="d" Width="auto" Height="auto">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -12,13 +13,14 @@
             </Style>
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
                 <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Padding" Value="2"/>
+                <Setter Property="Margin" Value="0,0,3,0"/>
             </Style>
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-            <Style x:Key="StaffHide" TargetType="Control">
+            <Style x:Key="StaffHide" TargetType="{x:Type Control}">
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Padding" Value="2"/>
@@ -28,41 +30,36 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            <ResourceDictionary.MergedDictionaries>
-
-
-            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid HorizontalAlignment="Left">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto" MinWidth="100"/>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto" MinWidth="100" />
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-            <Label Content="Name"/>
-            <Label Content="User"/>
-            <Label Content="Chip"/>
-            <Label Content="RAM"/>
-            <Label Content="OSBit"/>
-            <Label Content="BOD" Style="{StaticResource StaffHide}"/>
-            <Label Content="Image" Style="{StaticResource StaffHide}"/>
-            <Label Content="VPN" Style="{StaticResource StaffHide}"/>
+        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Height="Auto">
+            <Label Content="Name" Foreground="Gray"/>
+            <Label Content="User" Foreground="Gray"/>
+            <Label Content="Chip" Foreground="Gray"/>
+            <Label Content="RAM" Foreground="Gray"/>
+            <Label Content="OSBit" Foreground="Gray"/>
+            <Label Content="BOD" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+            <Label Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+            <Label Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
         </StackPanel>
-        <StackPanel Grid.Column="1">
-            <Label Content="TEST!">
+        <StackPanel Grid.Column="1" Height="Auto">
+            <Button Content="Test!" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}"/>
+            <Label Content="{Binding PCName}">
                 <Label.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu DataContext="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}">
                         <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}"/>
-                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
+                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand, Mode=OneWay}"/>
                     </ContextMenu>
                 </Label.ContextMenu>
-                
             </Label>
-            
             <Label Content="{Binding CurrentUser}">
                 <Label.ContextMenu>
                     <ContextMenu>
@@ -77,15 +74,15 @@
             <Label Content="{Binding Image}" Style="{StaticResource StaffHide}"/>
             <Label Content="{Binding VPN}" Style="{StaticResource StaffHide}"/>
         </StackPanel>
-        <StackPanel Grid.Column="2">
-            <Label Content="IE"/>
-            <Label Content="Java"/>
-            <Label Content="Flash"/>
-            <Label Content="Shockwave"/>
-            <Label Content="Reader"/>
-            <Label Content="Quicktime"/>
+        <StackPanel Grid.Column="2" Height="Auto">
+            <Label Content="IE" Foreground="Gray"/>
+            <Label Content="Java" Foreground="Gray"/>
+            <Label Content="Flash" Foreground="Gray"/>
+            <Label Content="Shockwave" Foreground="Gray"/>
+            <Label Content="Reader" Foreground="Gray"/>
+            <Label Content="Quicktime" Foreground="Gray"/>
         </StackPanel>
-        <StackPanel Grid.Column="3">
+        <StackPanel Grid.Column="3" Height="Auto">
             <Label Content="{Binding IEVersion}"/>
             <Label Content="{Binding Java}"/>
             <Label Content="{Binding Flash}"/>
@@ -93,7 +90,6 @@
             <Label Content="{Binding Reader}"/>
             <Label Content="{Binding Quicktime}"/>
         </StackPanel>
-        <TextBlock Grid.Column="4" Text="{Binding History}"/>
-        
+        <TextBlock Grid.Column="4" Text="{Binding History}" Height="Auto"/>
     </Grid>
 </UserControl>

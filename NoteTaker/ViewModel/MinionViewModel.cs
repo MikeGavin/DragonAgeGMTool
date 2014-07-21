@@ -15,36 +15,6 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MinionViewModel : ViewModelBase
     {
-
-        public RelayCommand CloseCommand { get; set; }
-        public RelayCommand ConnectCommand { get; set; }
-        public RelayCommand GetIECommand { get; set; }
-        public RelayCommand GetJavaCommand { get; set; }
-        public RelayCommand GetFlashCommand { get; set; }
-        public RelayCommand GetShockwaveCommand { get; set; }
-        public RelayCommand GetReaderCommand { get; set; }
-        public RelayCommand GetQuicktimeCommand { get; set; }
-        private ObservableCollection<EcotPC> _MinionCollection = new ObservableCollection<EcotPC>();
-        public ObservableCollection<EcotPC> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
-        private EcotPC _selectedMinion;
-        public EcotPC SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
-        private RelayCommand _minion_CloseCommand;
-        public RelayCommand Minion_CloseCommand { get { return _minion_CloseCommand ?? (_minion_CloseCommand = new RelayCommand(CloseMinion)); } }
-        private RelayCommand _minion_ConnectCommand;
-        public RelayCommand Minion_ConnectCommand { get { return _minion_ConnectCommand ?? (_minion_ConnectCommand = new RelayCommand(ConnectMinion)); } }
-        private string _NewMinionIPAddress = "10.39.";
-        public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
-        private bool _minionIPInputEnabeled = true;
-        public bool MinionIPInputEnabeled { get { return _minionIPInputEnabeled; } set { _minionIPInputEnabeled = value; RaisePropertyChanged(); } }
-        private bool _minionConnecting = false;
-        public bool MinionConnecting { get { return _minionConnecting; } set { _minionConnecting = value; RaisePropertyChanged(); } }
-        private bool isExpanded;
-        public bool IsExpanded { get { return isExpanded; } set { isExpanded = value; RaisePropertyChanged(); } }
-        private EcotPC _remotePC;
-        public EcotPC RemotePC { get { return _remotePC; } set { _remotePC = value; RaisePropertyChanged(); } }
-        //private IPAddress _iPAddress;
-        //public IPAddress IPAddress { get { return _iPAddress; } set { _iPAddress = value; RaisePropertyChanged(); } }
-        
         /// <summary>
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
@@ -53,6 +23,16 @@ namespace NoteTaker.ViewModel
 
         }
 
+        private ObservableCollection<EcotPC> _MinionCollection = new ObservableCollection<EcotPC>();
+        public ObservableCollection<EcotPC> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
+        private EcotPC _selectedMinion;
+        public EcotPC SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _closeCommand;
+        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinion)); } }        
+        private RelayCommand _addCommand;
+        public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinion)); } }
+
         public void CloseMinion()
         {
             MinionCollection.Remove(SelectedMinion);
@@ -60,7 +40,7 @@ namespace NoteTaker.ViewModel
                 IsExpanded = false;
         }
 
-        public async void ConnectMinion()
+        public async void AddMinion()
         {
             MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }
@@ -90,34 +70,78 @@ namespace NoteTaker.ViewModel
             MinionConnecting = false;
         }
 
+        #region SoftwareCommands
+        
+        private RelayCommand _getIECommand;
+        public RelayCommand GetIECommand { get { return _getIECommand ?? (_getIECommand = new RelayCommand(GetIE)); } }        
+        
+        private RelayCommand _getJavaCommand;
+        public RelayCommand GetJavaCommand { get { return _getJavaCommand ?? (_getJavaCommand = new RelayCommand(GetJava)); } }
+        
+        private RelayCommand _getFlashCommand;
+        public RelayCommand GetFlashCommand { get { return _getFlashCommand ?? (_getFlashCommand = new RelayCommand(GetFlash)); } }
+        
+        private RelayCommand _getShockwaveCommand;
+        public RelayCommand GetShockwaveCommand { get { return _getShockwaveCommand ?? (_getShockwaveCommand = new RelayCommand(GetShockwave)); } }
+        
+        private RelayCommand _getReaderCommand;
+        public RelayCommand GetReaderCommand { get { return _getReaderCommand ?? (_getReaderCommand = new RelayCommand(GetReader)); } }
+        
+        private RelayCommand _getQuicktimeCommand;
+        public RelayCommand GetQuicktimeCommand { get { return _getQuicktimeCommand ?? (_getQuicktimeCommand = new RelayCommand(GetQuicktime)); } }
+
         public async void GetJava()
         {
-            await RemotePC.Get_Java();
+            await SelectedMinion.Get_Java();
         }
 
         public async void GetIE()
         {
-            await RemotePC.Get_IE();
+            await SelectedMinion.Get_IE();
         }
 
         public async void GetFlash()
         {
-            await RemotePC.Get_Flash();
+            await SelectedMinion.Get_Flash();
         }
 
         public async void GetShockwave()
         {
-            await RemotePC.Get_Shockwave();
+            await SelectedMinion.Get_Shockwave();
         }
 
         public async void GetReader()
         {
-            await RemotePC.Get_Reader();
+            await SelectedMinion.Get_Reader();
         }
 
         public async void GetQuicktime()
         {
-            await RemotePC.Get_Quicktime();
+            await SelectedMinion.Get_Quicktime();
         }
+
+        #endregion
+
+        #region ToolCommands
+
+        private RelayCommand _openDamewareCommand;
+        public RelayCommand OpenDamewareCommand { get { return _openDamewareCommand ?? (_openDamewareCommand = new RelayCommand(async () => await SelectedMinion.OpenDameware())); } }
+        
+        private RelayCommand _openCShareCommand;
+        public RelayCommand OpenCShareCommand { get { return _openCShareCommand ?? (_openCShareCommand = new RelayCommand(async () => await SelectedMinion.OpenCShare())); } }
+
+        #endregion
+
+        #region ViewProperties
+        private string _NewMinionIPAddress = "10.39.";
+        public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
+        private bool _minionIPInputEnabeled = true;
+        public bool MinionIPInputEnabeled { get { return _minionIPInputEnabeled; } set { _minionIPInputEnabeled = value; RaisePropertyChanged(); } }
+        private bool _minionConnecting = false;
+        public bool MinionConnecting { get { return _minionConnecting; } set { _minionConnecting = value; RaisePropertyChanged(); } }
+        private bool isExpanded;
+        public bool IsExpanded { get { return isExpanded; } set { isExpanded = value; RaisePropertyChanged(); } } 
+        #endregion
+
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Minion.Lists
 {
-    class ProperityItem
+    public class ProperityItem
     {
         public string Name { get; set; }
-        public string Version { get; set; }
+        public string Info { get; set; }
     }
 }
