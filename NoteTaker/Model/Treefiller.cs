@@ -1,4 +1,4 @@
-﻿using NoteTaker.Model;
+﻿using Notemaker.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -57,34 +57,33 @@ namespace NoteTaker.Model
 
             foreach (DBPull item in Root_uniqueitems)
             {
-                QuickItem childItem1 = new QuickItem() { Title = item.Root_Folder };
+                QuickItem Root_Item = new QuickItem() { Title = item.Root_Folder };
 
-
-                foreach (DBPull item1 in CommandList)
+                foreach (DBPull item1 in Sub1uniqueitems)
                 {
-                    if (item1.Root_Folder == childItem1.Title && item1.Sub_Folder_1 != string.Empty)
+                    if (item1.Root_Folder == Root_Item.Title)
                     {
-                        childItem1.SubItems.Add(new QuickItem() { Title = item1.Sub_Folder_1, Content = item1.Verbage });
-                    }
-                    else
-                    {
+                        Root_Item.SubItems.Add(new QuickItem() { Title = item1.Sub_Folder_1, Content = item1.Verbage });
+
+
+
+                        //foreach (DBPull item2 in Sub2uniqueitems)
+                        //{
+                        //    QuickItem Sub_Item_3 = new QuickItem() { Title = item2.Sub_Folder_2 };
+
+                        //    if (item2.Sub_Folder_2 == Sub_Item_3.Title && item1.Sub_Folder_2 != string.Empty)
+                        //    {
+                        //        Root_Item.SubItems.Add(new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage });
+                        //    }
+                        //}
 
 
                     }
                 }
-
-                root.SubItems.Add(childItem1);
+                root.SubItems.Add(Root_Item);
 
             }
 
-
-
-            
-            //QuickItem childItem1 = new QuickItem() { Title = "Child item #1" };
-            //childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.1", Content = "Blah blah blah blah"});
-            //childItem1.SubItems.Add(new QuickItem() { Title = "Child item #1.2", Content = "Blah blah blah blah" });
-            //root.SubItems.Add(childItem1);
-            //root.SubItems.Add(new QuickItem() { Title = "Child item #2", Content = "Blah blah blah blah"});
             return root;
         }
     }
