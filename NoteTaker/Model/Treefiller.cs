@@ -67,16 +67,15 @@ namespace NoteTaker.Model
 
 
 
-                        //foreach (DBPull item2 in Sub2uniqueitems)
-                        //{
-                        //    QuickItem Sub_Item_3 = new QuickItem() { Title = item2.Sub_Folder_2 };
+                        foreach (DBPull item2 in Sub2uniqueitems)
+                        {
+                            QuickItem Sub_Item_2 = new QuickItem() { Title = item2.Sub_Folder_2 };
 
-                        //    if (item2.Sub_Folder_2 == Sub_Item_3.Title && item1.Sub_Folder_2 != string.Empty)
-                        //    {
-                        //        Root_Item.SubItems.Add(new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage });
-                        //    }
-                        //}
-
+                            if (item2.Root_Folder == Root_Item.Title && item2.Sub_Folder_2 != string.Empty)
+                            {
+                                Root_Item.SubItems.Add(new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage });
+                            }
+                        }
 
                     }
                 }
