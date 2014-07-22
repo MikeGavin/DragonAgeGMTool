@@ -83,6 +83,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>NoteTaker.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -154,21 +157,21 @@
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="ViewModel\MinionViewModel.cs" />
-    <Compile Include="ViewModel\ECOTPCViewModel.cs" />
+    <Compile Include="ViewModel\MinionTabViewModel.cs" />
+    <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
       <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\EcotPCView.xaml.cs">
-      <DependentUpon>EcotPCView.xaml</DependentUpon>
+    <Compile Include="UserControls\MinionItemViewUC.xaml.cs">
+      <DependentUpon>MinionItemViewUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\NoteView.xaml.cs">
-      <DependentUpon>NoteView.xaml</DependentUpon>
+    <Compile Include="UserControls\NoteViewUC.xaml.cs">
+      <DependentUpon>NoteViewUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MinionView.xaml.cs">
-      <DependentUpon>MinionView.xaml</DependentUpon>
+    <Compile Include="UserControls\MinionTabViewUC.xaml.cs">
+      <DependentUpon>MinionTabViewUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -196,15 +199,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\EcotPCView.xaml">
+    <Page Include="UserControls\MinionItemViewUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\NoteView.xaml">
+    <Page Include="UserControls\NoteViewUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MinionView.xaml">
+    <Page Include="UserControls\MinionTabViewUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -63,11 +63,11 @@ namespace NoteTaker.ViewModel
             }
         }
 
-        public MinionViewModel Minion
+        public MinionTabViewModel Minion
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MinionViewModel>();
+                return ServiceLocator.Current.GetInstance<MinionTabViewModel>();
             }
         }
 

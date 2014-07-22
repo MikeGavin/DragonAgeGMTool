@@ -18,9 +18,9 @@ namespace NoteTaker.UserControls
     /// <summary>
     /// Interaction logic for Note.xaml
     /// </summary>
-    public partial class NoteView : UserControl
+    public partial class NoteViewUC : UserControl
     {
-        public NoteView()
+        public NoteViewUC()
         {
             InitializeComponent();
         }

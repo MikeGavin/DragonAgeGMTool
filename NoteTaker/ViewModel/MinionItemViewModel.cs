@@ -13,17 +13,18 @@ namespace NoteTaker.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class ECOTPCViewModel : ViewModelBase
+    public class MinionItemViewModel : ViewModelBase
     {
-
-        public Minion.EcotPC RemoteMachine { get; protected set; }
+        private MinionCommands _commands;
+        public EcotPC RemoteMachine { get; protected set; }
 
         /// <summary>ef
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public ECOTPCViewModel(IPAddress IP)
+        public MinionItemViewModel(IPAddress IP, MinionCommands commands)
         {
             RemoteMachine = new Minion.EcotPC(IP);
+            _commands = commands;
             
         }
 
@@ -63,10 +64,10 @@ namespace NoteTaker.ViewModel
 
         public async Task Uninstall_Java()
         {
-            var item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as RemoteCommandImport;
+            var item = _commands.Java.Where(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as Minion.RemoteCommandImport;
             if (item == null)
             {
-                item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
+                item = _commands.Java.Where(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
             }
             Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
 

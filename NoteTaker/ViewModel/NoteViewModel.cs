@@ -46,11 +46,12 @@ namespace NoteTaker.ViewModel
         public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
 
         // local minion instance for this note.
-        private MinionViewModel _noteMinion;
-        public MinionViewModel NoteMinion { get { return _noteMinion  ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
-
-        public NoteViewModel()
+        private MinionTabViewModel _noteMinion;
+        public MinionTabViewModel NoteMinion { get { return _noteMinion  ?? (_noteMinion = new MinionTabViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
+        private MinionCommands _minionCommands;
+        public NoteViewModel(MinionCommands _commands)
         {
+            _minionCommands = _commands;
             TextChanged += Note_TextChanged;
             Text = "Test";
 

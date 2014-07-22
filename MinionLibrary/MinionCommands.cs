@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Minion
 {
-    public static class Commands
+    public class MinionCommands
     {
-        public static List<RemoteCommandImport> Java { get; private set; }
-        public static List<RemoteCommandImport> Flash { get; private set; }
-        public static List<RemoteCommandImport> Shockwave { get; private set; }
-        public static List<RemoteCommandImport> Reader { get; private set; }
+        public List<RemoteCommandImport> Java { get; private set; }
+        public List<RemoteCommandImport> Flash { get; private set; }
+        public List<RemoteCommandImport> Shockwave { get; private set; }
+        public List<RemoteCommandImport> Reader { get; private set; }
 
 
         private static List<RemoteCommandImport> CommandList { get; set; }
-        static Commands()
+        public MinionCommands()
         {
 
             SQLiteConnection minion = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Minion.sqlite", Environment.CurrentDirectory));

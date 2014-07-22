@@ -14,20 +14,20 @@ namespace NoteTaker.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class MinionViewModel : ViewModelBase
+    public class MinionTabViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionViewModel()
+        public MinionTabViewModel (MinionCommands commands)
         {
-
+             _minionCommands = commands;
         }
-
-        private ObservableCollection<ECOTPCViewModel> _MinionCollection = new ObservableCollection<ECOTPCViewModel>();
-        public ObservableCollection<ECOTPCViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
-        private ECOTPCViewModel _selectedMinion;
-        public ECOTPCViewModel SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
+        private MinionCommands _minionCommands;
+        private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
+        public ObservableCollection<MinionItemViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
+        private MinionItemViewModel _selectedMinion;
+        public MinionItemViewModel SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
 
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinion)); } }        
@@ -53,7 +53,7 @@ namespace NoteTaker.ViewModel
 
                 if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(IPAddress.Parse(NewMinionIPAddress)) == true))
                 {
-                    MinionCollection.Add(new ECOTPCViewModel(IPAddress.Parse(NewMinionIPAddress)));
+                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
                     SelectedMinion = MinionCollection.Last();
                     NewMinionIPAddress = "10.39.";
                     IsExpanded = true;

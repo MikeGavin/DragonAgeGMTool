@@ -333,14 +333,14 @@ namespace Minion
 
             var paexec = new Tool.PAExec(IPAddress, command);
             await paexec.Run();
-            bool loop = true;
+            //bool loop = true;
             //while (loop == true)
             //{
                 if (paexec.StandardError.Contains("java version") == true)
                 {
                     result = paexec.StandardError.Split(new char[] { '\"', '\"' })[1];
                     log.Info("Java version: " + result);
-                    loop = false;
+                    //loop = false;
                 }
                 //else
                 //{
@@ -483,6 +483,7 @@ namespace Minion
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Command);
             else
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Copy, item.Command);
+            await paexec.Run();
             History = "";
             Processing--;
             return true;
