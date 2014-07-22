@@ -25,7 +25,7 @@
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Padding" Value="2"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsStaff}" Value="True">
+                    <DataTrigger Binding="{Binding RemoteMachine.IsStaff}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -51,28 +51,33 @@
             <Label Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Height="Auto">
-            <Button Content="Test!" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}"/>
-            <Label Content="{Binding PCName}">
+            <Label Content="{Binding RemoteMachine.PCName}" >
                 <Label.ContextMenu>
-                    <ContextMenu DataContext="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}">
-                        <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}"/>
-                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand, Mode=OneWay}"/>
+                    <ContextMenu>
+                        <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
+                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
+                        <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
+                        
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding CurrentUser}">
+            <Label Content="{Binding RemoteMachine.CurrentUser}">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
+                        <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
+                        <MenuItem Header="Backup Profile" Command="{Binding BackupProfileCommand}"/>
+                        <MenuItem Header="Enable Profile Wipe" Command="{Binding EnableProfileWipeCommand}"/>
+                        <MenuItem Header="Disable Profile Wipe" Command="{Binding DisableProfileWipeCommand}"/>
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding ChipStyle}"/>
-            <Label Content="{Binding RAM}"/>
-            <Label Content="{Binding OSBit}"/>
-            <Label Content="{Binding BOD}" Style="{StaticResource StaffHide}"/>
-            <Label Content="{Binding Image}" Style="{StaticResource StaffHide}"/>
-            <Label Content="{Binding VPN}" Style="{StaticResource StaffHide}"/>
+            <Label Content="{Binding RemoteMachine.ChipStyle}"/>
+            <Label Content="{Binding RemoteMachine.RAM}"/>
+            <Label Content="{Binding RemoteMachine.OSBit}"/>
+            <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}"/>
+            <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}"/>
+            <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}"/>
         </StackPanel>
         <StackPanel Grid.Column="2" Height="Auto">
             <Label Content="IE" Foreground="Gray"/>
@@ -83,13 +88,48 @@
             <Label Content="Quicktime" Foreground="Gray"/>
         </StackPanel>
         <StackPanel Grid.Column="3" Height="Auto">
-            <Label Content="{Binding IEVersion}"/>
-            <Label Content="{Binding Java}"/>
-            <Label Content="{Binding Flash}"/>
-            <Label Content="{Binding Shockwave}"/>
-            <Label Content="{Binding Reader}"/>
-            <Label Content="{Binding Quicktime}"/>
+            <Label Content="{Binding RemoteMachine.IEVersion}"/>
+            <Label Content="{Binding RemoteMachine.Java}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}"/>
+                        <MenuItem Header="Install Java" Command="{Binding InstallJavaCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <Label Content="{Binding RemoteMachine.Flash}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Flash" Command="{Binding UninstallFlashCommand}"/>
+                        <MenuItem Header="Install Flash" Command="{Binding InstallFlashCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <Label Content="{Binding RemoteMachine.Shockwave}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Shockwave" Command="{Binding UninstallShockwaveCommand}"/>
+                        <MenuItem Header="Install Shockwave" Command="{Binding InstallShockwaveCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
+            <Label Content="{Binding RemoteMachine.Reader}">
+            <Label.ContextMenu>
+                <ContextMenu>
+                        <MenuItem Header="Uninstall Reader" Command="{Binding UninstallReaderCommand}"/>
+                        <MenuItem Header="Install Reader" Command="{Binding InstallReaderCommand}"/>
+                </ContextMenu>
+            </Label.ContextMenu>
+            </Label>
+            <Label Content="{Binding RemoteMachine.Quicktime}">
+                <Label.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
+                        <MenuItem Header="Install Quicktime" Command="{Binding InstallQuicktimeCommand}"/>
+                    </ContextMenu>
+                </Label.ContextMenu>
+            </Label>
         </StackPanel>
-        <TextBlock Grid.Column="4" Text="{Binding History}" Height="Auto"/>
+        <TextBlock Grid.Column="4" Text="{Binding RemoteMachine.History}" Height="Auto"/>
     </Grid>
 </UserControl>

@@ -17,8 +17,8 @@
     <Grid Height="Auto" Width="Auto">
 
         <TabControl ItemsSource="{Binding MinionCollection, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedMinion}">
-            
-        <TabControl.ItemTemplate>
+
+            <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="Auto" Margin="0">
                         <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}"
@@ -41,19 +41,24 @@
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
 
-                                        
-        <Trigger Property="IsMouseOver" Value="True">
+
+                                        <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Foreground" Value="RosyBrown"/>
                                             <!--Does not work with current button style-->
                                         </Trigger>
-        
+
 
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                         </Button>
                         <controls:ProgressRing IsActive="True" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
+                        <TextBlock Text="{Binding RemoteMachine.IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Reboot" Command="{Binding RebootCommand}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
@@ -67,7 +72,7 @@
                     </DockPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
-        
+
 
             <TabControl.ContentTemplate>
                 <DataTemplate>

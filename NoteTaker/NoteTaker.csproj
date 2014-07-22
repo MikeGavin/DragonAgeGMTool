@@ -149,15 +149,13 @@
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
-    <Compile Include="Model\HierarchyBuilder.cs" />
-    <Compile Include="Model\HierarchyItem.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\QuickItemEntry.cs" />
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="ViewModel\MinionViewModel.cs" />
+    <Compile Include="ViewModel\ECOTPCViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">

@@ -511,7 +511,7 @@ namespace Minion
                 log.Error("Could Not Find DameWare installed!");
                 return false;
             }
-            Task.Run(() => System.Diagnostics.Process.Start(startInfo));
+            await Task.Run(() => System.Diagnostics.Process.Start(startInfo));
             return true;
         }
 
@@ -524,7 +524,7 @@ namespace Minion
             log.Info("Opening C-Share");
             try
             {
-                var sp = new Tool.StandardProcess("explorer", @"\\" + IPAddress.ToString() + @"\c$\");
+                var sp = new Tool.StandardProcess(@"c:\Windows\", "explorer.exe", @"\\" + IPAddress.ToString() + @"\c$\");
                 await sp.Run();
                 return true;
             }

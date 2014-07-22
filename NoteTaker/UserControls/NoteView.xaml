@@ -32,7 +32,8 @@
             </i:Interaction.Triggers>
         </TextBox>
         <ComboBox Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
-        <TreeView Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Root.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200">
+        <TreeView Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Root.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="200"
+                  >
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
@@ -48,11 +49,11 @@
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                    <Style.Triggers>
+                    <!--<Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="FontWeight" Value="Bold"/>
                         </Trigger>
-                    </Style.Triggers>
+                    </Style.Triggers>-->
                 </Style>
             </TreeView.ItemContainerStyle>
 
