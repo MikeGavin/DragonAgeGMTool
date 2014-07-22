@@ -14,10 +14,14 @@ using System.Collections.ObjectModel;
 
 namespace Minion
 {
-    public class EcotPC : INotifyPropertyChanged, Minion.IEcotPC
+    public class EcotPC : INotifyPropertyChanged
     {
         //Logging System
         protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        protected int _processing = 0;
+        public int Processing { get { return _processing; } set { _processing = value; if (_processing > 0) { Active = true; } else { Active = false; } RaisePropertyChanged(); } }
+        protected bool _active;
+        public bool Active { get { return _active; } set { _active = value; RaisePropertyChanged(); } }
               
         private List<Lists.EcotPCCommand> CommandList = new List<Lists.EcotPCCommand>() 
         { 
@@ -37,28 +41,6 @@ namespace Minion
                 History = "IP is unreachable";
                 throw new Exception("IP is unreachable");
             }
-
-            #region Removed Database Code
-            //SQLiteConnection minion = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Minion.sqlite", Environment.CurrentDirectory));
-            //SQLiteCommand pullall = new SQLiteCommand();
-            //pullall.CommandText = "SELECT * FROM Version";
-            //pullall.Connection = minion;
-
-            //try
-            //{
-            //    log.Debug(string.Format("Opening Database: {0}", minion.ConnectionString.ToString()));
-            //    minion.Open();
-            //    SQLiteDataReader reader = pullall.ExecuteReader();
-            //    while (reader.Read())
-            //        CommandList.Add(new Lists.EcotPCCommand() { Name = reader["Name"].ToString(), Tool = reader["Tool"].ToString(), Command = reader["Command"].ToString() });
-            //    minion.Close();
-            //    log.Debug(string.Format("Closing Database: {0}", minion.ConnectionString.ToString()));
-            //}
-            //catch (Exception e)
-            //{
-            //    log.Fatal(e);
-            //}
-            #endregion
 
             var token = tokenSource.Token;
             Task PingTesting = new Task( () => PingTest(token), token, TaskCreationOptions.LongRunning);
@@ -221,6 +203,7 @@ namespace Minion
 
         public async Task Get_MachineInfo()
         {
+            Processing++;
             var machineInfo = CommandList.Find(c => c.Name == "MachineInfo");
             Tool.PAExec paexec = new Tool.PAExec(IPAddress, machineInfo.Command);
             await paexec.Run();
@@ -244,10 +227,12 @@ namespace Minion
                 IsStaff = true;
                 BOD = VPN = Image = "N/A";
             }
+            Processing--;
         }
 
         public async Task Get_OSBitness()
         {
+            Processing++;
             var machineInfo = CommandList.Find(c => c.Name == "Bittness");
             Tool.PAExec paexec = new Tool.PAExec(IPAddress, machineInfo.Command);
             await paexec.Run();
@@ -258,10 +243,12 @@ namespace Minion
             else { x64 = false; }
 
             log.Debug("OSBit: {0}", OSBit);
+            Processing--;
         }
 
         protected async Task Get_StudentImageInfo()
         {
+            
             var machineInfo = CommandList.Find(c => c.Name == "Image");
             log.Info("Acquiring Image information...");
             var paexec = new Tool.PAExec(IPAddress, machineInfo.Command);
@@ -278,10 +265,12 @@ namespace Minion
             }
 
             Get_VPN();
+            
         }
 
         protected string Get_VPN()
         {
+            
             int n = 0;
             int c = 1;
             int vpncount = 1;
@@ -290,6 +279,7 @@ namespace Minion
                 if (IPAddress.ToString().Contains(string.Format("10.39.{0}.", n)))
                 {
                     VPN = string.Format("0{0}", vpncount.ToString());
+                    
                     return VPN;
                 }
                 else
@@ -303,6 +293,7 @@ namespace Minion
                 }
             }
             VPN = "N/A";
+            
             return VPN;
         
         }
@@ -313,16 +304,19 @@ namespace Minion
 
         public async Task Get_IE()
         {
+            Processing++;
             IEVersion = "Updating...";
             var machineInfo = CommandList.Find(c => c.Name == "IE");
             Tool.PAExec paexec = new Tool.PAExec(IPAddress, machineInfo.Command);
             await paexec.Run();
-            IEVersion = paexec.StandardOutput.Replace("Version          \r\r\r\n", string.Empty).Trim();
+            IEVersion = paexec.StandardOutput.Replace("Version         \r\r\r\n", string.Empty).Trim();
             log.Debug("IE: {0}", IEVersion);
+            Processing--;
         }
 
         public async Task Get_Java()
         {
+            Processing++;
             Java = "Updating...";
             log.Info("Acquiring Java Version...");
             string result = "0";
@@ -366,10 +360,12 @@ namespace Minion
                 log.Warn("Java version lookup returned error");
             }
             Java = result;
+            Processing--;
         }
 
         public async Task Get_Flash()
         {
+            Processing++;
             log.Info("Acquiring Flash Version...");
             Flash = "Updating...";
             var paexec = new Tool.PAExec(IPAddress, @"-accepteula -s REG query hklm\Software\Macromedia\FlashPlayerActiveX /v Version");
@@ -384,10 +380,12 @@ namespace Minion
                 Flash = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Macromedia\\FlashPlayerActiveX\r\r\n    Version    REG_SZ    ", string.Empty).Trim(null);
                 log.Info("Flash version: " + Flash);
             }
+            Processing--;
         }
 
         public async Task Get_Shockwave()
         {
+            Processing++;
             log.Info("Acquiring Shockwave Version...");
             Shockwave = "Updating...";
             var paexec = new Tool.PAExec(IPAddress, "-s REG query \"hklm\\Software\\Adobe\\Shockwave 12\\currentupdateversion\"");
@@ -403,10 +401,12 @@ namespace Minion
                 Shockwave = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Adobe\\Shockwave 12\\currentupdateversion\r\r\n    (Default)    REG_SZ    ", string.Empty).Trim(null);
                 log.Info("Shockwave version: " + Shockwave);
             }
+            Processing--;
         }
 
         public async Task Get_Reader()
         {
+            Processing++;
             string argument = string.Empty;
             log.Info("Acquiring Reader Version...");
             Reader = "Updating...";
@@ -442,10 +442,12 @@ namespace Minion
                 Reader = r11.StandardOutput.Remove(0, 7).Trim(null);
                 log.Info("Reader version: " + Reader);
             }
+            Processing--;
         }
 
         public async Task Get_Quicktime()
         {
+            Processing++;
             string argument = string.Empty;
             log.Info("Acquiring Quicktime Version...");
             Quicktime = "Updating...";
@@ -467,13 +469,22 @@ namespace Minion
                 Quicktime = paexec.StandardOutput.Remove(0, 7).Trim();
                 log.Info("Quicktime version: " + Quicktime);
             }
+            Processing--;
         }
 
         #endregion
 
-        public async Task<bool> Command(RemoteCommandItem item)
+        public async Task<bool> Command(RemoteCommand item, string action)
         {
+            Processing++;
+            History = string.Format("Running {0} of {1} Version {2}", action, item.Name, item.Version);
+            Minion.Tool.PAExec paexec;
+            if (item.Copy == string.Empty || item.Copy == null)
+                paexec = new Minion.Tool.PAExec(IPAddress, item.Command);
+            else
+                paexec = new Minion.Tool.PAExec(IPAddress, item.Copy, item.Command);
             History = "";
+            Processing--;
             return true;
         }
 
@@ -485,6 +496,7 @@ namespace Minion
         /// <returns>Returns false if dameware is not installed.</returns>
         public async Task<bool> OpenDameware()
         {
+            Processing++;
             var startInfo = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = (@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe"),
@@ -509,9 +521,11 @@ namespace Minion
             else
             {
                 log.Error("Could Not Find DameWare installed!");
+                Processing--;
                 return false;
             }
             await Task.Run(() => System.Diagnostics.Process.Start(startInfo));
+            Processing--;
             return true;
         }
 
@@ -521,16 +535,19 @@ namespace Minion
         /// <returns>Returns false if cshare cannot be opened.</returns>
         public async Task<bool> OpenCShare()
         {
+            Processing++;
             log.Info("Opening C-Share");
             try
             {
                 var sp = new Tool.StandardProcess(@"c:\Windows\", "explorer.exe", @"\\" + IPAddress.ToString() + @"\c$\");
                 await sp.Run();
+                Processing--;
                 return true;
             }
             catch (Exception ex)
             {
                 log.Error(ex);
+                Processing--;
                 return false;
             }
         }
@@ -555,32 +572,38 @@ namespace Minion
         public async Task<bool> FixJNLPAssoication()
         {
             log.Info("Trying JNLP fix");
+            Processing++;
             try
             {
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=<JNLPFILE>");
                 await assoc.Run();
                 var paexec = new Tool.PAExec(IPAddress, @"ftype jnlpfile=""c:\Program Files (x86)\Java\jre7\bin\javaws.exe"" ""%1""");
                 await paexec.Run();
+                Processing--;
                 return true;
             }
             catch (Exception ex)
             {
                 log.Error(ex);
+                Processing--;
                 return false;
             }
         }
 
         public async Task FixBackGround()
         {
+            Processing++;
             var bg = new Tool.PAExec(IPAddress, @"-i 1 -s -accepteula c:\image_files\bginfo\bginfo.exe /nolicprompt c:\image_files\bginfo\wallpaper.bgi /timer:0 /silent");
             await bg.Run();
             //Fix theme too
             var theme = new Tool.PAExec(IPAddress, @"-i 1 -s -accepteula cmd.exe /c c:\windows\resources\themes\ecot.theme");
             await theme.Run();
+            Processing--;
         }
 
         public async Task FileCleanup()
         {
+            Processing++;
             log.Info("Starting remote file cleanup");
             //int filenumber, directorynumber, errornumber;
             //filenumber = directorynumber = errornumber = 0;
@@ -616,31 +639,37 @@ namespace Minion
                 var paexec = new Tool.PAExec(IPAddress, s);
                 await paexec.Run();
             }
+            Processing--;
             History = "File cleanup complete";
         }
 
         public async Task ProfileWipe_Enable()
         {
+            Processing++;
             await Task.Run(() => Tool.Files.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", @"\temp\Delprof2_1.5.4\"));
 
             var add1 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);
             var add2 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @"  /sc onlogon /ru SYSTEM /tn ""remove wipe"" /tr ""c:\temp\Delprof2_1.5.4\remove.bat""");
             await add1.Run();
             await add2.Run();
+            Processing--;
             History = "Profile Wipe ENABELED on next boot.";
         }
 
         public async Task ProfileWipe_Disable()
         {
+            Processing++;
             var remove1 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""Profile wipe"" /f");
             var remove2 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""remove wipe"" /f");
             await remove1.Run();
             await remove2.Run();
+            Processing--;
             History = "Profile Wipe DISABELED";
         }
 
         protected async Task ProfileBackup()
         {
+            Processing++;
             var desktop = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Desktop c:\temp\profilebackup\{0}\Desktop /E /R:0", CurrentUser));
             var documents = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Documents c:\temp\profilebackup\{0}\Documents /E /R:0", CurrentUser));
             History = @"Backuping up \Desktop for " + CurrentUser;
@@ -648,13 +677,16 @@ namespace Minion
             History = @"Backuping up \Documents for " + CurrentUser;
             await documents.Run();
             History = "Profile backup complete for " + CurrentUser;
+            Processing--;
         }
 
         public async Task Reboot()
         {
+            Processing++;
             log.Info(string.Format("Rebooting {0}", PCName));
             var reboot = new Tool.PSShutdown(IPAddress, @" -r -t 01 -f");
             await reboot.Run();
+            Processing--;
             History = "Sent reboot command.";
         }
     } 

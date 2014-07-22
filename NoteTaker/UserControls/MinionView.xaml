@@ -52,7 +52,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <controls:ProgressRing IsActive="True" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <controls:ProgressRing IsActive="{Binding RemoteMachine.Active, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding RemoteMachine.IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

@@ -4,6 +4,7 @@ using Minion;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NoteTaker.ViewModel
 {
@@ -32,6 +33,8 @@ namespace NoteTaker.ViewModel
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinion)); } }        
         private RelayCommand _addCommand;
         public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinion)); } }
+
+
 
         public void CloseMinion()
         {

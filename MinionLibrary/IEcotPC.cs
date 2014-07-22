@@ -4,7 +4,7 @@ namespace Minion
     public interface IEcotPC
     {
         string ChipStyle { get; set; }
-        System.Threading.Tasks.Task<bool> Command(RemoteCommandItem command);
+        System.Threading.Tasks.Task<bool> Command(RemoteCommandImport command);
         string CurrentUser { get; }
         string Flash { get; set; }
         string IEVersion { get; set; }

@@ -20,7 +20,7 @@ namespace Minion.Tool
 
         }
 
-        public PAExec(System.Net.IPAddress ip, string arguments, string copyfrom, string copytoremote, bool forceoverwrite = false)
+        public PAExec(System.Net.IPAddress ip, string arguments, string copyfrom, string copytoremote = @"\Temp\", bool forceoverwrite = false)
             : base(ip, "paexec.exe", arguments, copyfrom, copytoremote, forceoverwrite)
         {
 

@@ -73,7 +73,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.CurrentUser}" Grid.Row="1" Grid.Column="1">
+        <Label Content="{Binding RemoteMachine.CurrentUser}" Grid.Column="1" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
@@ -84,60 +84,60 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.ChipStyle}" Grid.Row="1" Grid.Column="2"/>
-        <Label Content="{Binding RemoteMachine.RAM}" Grid.Row="1" Grid.Column="3"/>
-        <Label Content="{Binding RemoteMachine.OSBit}" Grid.Row="1" Grid.Column="4"/>
-        <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="5"/>
-        <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="6"/>
-        <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="7"/>
+        <Label Content="{Binding RemoteMachine.ChipStyle}" Grid.Column="1" Grid.Row="2"/>
+        <Label Content="{Binding RemoteMachine.RAM}" Grid.Column="1" Grid.Row="3"/>
+        <Label Content="{Binding RemoteMachine.OSBit}" Grid.Column="1" Grid.Row="4"/>
+        <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5"/>
+        <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6"/>
+        <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7"/>
 
-        <StackPanel Grid.Column="2" Height="Auto">
-            <Label Content="IE" Foreground="Gray" Grid.Row="0">
+
+        <Label Content="IE" Foreground="Gray" Grid.Column="2" Grid.Row="0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <mvvmcmd:EventToCommand Command="{Binding GetIECommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="Java" Foreground="Gray" Grid.Row="1">
+        <Label Content="Java" Foreground="Gray" Grid.Column="2" Grid.Row="1">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <mvvmcmd:EventToCommand Command="{Binding GetJavaCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="Flash" Foreground="Gray">
+        <Label Content="Flash" Foreground="Gray" Grid.Column="2" Grid.Row="2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <mvvmcmd:EventToCommand Command="{Binding GetFlashCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="Shockwave" Foreground="Gray">
+        <Label Content="Shockwave" Foreground="Gray" Grid.Column="2" Grid.Row="3">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
-                        <mvvmcmd:EventToCommand Command="{Binding GetShockWaveCommand}" />
+                        <mvvmcmd:EventToCommand Command="{Binding GetShockwaveCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="Reader" Foreground="Gray">
+        <Label Content="Reader" Foreground="Gray" Grid.Column="2" Grid.Row="4">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <mvvmcmd:EventToCommand Command="{Binding GetReaderCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="Quicktime" Foreground="Gray">
+        <Label Content="Quicktime" Foreground="Gray" Grid.Column="2" Grid.Row="5">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <mvvmcmd:EventToCommand Command="{Binding GetQuicktimeCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        </StackPanel>
-        <StackPanel Grid.Column="3" Height="Auto">
-            <Label Content="{Binding RemoteMachine.IEVersion}" Grid.Row="0"/>
-            <Label Content="{Binding RemoteMachine.Java}" Grid.Row="1">
+
+
+        <Label Content="{Binding RemoteMachine.IEVersion}" Grid.Column="3" Grid.Row="0"/>
+        <Label Content="{Binding RemoteMachine.Java}" Grid.Column="3" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}"/>
@@ -145,7 +145,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.Flash}">
+        <Label Content="{Binding RemoteMachine.Flash}" Grid.Column="3" Grid.Row="2">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Flash" Command="{Binding UninstallFlashCommand}"/>
@@ -153,7 +153,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.Shockwave}">
+        <Label Content="{Binding RemoteMachine.Shockwave}" Grid.Column="3" Grid.Row="3">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Shockwave" Command="{Binding UninstallShockwaveCommand}"/>
@@ -161,7 +161,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.Reader}">
+        <Label Content="{Binding RemoteMachine.Reader}" Grid.Column="3" Grid.Row="4">
             <Label.ContextMenu>
                 <ContextMenu>
                         <MenuItem Header="Uninstall Reader" Command="{Binding UninstallReaderCommand}"/>
@@ -169,15 +169,14 @@
                 </ContextMenu>
             </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.Quicktime}">
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
-                        <MenuItem Header="Install Quicktime" Command="{Binding InstallQuicktimeCommand}"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
-        </StackPanel>
-        <TextBlock Grid.Column="4" Text="{Binding RemoteMachine.History}" Height="Auto"/>
+        <Label Content="{Binding RemoteMachine.Quicktime}" Grid.Column="3" Grid.Row="5">
+            <Label.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
+                    <MenuItem Header="Install Quicktime" Command="{Binding InstallQuicktimeCommand}"/>
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
+        <TextBlock Grid.Column="4" Text="{Binding RemoteMachine.History}" Height="Auto" Grid.RowSpan="2147483647"/>
     </Grid>
 </UserControl>
