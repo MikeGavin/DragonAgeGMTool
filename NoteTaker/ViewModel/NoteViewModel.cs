@@ -58,7 +58,9 @@ namespace NoteTaker.ViewModel
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             var temp = new Treefiller();
-            _root = temp.filltree();          
+            _root = temp.filltree();
+            var temp2 = new HierarchyBuilder();
+            var _testt = temp2.filltree();     
         }
 
         //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).
