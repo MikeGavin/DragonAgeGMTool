@@ -15,16 +15,15 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
-        private MinionCommands _commands;
-        public EcotPC RemoteMachine { get; protected set; }
+
+        public Minion.EcotPC RemoteMachine { get; protected set; }
 
         /// <summary>ef
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionItemViewModel(IPAddress IP, MinionCommands commands)
+        public MinionItemViewModel(IPAddress IP)
         {
             RemoteMachine = new Minion.EcotPC(IP);
-            _commands = commands;
             
         }
 
@@ -64,14 +63,14 @@ namespace NoteTaker.ViewModel
 
         public async Task Uninstall_Java()
         {
-            var item = _commands.Java.Where(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as Minion.RemoteCommandImport;
-            if (item == null)
-            {
-                item = _commands.Java.Where(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
-            }
-            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
+            //var item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as RemoteCommandImport;
+            //if (item == null)
+            //{
+            //    item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
+            //}
+            //Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
 
-            var temp = await RemoteMachine.Command(command, "Uninstall");
+            //var temp = await RemoteMachine.Command(command, "Uninstall");
         }
         
     }

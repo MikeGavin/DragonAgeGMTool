@@ -18,9 +18,9 @@ namespace NoteTaker.UserControls
     /// <summary>
     /// Interaction logic for Minion.xaml
     /// </summary>
-    public partial class MinionItemViewUC : UserControl
+    public partial class MinionItemView : UserControl
     {
-        public MinionItemViewUC()
+        public MinionItemView()
         {
             InitializeComponent();
         }

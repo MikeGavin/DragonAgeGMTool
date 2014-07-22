@@ -14,16 +14,16 @@ namespace NoteTaker.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class MinionTabViewModel : ViewModelBase
+    public class MinionViewModel : ViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionTabViewModel (MinionCommands commands)
+        public MinionViewModel()
         {
-             _minionCommands = commands;
+
         }
-        private MinionCommands _minionCommands;
+
         private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
         public ObservableCollection<MinionItemViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
         private MinionItemViewModel _selectedMinion;
@@ -53,7 +53,7 @@ namespace NoteTaker.ViewModel
 
                 if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(IPAddress.Parse(NewMinionIPAddress)) == true))
                 {
-                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
+                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress)));
                     SelectedMinion = MinionCollection.Last();
                     NewMinionIPAddress = "10.39.";
                     IsExpanded = true;

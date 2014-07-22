@@ -6,7 +6,7 @@
                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
              xmlns:helpers="clr-namespace:NoteTaker.Helpers"
              xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
-             xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel" x:Class="NoteTaker.UserControls.MinionItemViewUC" 
+             xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel" x:Class="NoteTaker.UserControls.MinionItemView" 
              mc:Ignorable="d" Width="auto" Height="auto">
     <UserControl.Resources>
         <ResourceDictionary>

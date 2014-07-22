@@ -83,9 +83,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>NoteTaker.App</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -149,6 +146,7 @@
       <DependentUpon>NoteControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Design\DesignDataService.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
@@ -157,8 +155,8 @@
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="ViewModel\MinionTabViewModel.cs" />
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
+    <Compile Include="ViewModel\MinionTabViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
@@ -170,8 +168,8 @@
     <Compile Include="UserControls\NoteViewUC.xaml.cs">
       <DependentUpon>NoteViewUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MinionTabViewUC.xaml.cs">
-      <DependentUpon>MinionTabViewUC.xaml</DependentUpon>
+    <Compile Include="UserControls\MinionViewUC.xaml.cs">
+      <DependentUpon>MinionViewUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -207,7 +205,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MinionTabViewUC.xaml">
+    <Page Include="UserControls\MinionViewUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

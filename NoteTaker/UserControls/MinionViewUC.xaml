@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="NoteTaker.UserControls.MinionTabViewUC"
+﻿<UserControl x:Class="NoteTaker.UserControls.MinionViewUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -76,7 +76,7 @@
 
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <UserControls:MinionItemViewUC/>
+                    <UserControls:MinionItemView/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

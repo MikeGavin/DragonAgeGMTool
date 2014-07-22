@@ -84,7 +84,7 @@
                         </Grid>
                     </Grid>
                 </Expander.Header>
-                <UserControls:MinionTabViewUC HorizontalAlignment="Left"/>
+                <UserControls:MinionViewUC HorizontalAlignment="Left"/>
             </Expander>
         </StackPanel>
     </Grid>
