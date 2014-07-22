@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
+             xmlns:helpers="clr-namespace:NoteTaker.Helpers"
+             xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
              xmlns:ViewModel="clr-namespace:NoteTaker.ViewModel" x:Class="NoteTaker.UserControls.EcotPCView" 
              mc:Ignorable="d" Width="auto" Height="auto">
     <UserControl.Resources>
@@ -40,18 +43,27 @@
             <ColumnDefinition Width="auto" MinWidth="100" />
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Height="Auto">
-            <Label Content="Name" Foreground="Gray"/>
-            <Label Content="User" Foreground="Gray"/>
-            <Label Content="Chip" Foreground="Gray"/>
-            <Label Content="RAM" Foreground="Gray"/>
-            <Label Content="OSBit" Foreground="Gray"/>
-            <Label Content="BOD" Style="{StaticResource StaffHide}" Foreground="Gray"/>
-            <Label Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
-            <Label Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Height="Auto">
-            <Label Content="{Binding RemoteMachine.PCName}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Name" Foreground="Gray"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="User" Foreground="Gray"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Chip" Foreground="Gray"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="RAM" Foreground="Gray"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="OSBit" Foreground="Gray"/>
+        <Label Grid.Row="5" Grid.Column="0" Content="BOD" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+        <Label Grid.Row="6" Grid.Column="0" Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+        <Label Grid.Row="7" Grid.Column="0" Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+
+        <Label Content="{Binding RemoteMachine.PCName}" Grid.Row="0" Grid.Column="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
@@ -61,7 +73,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.CurrentUser}">
+        <Label Content="{Binding RemoteMachine.CurrentUser}" Grid.Row="1" Grid.Column="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
@@ -72,24 +84,60 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-            <Label Content="{Binding RemoteMachine.ChipStyle}"/>
-            <Label Content="{Binding RemoteMachine.RAM}"/>
-            <Label Content="{Binding RemoteMachine.OSBit}"/>
-            <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}"/>
-            <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}"/>
-            <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}"/>
-        </StackPanel>
+        <Label Content="{Binding RemoteMachine.ChipStyle}" Grid.Row="1" Grid.Column="2"/>
+        <Label Content="{Binding RemoteMachine.RAM}" Grid.Row="1" Grid.Column="3"/>
+        <Label Content="{Binding RemoteMachine.OSBit}" Grid.Row="1" Grid.Column="4"/>
+        <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="5"/>
+        <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="6"/>
+        <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}" Grid.Row="1" Grid.Column="7"/>
+
         <StackPanel Grid.Column="2" Height="Auto">
-            <Label Content="IE" Foreground="Gray"/>
-            <Label Content="Java" Foreground="Gray"/>
-            <Label Content="Flash" Foreground="Gray"/>
-            <Label Content="Shockwave" Foreground="Gray"/>
-            <Label Content="Reader" Foreground="Gray"/>
-            <Label Content="Quicktime" Foreground="Gray"/>
+            <Label Content="IE" Foreground="Gray" Grid.Row="0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetIECommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
+            <Label Content="Java" Foreground="Gray" Grid.Row="1">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetJavaCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
+            <Label Content="Flash" Foreground="Gray">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetFlashCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
+            <Label Content="Shockwave" Foreground="Gray">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetShockWaveCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
+            <Label Content="Reader" Foreground="Gray">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetReaderCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
+            <Label Content="Quicktime" Foreground="Gray">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding GetQuicktimeCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Label>
         </StackPanel>
         <StackPanel Grid.Column="3" Height="Auto">
-            <Label Content="{Binding RemoteMachine.IEVersion}"/>
-            <Label Content="{Binding RemoteMachine.Java}">
+            <Label Content="{Binding RemoteMachine.IEVersion}" Grid.Row="0"/>
+            <Label Content="{Binding RemoteMachine.Java}" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}"/>
