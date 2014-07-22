@@ -111,6 +111,10 @@
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Menu>
+                <MenuItem Header="Links" ItemsSource="{Binding Root}"/>     
+                
+            </Menu>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 

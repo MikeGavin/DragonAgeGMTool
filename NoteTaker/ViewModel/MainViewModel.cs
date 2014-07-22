@@ -21,6 +21,9 @@ namespace NoteTaker.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
+        private QuickItem _root;
+        public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
+
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
         
@@ -55,6 +58,8 @@ namespace NoteTaker.ViewModel
             NewNote();
             //Load user settings.
             QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
+            var temp = new Treefiller();
+            _root = temp.filltree(); 
         }
 
         public void CloseNote()
