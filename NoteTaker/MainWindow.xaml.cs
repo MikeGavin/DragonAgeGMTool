@@ -30,18 +30,6 @@ namespace NoteTaker
                     metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
                     await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
                 });
-            Messenger.Default.Register<DialogMessage>(
-                this,
-                msg =>
-                {
-                    var result = MessageBox.Show(
-                    msg.Content,
-                    msg.Caption,
-                    msg.Button);
-
-                    // Send callback
-                    msg.ProcessCallback(result);
-                });
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)

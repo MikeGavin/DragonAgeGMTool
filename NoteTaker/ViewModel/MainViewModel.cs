@@ -48,8 +48,7 @@ namespace NoteTaker.ViewModel
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
-
-        private NoteViewModel _closeItem;
+        
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
@@ -87,26 +86,15 @@ namespace NoteTaker.ViewModel
             
         }
 
-        public void CloseNote(NoteViewModel note)
+        public async void CloseNote(NoteViewModel note)
         {
             
-            _closeItem = note;
-            var message = new DialogMessage("Close Note '" + note.Title.ToString() + "'?", DialogMessageCallback)
-            {
-                Button = MessageBoxButton.OKCancel,
-                Caption = "Continue?"
-            };
-
-            Messenger.Default.Send(message);           
+            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close {0}", note.Title));
+            if (result == true)
+                Notes.Remove(note);
+  
         }
 
-        private void DialogMessageCallback(MessageBoxResult result)
-        {
-            if (result == MessageBoxResult.OK)
-            {
-                Notes.Remove(_closeItem);
-            }
-        }
 
         public async void NewNote()
         {
@@ -117,7 +105,6 @@ namespace NoteTaker.ViewModel
 
         public async void QuickNoteToggle()
         {
-            await Helpers.MetroMessageBox.test();
             if (QuicknoteVisibility == "Visible")
             {
                 QuicknoteVisibility = "Collapsed";
