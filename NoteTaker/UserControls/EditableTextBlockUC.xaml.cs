@@ -53,5 +53,15 @@ namespace NoteTaker.UserControls
             textBlock.Visibility = System.Windows.Visibility.Visible;
             editBox.Visibility = System.Windows.Visibility.Collapsed;
         }
+
+        private void editBox_enter(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                textBlock.Text = editBox.Text;
+                textBlock.Visibility = System.Windows.Visibility.Visible;
+                editBox.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
     }
 }

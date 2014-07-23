@@ -10,7 +10,7 @@
              Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0"
              MouseRightButtonUp="textBlock_MouseRightButtonUp" />
         <TextBox Name="editBox"
-             Visibility="Collapsed" LostFocus="editBox_LostFocus" />
+             Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" />
 
         <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseNoteCommand}"
                             Content="X"
