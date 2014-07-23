@@ -34,7 +34,7 @@ namespace NoteTaker.ViewModel
         
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
         public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
-        private Minion.MinionCommands _minionCommands = new Minion.MinionCommands();
+        private Minion.MinionCommands _minionCommands;
 
         private NoteViewModel _SelectedNote;
         public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
@@ -56,6 +56,7 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
+            _minionCommands = new MinionCommands();
             NewNote();
             //Load user settings.
             QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;

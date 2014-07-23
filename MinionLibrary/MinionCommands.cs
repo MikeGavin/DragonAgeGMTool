@@ -15,18 +15,18 @@ namespace Minion
         public List<RemoteCommandImport> Reader { get; private set; }
 
 
-        private static List<RemoteCommandImport> CommandList { get; set; }
+        private List<RemoteCommandImport> CommandList { get; set; }
         public MinionCommands()
         {
 
             SQLiteConnection minion = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Minion.sqlite", Environment.CurrentDirectory));
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Version";
+            pullall.CommandText = "SELECT * FROM Software";
             pullall.Connection = minion;
-
+            CommandList = new List<RemoteCommandImport>();
             try
             {
-
+                
                 minion.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (reader.Read())
