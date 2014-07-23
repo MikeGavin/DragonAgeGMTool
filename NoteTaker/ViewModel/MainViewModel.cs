@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Linq;
 using NoteTaker.Helpers;
+using System.Collections.Specialized;
+using System;
 
 namespace NoteTaker.ViewModel
 {
@@ -40,14 +42,30 @@ namespace NoteTaker.ViewModel
         private NoteViewModel _SelectedNote;
         public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
         
-        private RelayCommand _closeNoteCommand;
-        public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(CloseNote)); } }
         private RelayCommand _newNoteCommand;
         public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }        
         private RelayCommand<DragEventArgs> _dropCommand; 
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
+
+        private NoteViewModel _closeItem;
+        void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && e.NewItems.Count != 0)
+                foreach (NoteViewModel note in e.NewItems)
+                    note.RequestClose += this.OnTabRequestClose;
+
+            if (e.OldItems != null && e.OldItems.Count != 0)
+                foreach (NoteViewModel workspace in e.OldItems)
+                    workspace.RequestClose -= this.OnTabRequestClose;
+        }
+
+        void OnTabRequestClose(object sender, EventArgs e)
+        {
+            NoteViewModel note = sender as NoteViewModel;
+            CloseNote(note);
+        }
 
   
         private readonly IDataService _dataService;
@@ -57,6 +75,7 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
+            Notes.CollectionChanged += OnTabsChanged;
             //_minionCommands = new MinionCommands();
             //create single note
             NewNote();
@@ -64,36 +83,41 @@ namespace NoteTaker.ViewModel
             QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
             var temp = new Treefiller();
             _root = temp.filltree(); 
+            
+            
         }
 
-        public void CloseNote()
+        public void CloseNote(NoteViewModel note)
         {
-            var message = new DialogMessage("Close Note '" + SelectedNote.Title.ToString() + "'?", DialogMessageCallback)
+            
+            _closeItem = note;
+            var message = new DialogMessage("Close Note '" + note.Title.ToString() + "'?", DialogMessageCallback)
             {
                 Button = MessageBoxButton.OKCancel,
                 Caption = "Continue?"
             };
 
-            Messenger.Default.Send(message);
-            
+            Messenger.Default.Send(message);           
         }
 
         private void DialogMessageCallback(MessageBoxResult result)
         {
             if (result == MessageBoxResult.OK)
             {
-                Notes.Remove(SelectedNote);
+                Notes.Remove(_closeItem);
             }
         }
 
         public async void NewNote()
         {
             Notes.Add(new NoteViewModel(_minionCommands));
-            SelectedNote = Notes.Last();   
+            SelectedNote = Notes.Last();
+            
         }
 
         public async void QuickNoteToggle()
         {
+            await Helpers.MetroMessageBox.test();
             if (QuicknoteVisibility == "Visible")
             {
                 QuicknoteVisibility = "Collapsed";

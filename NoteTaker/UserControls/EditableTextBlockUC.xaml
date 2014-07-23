@@ -12,7 +12,7 @@
         <TextBox Name="editBox"
              Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" />
 
-        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseNoteCommand}"
+        <Button Command="{Binding CloseNoteCommand}"
                             Content="X"
                             DockPanel.Dock="Right"
                             Focusable="False"

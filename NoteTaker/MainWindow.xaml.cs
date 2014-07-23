@@ -28,12 +28,7 @@ namespace NoteTaker
                 {
                     var metroWindow = (Application.Current.MainWindow as MetroWindow);
                     metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
-                    if (msg.Results != true)
-                        await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
-                    else
-                    {
-                        MessageDialogResult result = await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.AffirmativeAndNegative);                      
-                    }
+                    await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
                 });
             Messenger.Default.Register<DialogMessage>(
                 this,

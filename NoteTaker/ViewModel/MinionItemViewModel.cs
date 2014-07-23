@@ -4,6 +4,7 @@ using Minion;
 using System.Net;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace NoteTaker.ViewModel
 {
@@ -16,8 +17,18 @@ namespace NoteTaker.ViewModel
     public class MinionItemViewModel : ViewModelBase
     {
 
-        public Minion.EcotPC RemoteMachine { get; protected set; }
+        public event EventHandler RequestClose;
+        void OnRequestClose()
+        {
+            EventHandler handler = this.RequestClose;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+        private RelayCommand _closeCommand;
+        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(OnRequestClose)); } }
 
+        public Minion.EcotPC RemoteMachine { get; protected set; }
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         /// <summary>ef
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
@@ -26,6 +37,8 @@ namespace NoteTaker.ViewModel
             RemoteMachine = new Minion.EcotPC(IP);
             
         }
+        public string Title { get { return RemoteMachine.IPAddress.ToString(); } }
+     
 
         #region SoftwareCommands
 

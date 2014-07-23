@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System;
 
 namespace NoteTaker.ViewModel
 {
@@ -21,27 +23,36 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MinionViewModel()
         {
-
+            MinionCollection.CollectionChanged += OnItemsChanged;
         }
+
+        void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && e.NewItems.Count != 0)
+                foreach (MinionItemViewModel minionItem in e.NewItems)
+                    minionItem.RequestClose += this.OnItemRequestClose;
+
+            if (e.OldItems != null && e.OldItems.Count != 0)
+                foreach (MinionItemViewModel minionItem in e.OldItems)
+                    minionItem.RequestClose -= this.OnItemRequestClose;
+        }
+
+        void OnItemRequestClose(object sender, EventArgs e)
+        {
+            MinionItemViewModel minionItem = sender as MinionItemViewModel;
+            MinionCollection.Remove(minionItem);
+            if (MinionCollection.Count <= 0)
+                IsExpanded = false;
+        }
+
 
         private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
         public ObservableCollection<MinionItemViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
         private MinionItemViewModel _selectedMinion;
         public MinionItemViewModel SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
-
-        private RelayCommand _closeCommand;
-        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinionItem)); } }        
+   
         private RelayCommand _addCommand;
         public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinionItem)); } }
-
-
-
-        public void CloseMinionItem()
-        {
-            MinionCollection.Remove(SelectedMinion);
-            if (MinionCollection.Count <= 0)
-                IsExpanded = false;
-        }
 
         public async void AddMinionItem()
         {

@@ -21,7 +21,7 @@
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Width="Auto" Margin="0">
-                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseCommand}"
+                        <Button Command="{Binding CloseCommand}"
                             Content="X"
                             DockPanel.Dock="Right"
                             Focusable="False"
@@ -53,7 +53,7 @@
                             </Button.Style>
                         </Button>
                         <controls:ProgressRing IsActive="{Binding RemoteMachine.Active, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding RemoteMachine.IPAddress}" FontSize="14" VerticalAlignment="Center" Margin="0">
+                        <TextBlock Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0">
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Reboot" Command="{Binding RebootCommand}"/>

@@ -159,7 +159,7 @@
     <Compile Include="Model\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
-    <Compile Include="ViewModel\MinionTabViewModel.cs" />
+    <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">

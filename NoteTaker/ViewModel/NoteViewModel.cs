@@ -24,6 +24,18 @@ namespace NoteTaker.ViewModel
             if (TextChanged != null) { TextChanged(this, new EventArgs()); }
         }
         public event EventHandler TextChanged;
+
+        /// <summary>
+        /// Raised when this workspace should be removed from the UI.
+        /// </summary>
+        public event EventHandler RequestClose;
+
+        void OnRequestClose()
+        {
+            EventHandler handler = this.RequestClose;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
         #endregion
 
         #region Public Properties
@@ -32,6 +44,7 @@ namespace NoteTaker.ViewModel
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }        
         #endregion
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         private static int _number = 0;
         private bool _titlechanged = false;
@@ -40,7 +53,10 @@ namespace NoteTaker.ViewModel
         public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
         private QuickItem _selectedQuickItem;
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
-        public bool IsSelected { get; set; }
+        
+
+        private RelayCommand _closeNoteCommand;
+        public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(OnRequestClose)); } }
 
         // local minion instance for this note.
         private MinionViewModel _noteMinion;
@@ -85,8 +101,7 @@ namespace NoteTaker.ViewModel
 
 
         }
-
-
+       
         #region Items
         private RelayCommand _appendQuickItem;
         public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
@@ -95,7 +110,6 @@ namespace NoteTaker.ViewModel
 
         public void AppendQuickItem()
         {
-            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
             if (SelectedQuickItem.SubItems.Count > 0)
                 return;
             else
@@ -104,13 +118,25 @@ namespace NoteTaker.ViewModel
 
         public void CopyQuickItem()
         {
-            //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
             if (_selectedQuickItem != null)
             {
                 if (SelectedQuickItem.SubItems.Count > 0)
                     return;
                 else
-                    Clipboard.SetText(SelectedQuickItem.Content);
+                {
+                    try
+                    {
+                        Clipboard.SetText(SelectedQuickItem.Content);
+                    }
+                    catch(Exception e)
+                    {
+                        log.Error(e);
+                        CopyQuickItem();
+                    }
+
+                }
+                
+            
             }
         } 
         #endregion
