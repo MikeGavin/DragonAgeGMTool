@@ -128,7 +128,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TabControl vm:Name ="Tabs" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2">
+        <TabControl vm:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2">
             <TabControl.ItemTemplate>
 
                 <DataTemplate>

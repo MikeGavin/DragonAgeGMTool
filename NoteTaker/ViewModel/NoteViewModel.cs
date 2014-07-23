@@ -40,10 +40,7 @@ namespace NoteTaker.ViewModel
         public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
         private QuickItem _selectedQuickItem;
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
-        private RelayCommand _appendQuickItem;
-        public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
-        private RelayCommand _copyQuickItemCommand;
-        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+        public bool IsSelected { get; set; }
 
         // local minion instance for this note.
         private MinionViewModel _noteMinion;
@@ -66,7 +63,7 @@ namespace NoteTaker.ViewModel
         void Note_TextChanged(object sender, EventArgs e)
         {
            Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b");
-           Regex sepid = new Regex(@"\b[a-z]{3}[0-9]{6}\b", RegexOptions.IgnoreCase);
+           Regex sepid = new Regex(@"\b[a-z]{2,3}[0-9]{6}\b", RegexOptions.IgnoreCase);
 
            MatchCollection mc = ip.Matches(Text);
 
@@ -89,6 +86,13 @@ namespace NoteTaker.ViewModel
 
         }
 
+
+        #region Items
+        private RelayCommand _appendQuickItem;
+        public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
+        private RelayCommand _copyQuickItemCommand;
+        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+
         public void AppendQuickItem()
         {
             //if (SelectedQuickItem.Content != string.Empty && SelectedQuickItem.Content != null)
@@ -108,6 +112,7 @@ namespace NoteTaker.ViewModel
                 else
                     Clipboard.SetText(SelectedQuickItem.Content);
             }
-        }
+        } 
+        #endregion
     }
 }

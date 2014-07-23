@@ -30,20 +30,20 @@ namespace NoteTaker.ViewModel
         public MinionItemViewModel SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
 
         private RelayCommand _closeCommand;
-        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinion)); } }        
+        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(CloseMinionItem)); } }        
         private RelayCommand _addCommand;
-        public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinion)); } }
+        public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinionItem)); } }
 
 
 
-        public void CloseMinion()
+        public void CloseMinionItem()
         {
             MinionCollection.Remove(SelectedMinion);
             if (MinionCollection.Count <= 0)
                 IsExpanded = false;
         }
 
-        public async void AddMinion()
+        public async void AddMinionItem()
         {
             MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }

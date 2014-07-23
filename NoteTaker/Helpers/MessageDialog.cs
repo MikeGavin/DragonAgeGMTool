@@ -11,18 +11,22 @@ namespace NoteTaker.Helpers
     {
         public string Title { get; set; }
         public string Message { get; set; }
+        public bool Results { get; set; }
     }
+    
 
     static class MetroMessageBox
     {
-        public static void Show(string title, string message)
+        public static void Show(string title, string message, bool results = false)
         {
             var dialog = new MessageDialog()
-            {
+            {              
                 Title = title,
                 Message = message,
+                Results = results,
             };
             Messenger.Default.Send(dialog);
         }
+
     }
 }

@@ -34,7 +34,8 @@ namespace NoteTaker.ViewModel
         
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
         public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
-        private Minion.MinionCommands _minionCommands;
+        private MinionCommands _minionCommands;
+        public MinionCommands MinionCommands { get { return _minionCommands ?? (_minionCommands = new MinionCommands()); } }
 
         private NoteViewModel _SelectedNote;
         public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
@@ -56,7 +57,8 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
-            _minionCommands = new MinionCommands();
+            //_minionCommands = new MinionCommands();
+            //create single note
             NewNote();
             //Load user settings.
             QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
@@ -66,7 +68,22 @@ namespace NoteTaker.ViewModel
 
         public void CloseNote()
         {
-            Notes.Remove(SelectedNote);
+            var message = new DialogMessage("Close Note '" + SelectedNote.Title.ToString() + "'?", DialogMessageCallback)
+            {
+                Button = MessageBoxButton.OKCancel,
+                Caption = "Continue?"
+            };
+
+            Messenger.Default.Send(message);
+            
+        }
+
+        private void DialogMessageCallback(MessageBoxResult result)
+        {
+            if (result == MessageBoxResult.OK)
+            {
+                Notes.Remove(SelectedNote);
+            }
         }
 
         public async void NewNote()

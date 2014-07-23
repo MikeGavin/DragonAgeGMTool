@@ -24,11 +24,28 @@ namespace NoteTaker
             Closing += (s, e) => ViewModelLocator.Cleanup();
             Messenger.Default.Register<Helpers.MessageDialog>(
                 this,
-                msg =>
+                async msg =>
                 {
                     var metroWindow = (Application.Current.MainWindow as MetroWindow);
                     metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
-                    metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
+                    if (msg.Results != true)
+                        await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
+                    else
+                    {
+                        MessageDialogResult result = await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.AffirmativeAndNegative);                      
+                    }
+                });
+            Messenger.Default.Register<DialogMessage>(
+                this,
+                msg =>
+                {
+                    var result = MessageBox.Show(
+                    msg.Content,
+                    msg.Caption,
+                    msg.Button);
+
+                    // Send callback
+                    msg.ProcessCallback(result);
                 });
         }
 

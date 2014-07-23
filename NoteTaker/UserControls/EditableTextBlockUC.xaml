@@ -28,6 +28,7 @@
                 <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
                     <Setter Property="Visibility" Value="Hidden"/>
                     <Style.Triggers>
+
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
                             <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
