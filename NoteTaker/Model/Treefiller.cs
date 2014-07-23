@@ -162,13 +162,8 @@ namespace NoteTaker.Model
                                 }
                             }
                         }
-                    }
-
-
-
-                    
+                    }                    
                 }
-
 
                 root.SubItems.Add(Root_Item);
 
