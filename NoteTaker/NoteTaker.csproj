@@ -155,6 +155,9 @@
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\QuickItem.cs" />
+    <Compile Include="Model\SiteDBPull.CS" />
+    <Compile Include="Model\Sitefiller.cs" />
+    <Compile Include="Model\Siteitem.cs" />
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\MinionTabViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
