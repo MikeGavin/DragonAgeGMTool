@@ -38,7 +38,7 @@ namespace NoteTaker
                 SettingsFlyout.IsOpen = true;
             else
                 SettingsFlyout.IsOpen = false;
-            
+            Properties.Settings.Default.Save();
         }
 
         private void TabLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

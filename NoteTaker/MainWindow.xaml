@@ -101,7 +101,6 @@
                 <Grid>
 
                     <controls:ToggleSwitch Header="QuickNote" IsChecked="{Binding QuickNotes, Converter={StaticResource visibilityConverter}, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                    <controls:ToggleSwitch Header="QuickNote" IsChecked="{Binding QuickNotes, Converter={StaticResource visibilityConverter}, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 
                 </Grid>
             </controls:Flyout>
