@@ -25,18 +25,6 @@ namespace NoteTaker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public string QuickNotes {
-            get {
-                return ((string)(this["QuickNotes"]));
-            }
-            set {
-                this["QuickNotes"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public int NoteFontSize {
             get {
@@ -56,6 +44,101 @@ namespace NoteTaker.Properties {
             }
             set {
                 this["TabFontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string MaHapps_Theme {
+            get {
+                return ((string)(this["MaHapps_Theme"]));
+            }
+            set {
+                this["MaHapps_Theme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string User_Font_Style {
+            get {
+                return ((string)(this["User_Font_Style"]));
+            }
+            set {
+                this["User_Font_Style"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string User_Font_Size {
+            get {
+                return ((string)(this["User_Font_Size"]));
+            }
+            set {
+                this["User_Font_Size"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool QuickNotes_Visibility {
+            get {
+                return ((bool)(this["QuickNotes_Visibility"]));
+            }
+            set {
+                this["QuickNotes_Visibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int Role {
+            get {
+                return ((int)(this["Role"]));
+            }
+            set {
+                this["Role"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Minion_Visibility {
+            get {
+                return ((bool)(this["Minion_Visibility"]));
+            }
+            set {
+                this["Minion_Visibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Note_WorkSpace_Visibility {
+            get {
+                return ((bool)(this["Note_WorkSpace_Visibility"]));
+            }
+            set {
+                this["Note_WorkSpace_Visibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Notespace_Test {
+            get {
+                return ((string)(this["Notespace_Test"]));
+            }
+            set {
+                this["Notespace_Test"] = value;
             }
         }
     }
