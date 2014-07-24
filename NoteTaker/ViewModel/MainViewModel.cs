@@ -89,7 +89,7 @@ namespace NoteTaker.ViewModel
         public async void CloseNote(NoteViewModel note)
         {
             
-            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close {0}", note.Title));
+            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
             if (result == true)
                 Notes.Remove(note);
   
