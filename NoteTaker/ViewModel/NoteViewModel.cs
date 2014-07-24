@@ -59,21 +59,19 @@ namespace NoteTaker.ViewModel
         public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(OnRequestClose)); } }
 
         // local minion instance for this note.
-        private MinionViewModel _noteMinion;
-        public MinionViewModel NoteMinion { get { return _noteMinion  ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
         private MinionCommands _minionCommands;
-        public NoteViewModel(MinionCommands _commands)
+        private MinionViewModel _noteMinion;
+        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
+
+
+        public NoteViewModel(QuickItem _tree, MinionCommands commands)
         {
-            _minionCommands = _commands;
-            TextChanged += Note_TextChanged;
-            Text = "Test";
-
-
-            //Populate Tree!
+            Text = Properties.Settings.Default.Default_Note_Template;
+            _minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
-            var temp = new Treefiller();
-            _root = temp.filltree(); 
+            _root = _tree;
+            
         }
 
         //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).

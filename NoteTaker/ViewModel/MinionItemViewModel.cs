@@ -27,15 +27,17 @@ namespace NoteTaker.ViewModel
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(OnRequestClose)); } }
 
+        private MinionCommands _minionCommands;
+
         public Minion.EcotPC RemoteMachine { get; protected set; }
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         /// <summary>ef
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionItemViewModel(IPAddress IP)
+        public MinionItemViewModel(IPAddress IP, MinionCommands commands)
         {
             RemoteMachine = new Minion.EcotPC(IP);
-            
+            _minionCommands = commands;
         }
         public string Title { get { return RemoteMachine.IPAddress.ToString(); } }
      
@@ -76,14 +78,15 @@ namespace NoteTaker.ViewModel
 
         public async Task Uninstall_Java()
         {
-            //var item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as RemoteCommandImport;
-            //if (item == null)
-            //{
-            //    item = Minion.Commands.Java.Where(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
-            //}
-            //Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
 
-            //var temp = await RemoteMachine.Command(command, "Uninstall");
+            var item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version == RemoteMachine.Java)) as RemoteCommandImport;
+            if (item == null)
+            {
+                item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as RemoteCommandImport;
+            }
+            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
+
+            var temp = await RemoteMachine.Command(command, "Uninstall");
         }
         
     }

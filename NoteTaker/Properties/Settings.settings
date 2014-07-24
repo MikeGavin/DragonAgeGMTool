@@ -32,5 +32,8 @@
     <Setting Name="Notespace_Test" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Default_Note_Template" Type="System.String" Scope="User">
+      <Value Profile="(Default)">This is the default note template which is set via the settings.</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

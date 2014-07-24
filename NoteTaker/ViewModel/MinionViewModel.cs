@@ -18,12 +18,14 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MinionViewModel : ViewModelBase
     {
+        private MinionCommands _minionCommands;
         /// <summary>
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionViewModel()
+        public MinionViewModel(MinionCommands commands)
         {
             MinionCollection.CollectionChanged += OnItemsChanged;
+            _minionCommands = commands;
         }
 
         void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -64,7 +66,7 @@ namespace NoteTaker.ViewModel
 
                 if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(IPAddress.Parse(NewMinionIPAddress)) == true))
                 {
-                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress)));
+                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
                     SelectedMinion = MinionCollection.Last();
                     NewMinionIPAddress = "10.39.";
                     IsExpanded = true;
@@ -73,12 +75,12 @@ namespace NoteTaker.ViewModel
                 }
                 else
                 {
-                    Helpers.MetroMessageBox.Show("Error!", "IP is unreachable!");
+                    await Helpers.MetroMessageBox.Show("Error!", "IP is unreachable!");
                 }
             }
             else
             {
-                Helpers.MetroMessageBox.Show("Error!", "Invalid IP address format!");
+                await Helpers.MetroMessageBox.Show("Error!", "Invalid IP address format!");
             }
             MinionIPInputEnabeled = true;
             MinionConnecting = false;

@@ -14,8 +14,8 @@ namespace Minion
         public List<RemoteCommandImport> Shockwave { get; private set; }
         public List<RemoteCommandImport> Reader { get; private set; }
 
-
-        private List<RemoteCommandImport> CommandList { get; set; }
+        private List<RemoteCommandImport> CommandList;
+//        public List<RemoteCommandImport> CommandList { get; set; }
         public MinionCommands()
         {
 

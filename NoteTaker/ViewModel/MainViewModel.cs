@@ -11,6 +11,8 @@ using System.Linq;
 using NoteTaker.Helpers;
 using System.Collections.Specialized;
 using System;
+using System.Collections.Generic;
+
 
 namespace NoteTaker.ViewModel
 {
@@ -22,9 +24,12 @@ namespace NoteTaker.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-
         private QuickItem _root;
-        public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
+        private QuickItem QuickItemTree { get { return _root ?? ( _root = new Treefiller().filltree() ); } }
+        private MinionCommands _minionCommands;
+        private MinionCommands MinionCommands { get { return _minionCommands ?? (_minionCommands = new MinionCommands()); } }
+
+
 
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
@@ -36,12 +41,12 @@ namespace NoteTaker.ViewModel
         
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
         public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
-        private MinionCommands _minionCommands;
-        public MinionCommands MinionCommands { get { return _minionCommands ?? (_minionCommands = new MinionCommands()); } }
 
         private NoteViewModel _SelectedNote;
         public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
+
         
+
         private RelayCommand _newNoteCommand;
         public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }        
         private RelayCommand<DragEventArgs> _dropCommand; 
@@ -74,23 +79,24 @@ namespace NoteTaker.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
+            //Necessary for closing correct notes.
             Notes.CollectionChanged += OnTabsChanged;
-            //_minionCommands = new MinionCommands();
-            //create single note
-            NewNote();
-            //Load user settings.
-            if (NoteTaker.Properties.Settings.Default.QuickNotes_Visibility == true)
+            
+            //Load user settings. Changed to switch to allow for null settings value crashing.
+            switch (NoteTaker.Properties.Settings.Default.QuickNotes_Visibility)
             {
-                QuicknoteVisibility = Visibility.Visible.ToString();
-            }
-            else
-            {
-                QuicknoteVisibility = Visibility.Collapsed.ToString();
+                case true:
+                    QuicknoteVisibility = Visibility.Visible.ToString();
+                    break;
+                case false:
+                    QuicknoteVisibility = Visibility.Collapsed.ToString();
+                    break;
+                default:
+                    QuicknoteVisibility = Visibility.Visible.ToString();
+                    break;
             }
 
-            var temp = new Treefiller();
-            _root = temp.filltree(); 
-            
+            NewNote();            
             
         }
 
@@ -106,7 +112,8 @@ namespace NoteTaker.ViewModel
 
         public async void NewNote()
         {
-            Notes.Add(new NoteViewModel(_minionCommands));
+
+            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
             SelectedNote = Notes.Last();
             
         }
