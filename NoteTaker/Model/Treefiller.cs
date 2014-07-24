@@ -30,7 +30,24 @@ namespace NoteTaker.Model
             SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
 
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM HD_Calls";
+
+            // 0 = EdTech
+            // 1 = HelpDesk
+            // 2 = SIC
+
+            if (Properties.Settings.Default.Role == 0)
+            {
+                pullall.CommandText = "SELECT * FROM EdTech_Calls";
+            }
+            else if (Properties.Settings.Default.Role == 1)
+            {
+                pullall.CommandText = "SELECT * FROM HD_Calls";
+            }
+            else
+            {
+                pullall.CommandText = "SELECT * FROM SIC_Calls";
+            }
+
             pullall.Connection = QuickNotesDB;
 
             try

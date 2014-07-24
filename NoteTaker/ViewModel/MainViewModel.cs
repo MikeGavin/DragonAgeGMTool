@@ -79,7 +79,7 @@ namespace NoteTaker.ViewModel
             //create single note
             NewNote();
             //Load user settings.
-            if (NoteTaker.Properties.Settings.Default.QuickNotes == true)
+            if (NoteTaker.Properties.Settings.Default.QuickNotes_Visibility == true)
             {
                 QuicknoteVisibility = Visibility.Visible.ToString();
             }
