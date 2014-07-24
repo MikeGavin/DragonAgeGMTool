@@ -79,7 +79,14 @@ namespace NoteTaker.ViewModel
             //create single note
             NewNote();
             //Load user settings.
-            QuicknoteVisibility = NoteTaker.Properties.Settings.Default.QuickNotes;
+            if (NoteTaker.Properties.Settings.Default.QuickNotes == true)
+            {
+                QuicknoteVisibility = Visibility.Visible.ToString();
+            }
+            else
+            {
+                QuicknoteVisibility = Visibility.Collapsed.ToString();
+            }
             var temp = new Treefiller();
             _root = temp.filltree(); 
             

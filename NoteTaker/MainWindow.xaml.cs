@@ -35,9 +35,14 @@ namespace NoteTaker
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             if (SettingsFlyout.IsOpen == false)
+            {
                 SettingsFlyout.IsOpen = true;
+            }
             else
+            {
                 SettingsFlyout.IsOpen = false;
+            }
+
             Properties.Settings.Default.Save();
         }
 

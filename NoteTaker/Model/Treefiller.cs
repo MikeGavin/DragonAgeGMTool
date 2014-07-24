@@ -70,7 +70,7 @@ namespace NoteTaker.Model
                 {
                     QuickItem Sub_Item_1 = new QuickItem() { Title = item1.Sub_Folder_1, Content = item1.Verbage };
 
-                    if (item1.Root_Folder == Root_Item.Title)
+                    if (item1.Root_Folder == Root_Item.Title && item1.Sub_Folder_1 != string.Empty)
                     {
                         Root_Item.SubItems.Add(Sub_Item_1);
                     }
@@ -78,7 +78,7 @@ namespace NoteTaker.Model
                     {
                         QuickItem Sub_Item_2 = new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage };
 
-                        if (item2.Root_Folder == Root_Item.Title && item2.Sub_Folder_2 != string.Empty)
+                        if (item2.Sub_Folder_1 == Sub_Item_1.Title && item2.Sub_Folder_2 != string.Empty)
                         {
                             Sub_Item_1.SubItems.Add(Sub_Item_2);
                         }
