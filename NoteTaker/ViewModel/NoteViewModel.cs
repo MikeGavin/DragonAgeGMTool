@@ -68,6 +68,7 @@ namespace NoteTaker.ViewModel
             TextChanged += Note_TextChanged;
             Text = "Test";
 
+
             //Populate Tree!
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;

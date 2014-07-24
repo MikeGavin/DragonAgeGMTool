@@ -98,16 +98,17 @@
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
             <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="200" Theme="Accent" IsOpen="False">
-                <Grid>
-                    <controls:ToggleSwitch Header="QuickNote" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                <StackPanel>
+                    <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                    <Label Content="Role"/>
                     <ComboBox Height="20" SelectedIndex="{Binding Role, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}">
                         <ComboBoxItem Content="EdTech" />
                         <ComboBoxItem Content="HelpDesk"/>
                         <ComboBoxItem Content="Student Information Center"/>
                     </ComboBox>
-                </Grid>
+                </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

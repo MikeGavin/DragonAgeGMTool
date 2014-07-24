@@ -87,6 +87,7 @@ namespace NoteTaker.ViewModel
             {
                 QuicknoteVisibility = Visibility.Collapsed.ToString();
             }
+
             var temp = new Treefiller();
             _root = temp.filltree(); 
             
