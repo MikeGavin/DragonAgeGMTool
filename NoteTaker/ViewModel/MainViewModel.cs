@@ -12,6 +12,7 @@ using Scrivener.Helpers;
 using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace Scrivener.ViewModel
@@ -53,6 +54,24 @@ namespace Scrivener.ViewModel
         public RelayCommand<DragEventArgs> DropCommand { get { return _dropCommand ?? (_dropCommand = new RelayCommand<DragEventArgs>(Drop)); } }
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
+
+
+        #region searchbar
+
+        private string _searchData;
+        public string SearchData { get { return _searchData; } set { _searchData = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _searchboxcommand;
+        public RelayCommand SearchBoxCommand { get { return _searchboxcommand ?? (_searchboxcommand = new RelayCommand(SearchKB)); } }
+
+        public void SearchKB()
+        {
+            var KB = string.Format("https://ecotshare.ecotoh.net/ecotsearch/Results.aspx?k={0}&cs=This%20Site&u=https%3A%2F%2Fecotshare.ecotoh.net%2Foperations%2Fhelpdesk", SearchData);
+
+            Process.Start(KB);
+        }
+
+        #endregion
         
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
