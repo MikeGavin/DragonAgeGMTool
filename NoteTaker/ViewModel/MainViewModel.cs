@@ -72,6 +72,20 @@ namespace Scrivener.ViewModel
         }
 
         #endregion
+
+        #region savetemplate
+
+        private RelayCommand _savetemplatecommand;
+        public RelayCommand SaveTemplateCommand { get { return _savetemplatecommand ?? (_savetemplatecommand = new RelayCommand(SaveTemplate)); } }
+
+        public void SaveTemplate()
+        {
+
+            Properties.Settings.Default.Default_Note_Template = SelectedNote.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
         
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

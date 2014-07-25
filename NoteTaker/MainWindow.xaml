@@ -108,6 +108,7 @@
                         <ComboBoxItem Content="HelpDesk"/>
                         <ComboBoxItem Content="Student Information Center"/>
                     </ComboBox>
+                    <Button Content="Save Template" Command="{Binding SaveTemplateCommand}" Background="{Binding x:null}" Margin="0,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
                 </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
