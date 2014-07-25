@@ -1,7 +1,7 @@
 ﻿using System;
-using NoteTaker.Model;
+using Scrivener.Model;
 
-namespace NoteTaker.Design
+namespace Scrivener.Design
 {
     public class DesignDataService : IDataService
     {

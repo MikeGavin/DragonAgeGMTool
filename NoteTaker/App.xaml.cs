@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
-namespace NoteTaker
+namespace Scrivener
 {
     /// <summary>
     /// Interaction logic for App.xaml

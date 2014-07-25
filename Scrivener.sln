@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteTaker", "NoteTaker\NoteTaker.csproj", "{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrivener", "NoteTaker\Scrivener.csproj", "{2C52B5F1-BCCA-4573-8C5D-0D54261A5940}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minion", "MinionLibrary\Minion.csproj", "{CF254321-9193-4378-A528-9D02C6DE1454}"
 EndProject
@@ -19,13 +19,13 @@ Global
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://servus.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = NoteTaker\\NoteTaker.csproj
+		SccProjectUniqueName0 = MinionLibrary\\Minion.csproj
+		SccProjectName0 = MinionLibrary
+		SccLocalPath0 = MinionLibrary
+		SccProjectUniqueName1 = NoteTaker\\Scrivener.csproj
 		SccProjectName1 = NoteTaker
 		SccLocalPath1 = NoteTaker
-		SccProjectUniqueName2 = MinionLibrary\\Minion.csproj
-		SccProjectName2 = MinionLibrary
-		SccLocalPath2 = MinionLibrary
+		SccLocalPath2 = .
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU

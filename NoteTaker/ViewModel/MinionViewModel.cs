@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System;
 
-namespace NoteTaker.ViewModel
+namespace Scrivener.ViewModel
 {
     /// <summary>
     /// This class contains properties that a View can data bind to.

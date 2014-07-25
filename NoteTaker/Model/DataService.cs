@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NoteTaker.Model
+namespace Scrivener.Model
 {
     public class DataService : IDataService
     {

@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using NoteTaker.ViewModel;
+using Scrivener.ViewModel;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System;
 
-namespace NoteTaker
+namespace Scrivener
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -2,19 +2,19 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Minion;
-using NoteTaker.Model;
+using Scrivener.Model;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
-using NoteTaker.Helpers;
+using Scrivener.Helpers;
 using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
 
 
-namespace NoteTaker.ViewModel
+namespace Scrivener.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -83,7 +83,7 @@ namespace NoteTaker.ViewModel
             Notes.CollectionChanged += OnTabsChanged;
             
             //Load user settings. Changed to switch to allow for null settings value crashing.
-            switch (NoteTaker.Properties.Settings.Default.QuickNotes_Visibility)
+            switch (Scrivener.Properties.Settings.Default.QuickNotes_Visibility)
             {
                 case true:
                     QuicknoteVisibility = Visibility.Visible.ToString();

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NoteTaker.UserControls
+namespace Scrivener.UserControls
 {
     /// <summary>
     /// Interaction logic for Test.xaml

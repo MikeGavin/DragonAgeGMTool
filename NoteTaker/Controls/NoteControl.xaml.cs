@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace NoteTaker.Controls
+namespace Scrivener.Controls
 {
     /// <summary>
     /// Interaction logic for NoteControl.xaml

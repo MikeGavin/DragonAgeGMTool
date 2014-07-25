@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoteTaker.Model
+namespace Scrivener.Model
 {
     public class QuickItem
     {

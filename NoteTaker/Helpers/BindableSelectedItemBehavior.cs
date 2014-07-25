@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace NoteTaker.Helpers
+namespace Scrivener.Helpers
 {
 public class BindableSelectedItemBehavior : System.Windows.Interactivity.Behavior<System.Windows.Controls.TreeView>
 {

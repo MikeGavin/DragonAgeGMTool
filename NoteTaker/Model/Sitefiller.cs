@@ -1,4 +1,4 @@
-﻿using NoteTaker.Model;
+﻿using Scrivener.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NoteTaker.Model
+namespace Scrivener.Model
 {
     public class Sitefiller
     {

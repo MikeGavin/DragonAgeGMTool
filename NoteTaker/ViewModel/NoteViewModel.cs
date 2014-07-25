@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
-using NoteTaker.Model;
+using Scrivener.Model;
 
-namespace NoteTaker.ViewModel
+namespace Scrivener.ViewModel
 {
     public class NoteViewModel : ViewModelBase
     {

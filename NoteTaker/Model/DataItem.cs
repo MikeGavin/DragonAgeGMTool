@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NoteTaker.Model
+namespace Scrivener.Model
 {
     public class DataItem
     {
