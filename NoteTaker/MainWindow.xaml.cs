@@ -31,16 +31,16 @@ namespace NoteTaker
                     await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
                 });
 
-            if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
-            {
-                Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Visible.ToString();
-                Tabs.Visibility = System.Windows.Visibility.Visible;
-            }
-            else
-            {
-                Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Collapsed.ToString();
-                Tabs.Visibility = System.Windows.Visibility.Collapsed;
-            }
+            //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
+            //{
+            //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Visible.ToString();
+            //    Tabs.Visibility = System.Windows.Visibility.Visible;
+            //}
+            //else
+            //{
+            //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Collapsed.ToString();
+            //    Tabs.Visibility = System.Windows.Visibility.Collapsed;
+            //}
 
         }
 
@@ -64,10 +64,10 @@ namespace NoteTaker
 
         private void SettingsFlyout_IsOpenChanged(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.Note_WorkSpace_Visibility == false)
-            {
-                Properties.Settings.Default.QuickNotes_Visibility = false;
-            }
+            //if (Properties.Settings.Default.Note_WorkSpace_Visibility == false)
+            //{
+            //    Properties.Settings.Default.QuickNotes_Visibility = false;
+            //}
             Properties.Settings.Default.Save();
         }
     }
