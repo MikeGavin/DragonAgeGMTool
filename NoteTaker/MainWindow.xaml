@@ -125,7 +125,15 @@
 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
+            <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" 
+                                     Margin="0" HorizontalAlignment="Left" BorderThickness="0.1"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                     VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding AddCommand}" Key="Return"/>
+                </TextBox.InputBindings>
+            </TextBox>
             <Button Content="&#xF013;" Click="Settings_Click"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="{Binding WindowTitle}"/>
+
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
 
