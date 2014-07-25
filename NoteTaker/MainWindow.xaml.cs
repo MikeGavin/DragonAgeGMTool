@@ -70,5 +70,16 @@ namespace Scrivener
             //}
             Properties.Settings.Default.Save();
         }
+
+        private void WhiteMenu(object sender, MouseEventArgs e)
+        {
+            links.Foreground = System.Windows.Media.Brushes.White;
+
+        }
+
+        private void Bluemenu(object sender, MouseEventArgs e)
+        {
+            links.Foreground = System.Windows.Media.Brushes.SkyBlue;
+        }
     }
 }

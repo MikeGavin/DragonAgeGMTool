@@ -108,7 +108,6 @@
                         <ComboBoxItem Content="HelpDesk"/>
                         <ComboBoxItem Content="Student Information Center"/>
                     </ComboBox>
-                    <Button Content="Save Template" Command="{Binding SaveTemplateCommand}" Background="{Binding x:null}" Margin="0,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
                 </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -118,9 +117,8 @@
             <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
 
-            <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome">
-                <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding NewNoteCommand}">
-
+            <Menu Name="links" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Background="{x:Null}" Foreground="#FF8AC2DA" MouseEnter="WhiteMenu" MouseLeave="Bluemenu">
+                <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}">
                     <MenuItem.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
                             <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
@@ -141,6 +139,8 @@
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
             </TextBox>
+
+            <Button Content="&#xf0c7;" Command="{Binding SaveTemplateCommand}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
             <Button Content="&#xF013;" Click="Settings_Click"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="{Binding WindowTitle}"/>
 
         </controls:WindowCommands>

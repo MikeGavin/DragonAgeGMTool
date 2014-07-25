@@ -89,7 +89,33 @@ namespace Scrivener.ViewModel
         }
 
         #endregion
-        
+
+        #region URLs
+
+        private Siteitem _selectedSiteItem;
+        public Siteitem SelectedSiteItem { get { return _selectedSiteItem; } set { _selectedSiteItem = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _openurlcommand;
+        public RelayCommand OpenURLCommand { get { return _openurlcommand ?? (_openurlcommand = new RelayCommand(OpenURL)); } }
+
+        public void OpenURL()
+        {
+            var URL = SelectedSiteItem.Content;
+
+            Process.Start(URL);
+        }
+
+        //public void AppendQuickItem()
+        //{
+        //    if (SelectedQuickItem.SubItems.Count > 0)
+        //        return;
+        //    else
+        //        Text += System.Environment.NewLine + SelectedQuickItem.Content;
+        //}
+
+        #endregion
+
+
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
