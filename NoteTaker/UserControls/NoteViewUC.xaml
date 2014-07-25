@@ -45,6 +45,9 @@
                     <mvvmcmd:EventToCommand Command="{Binding CopyQuickItemCommand}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <TreeView.InputBindings>
+                <KeyBinding Command="{Binding AppendQuickItemCommand}" Key="Enter" />
+            </TreeView.InputBindings>
             <TreeView.ItemContainerStyle>
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
