@@ -491,6 +491,13 @@ namespace Minion
 
         #region Tools
 
+        public async Task Kill_Defaultss()
+        {
+            var kills = new Tool.PAExec(IPAddress, @"cmd.exe /c taskkill /im iexplorer.exe /f /t ^& taskkill /im msiexec.exe /f /t ^& taskkill /im javaws.exe /f /t ^& taskkill /im jusched.exe /f /t");
+            await kills.Run();
+        }
+
+   
         /// <summary>
         /// Used to launch a local instance of dameware to connect to the remote machine.
         /// </summary>

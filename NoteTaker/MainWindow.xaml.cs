@@ -55,17 +55,20 @@ namespace NoteTaker
                 SettingsFlyout.IsOpen = false;
             }
 
-            if (Properties.Settings.Default.Note_WorkSpace_Visibility == false)
-            {
-                Properties.Settings.Default.QuickNotes_Visibility = false;
-            }
-
-            Properties.Settings.Default.Save();
         }
 
         private void TabLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             
+        }
+
+        private void SettingsFlyout_IsOpenChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.Note_WorkSpace_Visibility == false)
+            {
+                Properties.Settings.Default.QuickNotes_Visibility = false;
+            }
+            Properties.Settings.Default.Save();
         }
     }
 }
