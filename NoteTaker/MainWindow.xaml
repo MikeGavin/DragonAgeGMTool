@@ -117,10 +117,18 @@
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Menu>
-                <MenuItem Header="Links" ItemsSource="{Binding Root}"/>     
-                
-            </Menu>
+
+            <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome">
+                <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding NewNoteCommand}">
+
+                    <MenuItem.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
+                            <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
+                        </HierarchicalDataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+            </Menu>            
+            
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
@@ -137,7 +145,7 @@
 
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
-
+    
     <Grid vm:Name="LayoutRoot" Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>

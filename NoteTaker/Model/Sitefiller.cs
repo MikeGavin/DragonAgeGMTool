@@ -12,25 +12,25 @@ namespace Scrivener.Model
     {
         private Siteitem siteroot;
         public Siteitem Root { get { return siteroot; } set { siteroot = value; } }
+        private string _table;
 
         private List<SiteDBPull> SiteCommandList = new List<SiteDBPull>()
         {
 
         };
 
-        public Sitefiller()
+        public Sitefiller(string table)
         {
-
-
+            _table = table;
         }
 
         public Siteitem fillsite()
         {
 
-            SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\database.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
+            SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
 
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Sites";
+            pullall.CommandText = string.Format("SELECT * FROM {0}", _table); 
             pullall.Connection = QuickNotesDB;
 
             try
