@@ -25,6 +25,8 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private QuickItem _root;
         private QuickItem QuickItemTree { get { return _root ?? ( _root = new Treefiller().filltree() ); } }
         private MinionCommands _minionCommands;
@@ -36,7 +38,7 @@ namespace Scrivener.ViewModel
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
         
-        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        
 
         private string _version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
         public string Version { get { return _version; } protected set { _version = value; RaisePropertyChanged(); }}
@@ -131,21 +133,22 @@ namespace Scrivener.ViewModel
             }
 
             NewNote();            
-            
         }
 
         public async void CloseNote(NoteViewModel note)
         {
-            
             var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
             if (result == true)
-                Notes.Remove(note);
-  
+                Notes.Remove(note);  
         }
 
 
         public async void NewNote()
         {
+            //string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
+            //var kills = new Minion.Tool.PAExec(IPAddress.Parse("192.168.1.114"), @"-s c:\temp\defaultkills.bat", test);
+            //await kills.Run();
+          
 
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
             SelectedNote = Notes.Last();

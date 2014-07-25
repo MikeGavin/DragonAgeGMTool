@@ -28,7 +28,7 @@
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Padding" Value="2"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding RemoteMachine.IsStaff}" Value="True">
+                    <DataTrigger Binding="{Binding Machine.IsStaff}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -63,7 +63,7 @@
         <Label Grid.Row="6" Grid.Column="0" Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
         <Label Grid.Row="7" Grid.Column="0" Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
 
-        <Label Content="{Binding RemoteMachine.PCName}" Grid.Row="0" Grid.Column="1">
+        <Label Content="{Binding Machine.PCName}" Grid.Row="0" Grid.Column="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
@@ -73,7 +73,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.CurrentUser}" Grid.Column="1" Grid.Row="1">
+        <Label Content="{Binding Machine.CurrentUser}" Grid.Column="1" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
@@ -84,12 +84,12 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.ChipStyle}" Grid.Column="1" Grid.Row="2"/>
-        <Label Content="{Binding RemoteMachine.RAM}" Grid.Column="1" Grid.Row="3"/>
-        <Label Content="{Binding RemoteMachine.OSBit}" Grid.Column="1" Grid.Row="4"/>
-        <Label Content="{Binding RemoteMachine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5"/>
-        <Label Content="{Binding RemoteMachine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6"/>
-        <Label Content="{Binding RemoteMachine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7"/>
+        <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2"/>
+        <Label Content="{Binding Machine.RAM}" Grid.Column="1" Grid.Row="3"/>
+        <Label Content="{Binding Machine.OSBit}" Grid.Column="1" Grid.Row="4"/>
+        <Label Content="{Binding Machine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5"/>
+        <Label Content="{Binding Machine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6"/>
+        <Label Content="{Binding Machine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7"/>
 
 
         <Label Content="IE" Foreground="Gray" Grid.Column="2" Grid.Row="0">
@@ -136,8 +136,8 @@
             </Label>
 
 
-        <Label Content="{Binding RemoteMachine.IEVersion}" Grid.Column="3" Grid.Row="0"/>
-        <Label Content="{Binding RemoteMachine.Java}" Grid.Column="3" Grid.Row="1">
+        <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0"/>
+        <Label Content="{Binding Machine.Java}" Grid.Column="3" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}"/>
@@ -145,7 +145,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.Flash}" Grid.Column="3" Grid.Row="2">
+        <Label Content="{Binding Machine.Flash}" Grid.Column="3" Grid.Row="2">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Flash" Command="{Binding UninstallFlashCommand}"/>
@@ -153,7 +153,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.Shockwave}" Grid.Column="3" Grid.Row="3">
+        <Label Content="{Binding Machine.Shockwave}" Grid.Column="3" Grid.Row="3">
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Shockwave" Command="{Binding UninstallShockwaveCommand}"/>
@@ -161,7 +161,7 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.Reader}" Grid.Column="3" Grid.Row="4">
+        <Label Content="{Binding Machine.Reader}" Grid.Column="3" Grid.Row="4">
             <Label.ContextMenu>
                 <ContextMenu>
                         <MenuItem Header="Uninstall Reader" Command="{Binding UninstallReaderCommand}"/>
@@ -169,7 +169,7 @@
                 </ContextMenu>
             </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding RemoteMachine.Quicktime}" Grid.Column="3" Grid.Row="5">
+        <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="5">
             <Label.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
@@ -177,6 +177,6 @@
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
-        <TextBlock Grid.Column="4" Text="{Binding RemoteMachine.History}" Height="Auto" Grid.RowSpan="2147483647"/>
+        <TextBlock Grid.Column="4" Text="{Binding Machine.History}" Height="Auto" Grid.RowSpan="2147483647"/>
     </Grid>
 </UserControl>

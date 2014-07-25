@@ -47,9 +47,9 @@ namespace Minion.Tool
             }
             else if (ExitCode > 0)
             {
-                log.Error(StandardError = string.Format("Program ran but returned error {0}: {1}", ExitCode, StandardError.Trim()));
+                log.Error(StandardError = string.Format("Program ran but returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
             }
-            log.Fatal(StandardError += " <--is some crazy shit that happend and I failed to process it.");
+            log.Fatal(StandardError + " <--is some crazy shit that happend and I failed to process it.");
         }
     }
 }

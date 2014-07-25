@@ -48,6 +48,7 @@ namespace Scrivener.ViewModel
 
         private static int _number = 0;
         private bool _titlechanged = false;
+        private List<Match> _matachedips;
 
         private QuickItem _root;
         public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
@@ -79,14 +80,15 @@ namespace Scrivener.ViewModel
         //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).
         void Note_TextChanged(object sender, EventArgs e)
         {
-           Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b");
-           Regex sepid = new Regex(@"\b[a-z]{2,3}[0-9]{6}\b", RegexOptions.IgnoreCase);
+           Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b\s+");
+           Regex sepid = new Regex(@"\b[a-z]{2,3}[0-9]{5,6}\b\s+", RegexOptions.IgnoreCase);
 
+           
            MatchCollection mc = ip.Matches(Text);
 
            foreach (Match m in mc)
            {
-               MessageBox.Show(m.ToString());
+
            }
 
            if (_titlechanged == false) //Changes Title to first SEP entered then stops.

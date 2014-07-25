@@ -173,7 +173,9 @@
     <Content Include="Resources\Minion.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\defaultkills.bat" />
+    <Content Include="Resources\defaultkills.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Settings\Flash.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Flash.Designer.cs</LastGenOutput>

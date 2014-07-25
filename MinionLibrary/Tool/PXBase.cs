@@ -35,7 +35,7 @@ namespace Minion.Tool
 
         protected static string FormatTo(IPAddress ip, string copyto)
         {
-            return string.Format(@"\\{0}\c$\{1)", ip.ToString(), copyto);
+            return string.Format(@"\\{0}\c${1})", ip.ToString(), copyto);
         }
     }
 }

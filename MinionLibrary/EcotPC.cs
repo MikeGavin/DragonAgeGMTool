@@ -483,8 +483,13 @@ namespace Minion
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Command);
             else
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Copy, item.Command);
+
             await paexec.Run();
-            History = "";
+
+            if (paexec.StandardError != string.Empty || paexec.StandardError != null)
+                History = paexec.StandardError.Trim();
+            if (paexec.StandardOutput != string.Empty || paexec.StandardOutput != null)
+                History = paexec.StandardOutput.Trim();
             Processing--;
             return true;
         }
@@ -493,8 +498,12 @@ namespace Minion
 
         public async Task Kill_Defaultss()
         {
-            var kills = new Tool.PAExec(IPAddress, @"cmd.exe /c taskkill /im iexplorer.exe /f /t ^& taskkill /im msiexec.exe /f /t ^& taskkill /im javaws.exe /f /t ^& taskkill /im jusched.exe /f /t");
+            var kills = new Tool.PAExec(IPAddress, @"cmd.exe /c taskkill /im iexplore.exe /f /t ^& taskkill /im msiexec.exe /f /t ^& taskkill /im javaws.exe /f /t ^& taskkill /im jusched.exe /f /t");
             await kills.Run();
+            if (kills.StandardError != string.Empty || kills.StandardError != null)
+                History = kills.StandardError.Trim();
+            if (kills.StandardOutput != string.Empty || kills.StandardOutput != null)
+                History = kills.StandardOutput.Trim();
         }
 
    

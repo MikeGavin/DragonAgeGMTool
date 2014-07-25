@@ -89,10 +89,12 @@ namespace Scrivener.ViewModel
             var result = await Machine.Command(command, "Uninstall");
             if (result == true)
             {
-                throw new NotImplementedException();
+                
             }
             else
-                throw new NotImplementedException();
+            {
+
+            }
 
         }
         
