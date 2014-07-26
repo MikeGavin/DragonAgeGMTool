@@ -6,6 +6,8 @@ using MahApps.Metro.Controls;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System;
+using MahApps.Metro;
+using System.Linq;
 
 namespace Scrivener
 {
@@ -22,14 +24,25 @@ namespace Scrivener
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
-            Messenger.Default.Register<Helpers.MessageDialog>(
-                this,
-                async msg =>
-                {
-                    var metroWindow = (Application.Current.MainWindow as MetroWindow);
-                    metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
-                    await metroWindow.ShowMessageAsync(msg.Title, msg.Message, MessageDialogStyle.Affirmative, metroWindow.MetroDialogOptions);
-                });
+
+
+            //Theme Settings
+            ThemeBox.Items.Add("Dark");
+            ThemeBox.Items.Add("Light");
+            if (Properties.Settings.Default.Theme == null)
+                Properties.Settings.Default.Theme = "Dark";
+            ThemeBox.SelectedItem = Properties.Settings.Default.Theme;
+
+            //Accent Settings
+            var accents = MahApps.Metro.ThemeManager.Accents.ToList();
+            foreach (var accent in accents) //Adds all accents to combobox.
+            {
+                AccentBox.Items.Add(accent);
+            }
+            if (Properties.Settings.Default.Accent == null)
+                Properties.Settings.Default.Accent = 2;
+            
+
 
             //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
             //{
@@ -81,5 +94,19 @@ namespace Scrivener
         {
             links.Foreground = System.Windows.Media.Brushes.SkyBlue;
         }
+
+        private void Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var accent = (MahApps.Metro.Accent)AccentBox.SelectedItem;           
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
+        }
+
+        private void Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {           
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme(string.Format("Base{0}", ThemeBox.SelectedItem)));
+        }
+
     }
 }

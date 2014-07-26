@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NoteTaker.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Scrivener.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="NoteFontSize" Type="System.Int32" Scope="User">
@@ -34,6 +34,12 @@
     </Setting>
     <Setting Name="Default_Note_Template" Type="System.String" Scope="User">
       <Value Profile="(Default)">This is the default note template which is set via the settings.</Value>
+    </Setting>
+    <Setting Name="Theme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dark</Value>
+    </Setting>
+    <Setting Name="Accent" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

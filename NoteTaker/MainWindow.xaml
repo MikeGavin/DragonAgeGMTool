@@ -108,6 +108,11 @@
                         <ComboBoxItem Content="HelpDesk"/>
                         <ComboBoxItem Content="Student Information Center"/>
                     </ComboBox>
+                    <Label Content="Theme"/>
+                    <ComboBox Name="ThemeBox" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged"/>
+                    <Label Content="Accent"/>
+                    <ComboBox DisplayMemberPath="Name" Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged"/>
+                    <TextBlock Text="While you can change themes and accents at this time the current interface was layed out for the Dark / Blue layout and there are still things under repair to allow for theme changes" TextWrapping="Wrap"/>
                 </StackPanel>
             </controls:Flyout>
         </controls:FlyoutsControl>
