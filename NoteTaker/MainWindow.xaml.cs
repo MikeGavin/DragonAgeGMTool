@@ -84,17 +84,6 @@ namespace Scrivener
             Properties.Settings.Default.Save();
         }
 
-        private void WhiteMenu(object sender, MouseEventArgs e)
-        {
-            links.Foreground = System.Windows.Media.Brushes.White;
-
-        }
-
-        private void Bluemenu(object sender, MouseEventArgs e)
-        {
-            links.Foreground = System.Windows.Media.Brushes.SkyBlue;
-        }
-
         private void Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var accent = (MahApps.Metro.Accent)AccentBox.SelectedItem;           
@@ -107,6 +96,5 @@ namespace Scrivener
             var theme = ThemeManager.DetectAppStyle(Application.Current);
             ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme(string.Format("Base{0}", ThemeBox.SelectedItem)));
         }
-
     }
 }

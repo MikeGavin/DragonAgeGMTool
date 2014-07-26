@@ -121,16 +121,20 @@
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            
+            <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
+            <Button>
+                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
+                    <MenuItem Header="&#xf005;" Foreground="White" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
 
-            <Menu Name="links" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Background="{x:Null}" Foreground="#FF8AC2DA" MouseEnter="WhiteMenu" MouseLeave="Bluemenu">
-                <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}">
-                    <MenuItem.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
-                            <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
-                        </HierarchicalDataTemplate>
+                        <MenuItem.ItemTemplate >
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
+                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
+                            </HierarchicalDataTemplate>
                     </MenuItem.ItemTemplate>
                 </MenuItem>
-            </Menu>            
+                    </Menu>
+            </Button>            
             
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>

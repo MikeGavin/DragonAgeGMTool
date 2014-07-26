@@ -34,6 +34,13 @@ namespace Scrivener.ViewModel
 
         private Siteitem _sites;
         public Siteitem QuickSites { get { return _sites ?? (_sites = new Sitefiller("Sites").fillsite()); } }
+        private RelayCommand<string> _openLinkCommand;
+        public RelayCommand<string> OpenLinkCommand { get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand<string>((pram) => OpenLink(pram))); } }
+
+        public void OpenLink(string test)
+        {
+            var x = test;
+        }
 
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
