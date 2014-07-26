@@ -37,9 +37,9 @@ namespace Scrivener.ViewModel
         private RelayCommand<string> _openLinkCommand;
         public RelayCommand<string> OpenLinkCommand { get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand<string>((pram) => OpenLink(pram))); } }
 
-        public void OpenLink(string test)
+        public async void OpenLink(string link)
         {
-            var x = test;
+            await MetroMessageBox.Show("I got it", link);
         }
 
         private string _quicknoteVisibility;

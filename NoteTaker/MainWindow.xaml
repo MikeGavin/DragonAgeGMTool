@@ -97,7 +97,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="200" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="170" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
                 <StackPanel Margin="5">
                     <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
@@ -142,8 +142,8 @@
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                     Margin="0" HorizontalAlignment="Left" BorderThickness="0.5"  
-                                     VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" Background="{x:Null}" controls:TextboxHelper.Watermark="Search EKB">
+                                     Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
+                                     VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" controls:TextboxHelper.Watermark="Search EKB">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
