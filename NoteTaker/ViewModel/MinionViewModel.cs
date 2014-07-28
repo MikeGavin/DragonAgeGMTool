@@ -27,8 +27,8 @@ namespace Scrivener.ViewModel
             MinionCollection.CollectionChanged += OnItemsChanged;
             _minionCommands = commands;
             //debuging
-            _NewMinionIPAddress = "192.168.1.114";
-            AddMinionItem();
+            //_NewMinionIPAddress = "192.168.1.114";
+            //AddMinionItem();
             
         }
 
