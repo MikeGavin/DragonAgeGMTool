@@ -103,12 +103,17 @@
                     <controls:ToggleSwitch Header="Close Warning" OnLabel="Warning" OffLabel="No Warning" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
-                    <Label Content="Role"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Save Template" FontSize="15" Margin="0,5,0,0" FontWeight="Medium">
+                        </TextBlock>
+                        <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
+                    </StackPanel>
+                    <!--<Label Content="Role"/>
                     <ComboBox Height="20" SelectedIndex="{Binding Role, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}">
                         <ComboBoxItem Content="EdTech" />
                         <ComboBoxItem Content="HelpDesk"/>
                         <ComboBoxItem Content="Student Information Center"/>
-                    </ComboBox>
+                    </ComboBox>-->
                     <Label Content="Theme"/>
                     <ComboBox Name="ThemeBox" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged"/>
                     <Label Content="Accent"/>
@@ -120,29 +125,31 @@
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xF067;" ToolTip="New Tab" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            
             
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
-            <Button>
-                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
-
-                        <MenuItem.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
-                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Foreground="{DynamicResource AccentColorBrush2}"
-                                          Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
-                            </HierarchicalDataTemplate>
-                    </MenuItem.ItemTemplate>
-                </MenuItem>
-                    </Menu>
-            </Button>            
+                     
             
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
+            <Button>
+                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
+                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
+
+                        <MenuItem.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
+                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Foreground="{DynamicResource AccentColorBrush2}"
+                                          Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
+                            </HierarchicalDataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </Menu>
+            </Button>
             <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
                                      VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" controls:TextboxHelper.Watermark="Search EKB">
@@ -150,9 +157,8 @@
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
             </TextBox>
-
-            <Button Content="&#xf0c7;" Command="{Binding SaveTemplateCommand}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
-            <Button Content="&#xF013;" Click="Settings_Click"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="{Binding WindowTitle}"/>
+            <Button Content="&#xF1BB;" ToolTip="QuickNotes" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xF013;" Click="Settings_Click" ToolTip="Settings"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
 
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>

@@ -13,6 +13,7 @@ using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Scrivener.UserControls;
 
 
 namespace Scrivener.ViewModel
@@ -174,6 +175,25 @@ namespace Scrivener.ViewModel
             SelectedNote = Notes.Last();
             
         }
+
+        #region CopyAll
+
+        private RelayCommand _copyallcommand;
+        public RelayCommand CopyAllCommand { get { return _copyallcommand ?? (_copyallcommand = new RelayCommand(CopyAll)); } }
+
+        public async void CopyAll()
+        {
+            try
+                    {
+                        Clipboard.SetText(SelectedNote.Text);
+                    }
+                    catch(Exception e)
+                    {
+                        MessageBox.Show("Unable to copy");
+                    }
+
+        } 
+        #endregion
 
         public async void QuickNoteToggle()
         {
