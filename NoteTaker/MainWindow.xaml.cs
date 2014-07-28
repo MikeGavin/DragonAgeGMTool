@@ -25,6 +25,10 @@ namespace Scrivener
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
 
+            if (Scrivener.Properties.Settings.Default.Accent == -1)
+            {
+                Properties.Settings.Default.Accent = 2;
+            }
 
             //Theme Settings
             ThemeBox.Items.Add("Dark");
@@ -39,9 +43,7 @@ namespace Scrivener
             {
                 AccentBox.Items.Add(accent);
             }
-            if (Properties.Settings.Default.Accent == null)
-                Properties.Settings.Default.Accent = 2;
-            
+              
 
 
             //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
