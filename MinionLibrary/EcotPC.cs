@@ -500,7 +500,7 @@ namespace Minion
         {
             Processing++;
             string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
-            var kills = new Minion.Tool.PAExec(IPAddress.Parse("192.168.1.76"), @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
+            var kills = new Minion.Tool.PAExec(IPAddress, @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
             History = "Running default kills";
             await kills.Run();
             Processing--;
