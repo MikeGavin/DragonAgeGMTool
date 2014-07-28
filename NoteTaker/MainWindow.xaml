@@ -14,10 +14,10 @@
         xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" vm:Class="Scrivener.MainWindow" 
         mc:Ignorable="d ignore"
         Height="500.3"
-        Width="722"
+        Width="722" 
         
         SaveWindowPosition="True" Margin="0"
-        ShowWindowCommandsOnTop="True"
+        ShowWindowCommandsOnTop="True" Icon="Icon.ico" ShowIconOnTitleBar="False"
                       >
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
