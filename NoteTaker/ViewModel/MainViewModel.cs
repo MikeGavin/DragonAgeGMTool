@@ -33,7 +33,7 @@ namespace Scrivener.ViewModel
         private MinionCommands _minionCommands;
         private MinionCommands MinionCommands { get { return _minionCommands ?? (_minionCommands = new MinionCommands()); } }
 
-
+       
 
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
