@@ -32,15 +32,7 @@ namespace Scrivener.ViewModel
         private MinionCommands _minionCommands;
         private MinionCommands MinionCommands { get { return _minionCommands ?? (_minionCommands = new MinionCommands()); } }
 
-        private Siteitem _sites;
-        public Siteitem QuickSites { get { return _sites ?? (_sites = new Sitefiller("Sites").fillsite()); } }
-        private RelayCommand<string> _openLinkCommand;
-        public RelayCommand<string> OpenLinkCommand { get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand<string>((pram) => OpenLink(pram))); } }
 
-        public async void OpenLink(string link)
-        {
-            await MetroMessageBox.Show("I got it", link);
-        }
 
         private string _quicknoteVisibility;
         public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
@@ -97,31 +89,19 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region URLs
+        #region site
 
-        private Siteitem _selectedSiteItem;
-        public Siteitem SelectedSiteItem { get { return _selectedSiteItem; } set { _selectedSiteItem = value; RaisePropertyChanged(); } }
+        private Siteitem _sites;
+        public Siteitem QuickSites { get { return _sites ?? (_sites = new Sitefiller("Sites").fillsite()); } }
+        private RelayCommand<string> _openLinkCommand;
+        public RelayCommand<string> OpenLinkCommand { get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand<string>((pram) => OpenLink(pram))); } }
 
-        private RelayCommand _openurlcommand;
-        public RelayCommand OpenURLCommand { get { return _openurlcommand ?? (_openurlcommand = new RelayCommand(OpenURL)); } }
-
-        public void OpenURL()
+        public async void OpenLink(string link)
         {
-            var URL = SelectedSiteItem.Content;
-
-            Process.Start(URL);
+            Process.Start(link);
         }
 
-        //public void AppendQuickItem()
-        //{
-        //    if (SelectedQuickItem.SubItems.Count > 0)
-        //        return;
-        //    else
-        //        Text += System.Environment.NewLine + SelectedQuickItem.Content;
-        //}
-
         #endregion
-
 
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -170,9 +150,16 @@ namespace Scrivener.ViewModel
 
         public async void CloseNote(NoteViewModel note)
         {
-            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
-            if (result == true)
-                Notes.Remove(note);  
+            if (Scrivener.Properties.Settings.Default.Close_Warning == true)
+            {
+                var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
+                if (result == true)
+                    Notes.Remove(note);
+            }
+            else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
+            {
+                Notes.Remove(note);
+            }
         }
 
 

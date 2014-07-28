@@ -100,6 +100,7 @@
             <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="170" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
                 <StackPanel Margin="5">
                     <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Warning" OffLabel="No Warning" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
                     <Label Content="Role"/>
@@ -124,12 +125,13 @@
             
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
             <Button>
-                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
-                    <MenuItem Header="&#xf005;" Foreground="White" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
+                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
+                    <MenuItem Header="&#xf005;" ToolTip="Links" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
 
-                        <MenuItem.ItemTemplate >
+                        <MenuItem.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
-                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
+                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Foreground="{DynamicResource AccentColorBrush2}"
+                                          Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
                             </HierarchicalDataTemplate>
                     </MenuItem.ItemTemplate>
                 </MenuItem>
