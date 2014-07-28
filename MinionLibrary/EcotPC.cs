@@ -498,12 +498,12 @@ namespace Minion
 
         public async Task Kill_Defaultss()
         {
-            var kills = new Tool.PAExec(IPAddress, @"cmd.exe /c taskkill /im iexplore.exe /f /t ^& taskkill /im msiexec.exe /f /t ^& taskkill /im javaws.exe /f /t ^& taskkill /im jusched.exe /f /t");
+            Processing++;
+            string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
+            var kills = new Minion.Tool.PAExec(IPAddress.Parse("192.168.1.76"), @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
+            History = "Running default kills";
             await kills.Run();
-            if (kills.StandardError != string.Empty || kills.StandardError != null)
-                History = kills.StandardError.Trim();
-            if (kills.StandardOutput != string.Empty || kills.StandardOutput != null)
-                History = kills.StandardOutput.Trim();
+            Processing--;
         }
 
    

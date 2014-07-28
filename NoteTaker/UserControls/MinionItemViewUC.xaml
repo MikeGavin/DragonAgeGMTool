@@ -134,8 +134,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-
-
+        <ComboBox ItemsSource="{Binding MinionCommands.RemoteStartCommands}" SelectedItem="{Binding SelectedStartItem}" DisplayMemberPath="Name" Grid.Column="2" Grid.Row="6" SelectedIndex="1"/>
         <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0"/>
         <Label Content="{Binding Machine.Java}" Grid.Column="3" Grid.Row="1">
                 <Label.ContextMenu>
@@ -169,7 +168,7 @@
                 </ContextMenu>
             </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="5">
+        <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="5" Height="20" VerticalAlignment="Top">
             <Label.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
@@ -177,6 +176,7 @@
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
+        <Button Content="Launch" Grid.Column="3" Grid.Row="6" Command="{Binding RemoteStartCommand}"/>
         <TextBlock Grid.Column="4" Text="{Binding Machine.History}" Height="Auto" Grid.RowSpan="2147483647"/>
     </Grid>
 </UserControl>

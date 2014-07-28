@@ -153,6 +153,7 @@
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\DBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Model\MinionArgs.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Sitefiller.cs" />

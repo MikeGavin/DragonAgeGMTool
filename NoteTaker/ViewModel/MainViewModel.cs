@@ -119,6 +119,8 @@ namespace Scrivener.ViewModel
         {
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
+          
+
         }
 
   
@@ -153,27 +155,23 @@ namespace Scrivener.ViewModel
         {
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
-                var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
-                if (result == true)
-                    Notes.Remove(note);
+            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
+            if (result == true)
+                Notes.Remove(note);  
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
                 Notes.Remove(note);
             }
+            if (Notes.Count == 0)
+                NewNote();
         }
 
 
         public async void NewNote()
         {
-            //string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
-            //var kills = new Minion.Tool.PAExec(IPAddress.Parse("192.168.1.114"), @"-s c:\temp\defaultkills.bat", test);
-            //await kills.Run();
-          
-
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
             SelectedNote = Notes.Last();
-            
         }
 
         #region CopyAll

@@ -15,18 +15,21 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
+        public delegate void MinionHandler(object myobject, Model.MinionArgs args);
+        public event MinionHandler NoteWrite;
 
         public event EventHandler RequestClose;
-        void OnRequestClose()
+        void RaiseRequestClose()
         {
             EventHandler handler = this.RequestClose;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
         private RelayCommand _closeCommand;
-        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(OnRequestClose)); } }
+        public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(RaiseRequestClose)); } }
 
-        private Minion.MinionCommands _minionCommands;
+        public Minion.MinionCommands MinionCommands { get; protected set; }
+        public Minion.RemoteStartItem SelectedStartItem { get; set; }
 
         public Minion.EcotPC Machine { get; protected set; }
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
@@ -36,11 +39,11 @@ namespace Scrivener.ViewModel
         public MinionItemViewModel(IPAddress IP, Minion.MinionCommands commands)
         {
             Machine = new Minion.EcotPC(IP);
-            _minionCommands = commands;
+            MinionCommands = commands;
+            SelectedStartItem = MinionCommands.RemoteStartCommands[0];
         }
         public string Title { get { return Machine.IPAddress.ToString(); } }
      
-
         #region SoftwareCommands
 
         private RelayCommand _getIECommand;
@@ -78,24 +81,54 @@ namespace Scrivener.ViewModel
         public async Task Uninstall_Java()
         {
 
-            var item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version == Machine.Java)) as Minion.RemoteCommandImport;
+            var item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == Machine.Java)) as Minion.RemoteCommandImport;
             if (item == null)
             {
-                item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as Minion.RemoteCommandImport;
+                item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as Minion.RemoteCommandImport;
             }
             Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
 
             await Machine.Kill_Defaultss();
             var result = await Machine.Command(command, "Uninstall");
-            if (result == true)
-            {
-                
-            }
+            await Machine.Get_Java();
+            if (Machine.Java == "NOT INSTALLED")
+                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall and Java is no longer reported as installed."));
+            else if (Machine.Java != "Error")
+                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall but attempt to lookup current Java verson returned an error."));
             else
-            {
+                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall but was unable to verify uninstall."));
+        }
 
-            }
 
+        private RelayCommand _installJavaCommand;
+        public RelayCommand InstallJavaCommand { get { return _installJavaCommand ?? (_installJavaCommand = new RelayCommand(async () => await Install_Java())); } }
+
+        public async Task Install_Java()
+        {
+            var sort = MinionCommands.Java.OrderByDescending(x => x.Version).ToList();
+            var item = sort[1];
+            //var item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version.Contains("55"))) as Minion.RemoteCommandImport;
+            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Install_Copy, Command = item.Install_Command };
+
+            await Machine.Kill_Defaultss();
+            var result = await Machine.Command(command, "Install");
+            if (Machine.Java == "Error")
+                NoteWrite(this, new Model.MinionArgs("Ran automated Java install but attempt to lookup current Java verson returned an error."));
+            else if (Machine.Java == "NOT INSTALLED")
+                NoteWrite(this, new Model.MinionArgs("Ran automated Java install but the install failed."));
+            else
+                NoteWrite(this, new Model.MinionArgs(string.Format("Ran automated Java install and successfully installed Java {0}.", Machine.Java)));
+
+        }
+
+
+        private RelayCommand _remoteStartCommand;
+        public RelayCommand RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand(async () => await RemoteStart())); } }
+
+        public async Task RemoteStart()
+        {
+            Minion.Tool.PSExec psexec = new Minion.Tool.PSExec(Machine.IPAddress, string.Format("-accepteula -i -s -h -d {0}", SelectedStartItem.Command));
+            await psexec.Run();
         }
         
     }
