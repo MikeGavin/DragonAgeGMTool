@@ -82,10 +82,14 @@ namespace Scrivener.ViewModel
         public async Task Uninstall_Java()
         {
 
-            var item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == Machine.Java)) as Minion.RemoteCommandImport;
-            if (item == null)
+            Minion.RemoteCommandImport item;
+            if (Machine.Java == "NOT INSTALLED" || Machine.Java == "ERROR")
             {
                 item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as Minion.RemoteCommandImport;
+            }
+            else
+            {
+                item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == Machine.Java)) as Minion.RemoteCommandImport;
             }
             Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Uninstall_Copy, Command = item.Uninstall_Command };
 
