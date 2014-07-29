@@ -302,7 +302,7 @@ namespace Minion
 
         #region Get Software Methods
 
-        public async Task Get_IE()
+        public async Task<string> Get_IE()
         {
             Processing++;
             IEVersion = "Updating...";
@@ -312,58 +312,51 @@ namespace Minion
             IEVersion = paexec.StandardOutput.Replace("Version         \r\r\r\n", string.Empty).Trim();
             log.Debug("IE: {0}", IEVersion);
             Processing--;
+            return IEVersion;
         }
 
-        public async Task Get_Java()
+        public async Task<string> Get_Java()
         {
             Processing++;
             Java = "Updating...";
             log.Info("Acquiring Java Version...");
             string result = "0";
             //RunKills = false;
-            string command;
-            if (x64 == true)
+            string command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
+            var paexec = new Tool.PAExec(IPAddress, command);
+            await paexec.Run();
+            if (paexec.StandardError.Contains("java version") == true)
             {
-                command = (@"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version");
+                result = paexec.StandardError.Split(new char[] { '\"', '\"' })[1];
+                log.Info("Java version: " + result);
             }
             else
             {
                 command = (@"""c:\Program Files\Java\jre7\bin\java.exe"" -version");
-            }
-
-            var paexec = new Tool.PAExec(IPAddress, command);
-            await paexec.Run();
-            //bool loop = true;
-            //while (loop == true)
-            //{
+                var paexec2 = new Tool.PAExec(IPAddress, command);
+                await paexec2.Run();
                 if (paexec.StandardError.Contains("java version") == true)
                 {
                     result = paexec.StandardError.Split(new char[] { '\"', '\"' })[1];
                     log.Info("Java version: " + result);
-                    //loop = false;
                 }
-                //else
-                //{
-                //    log.Debug("Version lookup failed, trying again");
-                //    await paexec.Run();
-                //}
-            //}
-            
-            else if (paexec.StandardError.Contains("-9"))
-            {
-                result = "NOT INSTALLED";
-                log.Warn("Java is not installed");
-            }
-            else
-            {
-                result = "ERROR";
-                log.Warn("Java version lookup returned error");
+                else if (paexec.StandardError.Contains("-9"))
+                {
+                    result = "NOT INSTALLED";
+                    log.Warn("Java is not installed");
+                }
+                else
+                {
+                    result = "ERROR";
+                    log.Warn("Java version lookup returned error");
+                }
             }
             Java = result;
             Processing--;
+            return Java;
         }
 
-        public async Task Get_Flash()
+        public async Task<string> Get_Flash()
         {
             Processing++;
             log.Info("Acquiring Flash Version...");
@@ -381,9 +374,10 @@ namespace Minion
                 log.Info("Flash version: " + Flash);
             }
             Processing--;
+            return Flash;
         }
 
-        public async Task Get_Shockwave()
+        public async Task<string> Get_Shockwave()
         {
             Processing++;
             log.Info("Acquiring Shockwave Version...");
@@ -402,9 +396,10 @@ namespace Minion
                 log.Info("Shockwave version: " + Shockwave);
             }
             Processing--;
+            return Shockwave;
         }
 
-        public async Task Get_Reader()
+        public async Task<string> Get_Reader()
         {
             Processing++;
             string argument = string.Empty;
@@ -443,9 +438,10 @@ namespace Minion
                 log.Info("Reader version: " + Reader);
             }
             Processing--;
+            return Reader;
         }
 
-        public async Task Get_Quicktime()
+        public async Task<string> Get_Quicktime()
         {
             Processing++;
             string argument = string.Empty;
@@ -470,6 +466,7 @@ namespace Minion
                 log.Info("Quicktime version: " + Quicktime);
             }
             Processing--;
+            return Quicktime;
         }
 
         #endregion

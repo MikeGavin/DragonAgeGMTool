@@ -40,13 +40,13 @@ namespace Minion
                 while (reader.Read())
                     CommandList.Add(new RemoteCommandImport() 
                     { 
-                        Name = reader["Name"].ToString(),
-                        Version = reader["Version"].ToString(), 
-                        Install_Copy = reader["Install_Copy"].ToString(),
-                        Install_Command = reader["Install_Command"].ToString(),
-                        Uninstall_Copy = reader["Uninstall_Copy"].ToString(),
-                        Uninstall_Command = reader["Uninstall_Command"].ToString(),
-                        CopyTo = reader["CopyTo"].ToString()
+                        Name = reader["Name"].ToString().Trim(),
+                        Version = reader["Version"].ToString().Trim(),
+                        Install_Copy = reader["Install_Copy"].ToString().Trim(),
+                        Install_Command = reader["Install_Command"].ToString().Trim(),
+                        Uninstall_Copy = reader["Uninstall_Copy"].ToString().Trim(),
+                        Uninstall_Command = reader["Uninstall_Command"].ToString().Trim(),
+                        CopyTo = reader["CopyTo"].ToString().Trim()
                     });
                 minion.Close();
 
@@ -75,10 +75,10 @@ namespace Minion
                 
             }
             
-            Java = CommandList.Where(n => n.Name == "Java").ToList();
-            Flash = CommandList.Where(n => n.Name == "Flash").ToList();
-            Shockwave = CommandList.Where(n => n.Name == "Shockwave").ToList();
-            Reader = CommandList.Where(n => n.Name == "Reader").ToList();
+            Java = CommandList.Where(n => n.Name.Contains("Java")).ToList();
+            Flash = CommandList.Where(n => n.Name.Contains("Flash")).ToList();
+            Shockwave = CommandList.Where(n => n.Name.Contains("Shockwave")).ToList();
+            Reader = CommandList.Where(n => n.Name.Contains("Reader")).ToList();
         }
 
     }
