@@ -145,6 +145,34 @@ namespace Scrivener.ViewModel
             await Install(item);
         }
 
+        private RelayCommand _uninstallShockwaveCommand;
+        public RelayCommand UninstallShockwaveCommand { get { return _uninstallShockwaveCommand ?? (_uninstallShockwaveCommand = new RelayCommand(async () => await Uninstall_Shockwave())); } }
+        public async Task Uninstall_Shockwave()
+        {
+            Minion.RemoteCommandImport item;
+            try
+            { 
+                item = MinionCommands.Shockwave.First(f => (f.Name == "Shockwave") && (f.Version == Machine.Shockwave)) as Minion.RemoteCommandImport; 
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                item = MinionCommands.Shockwave.First(f => (f.Name == "Shockwave") && (f.Version == "All")) as Minion.RemoteCommandImport;
+            }
+           
+
+            await Uninstall(item);
+        }
+
+        private RelayCommand _installShockwaveCommand;
+        public RelayCommand InstallShockwaveCommand { get { return _installShockwaveCommand ?? (_installShockwaveCommand = new RelayCommand(async () => await Install_Shockwave())); } }
+        public async Task Install_Shockwave()
+        {
+            Minion.RemoteCommandImport item;
+            item = MinionCommands.Shockwave.First(f => (f.Name == "Flash") && (f.Version != "All")) as Minion.RemoteCommandImport;
+            await Install(item);
+        }
+
         private async Task Install(Minion.RemoteCommandImport item)
         {
             Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Install_Copy, CopyTo = item.CopyTo, Command = item.Install_Command };
