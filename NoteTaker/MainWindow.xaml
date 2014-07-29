@@ -100,8 +100,8 @@
             <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="170" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
                 <StackPanel Margin="5">
                     <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Warning" OffLabel="No Warning" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Hyphen" OffLabel="No Hyphen" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                    <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
                     <StackPanel Orientation="Horizontal">
