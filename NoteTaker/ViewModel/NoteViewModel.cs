@@ -124,7 +124,7 @@ namespace Scrivener.ViewModel
 
            }
         }
-       
+        
         #region Items
         private RelayCommand _appendQuickItem;
         public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
@@ -138,14 +138,14 @@ namespace Scrivener.ViewModel
                 if (SelectedQuickItem.SubItems.Count > 0)
                     return;
                 else
-                    Text += System.Environment.NewLine + "- " + SelectedQuickItem.Content;
+                    Text += "- " + SelectedQuickItem.Content + System.Environment.NewLine; 
             }
             else if (Properties.Settings.Default.DashinNotes == false)
             {
                 if (SelectedQuickItem.SubItems.Count > 0)
                     return;
                 else
-                    Text += System.Environment.NewLine + SelectedQuickItem.Content;
+                    Text += SelectedQuickItem.Content +System.Environment.NewLine;
             }
         }
 

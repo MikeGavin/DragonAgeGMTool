@@ -183,7 +183,7 @@ namespace Scrivener.ViewModel
         {
             try
                     {
-                        Clipboard.SetText(SelectedNote.Text);
+                        Clipboard.SetDataObject(SelectedNote.Text);
                     }
                     catch(Exception e)
                     {
