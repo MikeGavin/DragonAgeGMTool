@@ -74,8 +74,30 @@ namespace Scrivener.ViewModel
             _root = _tree;
 
             this.TextChanged += Note_TextChanged;
-            
+            NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
         }
+
+        void MinionCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null && e.NewItems.Count != 0)
+                foreach (MinionItemViewModel minionItem in e.NewItems)
+                {
+                    minionItem.NoteWrite += minionItem_NoteWrite;
+
+                }
+
+            if (e.OldItems != null && e.OldItems.Count != 0)
+                foreach (MinionItemViewModel minionItem in e.OldItems)
+                {
+                    minionItem.NoteWrite -= minionItem_NoteWrite;
+                }
+        }
+
+        void minionItem_NoteWrite(object sender, MinionArgs e)
+        {
+            Text += Environment.NewLine + e.Message;
+        }
+        
 
         //Test Notify Event. Must be changed to only process a textbox changed event (which needs created).
         void Note_TextChanged(object sender, EventArgs e)
@@ -101,8 +123,6 @@ namespace Scrivener.ViewModel
                }
 
            }
-
-
         }
        
         #region Items

@@ -1,0 +1,17 @@
+c:\users\USERNAME\AppData\Local\Microsoft\Windows\Temporary Internet Files\
+c:\users\USERNAME\AppData\Roaming\Microsoft\Windows\Cookies\
+c:\users\USERNAME\AppData\Roaming\Microsoft\Windows\IECompatCache\
+c:\users\USERNAME\AppData\Roaming\Microsoft\Windows\PrivacIE
+c:\users\USERNAME\AppData\Roaming\Microsoft\Windows\IETldCache
+c:\users\USERNAME\AppData\Roaming\Macromedia\
+c:\users\USERNAME\AppData\Local\Microsoft\Internet Explorer\DOMStore\
+c:\users\USERNAME\AppData\Local\Temp\
+c:\users\USERNAME\AppData\LocalLow\Macromedia\
+c:\users\USERNAME\AppData\LocalLow\Sun\
+c:\users\USERNAME\AppData\Local\Temp\Webex\
+c:\users\USERNAME\AppData\Local\Temp\WebexGPC\
+c:\users\USERNAME\AppData\LocalLow\Sun\
+c:\users\USERNAME\AppData\LocalLow\WebEx\
+c:\users\USERNAME\AppData\Roaming\Elluminate\
+c:\users\USERNAME\AppData\Roaming\webex\
+c:\Windows\temp\

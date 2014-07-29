@@ -62,7 +62,7 @@
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                        <DataTrigger Binding="{Binding Machine.IsOnline}" Value="False">
                                             <Setter Property="Foreground" Value="Red"/>
                                         </DataTrigger>
                                     </Style.Triggers>

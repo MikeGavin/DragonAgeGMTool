@@ -171,26 +171,33 @@ namespace Minion.Tool
         /// </summary>
         public async System.Threading.Tasks.Task Run()
         {
-            if (_copyfrom != null & _copyto != null) { await Copy(); }
+            try
+            {
+                if (_copyfrom != null & _copyto != null) { await Copy(); }
 
-            StartInfo.FileName = (_path + _filename);
-            StartInfo.Arguments = _arguments;
-            log.Debug(string.Format("Filename:{0}", StartInfo.FileName));
-            log.Debug(string.Format("Arguments:{0}", StartInfo.Arguments));
-            var pProcess = System.Diagnostics.Process.Start(StartInfo);
-            StandardOutput = await pProcess.StandardOutput.ReadToEndAsync();
-            StandardError = await pProcess.StandardError.ReadToEndAsync();
-            //pProcess.WaitForExit();
-           
+                StartInfo.FileName = (_path + _filename);
+                StartInfo.Arguments = _arguments;
+                log.Debug(string.Format("Filename:{0}", StartInfo.FileName));
+                log.Debug(string.Format("Arguments:{0}", StartInfo.Arguments));
+                var pProcess = System.Diagnostics.Process.Start(StartInfo);
+                StandardOutput = await pProcess.StandardOutput.ReadToEndAsync();
+                StandardError = await pProcess.StandardError.ReadToEndAsync();
+                //pProcess.WaitForExit();
 
-            ExitCode = pProcess.ExitCode;
-            log.Debug("ExitCode: " + ExitCode.ToString());
 
-            ManageOutput();
-            log.Debug("StandardOutput: " + StandardOutput);
-            log.Debug("StandardError: " + StandardError);
+                ExitCode = pProcess.ExitCode;
+                log.Debug("ExitCode: " + ExitCode.ToString());
 
-            RaiseExecuted();
+                ManageOutput();
+                log.Debug("StandardOutput: " + StandardOutput);
+                log.Debug("StandardError: " + StandardError);
+
+                RaiseExecuted();
+            }
+            catch (Exception e)
+            {
+                log.Debug(e);
+            }
         }
 
         protected virtual async System.Threading.Tasks.Task Copy()

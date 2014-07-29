@@ -45,7 +45,8 @@ namespace Minion
                         Install_Copy = reader["Install_Copy"].ToString(),
                         Install_Command = reader["Install_Command"].ToString(),
                         Uninstall_Copy = reader["Uninstall_Copy"].ToString(),
-                        Uninstall_Command = reader["Uninstall_Command"].ToString()
+                        Uninstall_Command = reader["Uninstall_Command"].ToString(),
+                        CopyTo = reader["CopyTo"].ToString()
                     });
                 minion.Close();
 

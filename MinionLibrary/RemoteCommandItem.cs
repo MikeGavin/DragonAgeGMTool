@@ -17,13 +17,15 @@ namespace Minion
         public string Install_Command { get; internal set; }
         public string Uninstall_Copy { get; internal set; }
         public string Uninstall_Command { get; internal set; }
+        public string CopyTo { get; internal set; }
     }
 
     public class RemoteCommand
     {
         public string Name { get;  set; }
         public string Version { get;  set; }
-        public string Copy { get;  set; }
+        public string CopyFrom { get;  set; }
+        public string CopyTo { get; set; }
         public string Command { get;  set; }
 
     }

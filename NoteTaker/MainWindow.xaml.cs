@@ -84,6 +84,7 @@ namespace Scrivener
             //    Properties.Settings.Default.QuickNotes_Visibility = false;
             //}
             Properties.Settings.Default.Save();
+            
         }
 
         private void Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)

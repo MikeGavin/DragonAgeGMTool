@@ -28,8 +28,8 @@ namespace Scrivener.ViewModel
             _minionCommands = commands;
             //debuging
             
-           // _NewMinionIPAddress = "192.168.1.114";
-           // AddMinionItem();
+            //_NewMinionIPAddress = "192.168.1.114";
+            //AddMinionItem();
             
         }
 
@@ -37,11 +37,15 @@ namespace Scrivener.ViewModel
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (MinionItemViewModel minionItem in e.NewItems)
+                {
                     minionItem.RequestClose += this.OnItemRequestClose;
+                }
 
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (MinionItemViewModel minionItem in e.OldItems)
+                {
                     minionItem.RequestClose -= this.OnItemRequestClose;
+                }
         }
 
         void OnItemRequestClose(object sender, EventArgs e)

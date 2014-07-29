@@ -22,7 +22,7 @@ namespace Minion.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Minion.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Minion.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Minion.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -71,7 +71,7 @@ namespace Minion.Properties {
         ///c:\users\USERNAME\AppData\Local\Temp\
         ///c:\users\USERNAME\AppD [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string FileDeleteList {
+        public static string FileDeleteList {
             get {
                 return ResourceManager.GetString("FileDeleteList", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace Minion.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] paexec {
+        public static byte[] paexec {
             get {
                 object obj = ResourceManager.GetObject("paexec", resourceCulture);
                 return ((byte[])(obj));
@@ -90,7 +90,7 @@ namespace Minion.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] PsExec {
+        public static byte[] PsExec {
             get {
                 object obj = ResourceManager.GetObject("PsExec", resourceCulture);
                 return ((byte[])(obj));
@@ -100,7 +100,7 @@ namespace Minion.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] pskill {
+        public static byte[] pskill {
             get {
                 object obj = ResourceManager.GetObject("pskill", resourceCulture);
                 return ((byte[])(obj));
@@ -110,7 +110,7 @@ namespace Minion.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] PsLoggedon {
+        public static byte[] PsLoggedon {
             get {
                 object obj = ResourceManager.GetObject("PsLoggedon", resourceCulture);
                 return ((byte[])(obj));
@@ -120,7 +120,7 @@ namespace Minion.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] psshutdown {
+        public static byte[] psshutdown {
             get {
                 object obj = ResourceManager.GetObject("psshutdown", resourceCulture);
                 return ((byte[])(obj));

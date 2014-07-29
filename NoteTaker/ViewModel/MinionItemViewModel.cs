@@ -15,8 +15,12 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
-        public delegate void MinionHandler(object myobject, Model.MinionArgs args);
-        public event MinionHandler NoteWrite;
+        private void RaiseNoteWrite(string message)
+        {
+            if (NoteWrite != null) { NoteWrite(this, new Model.MinionArgs(message)); }
+        }
+        public event EventHandler<Model.MinionArgs> NoteWrite;
+
 
         public event EventHandler RequestClose;
         void RaiseRequestClose()
@@ -86,17 +90,17 @@ namespace Scrivener.ViewModel
             {
                 item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as Minion.RemoteCommandImport;
             }
-            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Uninstall_Copy, Command = item.Uninstall_Command };
+            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Uninstall_Copy, Command = item.Uninstall_Command };
 
             await Machine.Kill_Defaultss();
             var result = await Machine.Command(command, "Uninstall");
             await Machine.Get_Java();
             if (Machine.Java == "NOT INSTALLED")
-                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall and Java is no longer reported as installed."));
+                RaiseNoteWrite("Ran automated Java uninstall and Java is no longer reported as installed.");
             else if (Machine.Java != "Error")
-                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall but attempt to lookup current Java verson returned an error."));
+                RaiseNoteWrite("Ran automated Java uninstall but attempt to lookup current Java verson returned an error.");
             else
-                NoteWrite(this, new Model.MinionArgs("Ran automated Java uninstall but was unable to verify uninstall."));
+               RaiseNoteWrite("Ran automated Java uninstall but was unable to verify uninstall.");
         }
 
 
@@ -108,16 +112,17 @@ namespace Scrivener.ViewModel
             var sort = MinionCommands.Java.OrderByDescending(x => x.Version).ToList();
             var item = sort[1];
             //var item = _minionCommands.Java.First(j => (j.Name == "Java") && (j.Version.Contains("55"))) as Minion.RemoteCommandImport;
-            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, Copy = item.Install_Copy, Command = item.Install_Command };
+            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Install_Copy, CopyTo = item.CopyTo, Command = item.Install_Command };
 
             await Machine.Kill_Defaultss();
             var result = await Machine.Command(command, "Install");
+            await Machine.Get_Java();
             if (Machine.Java == "Error")
-                NoteWrite(this, new Model.MinionArgs("Ran automated Java install but attempt to lookup current Java verson returned an error."));
+                RaiseNoteWrite("Ran automated Java install but attempt to lookup current Java verson returned an error.");
             else if (Machine.Java == "NOT INSTALLED")
-                NoteWrite(this, new Model.MinionArgs("Ran automated Java install but the install failed."));
+                RaiseNoteWrite("Ran automated Java install but the install failed.");
             else
-                NoteWrite(this, new Model.MinionArgs(string.Format("Ran automated Java install and successfully installed Java {0}.", Machine.Java)));
+                RaiseNoteWrite(string.Format("Ran automated Java install and successfully installed Java {0}.", Machine.Java));
 
         }
 

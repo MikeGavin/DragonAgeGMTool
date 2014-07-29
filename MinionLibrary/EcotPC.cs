@@ -479,10 +479,12 @@ namespace Minion
             Processing++;
             History = string.Format("Running {0} of {1} Version {2}", action, item.Name, item.Version);
             Minion.Tool.PAExec paexec;
-            if (item.Copy == string.Empty || item.Copy == null)
+            if (string.IsNullOrEmpty(item.CopyFrom))
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Command);
+            else if (string.IsNullOrEmpty(item.CopyTo))
+                paexec = new Minion.Tool.PAExec(IPAddress, item.Command, item.CopyFrom);
             else
-                paexec = new Minion.Tool.PAExec(IPAddress, item.Copy, item.Command);
+                paexec = new Minion.Tool.PAExec(IPAddress, item.Command, item.CopyFrom, item.CopyTo);
 
             await paexec.Run();
 
@@ -516,14 +518,13 @@ namespace Minion
             Processing++;
             var startInfo = new System.Diagnostics.ProcessStartInfo
             {
-                FileName = (@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe"),
                 Arguments = (@"-c: -h: -a:1 -x -m:" + IPAddress.ToString()),
             };
 
             if (System.IO.File.Exists(@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe"))
             {
                 log.Info("Launching Dameware 10 x64");
-                System.Diagnostics.Process.Start(startInfo);
+                startInfo.FileName = (@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe");
             }
             else if (System.IO.File.Exists(@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 9.0\DWRCC.exe"))
             {
