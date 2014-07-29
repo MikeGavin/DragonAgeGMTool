@@ -133,10 +133,20 @@ namespace Scrivener.ViewModel
 
         public void AppendQuickItem()
         {
-            if (SelectedQuickItem.SubItems.Count > 0)
-                return;
-            else
-                Text += System.Environment.NewLine + SelectedQuickItem.Content;
+            if (Properties.Settings.Default.DashinNotes == true)
+            {
+                if (SelectedQuickItem.SubItems.Count > 0)
+                    return;
+                else
+                    Text += System.Environment.NewLine + "- " + SelectedQuickItem.Content;
+            }
+            else if (Properties.Settings.Default.DashinNotes == false)
+            {
+                if (SelectedQuickItem.SubItems.Count > 0)
+                    return;
+                else
+                    Text += System.Environment.NewLine + SelectedQuickItem.Content;
+            }
         }
 
         public void CopyQuickItem()
