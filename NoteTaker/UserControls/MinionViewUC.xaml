@@ -55,7 +55,21 @@
                         <controls:ProgressRing IsActive="{Binding Machine.Active, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0">
                             <TextBlock.ContextMenu>
-                                <ContextMenu>
+                                <ContextMenu FontSize="12" Padding="0" BorderThickness="0" Height="auto" Width="auto">
+                                <MenuItem Header="Remote Launch" ItemsSource="{Binding MinionCommands.RemoteStartCommands}">
+                                        <MenuItem.ItemContainerStyle>
+                                            <Style TargetType="MenuItem">  
+                                                <Setter Property="Command" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBlock}}, Path=DataContext.RemoteStartCommand}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding Command}"/>
+                                            </Style>
+                                        </MenuItem.ItemContainerStyle>    
+                                    <MenuItem.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type MenuItem}">
+                                                <TextBlock Text="{Binding Path=Name}"/>
+                                        </DataTemplate>
+                                    </MenuItem.ItemTemplate>
+                                   
+                                </MenuItem>
                                     <MenuItem Header="Reboot" Command="{Binding RebootCommand}"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>

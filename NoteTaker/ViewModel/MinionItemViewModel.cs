@@ -20,8 +20,6 @@ namespace Scrivener.ViewModel
             if (NoteWrite != null) { NoteWrite(this, new Model.MinionArgs(message)); }
         }
         public event EventHandler<Model.MinionArgs> NoteWrite;
-
-
         public event EventHandler RequestClose;
         void RaiseRequestClose()
         {
@@ -29,11 +27,11 @@ namespace Scrivener.ViewModel
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
+
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(RaiseRequestClose)); } }
-
-        public Minion.MinionCommands MinionCommands { get; protected set; }
-        public Minion.RemoteStartItem SelectedStartItem { get; set; }
+        private Minion.MinionCommands _minionCommands;
+        public Minion.MinionCommands MinionCommands { get { return _minionCommands; } set { _minionCommands = value; } }
 
         public Minion.EcotPC Machine { get; protected set; }
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
@@ -44,7 +42,6 @@ namespace Scrivener.ViewModel
         {
             Machine = new Minion.EcotPC(IP);
             MinionCommands = commands;
-            SelectedStartItem = MinionCommands.RemoteStartCommands[0];
         }
         public string Title { get { return Machine.IPAddress.ToString(); } }
      
@@ -127,12 +124,12 @@ namespace Scrivener.ViewModel
         }
 
 
-        private RelayCommand _remoteStartCommand;
-        public RelayCommand RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand(async () => await RemoteStart())); } }
+        private RelayCommand<string> _remoteStartCommand;
+        public RelayCommand<string> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<string>(async (param) => await RemoteStart(param))); } }
 
-        public async Task RemoteStart()
+        public async Task RemoteStart(string command)
         {
-            Minion.Tool.PSExec psexec = new Minion.Tool.PSExec(Machine.IPAddress, string.Format("-accepteula -i -s -h -d {0}", SelectedStartItem.Command));
+            Minion.Tool.PSExec psexec = new Minion.Tool.PSExec(Machine.IPAddress, string.Format("-accepteula -i -s -h -d {0}", command));
             await psexec.Run();
         }
         

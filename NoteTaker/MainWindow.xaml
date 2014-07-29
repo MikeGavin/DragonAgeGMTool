@@ -140,12 +140,17 @@
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button>
                 <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}" Command="{Binding OpenURLCommand}" Padding="0" Margin="0">
-
+                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+                                <Setter Property="CommandParameter" Value="{Binding Content}"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
                         <MenuItem.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
-                                <MenuItem Header="{Binding Path=Title}" ToolTip="{Binding Path=Content}" Height="auto" Width="auto" FontSize="12" Padding="0" Foreground="{DynamicResource AccentColorBrush2}"
-                                          Command="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}" CommandParameter="{Binding Content}"/>
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
                             </HierarchicalDataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>
