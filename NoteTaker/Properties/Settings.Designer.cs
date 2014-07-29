@@ -190,5 +190,17 @@ namespace Scrivener.Properties {
                 this["Close_Warning"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DashinNotes {
+            get {
+                return ((bool)(this["DashinNotes"]));
+            }
+            set {
+                this["DashinNotes"] = value;
+            }
+        }
     }
 }
