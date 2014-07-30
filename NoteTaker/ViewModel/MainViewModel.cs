@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Scrivener.UserControls;
+using System.Data.SQLite;
 
 
 namespace Scrivener.ViewModel
@@ -147,6 +148,15 @@ namespace Scrivener.ViewModel
                     QuicknoteVisibility = Visibility.Visible.ToString();
                     break;
             }
+
+            string Date = DateTime.Now.ToString("MM/dd/yyyy"); ;
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([Caller] NVARCHAR(2048) NOT NULL PRIMARY KEY,[Notes] NVARCHAR(2048) NULL);", Date);
+            SQLiteCommand command = new SQLiteCommand(query, Call_history);
+            Call_history.Open();
+            command.ExecuteNonQuery();
+            Call_history.Close();
 
             NewNote();            
         }
