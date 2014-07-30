@@ -79,12 +79,12 @@ namespace Scrivener.Model
 
             root = new QuickItem() { Title = "Menu" };
 
-            if (Root_uniqueitems.Count > 0)
+            if (Root_uniqueitems.Count > 1)
             {
                 foreach (DBPull item in Root_uniqueitems)
                 {
                     QuickItem Root_Item = new QuickItem() { Title = item.Root_Folder };
-                    if (Sub1uniqueitems.Count > 0)
+                    if (Sub1uniqueitems.Count > 1)
                     {
                         foreach (DBPull item1 in Sub1uniqueitems)
                         {
@@ -94,7 +94,7 @@ namespace Scrivener.Model
                             {
                                 Root_Item.SubItems.Add(Sub_Item_1);
                             }
-                            if (Sub2uniqueitems.Count > 0)
+                            if (Sub2uniqueitems.Count > 1)
                             {
                                 foreach (DBPull item2 in Sub2uniqueitems)
                                 {
@@ -104,7 +104,7 @@ namespace Scrivener.Model
                                     {
                                         Sub_Item_1.SubItems.Add(Sub_Item_2);
                                     }
-                                    if (Sub3uniqueitems.Count > 0)
+                                    if (Sub3uniqueitems.Count > 1)
                                     {
                                         foreach (DBPull item3 in Sub3uniqueitems)
                                         {
@@ -114,7 +114,7 @@ namespace Scrivener.Model
                                             {
                                                 Sub_Item_2.SubItems.Add(Sub_Item_3);
                                             }
-                                            if (Sub4uniqueitems.Count > 0)
+                                            if (Sub4uniqueitems.Count > 1)
                                             {
                                                 foreach (DBPull item4 in Sub4uniqueitems)
                                                 {
@@ -124,70 +124,80 @@ namespace Scrivener.Model
                                                     {
                                                         Sub_Item_3.SubItems.Add(Sub_Item_4);
                                                     }
-                                                    #region hide
-                                                    //                    foreach (DBPull item5 in Sub5uniqueitems)
-                                                    //                    {
-                                                    //                        QuickItem Sub_Item_5 = new QuickItem() { Title = item5.Sub_Folder_5, Content = item5.Verbage };
+                                                    if (Sub5uniqueitems.Count > 1)
+                                                    {
+                                                        foreach (DBPull item5 in Sub5uniqueitems)
+                                                        {
+                                                            QuickItem Sub_Item_5 = new QuickItem() { Title = item5.Sub_Folder_5, Content = item5.Verbage };
 
-                                                    //                        if (item5.Sub_Folder_4 == Sub_Item_4.Title && item5.Sub_Folder_5 != string.Empty)
-                                                    //                        {
-                                                    //                            Sub_Item_4.SubItems.Add(Sub_Item_5);
-                                                    //                        }
+                                                            if (item5.Sub_Folder_4 == Sub_Item_4.Title && item5.Sub_Folder_5 != string.Empty)
+                                                            {
+                                                                Sub_Item_4.SubItems.Add(Sub_Item_5);
+                                                            }
+                                                            if (Sub6uniqueitems.Count > 1)
+                                                            {
+                                                                foreach (DBPull item6 in Sub6uniqueitems)
+                                                                {
+                                                                    QuickItem Sub_Item_6 = new QuickItem() { Title = item6.Sub_Folder_6, Content = item6.Verbage };
 
-                                                    //                        foreach (DBPull item6 in Sub6uniqueitems)
-                                                    //                        {
-                                                    //                            QuickItem Sub_Item_6 = new QuickItem() { Title = item6.Sub_Folder_6, Content = item6.Verbage };
+                                                                    if (item6.Sub_Folder_5 == Sub_Item_5.Title && item6.Sub_Folder_6 != string.Empty)
+                                                                    {
+                                                                        Sub_Item_5.SubItems.Add(Sub_Item_6);
+                                                                    }
+                                                                    if (Sub7uniqueitems.Count > 1)
+                                                                    {
+                                                                        foreach (DBPull item7 in Sub7uniqueitems)
+                                                                        {
+                                                                            QuickItem Sub_Item_7 = new QuickItem() { Title = item7.Sub_Folder_7, Content = item7.Verbage };
 
-                                                    //                            if (item6.Sub_Folder_5 == Sub_Item_5.Title && item6.Sub_Folder_6 != string.Empty)
-                                                    //                            {
-                                                    //                                Sub_Item_5.SubItems.Add(Sub_Item_6);
-                                                    //                            }
+                                                                            if (item7.Sub_Folder_6 == Sub_Item_6.Title && item7.Sub_Folder_7 != string.Empty)
+                                                                            {
+                                                                                Sub_Item_6.SubItems.Add(Sub_Item_7);
+                                                                            }
+                                                                            if (Sub8uniqueitems.Count > 1)
+                                                                            {
+                                                                                foreach (DBPull item8 in Sub8uniqueitems)
+                                                                                {
+                                                                                    QuickItem Sub_Item_8 = new QuickItem() { Title = item8.Sub_Folder_8, Content = item8.Verbage };
 
-                                                    //                            foreach (DBPull item7 in Sub7uniqueitems)
-                                                    //                            {
-                                                    //                                QuickItem Sub_Item_7 = new QuickItem() { Title = item7.Sub_Folder_7, Content = item7.Verbage };
+                                                                                    if (item8.Sub_Folder_7 == Sub_Item_7.Title && item8.Sub_Folder_8 != string.Empty)
+                                                                                    {
+                                                                                        Sub_Item_7.SubItems.Add(Sub_Item_8);
+                                                                                    }
+                                                                                    if (Sub9uniqueitems.Count > 1)
+                                                                                    {
+                                                                                        foreach (DBPull item9 in Sub9uniqueitems)
+                                                                                        {
+                                                                                            QuickItem Sub_Item_9 = new QuickItem() { Title = item9.Sub_Folder_9, Content = item9.Verbage };
 
-                                                    //                                if (item7.Sub_Folder_6 == Sub_Item_6.Title && item7.Sub_Folder_7 != string.Empty)
-                                                    //                                {
-                                                    //                                    Sub_Item_6.SubItems.Add(Sub_Item_7);
-                                                    //                                }
+                                                                                            if (item9.Sub_Folder_8 == Sub_Item_8.Title && item9.Sub_Folder_9 != string.Empty)
+                                                                                            {
+                                                                                                Sub_Item_8.SubItems.Add(Sub_Item_9);
+                                                                                            }                                                                                            
+                                                                                            if (Sub10uniqueitems.Count > 1)
+                                                                                            {
+                                                                                                foreach (DBPull item10 in Sub10uniqueitems)
+                                                                                                {
+                                                                                                    QuickItem Sub_Item_10 = new QuickItem() { Title = item10.Sub_Folder_10, Content = item10.Verbage };
 
-                                                    //                                foreach (DBPull item8 in Sub8uniqueitems)
-                                                    //                                {
-                                                    //                                    QuickItem Sub_Item_8 = new QuickItem() { Title = item8.Sub_Folder_8, Content = item8.Verbage };
+                                                                                                    if (item10.Sub_Folder_9 == Sub_Item_9.Title && item10.Sub_Folder_10 != string.Empty)
+                                                                                                    {
+                                                                                                        Sub_Item_9.SubItems.Add(Sub_Item_10);
+                                                                                                    }
 
-                                                    //                                    if (item8.Sub_Folder_7 == Sub_Item_7.Title && item8.Sub_Folder_8 != string.Empty)
-                                                    //                                    {
-                                                    //                                        Sub_Item_7.SubItems.Add(Sub_Item_8);
-                                                    //                                    }
-
-                                                    //                                    foreach (DBPull item9 in Sub9uniqueitems)
-                                                    //                                    {
-                                                    //                                        QuickItem Sub_Item_9 = new QuickItem() { Title = item9.Sub_Folder_9, Content = item9.Verbage };
-
-                                                    //                                        if (item9.Sub_Folder_8 == Sub_Item_8.Title && item9.Sub_Folder_9 != string.Empty)
-                                                    //                                        {
-                                                    //                                            Sub_Item_8.SubItems.Add(Sub_Item_9);
-                                                    //                                        }
-
-                                                    //                                        foreach (DBPull item10 in Sub10uniqueitems)
-                                                    //                                        {
-                                                    //                                            QuickItem Sub_Item_10 = new QuickItem() { Title = item10.Sub_Folder_10, Content = item10.Verbage };
-
-                                                    //                                            if (item10.Sub_Folder_9 == Sub_Item_9.Title && item10.Sub_Folder_10 != string.Empty)
-                                                    //                                            {
-                                                    //                                                Sub_Item_9.SubItems.Add(Sub_Item_10);
-                                                    //                                            }
-
-                                                    //                                        }
-                                                    //                                    }
-                                                    //                                }
-                                                    //                            }
-                                                    //                        }
-                                                    //                    }
-                                                    #endregion
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
-
                                             }
                                         }
                                     }
@@ -195,14 +205,8 @@ namespace Scrivener.Model
                             }
                         }
                     }
-
-
-
-
-                    root.SubItems.Add(Root_Item);
-
-                }
-                
+                root.SubItems.Add(Root_Item);
+                }                
             }
             return root;
         }
