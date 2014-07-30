@@ -18,11 +18,11 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionViewModel : ViewModelBase
     {
-        private MinionCommands _minionCommands;
+        private ObservableCollection<MinionCommandItem> _minionCommands;
         /// <summary>
         /// Initializes a new instance of the MvvmViewModel1 class.
         /// </summary>
-        public MinionViewModel(MinionCommands commands)
+        public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
         {
             MinionCollection.CollectionChanged += OnItemsChanged;
             _minionCommands = commands;

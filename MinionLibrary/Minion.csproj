@@ -83,12 +83,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MinionCommands.cs" />
     <Compile Include="IEcotPC.cs" />
     <Compile Include="Lists\ProperityItem.cs" />
-    <Compile Include="RemoteCommandItem.cs" />
     <Compile Include="EcotPC.cs" />
     <Compile Include="Lists\EcotPCCommand.cs" />
+    <Compile Include="MinionCommandItem.cs" />
     <Compile Include="Tool\File.cs" />
     <Compile Include="Process\ToolBase.cs" />
     <Compile Include="Process\SilentProcess.cs" />

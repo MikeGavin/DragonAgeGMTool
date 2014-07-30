@@ -175,6 +175,6 @@
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
-        <TextBlock Grid.Column="4" Text="{Binding Machine.History}" Height="Auto" Grid.RowSpan="2147483647" MaxHeight="300" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <TextBlock Grid.Column="4" Text="{Binding Machine.History}" Grid.RowSpan="2147483647" MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </UserControl>

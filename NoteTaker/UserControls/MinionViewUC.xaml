@@ -56,11 +56,11 @@
                         <TextBlock Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0">
                             <TextBlock.ContextMenu>
                                 <ContextMenu FontSize="12" Padding="0" Height="auto" Width="auto">
-                                <MenuItem Header="Remote Launch" ItemsSource="{Binding MinionCommands.RemoteStartCommands}">
+                                <MenuItem Header="Remote Launch" ItemsSource="{Binding MinionStartCommands}">
                                         <MenuItem.ItemContainerStyle>
                                             <Style TargetType="MenuItem">  
                                                 <Setter Property="Command" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TextBlock}}, Path=DataContext.RemoteStartCommand}"/>
-                                                <Setter Property="CommandParameter" Value="{Binding Command}"/>
+                                                <Setter Property="CommandParameter" Value="{Binding }"/>
                                             </Style>
                                         </MenuItem.ItemContainerStyle>    
                                     <MenuItem.ItemTemplate>

@@ -60,12 +60,12 @@ namespace Scrivener.ViewModel
         public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(OnRequestClose)); } }
 
         // local minion instance for this note.
-        private MinionCommands _minionCommands;
+        private ObservableCollection<MinionCommandItem> _minionCommands;
         private MinionViewModel _noteMinion;
         public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
 
 
-        public NoteViewModel(QuickItem _tree, MinionCommands commands)
+        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands)
         {
             Text = Properties.Settings.Default.Default_Note_Template;
             _minionCommands = commands;

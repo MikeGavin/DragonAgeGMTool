@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using Minion;
+using System.Collections.Generic;
+using NLog.Targets;
+using NLog;
+using Scrivener.Helpers;
 
 namespace Scrivener.ViewModel
 {
@@ -17,7 +23,11 @@ namespace Scrivener.ViewModel
     public class MinionItemViewModel : ViewModelBase
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        
+
+
+
+        public delegate Task<bool> TestDel(MinionCommandItem item);
+
         #region Events
         public event EventHandler<Model.MinionArgs> NoteWrite;
         private void RaiseNoteWrite(string message)
@@ -32,20 +42,27 @@ namespace Scrivener.ViewModel
                 handler(this, EventArgs.Empty);
         } 
         #endregion
-
+        public string locallog { get; set; }
         //Constructor
-        public MinionItemViewModel(IPAddress IP, Minion.MinionCommands commands)
+        public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
             Machine = new Minion.EcotPC(IP);
-            MinionCommands = commands;
+            _minionCommands = commands;
+
+            
+            string locallog = string.Empty;
+         
         }
+
+
         
         public string Title { get { return Machine.IPAddress.ToString(); } }
         
         public Minion.EcotPC Machine { get; protected set; }
 
-        private Minion.MinionCommands _minionCommands;
-        public Minion.MinionCommands MinionCommands { get { return _minionCommands; } protected set { _minionCommands = value; } }
+        private ObservableCollection<MinionCommandItem> _minionCommands;
+        private ObservableCollection<MinionCommandItem> _minionStartCommands;
+        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>( (from item in _minionCommands where item.Action == "Start" select item).ToList())); } }
 
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(RaiseRequestClose)); } }
@@ -80,12 +97,11 @@ namespace Scrivener.ViewModel
         private RelayCommand _openCShareCommand;
         public RelayCommand OpenCShareCommand { get { return _openCShareCommand ?? (_openCShareCommand = new RelayCommand(async () => await Machine.OpenCShare())); } }
 
-        private RelayCommand<string> _remoteStartCommand;
-        public RelayCommand<string> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<string>(async (param) => await RemoteStart(param))); } }
-        public async Task RemoteStart(string command)
+        private RelayCommand<MinionCommandItem> _remoteStartCommand;
+        public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } }
+        public async Task RemoteStart(MinionCommandItem command)
         {
-            Minion.Tool.PSExec psexec = new Minion.Tool.PSExec(Machine.IPAddress, string.Format("-accepteula -i -s -h -d {0}", command));
-            await psexec.Run();
+            await Machine.Command(command);
         }
 
         private RelayCommand _defaultKillsCommand;
@@ -98,114 +114,186 @@ namespace Scrivener.ViewModel
         public RelayCommand UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand(async () => await Uninstall_Java())); } }
         public async Task Uninstall_Java()
         {
-            Minion.RemoteCommandImport item;
-            if (Machine.Java == "NOT INSTALLED" || Machine.Java == "ERROR")
+            try
             {
-                item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == "All")) as Minion.RemoteCommandImport;
+                MinionCommandItem item;
+                if (Machine.Java == "NOT INSTALLED" || Machine.Java == "ERROR")
+                {
+                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
+                }
+                else
+                {
+                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == Machine.Java)) as MinionCommandItem;
+                }
+                await RunSoftwareCommand(item);
             }
-            else
+            catch (Exception e)
             {
-                item = MinionCommands.Java.First(j => (j.Name == "Java") && (j.Version == Machine.Java)) as Minion.RemoteCommandImport;
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+                return;
             }
-            await Uninstall(item);
         }
 
         private RelayCommand _installJavaCommand;
         public RelayCommand InstallJavaCommand { get { return _installJavaCommand ?? (_installJavaCommand = new RelayCommand(async () => await Install_Java())); } }
         public async Task Install_Java()
         {
-            var sort = MinionCommands.Java.OrderByDescending(x => x.Version).ToList();
-            var item = sort[1];
-            await Install(item);
+            try 
+            { 
+                var sort = _minionCommands.OrderByDescending(x => x.Version).ToList();
+                var item = sort[9];
+                await RunSoftwareCommand(item);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+                return;
+            }
         }
 
         private RelayCommand _uninstallFlashCommand;
         public RelayCommand UninstallFlashCommand { get { return _uninstallFlashCommand ?? (_uninstallFlashCommand = new RelayCommand(async () => await Uninstall_Flash())); } }
         public async Task Uninstall_Flash()
         {
-            Minion.RemoteCommandImport item;
-            if (Machine.Flash == "NOT INSTALLED" || Machine.Flash == "ERROR")
+            try
             {
-                item = MinionCommands.Flash.First(f => (f.Name == "Flash") && (f.Version == "All")) as Minion.RemoteCommandImport;
+                MinionCommandItem item;
+
+                item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
+                
+                await RunSoftwareCommand(item);
             }
-            else
+            catch (Exception e)
             {
-                item = MinionCommands.Flash.First(f => (f.Name == "Flash") && (f.Version == Machine.Flash)) as Minion.RemoteCommandImport;
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+                return;
             }
+
             
-            await Uninstall(item);
         }
 
         private RelayCommand _installFlashCommand;
         public RelayCommand InstallFlashCommand { get { return _installFlashCommand ?? (_installFlashCommand = new RelayCommand(async () => await Install_Flash())); } }
         public async Task Install_Flash()
         {
-            Minion.RemoteCommandImport item;
-            item = MinionCommands.Flash.First(f => (f.Name == "Flash") && (f.Version != "All")) as Minion.RemoteCommandImport;
-            await Install(item);
+            try
+            {
+                MinionCommandItem item;
+                item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Install") && (f.Version != "All")) as MinionCommandItem;
+                await RunSoftwareCommand(item);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+                return;
+            }
         }
 
         private RelayCommand _uninstallShockwaveCommand;
         public RelayCommand UninstallShockwaveCommand { get { return _uninstallShockwaveCommand ?? (_uninstallShockwaveCommand = new RelayCommand(async () => await Uninstall_Shockwave())); } }
         public async Task Uninstall_Shockwave()
         {
-            Minion.RemoteCommandImport item;
+            MinionCommandItem item;
             try
-            { 
-                item = MinionCommands.Shockwave.First(f => (f.Name == "Shockwave") && (f.Version == Machine.Shockwave)) as Minion.RemoteCommandImport; 
+            {
+                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
             }
             catch (Exception e)
             {
                 log.Error(e);
-                item = MinionCommands.Shockwave.First(f => (f.Name == "Shockwave") && (f.Version == "All")) as Minion.RemoteCommandImport;
+                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
             }
-           
 
-            await Uninstall(item);
+            await RunSoftwareCommand(item);
         }
 
         private RelayCommand _installShockwaveCommand;
         public RelayCommand InstallShockwaveCommand { get { return _installShockwaveCommand ?? (_installShockwaveCommand = new RelayCommand(async () => await Install_Shockwave())); } }
         public async Task Install_Shockwave()
         {
-            Minion.RemoteCommandImport item;
-            item = MinionCommands.Shockwave.First(f => (f.Name == "Flash") && (f.Version != "All")) as Minion.RemoteCommandImport;
-            await Install(item);
+            try
+            {
+                MinionCommandItem item;
+                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Install")) as MinionCommandItem;
+                await RunSoftwareCommand(item);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+            }
         }
 
-        private async Task Install(Minion.RemoteCommandImport item)
+        private RelayCommand _uninstallReaderCommand;
+        public RelayCommand UninstallReaderCommand { get { return _uninstallReaderCommand ?? (_uninstallReaderCommand = new RelayCommand(async () => await Uninstall_Reader())); } }
+        public async Task Uninstall_Reader()
         {
-            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Install_Copy, CopyTo = item.CopyTo, Command = item.Install_Command };
-            //await Machine.Kill_Defaultss();
-            var result = await Machine.Command(command, "Install");
-            string vresult = await UpdateItemVersion(item);
-                        
-            if (vresult == "NOT INSTALLED")
-                RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", item.Name, item.Version));
-            else if (vresult == "ERROR")
-                RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", item.Name));
-            else if (vresult == item.Version)
-                RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", item.Name, vresult));
-            else
-                RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", item.Name));
+            MinionCommandItem item;
+            try
+            {
+                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
+            }
+
+            await RunSoftwareCommand(item);
         }
 
-        private async Task Uninstall(Minion.RemoteCommandImport item)
+        private RelayCommand _installReaderCommand;
+        public RelayCommand InstallReaderCommand { get { return _installReaderCommand ?? (_installReaderCommand = new RelayCommand(async () => await Install_Reader())); } }
+        public async Task Install_Reader()
         {
-            Minion.RemoteCommand command = new Minion.RemoteCommand() { Name = item.Name, Version = item.Version, CopyFrom = item.Uninstall_Copy, Command = item.Uninstall_Command };
-            //await Machine.Kill_Defaultss();
-            var result = await Machine.Command(command, "Uninstall");
-            string vresult = await UpdateItemVersion(item);
-                        
-            if (vresult == "NOT INSTALLED")
-                RaiseNoteWrite(string.Format("Ran Minion {0} uninstall and {0} is now no longer reported as installed.", item.Name));
-            else if (vresult == "ERROR")
-                RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but lookup of current {0} verson returned an error.", item.Name));
-            else
-                RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but was unable to verify uninstall.", item.Name));
+            try
+            {
+                MinionCommandItem item;
+                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Install")) as MinionCommandItem;
+                await RunSoftwareCommand(item);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                MetroMessageBox.Show("ERROR!", e.ToString());
+            }
         }
 
-        private async Task<string> UpdateItemVersion(Minion.RemoteCommandImport item)
+        private async Task RunSoftwareCommand(MinionCommandItem command)
+        {
+            
+            await Machine.Kill_Defaultss();
+            var result = await Machine.Command(command);
+            string vresult = await UpdateItemVersion(command);
+
+            if (command.Action == "Uninstall")
+            {
+                if (vresult == "NOT INSTALLED")
+                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall and {0} is now no longer reported as installed.", command.Name));
+                else if (vresult == "ERROR")
+                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but lookup of current {0} verson returned an error.", command.Name));
+                else
+                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but was unable to verify uninstall.", command.Name));
+            }
+            else if (command.Action == "Install")
+            {
+                if (vresult == "NOT INSTALLED")
+                    RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", command.Name, command.Version));
+                else if (vresult == "ERROR")
+                    RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", command.Name));
+                else if (vresult == command.Version)
+                    RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", command.Name, vresult));
+                else
+                    RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", command.Name));
+            }
+
+        }
+
+        private async Task<string> UpdateItemVersion(MinionCommandItem item)
         {
             string result = string.Empty;
             if (item.Name.ToLower().Contains("java"))

@@ -414,13 +414,13 @@ namespace Minion
             var r11 = new Tool.PAExec(IPAddress, string.Format(@"wmic datafile where name='C:\\{0}\\Adobe\\Reader 11.0\\Reader\\AcroRd32.exe' get version", argument));
             await r11.Run();
                         
-            if (r11.StandardOutput.Contains("No Instance(s) Available"))
+            if (r11.StandardError.Contains("No Instance(s) Available"))
             {
                 log.Debug("Reader 11 is not installed");
                 var r10 = new Tool.PAExec(IPAddress, string.Format(@"wmic datafile where name='C:\\{0}\\Adobe\\Reader 10.0\\Reader\\AcroRd32.exe' get version", argument));
                 await r10.Run();
 
-                if (r10.StandardOutput.Contains("No Instance(s) Available"))
+                if (r10.StandardError.Contains("No Instance(s) Available"))
                 {
                     log.Debug("Reader 10 is not installed");
                     Reader = "NOT INSTALLED";
@@ -471,10 +471,14 @@ namespace Minion
 
         #endregion
 
-        public async Task<bool> Command(RemoteCommand item, string action)
+        public async Task<bool> Command(MinionCommandItem item)
         {
             Processing++;
-            History = string.Format("Running {0} of {1} Version {2}", action, item.Name, item.Version);
+            if (item.Version != null || item.Version == string.Empty)
+                History = string.Format("Running {0} of {1} Version {2}", item.Action, item.Name, item.Version);
+            else
+                History = string.Format("Running {0} of {1}", item.Action, item.Name);
+
             Minion.Tool.PAExec paexec;
             if (string.IsNullOrEmpty(item.CopyFrom))
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Command);
