@@ -33,8 +33,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>11</ApplicationRevision>
-    <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
+    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationVersion>1.1.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -186,6 +186,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
+    <Compile Include="Helpers\MemoryEventTarget.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\LocalDatabase.cs" />
     <Compile Include="Model\DataItem.cs" />
@@ -301,6 +302,7 @@
     </EmbeddedResource>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="app.config" />
     <None Include="NLog.xsd">

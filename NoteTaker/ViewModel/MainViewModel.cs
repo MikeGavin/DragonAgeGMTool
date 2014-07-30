@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Scrivener.UserControls;
 using System.Data.SQLite;
+using NLog.Config;
 
 
 namespace Scrivener.ViewModel
@@ -130,6 +131,8 @@ namespace Scrivener.ViewModel
         /// </summary>
         public MainViewModel(IDataService dataService)
         {
+            //ConfigurationItemFactory.Default.Targets.RegisterDefinition("MemoryEventTarget", typeof(Scrivener.MemoryEventTarget));
+
             //Necessary for closing correct notes.
             Notes.CollectionChanged += OnTabsChanged;
             

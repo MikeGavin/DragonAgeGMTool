@@ -24,9 +24,11 @@ namespace Scrivener.ViewModel
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
+        readonly MemoryEventTarget _logTarget;
 
+        private ObservableCollection<LogEventInfo> _logCollection;
+        public ObservableCollection<LogEventInfo> LogCollection { get { return _logCollection; } set{ _logCollection = value; RaisePropertyChanged();} }
 
-        public delegate Task<bool> TestDel(MinionCommandItem item);
 
         #region Events
         public event EventHandler<Model.MinionArgs> NoteWrite;
@@ -42,16 +44,36 @@ namespace Scrivener.ViewModel
                 handler(this, EventArgs.Empty);
         } 
         #endregion
-        public string locallog { get; set; }
+        
         //Constructor
         public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
             Machine = new Minion.EcotPC(IP);
             _minionCommands = commands;
+            log.Error("PreTest");
 
-            
-            string locallog = string.Empty;
-         
+            // init memory queue
+            //_logTarget = new MemoryEventTarget();
+            //NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(_logTarget, LogLevel.Debug);
+
+            foreach (Target target in NLog.LogManager.Configuration.AllTargets)
+            {
+                if (target is MemoryEventTarget)
+                {
+                    LogCollection = new ObservableCollection<LogEventInfo>();
+                    ((MemoryEventTarget)target).EventReceived += EventReceived;
+                }
+            }
+
+            log.Error("Test");
+        }
+
+        private void EventReceived(LogEventInfo message)
+        {
+                if (LogCollection.Count >= 50) 
+                    LogCollection.RemoveAt(LogCollection.Count - 1);
+                LogCollection.Add(message);
+
         }
 
 
