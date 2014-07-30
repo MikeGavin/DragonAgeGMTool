@@ -18,10 +18,7 @@ namespace Minion
     {
         //Logging System
         protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        protected int _processing = 0;
-        public int Processing { get { return _processing; } set { _processing = value; if (_processing > 0) { Active = true; } else { Active = false; } RaisePropertyChanged(); } }
-        protected bool _active;
-        public bool Active { get { return _active; } set { _active = value; RaisePropertyChanged(); } }
+
               
         private List<Lists.EcotPCCommand> CommandList = new List<Lists.EcotPCCommand>() 
         { 
@@ -38,7 +35,6 @@ namespace Minion
                 _IPAddress = ipaddress;
             else
             {
-                History = "IP is unreachable";
                 throw new Exception("IP is unreachable");
             }
 
@@ -71,8 +67,7 @@ namespace Minion
                     if (IsOnline != true)
                     {
                         IsOnline = true;
-                        History = string.Format("{0} is online!", IPAddress.ToString());
-                        log.Info("{0} is online!", IPAddress.ToString());
+                        RaiseHistoryUpdated(string.Format("{0} is online!", IPAddress.ToString()));
                         RaiseOnlineChanged(EventArgs.Empty);
                     }
                 }
@@ -81,7 +76,6 @@ namespace Minion
                     if (IsOnline == true)
                     {
                         IsOnline = false;
-                        History = string.Format("{0} has gone offline!", IPAddress.ToString());
                         log.Warn(string.Format("{0} has gone offline!", IPAddress.ToString()));
                         RaiseOnlineChanged(EventArgs.Empty);
 
@@ -120,8 +114,55 @@ namespace Minion
         }
         public event EventHandler OnlineChanged;
 
-        protected string _History;
-        public string History { get { return _History; } protected set { _History += value + Environment.NewLine; RaisePropertyChanged(); } }
+        protected enum Log
+        {
+            Trace,
+            Debug,
+            Info,
+            Warn,
+            Error,
+            Fatal
+        }
+
+        protected delegate void loggingshit(Log type, string message);
+        protected void RaiseLogUpdated(Log type, string message)
+        {
+            if (type == Log.Trace)
+            {
+                log.Trace(message);
+            }
+            else if (type == Log.Debug)
+            {
+                log.Debug(message);
+            }
+            else if (type == Log.Info)
+            {
+                log.Info(message);
+            }
+            else if (type == Log.Warn)
+            {
+                log.Warn(message);
+            }
+            else if (type == Log.Error)
+            {
+                log.Error(message);
+            }
+            else if (type == Log.Fatal)
+            {
+                log.Fatal(message);
+            }
+
+            if (EventLogged != null) { EventLogged(this, string.Format("{0} |{1}| {2}", DateTime.Now.ToShortTimeString(), type.ToString("F"), message)); }
+        }
+        public event EventHandler<string> EventLogged;
+
+
+        internal void RaiseHistoryUpdated(string message)
+        {
+            log.Info(message);
+            if (HistoryUpdated != null) { HistoryUpdated(this, message); }
+        }
+        public event EventHandler<string> HistoryUpdated;
 
         protected void ListUpdate(ObservableCollection<ProperityItem> items, string val, [CallerMemberName] string prop = "")
         {
@@ -138,8 +179,15 @@ namespace Minion
         #endregion
 
         #region Machine Properties
+        //collection of all properties test
         protected ObservableCollection<ProperityItem> _machine = new ObservableCollection<ProperityItem>();
         public ObservableCollection<ProperityItem> Machine { get { return _machine; } set { _machine = value; RaisePropertyChanged(); } }
+
+        //used to see if machine is active with passed tasked
+        protected int _processing = 0;
+        public int Processing { get { return _processing; } set { _processing = value; if (_processing > 0) { Active = true; } else { Active = false; } RaisePropertyChanged(); } }
+        protected bool _active;
+        public bool Active { get { return _active; } set { _active = value; RaisePropertyChanged(); } }
 
         protected IPAddress _IPAddress;
         public IPAddress IPAddress { get { return _IPAddress; } protected set { _IPAddress = value; RaisePropertyChanged(); } }
@@ -250,18 +298,18 @@ namespace Minion
         {
             
             var machineInfo = CommandList.Find(c => c.Name == "Image");
-            log.Info("Acquiring Image information...");
+            RaiseHistoryUpdated(string.Format("Acquiring Image information..."));
             var paexec = new Tool.PAExec(IPAddress, machineInfo.Command);
             await paexec.Run();
             Image = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\ecot\r\r\n    Image Version    REG_SZ    ", string.Empty).TrimEnd(null);
-            log.Debug("Image: " + Image);
+            log.Trace("Image: " + Image);
 
-            log.Info("Acquiring BOD...");
+            RaiseHistoryUpdated(string.Format("Acquiring BOD..."));
             string f = @"\\" + IPAddress.ToString() + @"\c$\Image_Files\Bginfo\Born on date.txt";
             using (StreamReader r = new StreamReader(f, System.Text.Encoding.ASCII))
             {
                 BOD = r.ReadToEnd();
-                log.Info("BOD:" + BOD);
+                RaiseHistoryUpdated(string.Format("BOD:" + BOD));
             }
 
             Get_VPN();
@@ -319,7 +367,7 @@ namespace Minion
         {
             Processing++;
             Java = "Updating...";
-            log.Info("Acquiring Java Version...");
+            log.Debug("Acquiring Java Version...");
             string result = "0";
             //RunKills = false;
             string command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
@@ -359,7 +407,7 @@ namespace Minion
         public async Task<string> Get_Flash()
         {
             Processing++;
-            log.Info("Acquiring Flash Version...");
+            log.Debug("Acquiring Flash Version...");
             Flash = "Updating...";
             var paexec = new Tool.PAExec(IPAddress, @"-accepteula -s REG query hklm\Software\Macromedia\FlashPlayerActiveX /v Version");
             await paexec.Run();
@@ -371,7 +419,7 @@ namespace Minion
             else
             {
                 Flash = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Macromedia\\FlashPlayerActiveX\r\r\n    Version    REG_SZ    ", string.Empty).Trim(null);
-                log.Info("Flash version: " + Flash);
+                log.Debug("Flash version: " + Flash);
             }
             Processing--;
             return Flash;
@@ -380,7 +428,7 @@ namespace Minion
         public async Task<string> Get_Shockwave()
         {
             Processing++;
-            log.Info("Acquiring Shockwave Version...");
+            log.Debug("Acquiring Shockwave Version...");
             Shockwave = "Updating...";
             var paexec = new Tool.PAExec(IPAddress, "-s REG query \"hklm\\Software\\Adobe\\Shockwave 12\\currentupdateversion\"");
             await paexec.Run();
@@ -393,7 +441,7 @@ namespace Minion
             else
             {
                 Shockwave = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Adobe\\Shockwave 12\\currentupdateversion\r\r\n    (Default)    REG_SZ    ", string.Empty).Trim(null);
-                log.Info("Shockwave version: " + Shockwave);
+                log.Debug("Shockwave version: " + Shockwave);
             }
             Processing--;
             return Shockwave;
@@ -403,7 +451,7 @@ namespace Minion
         {
             Processing++;
             string argument = string.Empty;
-            log.Info("Acquiring Reader Version...");
+            log.Debug("Acquiring Reader Version...");
             Reader = "Updating...";
             //_tools.Copy(Settings.General.Default.sigcheck, Settings.General.Default.remote_folder);
             if (x64 == true)
@@ -424,20 +472,19 @@ namespace Minion
                 {
                     log.Debug("Reader 10 is not installed");
                     Reader = "NOT INSTALLED";
-                    log.Warn("Reader is not installed");
                 }
                 else
                 {
                     Reader = r10.StandardOutput.Remove(0, 7).Trim(null);
-                    log.Info("Reader version: " + Reader);
                 }
             }
             else
             {
                 Reader = r11.StandardOutput.Remove(0, 7).Trim(null);
-                log.Info("Reader version: " + Reader);
+                
             }
             Processing--;
+            log.Debug("Reader version: " + Reader);
             return Reader;
         }
 
@@ -445,7 +492,7 @@ namespace Minion
         {
             Processing++;
             string argument = string.Empty;
-            log.Info("Acquiring Quicktime Version...");
+            log.Debug("Acquiring Quicktime Version...");
             Quicktime = "Updating...";
             
             if (x64 == true)
@@ -463,7 +510,7 @@ namespace Minion
             else
             {
                 Quicktime = paexec.StandardOutput.Remove(0, 7).Trim();
-                log.Info("Quicktime version: " + Quicktime);
+                log.Debug("Quicktime version: " + Quicktime);
             }
             Processing--;
             return Quicktime;
@@ -475,9 +522,9 @@ namespace Minion
         {
             Processing++;
             if (item.Version != null || item.Version == string.Empty)
-                History = string.Format("Running {0} of {1} Version {2}", item.Action, item.Name, item.Version);
+                RaiseHistoryUpdated(string.Format("Running {0} of {1} Version {2}", item.Action, item.Name, item.Version));
             else
-                History = string.Format("Running {0} of {1}", item.Action, item.Name);
+                RaiseHistoryUpdated(string.Format("Running {0} of {1}", item.Action, item.Name));
 
             Minion.Tool.PAExec paexec;
             if (string.IsNullOrEmpty(item.CopyFrom))
@@ -490,9 +537,9 @@ namespace Minion
             await paexec.Run();
 
             if (paexec.StandardError != string.Empty || paexec.StandardError != null)
-                History = paexec.StandardError.Trim();
+                RaiseHistoryUpdated(paexec.StandardError.Trim());
             if (paexec.StandardOutput != string.Empty || paexec.StandardOutput != null)
-                History = paexec.StandardOutput.Trim();
+                RaiseHistoryUpdated((paexec.StandardOutput.Trim()));
             Processing--;
             return true;
         }
@@ -500,11 +547,10 @@ namespace Minion
         #region Tools
 
         public async Task Kill_Defaultss()
-        {
-            Processing++;
+        {          
             string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
             var kills = new Minion.Tool.PAExec(IPAddress, @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
-            History = "Running default kills";
+            RaiseHistoryUpdated("Running default kills");
             await kills.Run();
             Processing--;
         }
@@ -524,17 +570,17 @@ namespace Minion
 
             if (System.IO.File.Exists(@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe"))
             {
-                log.Info("Launching Dameware 10 x64");
+                log.Debug("Launching Dameware 10 x64");
                 startInfo.FileName = (@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 10.0 x64\DWRCC.exe");
             }
             else if (System.IO.File.Exists(@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 9.0\DWRCC.exe"))
             {
-                log.Info("Launching Dameware 9");
+                log.Debug("Launching Dameware 9");
                 startInfo.FileName = @"C:\Program Files\SolarWinds\DameWare Mini Remote Control 9.0\DWRCC.exe";
             }
             else if (System.IO.File.Exists(@"C:\Program Files\SolarWinds\DameWare Mini Remote Control 8.0\DWRCC.exe"))
             {
-                log.Info("Launching Dameware 8");
+                log.Debug("Launching Dameware 8");
                 startInfo.FileName = @"C:\Program Files\SolarWinds\DameWare Mini Remote Control 8.0\DWRCC.exe";
             }
             else
@@ -555,7 +601,7 @@ namespace Minion
         public async Task<bool> OpenCShare()
         {
             Processing++;
-            log.Info("Opening C-Share");
+            log.Debug("Opening C-Share");
             try
             {
                 var sp = new Tool.StandardProcess(@"c:\Windows\", "explorer.exe", @"\\" + IPAddress.ToString() + @"\c$\");
@@ -573,7 +619,7 @@ namespace Minion
 
         public async Task<bool> OpenHDrive()
         {
-            log.Info(string.Format("Opening H drive for {0}", CurrentUser));
+            log.Debug(string.Format("Opening H drive for {0}", CurrentUser));
             try
             {
                 var sp = new Tool.StandardProcess("explorer", @"\\fs2\students\" + CurrentUser);
@@ -590,7 +636,7 @@ namespace Minion
 
         public async Task<bool> FixJNLPAssoication()
         {
-            log.Info("Trying JNLP fix");
+            log.Debug("Trying JNLP fix");
             Processing++;
             try
             {
@@ -623,7 +669,7 @@ namespace Minion
         public async Task FileCleanup()
         {
             Processing++;
-            log.Info("Starting remote file cleanup");
+            log.Debug("Starting remote file cleanup");
             //int filenumber, directorynumber, errornumber;
             //filenumber = directorynumber = errornumber = 0;
             string f = @"resources\FileDeleteList.txt";
@@ -654,12 +700,12 @@ namespace Minion
             // Use lines to delete remote dirs.
             foreach (string s in lines)
             {
-                log.Info("Deleting remote folder: " + s.Replace("cmd /C RMDIR /S /Q ", string.Empty));
+                log.Debug("Deleting remote folder: " + s.Replace("cmd /C RMDIR /S /Q ", string.Empty));
                 var paexec = new Tool.PAExec(IPAddress, s);
                 await paexec.Run();
             }
             Processing--;
-            History = "File cleanup complete";
+            RaiseHistoryUpdated("File cleanup complete");
         }
 
         public async Task ProfileWipe_Enable()
@@ -672,7 +718,7 @@ namespace Minion
             await add1.Run();
             await add2.Run();
             Processing--;
-            History = "Profile Wipe ENABELED on next boot.";
+            RaiseHistoryUpdated("Profile Wipe ENABELED on next boot.");
         }
 
         public async Task ProfileWipe_Disable()
@@ -683,7 +729,7 @@ namespace Minion
             await remove1.Run();
             await remove2.Run();
             Processing--;
-            History = "Profile Wipe DISABELED";
+            RaiseHistoryUpdated("Profile Wipe DISABELED");
         }
 
         protected async Task ProfileBackup()
@@ -691,22 +737,22 @@ namespace Minion
             Processing++;
             var desktop = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Desktop c:\temp\profilebackup\{0}\Desktop /E /R:0", CurrentUser));
             var documents = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Documents c:\temp\profilebackup\{0}\Documents /E /R:0", CurrentUser));
-            History = @"Backuping up \Desktop for " + CurrentUser;
+            RaiseLogUpdated(Log.Info, @"Backuping up \Desktop for " + CurrentUser);
             await desktop.Run();
-            History = @"Backuping up \Documents for " + CurrentUser;
+            RaiseLogUpdated(Log.Info, @"Backuping up \Documents for " + CurrentUser);
             await documents.Run();
-            History = "Profile backup complete for " + CurrentUser;
+            RaiseHistoryUpdated(string.Format("Profile backup complete for {0}", CurrentUser));
             Processing--;
         }
 
         public async Task Reboot()
         {
             Processing++;
-            log.Info(string.Format("Rebooting {0}", PCName));
+            
             var reboot = new Tool.PSShutdown(IPAddress, @" -r -t 01 -f");
             await reboot.Run();
             Processing--;
-            History = "Sent reboot command.";
+            RaiseHistoryUpdated(string.Format("Rebooting {0}", PCName));
         }
     } 
         #endregion

@@ -175,6 +175,6 @@
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
-        <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection}" Grid.RowSpan="2147483647" MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" IsSynchronizedWithCurrentItem="True"  Grid.RowSpan="2147483647" MaxHeight="200" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </UserControl>

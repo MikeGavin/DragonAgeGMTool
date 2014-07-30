@@ -26,6 +26,46 @@ namespace Minion.Tool
 
         }
         public event EventHandler Executed;
+       
+        protected enum Log
+        {
+            Trace,
+            Debug,
+            Info,
+            Warn,
+            Error,
+            Fatal
+        }
+        protected void RaiseLogUpdated(Log type, string message)
+        {
+            if (type == Log.Trace)
+            {
+                log.Trace(message);
+            }
+            else if (type == Log.Debug)
+            {
+                log.Debug(message);
+            }
+            else if (type == Log.Info)
+            {
+                log.Info(message);
+            }
+            else if (type == Log.Warn)
+            {
+                log.Warn(message);
+            }
+            else if (type == Log.Error)
+            {
+                log.Error(message);
+            }
+            else if (type == Log.Fatal)
+            {
+                log.Fatal(message);
+            }
+
+            if (EventLogged != null) { EventLogged(this, string.Format("{0} |{1}| {2}", DateTime.Now.ToShortTimeString(), type.ToString("F"), message)); }
+        }
+        public event EventHandler<string> EventLogged;
 
         #endregion
 

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using NLog.Targets;
 using NLog;
 using Scrivener.Helpers;
+using System.Windows.Data;
 
 namespace Scrivener.ViewModel
 {
@@ -26,9 +27,13 @@ namespace Scrivener.ViewModel
 
         readonly MemoryEventTarget _logTarget;
 
-        private ObservableCollection<LogEventInfo> _logCollection;
-        public ObservableCollection<LogEventInfo> LogCollection { get { return _logCollection; } set{ _logCollection = value; RaisePropertyChanged();} }
 
+        //lock object for synchronization;
+        private object _syncLock = new object();
+        private ObservableCollection<string> _logCollection;
+        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
+        //Enable the cross acces to this collection elsewhere
+        
 
         #region Events
         public event EventHandler<Model.MinionArgs> NoteWrite;
@@ -48,36 +53,33 @@ namespace Scrivener.ViewModel
         //Constructor
         public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
+
             Machine = new Minion.EcotPC(IP);
             _minionCommands = commands;
-            log.Error("PreTest");
-
+            //BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
+            Machine.HistoryUpdated += Machine_HistoryUpdated;
             // init memory queue
             //_logTarget = new MemoryEventTarget();
             //NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(_logTarget, LogLevel.Debug);
 
-            foreach (Target target in NLog.LogManager.Configuration.AllTargets)
-            {
-                if (target is MemoryEventTarget)
-                {
-                    LogCollection = new ObservableCollection<LogEventInfo>();
-                    ((MemoryEventTarget)target).EventReceived += EventReceived;
-                }
-            }
-
-            log.Error("Test");
+            //foreach (Target target in NLog.LogManager.Configuration.AllTargets)
+            //{
+            //    if (target is MemoryEventTarget)
+            //    {
+            //        ((MemoryEventTarget)target).EventReceived += EventReceived;
+            //    }
+            //}
         }
 
-        private void EventReceived(LogEventInfo message)
+        void Machine_HistoryUpdated(object sender, string message)
         {
-                if (LogCollection.Count >= 50) 
-                    LogCollection.RemoveAt(LogCollection.Count - 1);
-                LogCollection.Add(message);
-
+            if (LogCollection.Count >= 50)
+                LogCollection.RemoveAt(LogCollection.Count - 1);
+            LogCollection.Add(message);
         }
 
 
-        
+   
         public string Title { get { return Machine.IPAddress.ToString(); } }
         
         public Minion.EcotPC Machine { get; protected set; }
