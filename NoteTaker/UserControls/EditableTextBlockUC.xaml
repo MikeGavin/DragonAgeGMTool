@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <TextBlock Name="textBlock"
-             Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0"
+             Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14" VerticalAlignment="Center" Margin="0"
              MouseRightButtonUp="textBlock_MouseRightButtonUp" />
         <TextBox Name="editBox"
              Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" />
