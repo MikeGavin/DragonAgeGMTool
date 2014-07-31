@@ -29,6 +29,11 @@
             <Toolkit:RichTextBox.TextFormatter>
                 <Toolkit:PlainTextFormatter />
             </Toolkit:RichTextBox.TextFormatter>
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
         </Toolkit:RichTextBox>
         <!--<TextBox AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" controls:TextboxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True">
             <i:Interaction.Triggers>
