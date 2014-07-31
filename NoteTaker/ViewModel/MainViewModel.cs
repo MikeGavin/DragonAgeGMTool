@@ -214,7 +214,7 @@ namespace Scrivener.ViewModel
             }
             catch (Exception e)
             {
-                MessageBox.Show("Unable to copy");
+                MetroMessageBox.Show("Error!", e.ToString());
             }
 
         } 
