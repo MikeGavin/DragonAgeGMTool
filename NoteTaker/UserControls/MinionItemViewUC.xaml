@@ -35,13 +35,13 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid HorizontalAlignment="Left">
+    <Grid HorizontalAlignment="Left" Width="auto" Height="auto">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto" MinWidth="100"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto" MinWidth="100" />
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -140,7 +140,8 @@
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}"/>
                         <MenuItem Header="Install Java" Command="{Binding InstallJavaCommand}"/>
-                    </ContextMenu>
+                        <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
+                </ContextMenu>
                 </Label.ContextMenu>
             </Label>
         <Label Content="{Binding Machine.Flash}" Grid.Column="3" Grid.Row="2">
@@ -175,6 +176,8 @@
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
-        <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" IsSynchronizedWithCurrentItem="True" Grid.RowSpan="2147483647" MaxHeight="150" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+        <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" IsSynchronizedWithCurrentItem="True" 
+                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Margin="0" Padding="1"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
     </Grid>
 </UserControl>

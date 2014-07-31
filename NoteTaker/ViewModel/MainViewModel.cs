@@ -179,6 +179,7 @@ namespace Scrivener.ViewModel
 
         public async void NewNote()
         {
+            int index = 0;
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
             SelectedNote = Notes.Last();
         }

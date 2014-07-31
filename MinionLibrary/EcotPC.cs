@@ -543,8 +543,7 @@ namespace Minion
             await kills.Run();
             Processing--;
         }
-
-   
+  
         /// <summary>
         /// Used to launch a local instance of dameware to connect to the remote machine.
         /// </summary>
@@ -611,7 +610,7 @@ namespace Minion
             Log(log.Info, "Opening H drive for {0}", CurrentUser);
             try
             {
-                var sp = new Tool.StandardProcess("explorer", @"\\fs2\students\" + CurrentUser);
+                var sp = new Tool.StandardProcess(@"c:\Windows\", "explorer", @"\\fs2\students\" + CurrentUser);
                 await sp.Run();
                 return true;
             }
@@ -705,27 +704,26 @@ namespace Minion
             await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", @"\temp\Delprof2_1.5.4\"));
             file.EventLogged -= PassEventLogged;
 
-            var add1 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);
-            var add2 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @"  /sc onlogon /ru SYSTEM /tn ""remove wipe"" /tr ""c:\temp\Delprof2_1.5.4\remove.bat""");
+            var add1 = new Tool.StandardProcess(@"c:\windows\sysnative\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);
+            var add2 = new Tool.StandardProcess(@"c:\windows\sysnative\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @"  /sc onlogon /ru SYSTEM /tn ""remove wipe"" /tr ""c:\temp\Delprof2_1.5.4\remove.bat""");
             await add1.Run();
             await add2.Run();
             Processing--;
             Log(log.Info, "Profile Wipe ENABELED on next boot.");
         }
 
-
         public async Task ProfileWipe_Disable()
         {
             Processing++;
-            var remove1 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""Profile wipe"" /f");
-            var remove2 = new Tool.StandardProcess(@"c:\windows\sysnative\schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""remove wipe"" /f");
+            var remove1 = new Tool.StandardProcess(@"c:\windows\sysnative\", "schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""Profile wipe"" /f");
+            var remove2 = new Tool.StandardProcess(@"c:\windows\sysnative\", "schtasks.exe", @"/delete /s \\" + IPAddress.ToString() + @" /tn ""remove wipe"" /f");
             await remove1.Run();
             await remove2.Run();
             Processing--;
             Log(log.Info, "Profile Wipe DISABELED");
         }
 
-        protected async Task ProfileBackup()
+        public async Task ProfileBackup()
         {
             Processing++;
             var desktop = new Tool.PAExec(IPAddress, string.Format(@"robocopy c:\users\{0}\Desktop c:\temp\profilebackup\{0}\Desktop /E /R:0", CurrentUser));

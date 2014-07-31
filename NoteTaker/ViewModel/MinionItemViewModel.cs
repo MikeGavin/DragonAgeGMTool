@@ -24,11 +24,21 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
-        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
+        #region Screen Logging
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private object _syncLock = new object();
         private ObservableCollection<string> _logCollection;
-        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }       
+        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
+        void Machine_EventLogged(object sender, Minion.LogEventArgs e)
+        {
+            int l;
+            if (LogCollection.Count >= 50)
+                LogCollection.RemoveAt(LogCollection.Count - 1);
+            if (e.Log >= Minion.log.Info)
+                LogCollection.Insert(0, string.Format("{0} | {1} | {2}", e.Time.ToLongTimeString(), e.Log.ToString().ToUpper(), e.Message.ToString()));
+        }
+        #endregion
 
         #region Events
         public event EventHandler<Model.MinionArgs> NoteWrite;
@@ -44,7 +54,7 @@ namespace Scrivener.ViewModel
                 handler(this, EventArgs.Empty);
         } 
         #endregion
-        
+               
         //Constructor
         public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
@@ -53,37 +63,12 @@ namespace Scrivener.ViewModel
             _minionCommands = commands;
             BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
             Machine.EventLogged += Machine_EventLogged;
-            // init memory queue
-            //_logTarget = new MemoryEventTarget();
-            //NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(_logTarget, LogLevel.Debug);
 
-            //foreach (Target target in NLog.LogManager.Configuration.AllTargets)
-            //{
-            //    if (target is MemoryEventTarget)
-            //    {
-            //        ((MemoryEventTarget)target).EventReceived += EventReceived;
-            //    }
-            //}
         }
 
-        void Machine_EventLogged(object sender, Minion.LogEventArgs e)
-        {
-            int l;
-            if (LogCollection.Count >= 50)
-                LogCollection.RemoveAt(LogCollection.Count - 1);
-            if (e.Log >= Minion.log.Info)
-                LogCollection.Add(string.Format("{0} | {1} | {2}", e.Time.ToLongTimeString(), e.Log.ToString().ToUpper(), e.Message.ToString()));
-        }
-
-
-   
-        public string Title { get { return Machine.IPAddress.ToString(); } }
-        
+        public string Title { get { return Machine.IPAddress.ToString(); } }        
         public Minion.EcotPC Machine { get; protected set; }
-
         private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> _minionStartCommands;
-        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>( (from item in _minionCommands where item.Action == "Start" select item).ToList())); } }
 
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(RaiseRequestClose)); } }
@@ -111,13 +96,10 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region ToolCommands
-
-        private RelayCommand _openDamewareCommand;
-        public RelayCommand OpenDamewareCommand { get { return _openDamewareCommand ?? (_openDamewareCommand = new RelayCommand(async () => await Machine.OpenDameware())); } }
-
-        private RelayCommand _openCShareCommand;
-        public RelayCommand OpenCShareCommand { get { return _openCShareCommand ?? (_openCShareCommand = new RelayCommand(async () => await Machine.OpenCShare())); } }
-
+        
+        
+        private ObservableCollection<MinionCommandItem> _minionStartCommands;
+        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in _minionCommands where item.Action == "Start" select item).ToList())); } }
         private RelayCommand<MinionCommandItem> _remoteStartCommand;
         public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } }
         public async Task RemoteStart(MinionCommandItem command)
@@ -125,12 +107,43 @@ namespace Scrivener.ViewModel
             await Machine.Command(command);
         }
 
+        private RelayCommand _rebootCommand;
+        public RelayCommand RebootCommand { get { return _rebootCommand ?? (_rebootCommand = new RelayCommand(async () => await Machine.Reboot())); } }
+
+        private RelayCommand _fixJNLPCommand;
+        public RelayCommand FixJNLPCommand { get { return _fixJNLPCommand ?? (_fixJNLPCommand = new RelayCommand(async () => await Machine.FixJNLPAssoication())); } }
+
+        private RelayCommand _disableProfileWipeCommand;
+        public RelayCommand DisableProfileWipeCommand { get { return _disableProfileWipeCommand ?? (_disableProfileWipeCommand = new RelayCommand(async () => await Machine.ProfileWipe_Disable())); } }
+
+        private RelayCommand _enableProfileWipeCommand;
+        public RelayCommand EnableProfileWipeCommand { get { return _enableProfileWipeCommand ?? (_enableProfileWipeCommand = new RelayCommand(async () => await Machine.ProfileWipe_Enable())); } }
+
+        private RelayCommand _backupProfileCommand;
+        public RelayCommand BackupProfileCommand { get { return _backupProfileCommand ?? (_backupProfileCommand = new RelayCommand(async () => await Machine.ProfileBackup())); } }
+
+        private RelayCommand _fixBackgroundCommand;
+        public RelayCommand FixBackgroundCommand { get { return _fixBackgroundCommand ?? (_fixBackgroundCommand = new RelayCommand(async () => await Machine.FixBackGround())); } }
+
+        private RelayCommand _openHDriveCommand;
+        public RelayCommand OpenHDriveCommand { get { return _openHDriveCommand ?? (_openHDriveCommand = new RelayCommand(async () => await Machine.OpenHDrive())); } }
+
+        private RelayCommand _fileCleanupCommand;
+        public RelayCommand FileCleanupCommand { get { return _fileCleanupCommand ?? (_fileCleanupCommand = new RelayCommand(async () => await Machine.FileCleanup())); } }
+
+        private RelayCommand _openDamewareCommand;
+        public RelayCommand OpenDamewareCommand { get { return _openDamewareCommand ?? (_openDamewareCommand = new RelayCommand(async () => await Machine.OpenDameware())); } }
+
+        private RelayCommand _openCShareCommand;
+        public RelayCommand OpenCShareCommand { get { return _openCShareCommand ?? (_openCShareCommand = new RelayCommand(async () => await Machine.OpenCShare())); } }       
+
         private RelayCommand _defaultKillsCommand;
         public RelayCommand DefaultKillsCommand { get { return _defaultKillsCommand ?? (_defaultKillsCommand = new RelayCommand(async () => await Machine.Kill_Defaultss())); } }
              
 
         #endregion
 
+        #region Software Actions
         private RelayCommand _uninstallJavaCommand;
         public RelayCommand UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand(async () => await Uninstall_Java())); } }
         public async Task Uninstall_Java()
@@ -160,8 +173,8 @@ namespace Scrivener.ViewModel
         public RelayCommand InstallJavaCommand { get { return _installJavaCommand ?? (_installJavaCommand = new RelayCommand(async () => await Install_Java())); } }
         public async Task Install_Java()
         {
-            try 
-            { 
+            try
+            {
                 var sort = _minionCommands.OrderByDescending(x => x.Version).ToList();
                 var item = sort[9];
                 await RunSoftwareCommand(item);
@@ -183,7 +196,7 @@ namespace Scrivener.ViewModel
                 MinionCommandItem item;
 
                 item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
-                
+
                 await RunSoftwareCommand(item);
             }
             catch (Exception e)
@@ -193,7 +206,7 @@ namespace Scrivener.ViewModel
                 return;
             }
 
-            
+
         }
 
         private RelayCommand _installFlashCommand;
@@ -286,7 +299,7 @@ namespace Scrivener.ViewModel
 
         private async Task RunSoftwareCommand(MinionCommandItem command)
         {
-            
+
             await Machine.Kill_Defaultss();
             var result = await Machine.Command(command);
             string vresult = await UpdateItemVersion(command);
@@ -328,7 +341,8 @@ namespace Scrivener.ViewModel
             else if (item.Name.ToLower().Contains("quicktime"))
                 result = await Machine.Get_Quicktime();
             return result;
-        }
+        } 
+        #endregion
         
     }
 }

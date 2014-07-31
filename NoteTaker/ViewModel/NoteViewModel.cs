@@ -72,6 +72,7 @@ namespace Scrivener.ViewModel
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             _root = _tree;
+             
 
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
