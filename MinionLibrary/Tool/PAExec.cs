@@ -49,8 +49,7 @@ namespace Minion.Tool
             {
                 Log(log.Error, StandardError = string.Format("Program ran but returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
             }
-            else
-                Log(log.Fatal, StandardError + " <--is some crazy shit that happend and I failed to process it.");
+
         }
     }
 }

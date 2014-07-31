@@ -524,7 +524,9 @@ namespace Minion
             else
                 paexec = new Minion.Tool.PAExec(IPAddress, item.Command, item.CopyFrom, item.CopyTo);
 
+            paexec.EventLogged += PassEventLogged;
             await paexec.Run();
+            paexec.EventLogged -= PassEventLogged;
             Log(log.Info, "{0} of {1} exited", item.Action, item.Name);
             Processing--;
             return true;
