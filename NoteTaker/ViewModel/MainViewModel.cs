@@ -205,13 +205,12 @@ namespace Scrivener.ViewModel
         public async void CopyAll()
         {
             try
-                    {
-               
-
+            {
+                Clipboard.SetDataObject(SelectedNote.Text);
             }
             catch (Exception e)
             {
-                MetroMessageBox.Show("Error!", e.ToString());
+                MessageBox.Show("Unable to copy");
             }
 
         } 
