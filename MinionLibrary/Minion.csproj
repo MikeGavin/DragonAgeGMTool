@@ -101,14 +101,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEcotPC.cs" />
-    <Compile Include="Lists\ProperityItem.cs" />
     <Compile Include="EcotPC.cs" />
-    <Compile Include="Lists\EcotPCCommand.cs" />
-    <Compile Include="MinionCommandItem.cs" />
+    <Compile Include="ListItems\EcotPCCommand.cs" />
+    <Compile Include="ListItems\MinionCommandItem.cs" />
+    <Compile Include="ListItems\ProperityItem.cs" />
+    <Compile Include="LogEventArgs.cs" />
     <Compile Include="Tool\File.cs" />
-    <Compile Include="Process\ToolBase.cs" />
-    <Compile Include="Process\SilentProcess.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -119,37 +117,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="RemoteMachine.cs" />
-    <Compile Include="Settings\Flash.Designer.cs">
-      <DependentUpon>Flash.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Settings\General.Designer.cs">
-      <DependentUpon>General.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Settings\Java.Designer.cs">
-      <DependentUpon>Java.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Settings\Reader.Designer.cs">
-      <DependentUpon>Reader.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Settings\Shockwave.Designer.cs">
-      <DependentUpon>Shockwave.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Software\Quicktime.cs" />
-    <Compile Include="Software\Reader.cs" />
-    <Compile Include="Software\Shockwave.cs" />
-    <Compile Include="Software\Flash.cs" />
-    <Compile Include="Software\Java.cs" />
+    <Compile Include="Tool\ICustomLogger.cs" />
     <Compile Include="Tool\IP.cs" />
     <Compile Include="Tool\IStandardProcess.cs" />
     <Compile Include="Tool\PSShutdown.cs" />
@@ -157,7 +125,6 @@
     <Compile Include="Tool\PAExec.cs" />
     <Compile Include="Tool\PSKill.cs" />
     <Compile Include="Tool\PXBase.cs" />
-    <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\StandardProcess.cs" />
   </ItemGroup>
@@ -193,26 +160,6 @@
     <Content Include="Resources\defaultkills.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Settings\Flash.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Flash.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\General.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>General.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\Java.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Java.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\Reader.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Reader.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Settings\Shockwave.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Shockwave.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\PsExec.exe">

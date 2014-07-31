@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Minion.Settings {
+namespace Minion.depreciated.Settings {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

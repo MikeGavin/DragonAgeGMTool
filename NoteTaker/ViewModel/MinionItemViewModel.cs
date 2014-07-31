@@ -12,6 +12,7 @@ using NLog.Targets;
 using NLog;
 using Scrivener.Helpers;
 using System.Windows.Data;
+using Minion.ListItems;
 
 namespace Scrivener.ViewModel
 {
@@ -25,15 +26,9 @@ namespace Scrivener.ViewModel
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        readonly MemoryEventTarget _logTarget;
-
-
-        //lock object for synchronization;
         private object _syncLock = new object();
         private ObservableCollection<string> _logCollection;
-        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
-        //Enable the cross acces to this collection elsewhere
-        
+        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }       
 
         #region Events
         public event EventHandler<Model.MinionArgs> NoteWrite;
@@ -56,8 +51,8 @@ namespace Scrivener.ViewModel
 
             Machine = new Minion.EcotPC(IP);
             _minionCommands = commands;
-            //BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
-            Machine.HistoryUpdated += Machine_HistoryUpdated;
+            BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
+            Machine.EventLogged += Machine_EventLogged;
             // init memory queue
             //_logTarget = new MemoryEventTarget();
             //NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(_logTarget, LogLevel.Debug);
@@ -71,11 +66,13 @@ namespace Scrivener.ViewModel
             //}
         }
 
-        void Machine_HistoryUpdated(object sender, string message)
+        void Machine_EventLogged(object sender, Minion.LogEventArgs e)
         {
+            int l;
             if (LogCollection.Count >= 50)
                 LogCollection.RemoveAt(LogCollection.Count - 1);
-            LogCollection.Add(message);
+            if (e.Log >= Minion.log.Info)
+                LogCollection.Add(string.Format("{0} | {1} | {2}", e.Time.ToLongTimeString(), e.Log.ToString().ToUpper(), e.Message.ToString()));
         }
 
 

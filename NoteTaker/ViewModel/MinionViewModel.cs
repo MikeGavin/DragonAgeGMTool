@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System;
+using Minion.ListItems;
 
 namespace Scrivener.ViewModel
 {

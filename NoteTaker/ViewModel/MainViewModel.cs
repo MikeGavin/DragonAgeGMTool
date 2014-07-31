@@ -16,6 +16,7 @@ using System.Diagnostics;
 using Scrivener.UserControls;
 using System.Data.SQLite;
 using NLog.Config;
+using Minion.ListItems;
 
 
 namespace Scrivener.ViewModel
@@ -119,8 +120,6 @@ namespace Scrivener.ViewModel
         {
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
-          
-
         }
 
   
@@ -177,7 +176,6 @@ namespace Scrivener.ViewModel
             if (Notes.Count == 0)
                 NewNote();
         }
-
 
         public async void NewNote()
         {

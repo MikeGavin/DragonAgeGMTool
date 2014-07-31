@@ -9,16 +9,63 @@ namespace Minion.Tool
 {
     internal class Files
     {
-        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        #region Custom Logger
+        /// <summary>
+        /// This logger addition is used to allow for raising an event which passes the logged message 
+        /// so that it can be captured by listeners for screen logging
+        /// </summary>
+        protected static NLog.Logger nlog = NLog.LogManager.GetCurrentClassLogger();
+        protected void Log(Minion.log type, string message, params object[] args)
+        {
+            int count = 0;
+            foreach (object item in args)
+            {
+                message = message.Replace(@"{" + count.ToString() + "}", item.ToString());
+                count++;
+            }
+
+            if (type == log.Trace)
+            {
+                nlog.Trace(message);
+            }
+            else if (type == log.Debug)
+            {
+                nlog.Debug(message);
+            }
+            else if (type == log.Info)
+            {
+                nlog.Info(message);
+            }
+            else if (type == log.Warn)
+            {
+                nlog.Warn(message);
+            }
+            else if (type == log.Error)
+            {
+                nlog.Error(message);
+            }
+            else if (type == log.Fatal)
+            {
+                nlog.Fatal(message);
+            }
+
+            if (EventLogged != null) { EventLogged(this, new Minion.LogEventArgs(DateTime.Now, type, message)); }
+        }
+        protected void PassEventLogged(object sender, Minion.LogEventArgs e)
+        {
+            if (EventLogged != null) { EventLogged(this, e); }
+        }
+        public event EventHandler<Minion.LogEventArgs> EventLogged;
+        #endregion
 
         #region FileCopying
         //file copy functions
-        public static void Copy(string From, string To, bool forceoverwrite = false)
+        public void Copy(string From, string To, bool forceoverwrite = false)
         {
             // get the file attributes for file or directory
             FileAttributes attr = File.GetAttributes(From);
             //detect whether its a directory or file
-            log.Debug(string.Format("Copy command was [ {0} ] To [ {1} ]", From, To));
+            Log(log.Debug,"Copy command was [ {0} ] To [ {1} ]", From, To);
             if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
             {
                 DirectoryCopy(From, To, true, forceoverwrite);
@@ -28,7 +75,7 @@ namespace Minion.Tool
                 FileCopy(From, To, forceoverwrite);
         }
 
-        private static void FileCopy(string sourcePath, string targetPath, bool overwrite)
+        private void FileCopy(string sourcePath, string targetPath, bool overwrite)
         {
             // Use Path class to manipulate file and directory paths. 
             string fileName = System.IO.Path.GetFileName(sourcePath);
@@ -52,7 +99,7 @@ namespace Minion.Tool
                     CopyingFile(sourceFile, destFile);
                 }
                 else
-                    log.Debug(string.Format(@"Skipping: '{0}' File matches current version", dest.FullName));
+                    Log(log.Info, @"Skipping: '{0}' remote file matches current version", dest.FullName);
             }
             else
             {
@@ -60,21 +107,21 @@ namespace Minion.Tool
             }
         }
 
-        private static void CopyingFile(string sourceFile, string destFile)
+        private void CopyingFile(string sourceFile, string destFile)
         {
-            log.Debug(string.Format("Copying [ {0} ] To [ {1} ]", sourceFile, destFile));
+            Log(log.Info, "Copying [ {0} ] To [ {1} ]", sourceFile, destFile);
             // now you can safely overwrite it
             try
             {
                 System.IO.File.Copy(sourceFile, destFile, true);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                log.Error(ex);
+                Log(log.Error, e.ToString());
             }
         }
 
-        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs, bool overwrite)
+        private void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs, bool overwrite)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -83,8 +130,7 @@ namespace Minion.Tool
             if (!dir.Exists)
             {
                 //throw new DirectoryNotFoundException(
-                log.Error("Source directory does not exist or could not be found: "
-                + sourceDirName);
+                Log(log.Error, "Source directory does not exist or could not be found: "  + sourceDirName);
             }
 
             // If the destination directory doesn't exist, create it. 
@@ -111,14 +157,14 @@ namespace Minion.Tool
                             {
                                 file.CopyTo(temppath, true);
                             }
-                            catch (Exception ex)
+                            catch (Exception e)
                             {
-                                log.Error(ex);
+                                Log(log.Error, e.ToString());
                                 return;
                             }
                         }
                         else
-                            log.Info(string.Format(@"Skipping: '{0}' File matches current version", destFile.FullName));
+                            Log(log.Info, @"Skipping: '{0}' File matches current version", destFile.FullName);
                     }
                     else
                     {
@@ -126,9 +172,9 @@ namespace Minion.Tool
                         {
                             file.CopyTo(temppath, true);
                         }
-                        catch (Exception ex)
+                        catch (Exception e)
                         {
-                            log.Error(ex);
+                            Log(log.Error, e.ToString());
                             return;
                         }
                     }
@@ -136,7 +182,7 @@ namespace Minion.Tool
                 else
                 {
                     try { file.CopyTo(temppath, false); }
-                    catch (Exception ex) { log.Error(ex); return; }
+                    catch (Exception e) { Log(log.Error, e.ToString()); return; }
                 }
             }
 

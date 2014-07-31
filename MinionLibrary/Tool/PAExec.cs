@@ -43,13 +43,14 @@ namespace Minion.Tool
                 if (ExitCode == -9) { StandardError += "failed to launch app (remotely)"; }
                 if (ExitCode == -10) { StandardError += "app was terminated after timeout expired"; }
                 if (ExitCode == -11) { StandardError += "forcibly stopped with Ctrl-C / Ctrl-Break"; }
-                log.Error(StandardError);          
+                Log(log.Error, StandardError);          
             }
             else if (ExitCode > 0)
             {
-                log.Error(StandardError = string.Format("Program ran but returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
+                Log(log.Error, StandardError = string.Format("Program ran but returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
             }
-            log.Fatal(StandardError + " <--is some crazy shit that happend and I failed to process it.");
+            else
+                Log(log.Fatal, StandardError + " <--is some crazy shit that happend and I failed to process it.");
         }
     }
 }

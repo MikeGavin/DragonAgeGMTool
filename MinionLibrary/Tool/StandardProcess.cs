@@ -10,7 +10,54 @@ namespace Minion.Tool
     /// </summary>
     public class StandardProcess : INotifyPropertyChanged, IStandardProcess //Base class used to create other actions. Presets some always used settings and redirects which are necessary for error and return processing.
     {
-        protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        #region Custom Logger
+        /// <summary>
+        /// This logger addition is used to allow for raising an event which passes the logged message 
+        /// so that it can be captured by listeners for screen logging
+        /// </summary>
+        protected static NLog.Logger nlog = NLog.LogManager.GetCurrentClassLogger();
+        protected void Log(Minion.log type, string message, params object[] args)
+        {
+            int count = 0;
+            foreach (object item in args)
+            {
+                message = message.Replace(@"{" + count.ToString() + "}", item.ToString());
+                count++;
+            }
+
+            if (type == log.Trace)
+            {
+                nlog.Trace(message);
+            }
+            else if (type == log.Debug)
+            {
+                nlog.Debug(message);
+            }
+            else if (type == log.Info)
+            {
+                nlog.Info(message);
+            }
+            else if (type == log.Warn)
+            {
+                nlog.Warn(message);
+            }
+            else if (type == log.Error)
+            {
+                nlog.Error(message);
+            }
+            else if (type == log.Fatal)
+            {
+                nlog.Fatal(message);
+            }
+
+            if (EventLogged != null) { EventLogged(this, new Minion.LogEventArgs(DateTime.Now, type, message)); }
+        }
+        protected void PassEventLogged(object sender, Minion.LogEventArgs e)
+        {
+            if (EventLogged != null) { EventLogged(this, e); }
+        }
+        public event EventHandler<Minion.LogEventArgs> EventLogged;
+        #endregion
         #region Events
 
         internal void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string prop = "")
@@ -27,50 +74,9 @@ namespace Minion.Tool
 
         }
         public event EventHandler Executed;
-       
-        protected enum Log
-        {
-            Trace,
-            Debug,
-            Info,
-            Warn,
-            Error,
-            Fatal
-        }
-        protected void RaiseLogUpdated(Log type, string message)
-        {
-            if (type == Log.Trace)
-            {
-                log.Trace(message);
-            }
-            else if (type == Log.Debug)
-            {
-                log.Debug(message);
-            }
-            else if (type == Log.Info)
-            {
-                log.Info(message);
-            }
-            else if (type == Log.Warn)
-            {
-                log.Warn(message);
-            }
-            else if (type == Log.Error)
-            {
-                log.Error(message);
-            }
-            else if (type == Log.Fatal)
-            {
-                log.Fatal(message);
-            }
-
-            if (EventLogged != null) { EventLogged(this, string.Format("{0} |{1}| {2}", DateTime.Now.ToShortTimeString(), type.ToString("F"), message)); }
-        }
-        public event EventHandler<string> EventLogged;
 
         #endregion
-
-        
+       
         protected string _filename;
         protected string _path = Environment.CurrentDirectory + @"\Resources\";
         protected string _arguments;
@@ -185,31 +191,6 @@ namespace Minion.Tool
         /// <summary>
         /// Runs program and returns output to properties
         /// </summary>
-        //public void Run()
-        //{
-        //    if (_copyfrom != null & _copyto != null) { Copy(); }
-
-        //    StartInfo.FileName = (_path + _filename);
-        //    StartInfo.Arguments = _arguments;
-        //    log.Debug(string.Format("Filename:{0}", StartInfo.FileName));
-        //    log.Debug(string.Format("Arguments:{0}", StartInfo.Arguments));
-        //    var pProcess = System.Diagnostics.Process.Start(StartInfo);
-        //    StandardOutput = pProcess.StandardOutput.ReadToEnd();
-        //    StandardError = pProcess.StandardError.ReadToEnd();
-        //    pProcess.WaitForExit();
-            
-
-        //    ExitCode = pProcess.ExitCode;
-        //    log.Debug("ExitCode: " + ExitCode.ToString());
-
-        //    ManageOutput();
-
-        //    RaiseExecuted();
-        //}
-
-        /// <summary>
-        /// Runs program and returns output to properties
-        /// </summary>
         public async System.Threading.Tasks.Task Run()
         {
             try
@@ -218,8 +199,8 @@ namespace Minion.Tool
 
                 StartInfo.FileName = (_path + _filename);
                 StartInfo.Arguments = _arguments;
-                log.Debug(string.Format("Filename:{0}", StartInfo.FileName));
-                log.Debug(string.Format("Arguments:{0}", StartInfo.Arguments));
+                Log(log.Debug, "Filename:{0}", StartInfo.FileName);
+                Log(log.Debug, "Arguments:{0}", StartInfo.Arguments);
                 var pProcess = System.Diagnostics.Process.Start(StartInfo);
                 StandardOutput = await pProcess.StandardOutput.ReadToEndAsync();
                 StandardError = await pProcess.StandardError.ReadToEndAsync();
@@ -227,23 +208,26 @@ namespace Minion.Tool
 
 
                 ExitCode = pProcess.ExitCode;
-                log.Debug("ExitCode: " + ExitCode.ToString());
+                Log(log.Debug, "ExitCode: " + ExitCode.ToString());
 
                 ManageOutput();
-                log.Debug("StandardOutput: " + StandardOutput);
-                log.Debug("StandardError: " + StandardError);
+                Log(log.Debug, "StandardOutput: " + StandardOutput.Replace("\r", " ").Replace("\n", " "));
+                Log(log.Debug, "StandardError: " + StandardError.Replace("\r", " ").Replace("\n", " "));
 
                 RaiseExecuted();
             }
             catch (Exception e)
             {
-                log.Debug(e);
+                Log(log.Error, e.ToString());
             }
         }
 
         protected virtual async System.Threading.Tasks.Task Copy()
         {
-            await System.Threading.Tasks.Task.Run(() => Tool.Files.Copy(_copyfrom, _copyto, _forceoverwrite));
+            var file = new Tool.Files();
+            file.EventLogged += PassEventLogged;
+            await System.Threading.Tasks.Task.Run(() => file.Copy(_copyfrom, _copyto, _forceoverwrite));
+            file.EventLogged -= PassEventLogged;
         }
 
         /// <summary>

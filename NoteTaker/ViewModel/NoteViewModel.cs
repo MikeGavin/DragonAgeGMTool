@@ -13,6 +13,7 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using Scrivener.Model;
+using Minion.ListItems;
 
 namespace Scrivener.ViewModel
 {
@@ -48,7 +49,6 @@ namespace Scrivener.ViewModel
 
         private static int _number = 0;
         private bool _titlechanged = false;
-        private List<Match> _matachedips;
 
         private QuickItem _root;
         public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
