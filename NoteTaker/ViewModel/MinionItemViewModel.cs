@@ -24,37 +24,6 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
-
-        #region Screen Logging
-        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private object _syncLock = new object();
-        private ObservableCollection<string> _logCollection;
-        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
-        void Machine_EventLogged(object sender, Minion.LogEventArgs e)
-        {
-            int l;
-            if (LogCollection.Count >= 50)
-                LogCollection.RemoveAt(LogCollection.Count - 1);
-            if (e.Log >= Minion.log.Info)
-                LogCollection.Insert(0, string.Format("{0} | {1} | {2}", e.Time.ToLongTimeString(), e.Log.ToString().ToUpper(), e.Message.ToString()));
-        }
-        #endregion
-
-        #region Events
-        public event EventHandler<Model.MinionArgs> NoteWrite;
-        private void RaiseNoteWrite(string message)
-        {
-            if (NoteWrite != null) { NoteWrite(this, new Model.MinionArgs(message)); }
-        }
-        public event EventHandler RequestClose;
-        void RaiseRequestClose()
-        {
-            EventHandler handler = this.RequestClose;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
-        } 
-        #endregion
-               
         //Constructor
         public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
@@ -66,13 +35,46 @@ namespace Scrivener.ViewModel
 
         }
 
-        public string Title { get { return Machine.IPAddress.ToString(); } }        
+        public string Title { get { return Machine.IPAddress.ToString(); } }
         public Minion.EcotPC Machine { get; protected set; }
         private ObservableCollection<MinionCommandItem> _minionCommands;
 
+        #region Screen Logging
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        private object _syncLock = new object();
+        private ObservableCollection<string> _logCollection;
+        public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
+        void Machine_EventLogged(object sender, Minion.LogEventArgs e)
+        {
+            if (LogCollection.Count >= 50)
+            {
+                LogCollection.RemoveAt(LogCollection.Count - 1);
+            }
+            if (e.Log >= Minion.log.Info)
+            {
+                LogCollection.Insert(0, string.Format("{0} | {1} | {2}", e.Time.ToLongTimeString(), e.Log.ToString().ToUpper(), e.Message.ToString()));
+            }
+        }
+        #endregion
+
+        #region Events
+        public event EventHandler<Model.MinionArgs> NoteWrite;
+        private void RaiseNoteWrite(string message) //Used to send message for writting to the note.
+        {
+            if (NoteWrite != null) { NoteWrite(this, new Model.MinionArgs(message)); }
+        }
+        
+        public event EventHandler RequestClose;
+        void RaiseRequestClose()
+        {
+            EventHandler handler = this.RequestClose;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand { get { return _closeCommand ?? (_closeCommand = new RelayCommand(RaiseRequestClose)); } }
-        
+        #endregion
+                      
         #region GetVersionCommands
 
         private RelayCommand _getIECommand;

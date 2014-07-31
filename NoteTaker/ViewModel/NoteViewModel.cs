@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using Scrivener.Model;
 using Minion.ListItems;
+using Scrivener.Helpers;
 
 namespace Scrivener.ViewModel
 {
@@ -159,7 +160,7 @@ namespace Scrivener.ViewModel
                 catch (Exception e)
                 {
                     //log.Error(e);
-                    MessageBox.Show("NOPE!");
+                    MetroMessageBox.Show("NOPE!", e.ToString());
 
             }
         }
