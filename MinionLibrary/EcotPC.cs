@@ -17,7 +17,7 @@ namespace Minion
     public class EcotPC : INotifyPropertyChanged
     {
         //Logging System
-        protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        protected NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
               
         private List<Lists.EcotPCCommand> CommandList = new List<Lists.EcotPCCommand>() 
@@ -113,7 +113,7 @@ namespace Minion
 
         }
         public event EventHandler OnlineChanged;
-
+        protected delegate void testttttt(Log type, string message);
         protected enum Log
         {
             Trace,
@@ -123,8 +123,6 @@ namespace Minion
             Error,
             Fatal
         }
-
-        protected delegate void loggingshit(Log type, string message);
         protected void RaiseLogUpdated(Log type, string message)
         {
             if (type == Log.Trace)

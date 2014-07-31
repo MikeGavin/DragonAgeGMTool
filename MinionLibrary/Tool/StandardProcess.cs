@@ -10,6 +10,7 @@ namespace Minion.Tool
     /// </summary>
     public class StandardProcess : INotifyPropertyChanged, IStandardProcess //Base class used to create other actions. Presets some always used settings and redirects which are necessary for error and return processing.
     {
+        protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         #region Events
 
         internal void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string prop = "")
@@ -69,7 +70,7 @@ namespace Minion.Tool
 
         #endregion
 
-        protected static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        
         protected string _filename;
         protected string _path = Environment.CurrentDirectory + @"\Resources\";
         protected string _arguments;
