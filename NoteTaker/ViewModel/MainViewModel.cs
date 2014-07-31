@@ -180,11 +180,15 @@ namespace Scrivener.ViewModel
             {
             var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
             if (result == true)
-                Notes.Remove(note);  
+            {
+                Closereplacenotes();
+                Notes.Remove(note);
+            }
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
-                Notes.Remove(note);
+                Closereplacenotes();
+                Notes.Remove(note);                
             }
             if (Notes.Count == 0)
                 NewNote();
@@ -292,8 +296,35 @@ namespace Scrivener.ViewModel
                 Call_history.Close();
             }
         }
-        #endregion
 
+        public async void Closereplacenotes()
+        {
+            string Date = DateTime.Now.ToString("D");
+            Date = Date.Replace(" ", "");
+            Date = Date.Replace(",", "");
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            await Call_history.OpenAsync();
+            foreach (NoteViewModel n in Notes)
+            {
+                string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
+                string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
+                SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
+                SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+
+                try
+                {
+                    await replacetitlecommand.ExecuteNonQueryAsync();
+                    await replacenotecommand.ExecuteNonQueryAsync();
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                }
+            }
+            Call_history.Close();
+        }
+
+        #endregion
 
         public async void QuickNoteToggle()
         {
