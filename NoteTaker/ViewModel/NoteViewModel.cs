@@ -40,6 +40,8 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Public Properties
+        private int _saveIndex;
+        public int SaveIndex { get { return _saveIndex; } protected set { _saveIndex = value; RaisePropertyChanged(); } }
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
         private string text;
@@ -56,6 +58,7 @@ namespace Scrivener.ViewModel
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
         
 
+
         private RelayCommand _closeNoteCommand;
         public RelayCommand CloseNoteCommand { get { return _closeNoteCommand ?? (_closeNoteCommand = new RelayCommand(OnRequestClose)); } }
 
@@ -65,14 +68,15 @@ namespace Scrivener.ViewModel
         public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
 
 
-        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands)
+        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands, int new_index)
         {
             Text = Properties.Settings.Default.Default_Note_Template;
             _minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             _root = _tree;
-             
+            SaveIndex = new_index;
+
 
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
@@ -140,15 +144,28 @@ namespace Scrivener.ViewModel
                     return;
                 else
                     Text += "- " + SelectedQuickItem.Content + System.Environment.NewLine;
+                    //SaveNotes();
             }
             else if (Properties.Settings.Default.DashinNotes == false)
             {
+                try
+                {
                 if (SelectedQuickItem.SubItems.Count > 0)
                     return;
                 else
                     Text += SelectedQuickItem.Content + System.Environment.NewLine;
+                        //SaveNotes();
+                }
+                catch (Exception e)
+                {
+                    //log.Error(e);
+                    MessageBox.Show("NOPE!");
+
             }
         }
+        }
+
+
 
         public void CopyQuickItem()
         {
@@ -162,7 +179,7 @@ namespace Scrivener.ViewModel
                     {
                         Clipboard.SetText(SelectedQuickItem.Content);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         log.Error(e);
                         CopyQuickItem();

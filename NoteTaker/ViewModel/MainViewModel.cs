@@ -15,6 +15,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Scrivener.UserControls;
 using System.Data.SQLite;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
 using NLog.Config;
 using Minion.ListItems;
 
@@ -122,7 +127,6 @@ namespace Scrivener.ViewModel
             CloseNote(note);
         }
 
-  
         private readonly IDataService _dataService;
 
         /// <summary>
@@ -149,18 +153,27 @@ namespace Scrivener.ViewModel
                     break;
             }
 
-            string Date = DateTime.Now.ToString("MM/dd/yyyy"); ;
+
+            //creates Call History Database and populates table with todays date if none exist
+            string Date = DateTime.Now.ToString("D");
+            Date = Date.Replace(" ", "");
+            Date = Date.Replace(",", "");
+
             SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-            Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-            string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([Caller] NVARCHAR(2048) NOT NULL PRIMARY KEY,[Notes] NVARCHAR(2048) NULL);", Date);
+            string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([ID],[Caller],[Notes]);", Date);
+            
             SQLiteCommand command = new SQLiteCommand(query, Call_history);
             Call_history.Open();
             command.ExecuteNonQuery();
             Call_history.Close();
 
             NewNote();            
+            var token = tokenSource.Token;
+            Task noteSaving = new Task(() => ReplaceNotes(token), token, TaskCreationOptions.LongRunning);
+            noteSaving.Start();
         }
 
+        
         public async void CloseNote(NoteViewModel note)
         {
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
@@ -179,8 +192,8 @@ namespace Scrivener.ViewModel
 
         public async void NewNote()
         {
-            int index = 0;
-            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
+
+            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
             SelectedNote = Notes.Last();
         }
 
@@ -193,15 +206,95 @@ namespace Scrivener.ViewModel
         {
             try
                     {
-                        Clipboard.SetDataObject(SelectedNote.Text);
-                    }
-                    catch(Exception e)
-                    {
-                        MessageBox.Show("Unable to copy");
-                    }
+               
+
+            }
+            catch (Exception e)
+            {
+                MetroMessageBox.Show("Error!", e.ToString());
+            }
 
         } 
         #endregion
+
+        #region callhistory
+
+        public string Tempnotes = "";
+
+        public int SaveNotes()
+        {
+            string Date = DateTime.Now.ToString("D");
+            Date = Date.Replace(" ", "");
+            Date = Date.Replace(",", "");
+            string Title = "Title";
+            string Text = "Text";
+            int index =0;
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+
+            string count = string.Format("SELECT COUNT (ID) from {0}", Date);
+
+            Call_history.Open();
+            try
+            {
+
+                using (SQLiteCommand docount = Call_history.CreateCommand())
+                {
+                    docount.CommandText = count;
+                    docount.ExecuteNonQuery();
+                    index = Convert.ToInt32(docount.ExecuteScalar());
+                    index++;
+
+                    string insert = string.Format("INSERT INTO {0} (ID,Caller,Notes) values ('{1}','{2}','{3}');", Date, index, Title, Text);
+                    SQLiteCommand command = new SQLiteCommand(insert, Call_history);
+                    command.ExecuteNonQuery();
+                    }
+            }
+            catch (Exception e)
+                    {
+                log.Error(e);
+                    }
+
+            Call_history.Close();
+
+            Tempnotes = Text;
+
+            return index;
+                        
+        } 
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        public async Task ReplaceNotes(CancellationToken token)
+        {
+            while (token.IsCancellationRequested == false)
+            {
+                Thread.Sleep(30000);
+                string Date = DateTime.Now.ToString("D");
+                Date = Date.Replace(" ", "");
+                Date = Date.Replace(",", "");
+                SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                await Call_history.OpenAsync();
+                foreach (NoteViewModel n in Notes)
+                {
+                    string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
+                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
+                    SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
+                    SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+
+                    try
+                    {
+                        await replacetitlecommand.ExecuteNonQueryAsync();
+                        await replacenotecommand.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);
+                    }
+                }
+                Call_history.Close();
+            }
+        }
+        #endregion
+
 
         public async void QuickNoteToggle()
         {
