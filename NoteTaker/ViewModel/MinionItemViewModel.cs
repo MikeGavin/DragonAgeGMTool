@@ -24,26 +24,14 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionItemViewModel : ViewModelBase
     {
-        //Constructor
-        public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
-        {
-
-            Machine = new Minion.EcotPC(IP);
-            _minionCommands = commands;
-            BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
-            Machine.EventLogged += Machine_EventLogged;
-
-        }
-
-        public string Title { get { return Machine.IPAddress.ToString(); } }
-        public Minion.EcotPC Machine { get; protected set; }
-        private ObservableCollection<MinionCommandItem> _minionCommands;
-
         #region Screen Logging
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private object _syncLock = new object();
+        
         private ObservableCollection<string> _logCollection;
         public ObservableCollection<string> LogCollection { get { return _logCollection ?? (_logCollection = new ObservableCollection<string>()); } set { _logCollection = value; RaisePropertyChanged(); } }
+        //used to allow other threads to write to collection
+        private object _syncLock = new object();
+
         void Machine_EventLogged(object sender, Minion.LogEventArgs e)
         {
             if (LogCollection.Count >= 50)
@@ -56,14 +44,35 @@ namespace Scrivener.ViewModel
             }
         }
         #endregion
+        
+        //Constructor
+        public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
+        {
 
-        #region Events
+            Machine = new Minion.EcotPC(IP);
+            _minionCommands = commands;
+            BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
+            Machine.EventLogged += Machine_EventLogged;
+
+        }
+
+        //Item title pulling IP address
+        public string Title { get { return Machine.IPAddress.ToString(); } }
+        
+        //Instance of ECOTPC Item
+        public Minion.EcotPC Machine { get; protected set; }
+
+        //Commands from DB
+        private ObservableCollection<MinionCommandItem> _minionCommands;
+        
+        //Event to raise and pass notewrite event
         public event EventHandler<Model.MinionArgs> NoteWrite;
         private void RaiseNoteWrite(string message) //Used to send message for writting to the note.
         {
             if (NoteWrite != null) { NoteWrite(this, new Model.MinionArgs(message)); }
         }
-        
+
+        #region Close Item
         public event EventHandler RequestClose;
         void RaiseRequestClose()
         {
@@ -145,7 +154,7 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region Software Actions
+        #region Software Command Actions
         private RelayCommand _uninstallJavaCommand;
         public RelayCommand UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand(async () => await Uninstall_Java())); } }
         public async Task Uninstall_Java()

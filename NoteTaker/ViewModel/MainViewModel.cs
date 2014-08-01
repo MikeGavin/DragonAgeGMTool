@@ -51,7 +51,6 @@ namespace Scrivener.ViewModel
             CreateCallHistory();
             NewNote();
             StartNoteSaveTask();
-
         }        
 
         //builds or gets QuickItems
@@ -63,8 +62,7 @@ namespace Scrivener.ViewModel
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
         private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.MinionCommands()); } }
-       
-     
+          
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
         public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }

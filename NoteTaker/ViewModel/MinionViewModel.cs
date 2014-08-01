@@ -19,22 +19,36 @@ namespace Scrivener.ViewModel
     /// </summary>
     public class MinionViewModel : ViewModelBase
     {
-        private ObservableCollection<MinionCommandItem> _minionCommands;
-        /// <summary>
-        /// Initializes a new instance of the MvvmViewModel1 class.
-        /// </summary>
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
         public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
         {
-            MinionCollection.CollectionChanged += OnItemsChanged;
+            MinionCollection.CollectionChanged += OnMinionItemsChanged;
             _minionCommands = commands;
             //debuging
-            
+
             //_NewMinionIPAddress = "192.168.1.114";
             //AddMinionItem();
-            
         }
 
-        void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        #region Public Properties
+        private string _NewMinionIPAddress = "10.39.";
+        public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
+        private bool _minionIPInputEnabeled = true;
+        public bool MinionIPInputEnabeled { get { return _minionIPInputEnabeled; } set { _minionIPInputEnabeled = value; RaisePropertyChanged(); } }
+        private bool _minionConnecting = false;
+        public bool MinionConnecting { get { return _minionConnecting; } set { _minionConnecting = value; RaisePropertyChanged(); } }
+        private bool isExpanded;
+        public bool IsExpanded { get { return isExpanded; } set { isExpanded = value; RaisePropertyChanged(); } }
+        #endregion
+
+        //Commands from Constructor
+        private ObservableCollection<MinionCommandItem> _minionCommands;
+
+        //Collection of Minion Items
+        private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
+        public ObservableCollection<MinionItemViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
+        void OnMinionItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (MinionItemViewModel minionItem in e.NewItems)
@@ -48,24 +62,12 @@ namespace Scrivener.ViewModel
                     minionItem.RequestClose -= this.OnItemRequestClose;
                 }
         }
-
-        void OnItemRequestClose(object sender, EventArgs e)
-        {
-            MinionItemViewModel minionItem = sender as MinionItemViewModel;
-            MinionCollection.Remove(minionItem);
-            if (MinionCollection.Count <= 0)
-                IsExpanded = false;
-        }
-
-
-        private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
-        public ObservableCollection<MinionItemViewModel> MinionCollection { get { return _MinionCollection; } set { _MinionCollection = value; RaisePropertyChanged(); } }
         private MinionItemViewModel _selectedMinion;
         public MinionItemViewModel SelectedMinion { get { return _selectedMinion; } set { _selectedMinion = value; RaisePropertyChanged(); } }
    
+        //Add minion instances
         private RelayCommand _addCommand;
         public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinionItem)); } }
-
         public async void AddMinionItem()
         {
             MinionConnecting = true;
@@ -96,16 +98,16 @@ namespace Scrivener.ViewModel
             MinionConnecting = false;
         }
 
-        #region ViewProperties
-        private string _NewMinionIPAddress = "10.39.";
-        public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
-        private bool _minionIPInputEnabeled = true;
-        public bool MinionIPInputEnabeled { get { return _minionIPInputEnabeled; } set { _minionIPInputEnabeled = value; RaisePropertyChanged(); } }
-        private bool _minionConnecting = false;
-        public bool MinionConnecting { get { return _minionConnecting; } set { _minionConnecting = value; RaisePropertyChanged(); } }
-        private bool isExpanded;
-        public bool IsExpanded { get { return isExpanded; } set { isExpanded = value; RaisePropertyChanged(); } } 
-        #endregion
+        //remove minion instance on self request
+        void OnItemRequestClose(object sender, EventArgs e)
+        {
+            MinionItemViewModel minionItem = sender as MinionItemViewModel;
+            MinionCollection.Remove(minionItem);
+            if (MinionCollection.Count <= 0)
+                IsExpanded = false;
+        }
+
+
 
     }
 }
