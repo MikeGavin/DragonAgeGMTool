@@ -187,6 +187,8 @@
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
+    <Compile Include="Model\Historyfiller.cs" />
+    <Compile Include="Model\Historyitem.cs" />
     <Compile Include="Model\LocalDatabase.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
