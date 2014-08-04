@@ -48,6 +48,7 @@ namespace Scrivener.ViewModel
             
             //Self Explained
             LoadUserSettings();
+            CleanDatabase();
             NewNote();
             StartNoteSaveTask();
         }        
@@ -318,12 +319,13 @@ namespace Scrivener.ViewModel
             Friday = Friday.Replace(",", "");
 
             if (Mondaycheck == "Monday")
+
             {
                 SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
                 await Call_history.OpenAsync();
 
                 {
-                    string cleanup = String.Format("PRAGMA writable_schema = 1;delete from sqlite_master where type = 'table' AND name NOT LIKE '{0}' AND name NOT LIKE '{1}' AND name NOT LIKE '{2};PRAGMA writable_schema = 0;", Today, Friday, Saturday);
+                    string cleanup = String.Format("PRAGMA writable_schema = 1;delete from sqlite_master where type = 'table' AND name NOT LIKE '{0}' AND name NOT LIKE '{1}' AND name NOT LIKE '{2}';PRAGMA writable_schema = 0;", Today, Friday, Saturday);
                     SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
 
                     try
