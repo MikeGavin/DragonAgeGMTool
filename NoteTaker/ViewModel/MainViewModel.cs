@@ -31,28 +31,27 @@ namespace Scrivener.ViewModel
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private readonly IDataService _dataService; // Used by MVVMLight 
-       
+
         ////public override void Cleanup()
         ////{
         ////    // Clean up if needed4
-        
+
         ////    base.Cleanup();
         ////}
         #endregion
-        
+
         //Constructor
         public MainViewModel(IDataService dataService)
         {
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
-
+            
             //Self Explained
             LoadUserSettings();
-            CreateCallHistory();
             NewNote();
             StartNoteSaveTask();
         }        
-        
+
         //builds or gets QuickItems
         private QuickItem _root;
         private QuickItem QuickItemTree { get { return _root ?? ( _root = new Treefiller().filltree() ); } }
@@ -75,7 +74,7 @@ namespace Scrivener.ViewModel
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (NoteViewModel note in e.NewItems)
                     note.RequestClose += this.OnNoteRequestClose;
-        
+
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (NoteViewModel workspace in e.OldItems)
                     workspace.RequestClose -= this.OnNoteRequestClose;
@@ -107,10 +106,10 @@ namespace Scrivener.ViewModel
 
         //New Notes
         private RelayCommand _newNoteCommand;
-        public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }        
+        public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }
         private async void NewNote()
         {
-
+            CreateCallHistory();
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
             SelectedNote = Notes.Last();
         }
@@ -163,12 +162,12 @@ namespace Scrivener.ViewModel
                 Clipboard.SetDataObject(SelectedNote.Text);
             }
             catch (Exception e)
-        {
+            {
                 MetroMessageBox.Show("Error!", e.ToString());
-        }
+            }
 
         }
-
+        
         #endregion
 
         #region Settings
@@ -208,8 +207,6 @@ namespace Scrivener.ViewModel
         #region Call history
 
         private string Tempnotes = "";
-            //Allows call history database to only keep 2 days worth of notes at a time
-            CleanDatabase();
 
         private static void CreateCallHistory()
         {
@@ -224,69 +221,7 @@ namespace Scrivener.ViewModel
             Call_history.Open();
             command.ExecuteNonQuery();
             Call_history.Close();
-            NewNote();            
-            var token = tokenSource.Token;
-            Task noteSaving = new Task(() => ReplaceNotes(token), token, TaskCreationOptions.LongRunning);
-            noteSaving.Start();
         }
-
-        
-        public async void CloseNote(NoteViewModel note)
-        {
-            if (Scrivener.Properties.Settings.Default.Close_Warning == true)
-            {
-            var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
-            if (result == true)
-            {
-                Closereplacenotes();
-                Notes.Remove(note);
-            }
-            }
-            else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
-            {
-                Closereplacenotes();
-                Notes.Remove(note);                
-            }
-            if (Notes.Count == 0)
-                NewNote();
-        }
-
-        public async void NewNote()
-        {
-            //creates Call History Database and populates table with todays date if none exist
-            string Date = DateTime.Now.ToString("D");
-            Date = Date.Replace(" ", "");
-            Date = Date.Replace(",", "");
-
-            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-            string insert = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([ID],[Caller],[Notes]);", Date);
-
-            SQLiteCommand command = new SQLiteCommand(insert, Call_history);
-            Call_history.Open();
-            command.ExecuteNonQuery();
-            Call_history.Close();
-
-            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
-            SelectedNote = Notes.Last();
-        }
-
-        #region CopyAll
-
-        private RelayCommand _copyallcommand;
-        public RelayCommand CopyAllCommand { get { return _copyallcommand ?? (_copyallcommand = new RelayCommand(CopyAll)); } }
-
-        public async void CopyAll()
-        {
-            try
-            {
-                Clipboard.SetDataObject(SelectedNote.Text);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Unable to copy");
-            }
-
-        } 
         private int SaveNotes()
         {
             string Date = DateTime.Now.ToString("D");
@@ -313,20 +248,20 @@ namespace Scrivener.ViewModel
                     string insert = string.Format("INSERT INTO {0} (ID,Caller,Notes) values ('{1}','{2}','{3}');", Date, index, Title, Text);
                     SQLiteCommand command = new SQLiteCommand(insert, Call_history);
                     command.ExecuteNonQuery();
-                    }
+                }
             }
             catch (Exception e)
-                    {
+            {
                 log.Error(e);
-                    }
+            }
 
             Call_history.Close();
 
             Tempnotes = Text;
 
             return index;
-                        
-        } 
+
+        }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
         private async Task ReplaceNotes(CancellationToken token)
@@ -381,7 +316,7 @@ namespace Scrivener.ViewModel
             string Friday = DateTime.Now.AddDays(-3).ToString("D");
             Friday = Friday.Replace(" ", "");
             Friday = Friday.Replace(",", "");
-            
+
             if (Mondaycheck == "Monday")
             {
                 SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
@@ -460,7 +395,7 @@ namespace Scrivener.ViewModel
         private static void Drop(DragEventArgs e)
         {
             // do something here
-        }
+        } 
         #endregion
 
     }
