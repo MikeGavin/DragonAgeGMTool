@@ -131,36 +131,32 @@ namespace Scrivener.ViewModel
         private QuickItem _selectedQuickItem;
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
         
-        private RelayCommand _appendQuickItem;
-        public RelayCommand AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand(AppendQuickItem)); } }
-        public void AppendQuickItem()
+        //Append
+        private RelayCommand<string> _appendQuickItem;
+        public RelayCommand<string> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<string>((pram) => AppendQuickItem(pram))); } }
+        public void AppendQuickItem(string note)
         {
-            if (Properties.Settings.Default.DashinNotes == true)
+            try
             {
-                if (SelectedQuickItem.SubItems.Count > 0)
-                    return;
-                else
-                    Text += "- " + SelectedQuickItem.Content + System.Environment.NewLine;
-                //SaveNotes();
-            }
-            else if (Properties.Settings.Default.DashinNotes == false)
-            {
-                try
+                if (Properties.Settings.Default.DashinNotes == true)
+                    {
+                        Text += "- " + note + System.Environment.NewLine;
+                        //SaveNotes();
+                    }
+                else if (Properties.Settings.Default.DashinNotes == false)
                 {
-                    if (SelectedQuickItem.SubItems.Count > 0)
-                        return;
-                    else
-                        Text += SelectedQuickItem.Content + System.Environment.NewLine;
+                    Text += note + System.Environment.NewLine;     
                     //SaveNotes();
                 }
-                catch (Exception e)
-                {
-                    //log.Error(e);
-                    MetroMessageBox.Show("NOPE!", e.ToString());
-
-                }
+            }
+    
+            catch (Exception e)
+            {
+                //log.Error(e);
+                MetroMessageBox.Show("NOPE!", e.ToString());
             }
         }
+        
 
         private RelayCommand _copyQuickItemCommand;
         public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
