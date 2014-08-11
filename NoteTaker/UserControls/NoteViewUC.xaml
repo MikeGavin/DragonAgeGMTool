@@ -50,7 +50,7 @@
             </i:Interaction.Behaviors>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick" >
-                    <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem.Content, ElementName=mainTreeView}" />
+                    <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseRightButtonDown">
                     <mvvmcmd:EventToCommand Command="{Binding CopyQuickItemCommand}"/>

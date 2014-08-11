@@ -132,32 +132,33 @@ namespace Scrivener.ViewModel
         public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
         
         //Append
-        private RelayCommand<string> _appendQuickItem;
-        public RelayCommand<string> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<string>((pram) => AppendQuickItem(pram))); } }
-        public void AppendQuickItem(string note)
+        private RelayCommand<QuickItem> _appendQuickItem;
+        public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
+        public void AppendQuickItem(QuickItem note)
         {
-            try
+            if (note.Content != null)
             {
-                if (Properties.Settings.Default.DashinNotes == true)
+                try
+                {
+                    if (Properties.Settings.Default.DashinNotes == true)
                     {
-                        Text += "- " + note + System.Environment.NewLine;
+                        Text += "- " + note.Content + System.Environment.NewLine;
                         //SaveNotes();
                     }
-                else if (Properties.Settings.Default.DashinNotes == false)
-                {
-                    Text += note + System.Environment.NewLine;     
-                    //SaveNotes();
+                    else if (Properties.Settings.Default.DashinNotes == false)
+                    {
+                        Text += note.Content + System.Environment.NewLine;
+                        //SaveNotes();
+                    }
                 }
-            }
-    
-            catch (Exception e)
-            {
-                //log.Error(e);
-                MetroMessageBox.Show("NOPE!", e.ToString());
+                catch (Exception e)
+                {
+                    //log.Error(e);
+                    MetroMessageBox.Show("NOPE!", e.ToString());
+                }
             }
         }
         
-
         private RelayCommand _copyQuickItemCommand;
         public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
         public void CopyQuickItem()
@@ -175,7 +176,8 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
-                        CopyQuickItem();
+                        //CopyQuickItem();
+
                     }
 
                 }
