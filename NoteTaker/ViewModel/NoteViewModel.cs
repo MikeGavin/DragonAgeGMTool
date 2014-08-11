@@ -136,7 +136,7 @@ namespace Scrivener.ViewModel
         public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
         public void AppendQuickItem(QuickItem note)
         {
-            if (note.Content != null)
+            if (note.SubItems.Count == 0)
             {
                 try
                 {
