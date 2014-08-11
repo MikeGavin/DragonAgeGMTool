@@ -200,6 +200,9 @@
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
+    <Compile Include="UserControls\Role_UI.xaml.cs">
+      <DependentUpon>Role_UI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
@@ -247,6 +250,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MinionViewUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Role_UI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

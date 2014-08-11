@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System;
 using MahApps.Metro;
 using System.Linq;
+using Scrivener.UserControls;
+
 
 namespace Scrivener
 {
@@ -23,40 +25,47 @@ namespace Scrivener
         public MainWindow()
         {
             InitializeComponent();
-            Closing += (s, e) => ViewModelLocator.Cleanup();
 
-            if (Scrivener.Properties.Settings.Default.Accent == -1)
-            {
-                Properties.Settings.Default.Accent = 2;
-            }
-
-            //Theme Settings
-            ThemeBox.Items.Add("Dark");
-            ThemeBox.Items.Add("Light");
-            if (Properties.Settings.Default.Theme == null)
-                Properties.Settings.Default.Theme = "Dark";
-            ThemeBox.SelectedItem = Properties.Settings.Default.Theme;
-
-            //Accent Settings
-            var accents = MahApps.Metro.ThemeManager.Accents.ToList();
-            foreach (var accent in accents) //Adds all accents to combobox.
-            {
-                AccentBox.Items.Add(accent);
-            }
-              
-
-
-            //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
+            //if (Properties.Settings.Default.Role == -1)
             //{
-            //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Visible.ToString();
-            //    Tabs.Visibility = System.Windows.Visibility.Visible;
-            //}
-            //else
-            //{
-            //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Collapsed.ToString();
-            //    Tabs.Visibility = System.Windows.Visibility.Collapsed;
+            //    this.Hide();
+            //    var profile_window = new Role_UI();
+            //    profile_window.Show();
             //}
 
+                Closing += (s, e) => ViewModelLocator.Cleanup();
+
+                if (Scrivener.Properties.Settings.Default.Accent == -1)
+                {
+                    Properties.Settings.Default.Accent = 2;
+                }
+
+                //Theme Settings
+                ThemeBox.Items.Add("Dark");
+                ThemeBox.Items.Add("Light");
+                if (Properties.Settings.Default.Theme == null)
+                    Properties.Settings.Default.Theme = "Dark";
+                ThemeBox.SelectedItem = Properties.Settings.Default.Theme;
+
+                //Accent Settings
+                var accents = MahApps.Metro.ThemeManager.Accents.ToList();
+                foreach (var accent in accents) //Adds all accents to combobox.
+                {
+                    AccentBox.Items.Add(accent);
+                }
+
+
+
+                //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
+                //{
+                //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Visible.ToString();
+                //    Tabs.Visibility = System.Windows.Visibility.Visible;
+                //}
+                //else
+                //{
+                //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Collapsed.ToString();
+                //    Tabs.Visibility = System.Windows.Visibility.Collapsed;
+                //}
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
