@@ -14,7 +14,7 @@
              mc:Ignorable="d" Margin="0"
              >
 
-    <Grid MinWidth="400" Grid.IsSharedSizeScope="True" >
+    <Grid MinWidth="400" Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="27"/>
             <RowDefinition Height="0.75*"/>

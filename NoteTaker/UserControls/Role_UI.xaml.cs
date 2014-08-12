@@ -34,11 +34,10 @@ namespace Scrivener.UserControls
             }
             else
             {
-                Properties.Settings.Default.Save();
-
+                Properties.Settings.Default.Save();           
+                    //var MWindow = new MainWindow();
+                    //MWindow.ShowDialog();
                 this.Close();
-                var M_Window = new MainWindow();
-                M_Window.Show();
             }
         }
     }
