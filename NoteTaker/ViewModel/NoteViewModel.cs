@@ -59,7 +59,7 @@ namespace Scrivener.ViewModel
         void Note_TextChanged(object sender, EventArgs e)
         {
             Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b\s+");
-            Regex sepid = new Regex(@"\b[a-z]{2,3}[0-9]{5,6}\b\s+", RegexOptions.IgnoreCase);
+            Regex sepid = new Regex(@"[a-z]{2,3}[0-9]{5,6} ", RegexOptions.IgnoreCase);
 
 
             MatchCollection mc = ip.Matches(Text);
@@ -74,7 +74,7 @@ namespace Scrivener.ViewModel
                 MatchCollection sepmatches = sepid.Matches(Text);
                 if (sepmatches.Count > 0)
                 {
-                    Title = sepmatches[0].ToString();
+                    Title = sepmatches[0].ToString().Trim();
                     _titlechanged = true;
                 }
 
