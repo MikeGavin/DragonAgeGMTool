@@ -47,12 +47,13 @@ namespace Scrivener.ViewModel
             Notes.CollectionChanged += OnNotesChanged;
             
             //Self Explained
-            Role_Check();
+            //Role_Check();
             LoadUserSettings();
             CleanDatabase();
             NewNote();
             StartNoteSaveTask();
-        }        
+
+        }
 
         //builds or gets QuickItems
         private QuickItem _root;
@@ -410,7 +411,6 @@ namespace Scrivener.ViewModel
                     RoleCHECK.ShowDialog();
             }
         }
-
         #endregion
     }
 }

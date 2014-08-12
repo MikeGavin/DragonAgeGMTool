@@ -33,7 +33,21 @@ namespace Scrivener.ViewModel
 
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+
+            if (Properties.Settings.Default.Role == 1 || Properties.Settings.Default.Role == 0)
+            {
+                MinionVisibility = Visibility.Visible.ToString();
+            }
+            else
+            {
+                MinionVisibility = Visibility.Collapsed.ToString();
+            }
         }
+
+
+        private string _minionVisibility;
+        public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }
+
 
         #region Public Properties
         private int _saveIndex; // used for ID for note saving

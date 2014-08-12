@@ -81,8 +81,8 @@
         </TreeView>
         <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding Root.SubItems}">
         </ListBox>
-        <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
-            <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">               
+        <StackPanel Visibility="{Binding MinionVisibility}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
+            <Expander DataContext="{Binding NoteMinion}"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">               
                 <Expander.Header>
                     <Grid>
                         <Grid>
