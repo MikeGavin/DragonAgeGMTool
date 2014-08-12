@@ -13,7 +13,7 @@ namespace Scrivener.Model
         private QuickItem root;
         public QuickItem Root { get { return root; } set { root = value; } }
 
-        private List<DBPull> CommandList = new List<DBPull>()
+        private List<QuickItemDBPull> CommandList = new List<QuickItemDBPull>()
         {
 
         };
@@ -28,26 +28,9 @@ namespace Scrivener.Model
         {
 
             SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
-
             SQLiteCommand pullall = new SQLiteCommand();
-
-            // 0 = EdTech
-            // 1 = HelpDesk
-            // 2 = SIC
-
-            if (Properties.Settings.Default.Role == 0)
-            {
-                pullall.CommandText = "SELECT * FROM EdTech_Calls";
-            }
-            else if (Properties.Settings.Default.Role == 1)
-            {
-                pullall.CommandText = "SELECT * FROM HD_Calls";
-            }
-            else
-            {
-                pullall.CommandText = "SELECT * FROM SIC_Calls";
-            }
-
+            pullall.CommandText = "SELECT * FROM HD_Calls";
+            
             pullall.Connection = QuickNotesDB;
 
             try
@@ -55,7 +38,7 @@ namespace Scrivener.Model
                 QuickNotesDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (reader.Read())
-                    CommandList.Add(new DBPull() { Verbage = reader["QuickNotes_Verbage"].ToString(), Root_Folder = reader["QuickNotes_Root_Folder"].ToString(), Sub_Folder_1 = reader["QuickNotes_1"].ToString(), Sub_Folder_2 = reader["QuickNotes_2"].ToString(), Sub_Folder_3 = reader["QuickNotes_3"].ToString(), Sub_Folder_4 = reader["QuickNotes_4"].ToString(), Sub_Folder_5 = reader["QuickNotes_5"].ToString(), Sub_Folder_6 = reader["QuickNotes_6"].ToString(), Sub_Folder_7 = reader["QuickNotes_7"].ToString(), Sub_Folder_8 = reader["QuickNotes_8"].ToString(), Sub_Folder_9 = reader["QuickNotes_9"].ToString(), Sub_Folder_10 = reader["QuickNotes_10"].ToString() });
+                    CommandList.Add(new QuickItemDBPull() { Verbage = reader["QuickNotes_Verbage"].ToString(), Root_Folder = reader["QuickNotes_Root_Folder"].ToString(), Sub_Folder_1 = reader["QuickNotes_1"].ToString(), Sub_Folder_2 = reader["QuickNotes_2"].ToString(), Sub_Folder_3 = reader["QuickNotes_3"].ToString(), Sub_Folder_4 = reader["QuickNotes_4"].ToString(), Sub_Folder_5 = reader["QuickNotes_5"].ToString(), Sub_Folder_6 = reader["QuickNotes_6"].ToString(), Sub_Folder_7 = reader["QuickNotes_7"].ToString(), Sub_Folder_8 = reader["QuickNotes_8"].ToString(), Sub_Folder_9 = reader["QuickNotes_9"].ToString(), Sub_Folder_10 = reader["QuickNotes_10"].ToString() });
                 QuickNotesDB.Close();
             }
             catch
@@ -64,29 +47,29 @@ namespace Scrivener.Model
             }
 
 
-            List<DBPull> Root_uniqueitems = CommandList.GroupBy(s => s.Root_Folder).Select(p => p.First()).ToList();
-            List<DBPull> Sub1uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_1).Select(p => p.First()).ToList();
-            List<DBPull> Sub2uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_2).Select(p => p.First()).ToList();
-            List<DBPull> Sub3uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_3).Select(p => p.First()).ToList();
-            List<DBPull> Sub4uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_4).Select(p => p.First()).ToList();
-            List<DBPull> Sub5uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_5).Select(p => p.First()).ToList();
-            List<DBPull> Sub6uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_6).Select(p => p.First()).ToList();
-            List<DBPull> Sub7uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_7).Select(p => p.First()).ToList();
-            List<DBPull> Sub8uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_8).Select(p => p.First()).ToList();
-            List<DBPull> Sub9uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_9).Select(p => p.First()).ToList();
-            List<DBPull> Sub10uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_10).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Root_uniqueitems = CommandList.GroupBy(s => s.Root_Folder).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub1uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_1).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub2uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_2).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub3uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_3).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub4uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_4).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub5uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_5).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub6uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_6).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub7uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_7).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub8uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_8).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub9uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_9).Select(p => p.First()).ToList();
+            List<QuickItemDBPull> Sub10uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_10).Select(p => p.First()).ToList();
 
 
             root = new QuickItem() { Title = "Menu" };
 
             if (Root_uniqueitems.Count > 1)
             {
-                foreach (DBPull item in Root_uniqueitems)
+                foreach (QuickItemDBPull item in Root_uniqueitems)
                 {
                     QuickItem Root_Item = new QuickItem() { Title = item.Root_Folder };
                     if (Sub1uniqueitems.Count > 1)
                     {
-                        foreach (DBPull item1 in Sub1uniqueitems)
+                        foreach (QuickItemDBPull item1 in Sub1uniqueitems)
                         {
                             QuickItem Sub_Item_1 = new QuickItem() { Title = item1.Sub_Folder_1, Content = item1.Verbage };
 
@@ -96,7 +79,7 @@ namespace Scrivener.Model
                             }
                             if (Sub2uniqueitems.Count > 1)
                             {
-                                foreach (DBPull item2 in Sub2uniqueitems)
+                                foreach (QuickItemDBPull item2 in Sub2uniqueitems)
                                 {
                                     QuickItem Sub_Item_2 = new QuickItem() { Title = item2.Sub_Folder_2, Content = item2.Verbage };
 
@@ -106,7 +89,7 @@ namespace Scrivener.Model
                                     }
                                     if (Sub3uniqueitems.Count > 1)
                                     {
-                                        foreach (DBPull item3 in Sub3uniqueitems)
+                                        foreach (QuickItemDBPull item3 in Sub3uniqueitems)
                                         {
                                             QuickItem Sub_Item_3 = new QuickItem() { Title = item3.Sub_Folder_3, Content = item3.Verbage };
 
@@ -116,7 +99,7 @@ namespace Scrivener.Model
                                             }
                                             if (Sub4uniqueitems.Count > 1)
                                             {
-                                                foreach (DBPull item4 in Sub4uniqueitems)
+                                                foreach (QuickItemDBPull item4 in Sub4uniqueitems)
                                                 {
                                                     QuickItem Sub_Item_4 = new QuickItem() { Title = item4.Sub_Folder_4, Content = item4.Verbage };
 
@@ -126,7 +109,7 @@ namespace Scrivener.Model
                                                     }
                                                     if (Sub5uniqueitems.Count > 1)
                                                     {
-                                                        foreach (DBPull item5 in Sub5uniqueitems)
+                                                        foreach (QuickItemDBPull item5 in Sub5uniqueitems)
                                                         {
                                                             QuickItem Sub_Item_5 = new QuickItem() { Title = item5.Sub_Folder_5, Content = item5.Verbage };
 
@@ -136,7 +119,7 @@ namespace Scrivener.Model
                                                             }
                                                             if (Sub6uniqueitems.Count > 1)
                                                             {
-                                                                foreach (DBPull item6 in Sub6uniqueitems)
+                                                                foreach (QuickItemDBPull item6 in Sub6uniqueitems)
                                                                 {
                                                                     QuickItem Sub_Item_6 = new QuickItem() { Title = item6.Sub_Folder_6, Content = item6.Verbage };
 
@@ -146,7 +129,7 @@ namespace Scrivener.Model
                                                                     }
                                                                     if (Sub7uniqueitems.Count > 1)
                                                                     {
-                                                                        foreach (DBPull item7 in Sub7uniqueitems)
+                                                                        foreach (QuickItemDBPull item7 in Sub7uniqueitems)
                                                                         {
                                                                             QuickItem Sub_Item_7 = new QuickItem() { Title = item7.Sub_Folder_7, Content = item7.Verbage };
 
@@ -156,7 +139,7 @@ namespace Scrivener.Model
                                                                             }
                                                                             if (Sub8uniqueitems.Count > 1)
                                                                             {
-                                                                                foreach (DBPull item8 in Sub8uniqueitems)
+                                                                                foreach (QuickItemDBPull item8 in Sub8uniqueitems)
                                                                                 {
                                                                                     QuickItem Sub_Item_8 = new QuickItem() { Title = item8.Sub_Folder_8, Content = item8.Verbage };
 
@@ -166,7 +149,7 @@ namespace Scrivener.Model
                                                                                     }
                                                                                     if (Sub9uniqueitems.Count > 1)
                                                                                     {
-                                                                                        foreach (DBPull item9 in Sub9uniqueitems)
+                                                                                        foreach (QuickItemDBPull item9 in Sub9uniqueitems)
                                                                                         {
                                                                                             QuickItem Sub_Item_9 = new QuickItem() { Title = item9.Sub_Folder_9, Content = item9.Verbage };
 
@@ -176,7 +159,7 @@ namespace Scrivener.Model
                                                                                             }                                                                                            
                                                                                             if (Sub10uniqueitems.Count > 1)
                                                                                             {
-                                                                                                foreach (DBPull item10 in Sub10uniqueitems)
+                                                                                                foreach (QuickItemDBPull item10 in Sub10uniqueitems)
                                                                                                 {
                                                                                                     QuickItem Sub_Item_10 = new QuickItem() { Title = item10.Sub_Folder_10, Content = item10.Verbage };
 

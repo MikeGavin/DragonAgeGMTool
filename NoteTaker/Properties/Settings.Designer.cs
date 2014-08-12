@@ -214,5 +214,16 @@ namespace Scrivener.Properties {
                 this["Role_Current"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Scrivener.Model.QuickItem Setting {
+            get {
+                return ((global::Scrivener.Model.QuickItem)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
+            }
+        }
     }
 }

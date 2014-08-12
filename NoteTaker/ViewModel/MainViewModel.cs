@@ -70,7 +70,7 @@ namespace Scrivener.ViewModel
         public Siteitem QuickSites { get { return _sites ?? (_sites = new Sitefiller("Sites").fillsite()); } }
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.MinionCommands()); } }
+        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands()); } }
           
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();

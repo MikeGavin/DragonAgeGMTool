@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scrivener.Model
 {
-    class DBPull
+    class QuickItemDBPull
     {
         public string Root_Folder { get; set; }
         public string Sub_Folder_1 { get; set; }
