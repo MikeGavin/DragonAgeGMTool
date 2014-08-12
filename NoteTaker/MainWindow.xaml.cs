@@ -24,6 +24,7 @@ namespace Scrivener
         /// </summary>
         public MainWindow()
         {
+            this.Loaded += MainWindow_Loaded;
             InitializeComponent();
 
             //if (Properties.Settings.Default.Role == -1)
@@ -54,6 +55,7 @@ namespace Scrivener
                     AccentBox.Items.Add(accent);
                 }
 
+                
 
 
                 //if (Properties.Settings.Default.Note_WorkSpace_Visibility == true)
@@ -66,6 +68,11 @@ namespace Scrivener
                 //    Properties.Settings.Default.Notespace_Test = System.Windows.Visibility.Collapsed.ToString();
                 //    Tabs.Visibility = System.Windows.Visibility.Collapsed;
                 //}
+        }
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Model.Settings.Load();
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)

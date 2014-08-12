@@ -97,7 +97,7 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int Role {
             get {
                 return ((int)(this["Role"]));
@@ -200,6 +200,18 @@ namespace Scrivener.Properties {
             }
             set {
                 this["DashinNotes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Role_Current {
+            get {
+                return ((string)(this["Role_Current"]));
+            }
+            set {
+                this["Role_Current"] = value;
             }
         }
     }

@@ -43,17 +43,24 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
+            this.
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
+
+            //Auto save settings on any change.
+            Properties.Settings.Default.SettingChanging += Default_SettingChanging;
             
             //Self Explained
             //Role_Check();
             LoadUserSettings();
-            CleanDatabase();
-            NewNote();
+            CleanDatabase();           
             StartNoteSaveTask();
+            
+            NewNote();
 
         }
+
+
 
         //builds or gets QuickItems
         private QuickItem _root;
@@ -173,7 +180,13 @@ namespace Scrivener.ViewModel
         
         #endregion
 
-        #region Settings
+        #region Settings       
+        //auto save settings.
+        void Default_SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
+
         private void LoadUserSettings()
         {
             //Load user settings. Changed to switch to allow for null settings value crashing.
@@ -189,6 +202,7 @@ namespace Scrivener.ViewModel
                     QuicknoteVisibility = Visibility.Visible.ToString();
                     break;
             }
+
         }
 
         //Save Template
@@ -403,14 +417,14 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Role Check
-        void Role_Check()
-        {
-            if (Properties.Settings.Default.Role == -1)
-            {
-                    var RoleCHECK = new Role_UI();
-                    RoleCHECK.ShowDialog();
-            }
-        }
+        //void Role_Check()
+        //{
+        //    if (Properties.Settings.Default.Role == -1)
+        //    {
+        //            var RoleCHECK = new Role_UI();
+        //            RoleCHECK.ShowDialog();
+        //    }
+        //}
         #endregion
     }
 }
