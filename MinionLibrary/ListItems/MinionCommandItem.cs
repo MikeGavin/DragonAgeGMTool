@@ -14,5 +14,7 @@ namespace Minion.ListItems
         public string CopyFrom { get; set; }
         public string CopyTo { get; set; }
         public string Command { get; set; }
+        public string Bit { get; set; }
+        public string FullName { get { return string.Format("{0} {1} {2} {3}", Action, Name, Version, Bit); } }
     }
 }

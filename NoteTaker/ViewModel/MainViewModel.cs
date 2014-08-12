@@ -52,7 +52,6 @@ namespace Scrivener.ViewModel
             CleanDatabase();
             NewNote();
             StartNoteSaveTask();
-            
         }        
 
         //builds or gets QuickItems

@@ -206,7 +206,6 @@ namespace Minion.Tool
                 StandardError = await pProcess.StandardError.ReadToEndAsync();
                 //pProcess.WaitForExit();
 
-
                 ExitCode = pProcess.ExitCode;
                 Log(log.Debug, "ExitCode: " + ExitCode.ToString());
 

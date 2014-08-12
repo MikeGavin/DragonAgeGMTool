@@ -88,8 +88,9 @@ namespace Minion
             var token = tokenSource.Token;
             Task PingTesting = new Task( () => PingTest(token), token, TaskCreationOptions.LongRunning);
             PingTesting.Start();
+            Task.Run(async () => await Get_OSBitness());            
             Task.Run(() => Get_MachineInfo());
-            Task.Run(() => Get_OSBitness());
+            
         }
 
         ~EcotPC()

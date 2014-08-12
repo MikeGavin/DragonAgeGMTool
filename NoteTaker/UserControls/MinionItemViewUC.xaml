@@ -134,7 +134,29 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0"/>
+        <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0">
+            <Label.ContextMenu>
+                <ContextMenu ItemsSource="{Binding IECommands, IsAsync=True, UpdateSourceTrigger=PropertyChanged}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Label}}, Path=DataContext.RunItemCommand}"/>
+                            <Setter Property="CommandParameter" Value="{Binding }"/>
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
+                    <ContextMenu.ItemTemplate>
+                        <DataTemplate DataType="{x:Type MenuItem}">
+                            <TextBlock Text="{Binding Path=FullName}"/>
+                        </DataTemplate>
+                    </ContextMenu.ItemTemplate>
+                    <!--<MenuItem Header="Install IE10" Command="{Binding InstalIE10Command}"/>
+                    <MenuItem Header="Install KB2533623" Command="{Binding InstallKB2533623Command}"/>
+                    <MenuItem Header="Install KB2670838" Command="{Binding InstallKB2670838Command}"/>
+                    <MenuItem Header="Install KB2729094" Command="{Binding InstallKB2729094Command}"/>
+                    <MenuItem Header="Install KB2731771" Command="{Binding InstallKB2731771Command}"/>
+                    <MenuItem Header="Install KB2786081" Command="{Binding InstallKB2786081Command}"/>-->
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
         <Label Content="{Binding Machine.Java}" Grid.Column="3" Grid.Row="1">
                 <Label.ContextMenu>
                     <ContextMenu>

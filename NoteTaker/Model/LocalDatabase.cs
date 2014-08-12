@@ -36,6 +36,7 @@ namespace Scrivener.Model
                         CopyFrom = reader["CopyFrom"].ToString().Trim(),
                         CopyTo = reader["CopyTo"].ToString().Replace("c:", string.Empty).Trim(),
                         Command = reader["Command"].ToString().Trim(),
+                        Bit = reader["Bit"].ToString(),
                     });
                 log.Info("Closing {0}", minion.DataSource);
                 minion.Close();  
