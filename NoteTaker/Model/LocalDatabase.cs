@@ -1,5 +1,6 @@
 ﻿using Minion;
 using Minion.ListItems;
+using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -64,7 +65,7 @@ namespace Scrivener.Model
         public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
             //Return empty command list if role does not allow minion access.
-            if (role == null || role.Minion == false || Settings.CurrentRole == null)
+            if (role == null || role.Minion == false || SettingsViewModel.CurrentRole == null)
             {
                 return new ObservableCollection<MinionCommandItem>();
             }

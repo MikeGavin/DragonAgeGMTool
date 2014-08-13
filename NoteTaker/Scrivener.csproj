@@ -198,7 +198,7 @@
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\MinionArgs.cs" />
     <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="Model\Settings.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />

@@ -1,4 +1,5 @@
 ﻿using Scrivener.Helpers;
+using Scrivener.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,9 +9,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scrivener.Model
+namespace Scrivener.ViewModel
 {
-    public static class Settings
+    public class SettingsViewModel : GalaSoft.MvvmLight.ViewModelBase
     {
 
         static NLog.Logger nlog = NLog.LogManager.GetCurrentClassLogger();

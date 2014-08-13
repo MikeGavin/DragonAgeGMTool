@@ -43,25 +43,24 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
-           
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
             //Auto save settings on any change.
             Properties.Settings.Default.SettingChanging += Default_SettingChanging;
-            Settings.PropertyChanged += Settings_PropertyChanged;
+            SettingsViewModel.PropertyChanged += Settings_PropertyChanged;
             
             //Self Explained
             LoadUserSettings();
             CleanDatabase();           
             StartNoteSaveTask();
-            if (Settings.CurrentRole != null) { NewNote(); }
+            if (SettingsViewModel.CurrentRole != null) { NewNote(); }
 
         }
 
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if ((e.PropertyName == "CurrentRole" | Notes.Count == 0) & Settings.CurrentRole != null)
+            if ((e.PropertyName == "CurrentRole" | Notes.Count == 0) & SettingsViewModel.CurrentRole != null)
             {
                 //reset roll properties to force updates.
                 QuickItemTree = null;
@@ -72,18 +71,17 @@ namespace Scrivener.ViewModel
             }
         }
 
-        public ObservableCollection<RoleItem> Roles { get { return Settings.Roles; } }
-        public RoleItem CurrentRole { get { return Settings.CurrentRole; } set { Settings.CurrentRole = value; RaisePropertyChanged(); } }
+        public RoleItem CurrentRole { get { return SettingsViewModel.CurrentRole; } set { SettingsViewModel.CurrentRole = value; RaisePropertyChanged(); } }
 
         //builds or gets QuickItems
         private QuickItem _root;
-        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(Settings.CurrentRole).Result); } set { _root = value; RaisePropertyChanged(); } }
+        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(SettingsViewModel.CurrentRole).Result); } set { _root = value; RaisePropertyChanged(); } }
         //builds or gets QuickSites
         private Siteitem _sites;
-        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(Settings.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
+        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(Settings.CurrentRole).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
+        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(SettingsViewModel.CurrentRole).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
           
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
@@ -135,15 +133,15 @@ namespace Scrivener.ViewModel
             //async versions to attempt to keep interface from locking
             if (QuickItemTree == null)
             {
-                QuickItemTree = await LocalDatabase.ReturnQuickItems(Settings.CurrentRole);
+                QuickItemTree = await LocalDatabase.ReturnQuickItems(SettingsViewModel.CurrentRole);
             }
             if (QuickSites == null)
             {
-                QuickSites = await LocalDatabase.ReturnSiteItems(Settings.CurrentRole);
+                QuickSites = await LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole);
             }
             if (QuickItemTree == null)
             {
-                MinionCommands = await LocalDatabase.ReturnMinionCommands(Settings.CurrentRole);
+                MinionCommands = await LocalDatabase.ReturnMinionCommands(SettingsViewModel.CurrentRole);
             }
 
 
