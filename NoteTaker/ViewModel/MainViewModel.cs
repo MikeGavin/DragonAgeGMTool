@@ -43,34 +43,47 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
-            this.
+           
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
             //Auto save settings on any change.
             Properties.Settings.Default.SettingChanging += Default_SettingChanging;
+            Settings.PropertyChanged += Settings_PropertyChanged;
             
             //Self Explained
-            //Role_Check();
             LoadUserSettings();
             CleanDatabase();           
             StartNoteSaveTask();
-            
-            NewNote();
+            if (Settings.CurrentRole != null) { NewNote(); }
 
         }
 
+        void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if ((e.PropertyName == "CurrentRole" | Notes.Count == 0) & Settings.CurrentRole != null)
+            {
+                //reset roll properties to force updates.
+                QuickItemTree = null;
+                QuickSites = null;
+                MinionCommands = null;
+                //open note after new DB pull
+                NewNote();
+            }
+        }
 
+        public ObservableCollection<RoleItem> Roles { get { return Settings.Roles; } }
+        public RoleItem CurrentRole { get { return Settings.CurrentRole; } set { Settings.CurrentRole = value; RaisePropertyChanged(); } }
 
         //builds or gets QuickItems
         private QuickItem _root;
-        private QuickItem QuickItemTree { get { return _root ?? ( _root = new Treefiller().filltree() ); } }
+        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(Settings.CurrentRole).Result); } set { _root = value; RaisePropertyChanged(); } }
         //builds or gets QuickSites
         private Siteitem _sites;
-        public Siteitem QuickSites { get { return _sites ?? (_sites = new Sitefiller("Sites").fillsite()); } }
+        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(Settings.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands()); } }
+        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(Settings.CurrentRole).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
           
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
@@ -95,7 +108,7 @@ namespace Scrivener.ViewModel
             CloseNote(note);
         }
         private async void CloseNote(NoteViewModel note)
-        {
+        {            
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
@@ -119,6 +132,21 @@ namespace Scrivener.ViewModel
         public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }
         private async void NewNote()
         {
+            //async versions to attempt to keep interface from locking
+            if (QuickItemTree == null)
+            {
+                QuickItemTree = await LocalDatabase.ReturnQuickItems(Settings.CurrentRole);
+            }
+            if (QuickSites == null)
+            {
+                QuickSites = await LocalDatabase.ReturnSiteItems(Settings.CurrentRole);
+            }
+            if (QuickItemTree == null)
+            {
+                MinionCommands = await LocalDatabase.ReturnMinionCommands(Settings.CurrentRole);
+            }
+
+
             CreateCallHistory();
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
             SelectedNote = Notes.Last();
@@ -190,7 +218,7 @@ namespace Scrivener.ViewModel
         private void LoadUserSettings()
         {
             //Load user settings. Changed to switch to allow for null settings value crashing.
-            switch (Scrivener.Properties.Settings.Default.QuickNotes_Visibility)
+            switch (Scrivener.Properties.Settings.Default.QuickNotes_Visible)
             {
                 case true:
                     QuicknoteVisibility = Visibility.Visible.ToString();
@@ -416,15 +444,5 @@ namespace Scrivener.ViewModel
         } 
         #endregion
 
-        #region Role Check
-        //void Role_Check()
-        //{
-        //    if (Properties.Settings.Default.Role == -1)
-        //    {
-        //            var RoleCHECK = new Role_UI();
-        //            RoleCHECK.ShowDialog();
-        //    }
-        //}
-        #endregion
     }
 }

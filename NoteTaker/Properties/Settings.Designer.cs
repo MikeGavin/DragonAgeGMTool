@@ -86,12 +86,12 @@ namespace Scrivener.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool QuickNotes_Visibility {
+        public bool QuickNotes_Visible {
             get {
-                return ((bool)(this["QuickNotes_Visibility"]));
+                return ((bool)(this["QuickNotes_Visible"]));
             }
             set {
-                this["QuickNotes_Visibility"] = value;
+                this["QuickNotes_Visible"] = value;
             }
         }
         
@@ -205,24 +205,12 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Role_Current {
+        public global::Scrivener.Model.RoleItem Role_Current {
             get {
-                return ((string)(this["Role_Current"]));
+                return ((global::Scrivener.Model.RoleItem)(this["Role_Current"]));
             }
             set {
                 this["Role_Current"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Scrivener.Model.QuickItem Setting {
-            get {
-                return ((global::Scrivener.Model.QuickItem)(this["Setting"]));
-            }
-            set {
-                this["Setting"] = value;
             }
         }
     }

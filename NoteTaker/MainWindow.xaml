@@ -11,7 +11,8 @@
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:Scrivener.UserControls"
         xmlns:Properties="clr-namespace:Scrivener.Properties" 
-        xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" vm:Class="Scrivener.MainWindow" 
+        xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" vm:Class="Scrivener.MainWindow"
+        xmlns:model="clr-namespace:Scrivener.Model"
         mc:Ignorable="d ignore"
         Height="500.3"
         Width="722" 
@@ -109,12 +110,8 @@
                         </TextBlock>
                         <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
                     </StackPanel>
-                    <!--<Label Content="Role"/>
-                    <ComboBox Height="20" SelectedIndex="{Binding Role, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}">
-                        <ComboBoxItem Content="EdTech" />
-                        <ComboBoxItem Content="HelpDesk"/>
-                        <ComboBoxItem Content="Student Information Center"/>
-                    </ComboBox>-->
+                    <Label Content="Role"/>
+                    <ComboBox Height="20" ItemsSource="{Binding Roles}" SelectedItem="{Binding CurrentRole, Mode=TwoWay}" DisplayMemberPath="Name"/>
                     <Label Content="Theme"/>
                     <ComboBox Name="ThemeBox" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged"/>
                     <Label Content="Accent"/>
@@ -140,7 +137,7 @@
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button>
                 <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems}">
+                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
                                 <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>

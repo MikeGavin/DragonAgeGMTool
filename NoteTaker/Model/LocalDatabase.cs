@@ -18,8 +18,57 @@ namespace Scrivener.Model
         private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
         private static SQLiteConnection MainDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory));
 
-        public static ObservableCollection<MinionCommandItem> ReturnMinionCommands()
+        public static ObservableCollection<RoleItem> ReturnRoles()
         {
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = "SELECT * FROM Roles";
+            pullall.Connection = MainDB;
+            var importedRoles = new ObservableCollection<RoleItem>();
+            try
+            {
+                log.Info("Opening {0}", MainDB.DataSource);
+                log.Info("CommandText {0}", pullall.CommandText.ToString());
+                MainDB.Open();
+                SQLiteDataReader reader = pullall.ExecuteReader();
+                while (reader.Read())
+                    importedRoles.Add(new RoleItem()
+                    {
+                        Name = reader["Name"].ToString().Trim(),
+                        Minion = StringToBool(reader["Minion"].ToString().Trim()),
+                        QuickItem_Table = reader["QuickItem_Table"].ToString().Trim(),
+                        SiteItem_Table = reader["SiteItem_Table"].ToString().Trim()
+                    });
+                log.Info("Closing {0}", MainDB.DataSource);
+                MainDB.Close();
+
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                MainDB.Close();
+            }
+
+            return importedRoles;
+
+        }        
+        private static bool StringToBool(string x)
+        {
+            bool result = false;
+            if (x == "1")
+            {
+                result = true;
+            }
+            return result;       
+        }       
+
+        public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
+        {
+            //Return empty command list if role does not allow minion access.
+            if (role == null || role.Minion == false || Settings.CurrentRole == null)
+            {
+                return new ObservableCollection<MinionCommandItem>();
+            }
+
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Minion_Commands";
             pullall.Connection = MainDB;
@@ -29,7 +78,7 @@ namespace Scrivener.Model
                 log.Info("Opening {0}", MainDB.DataSource);
                 MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
+                while (await reader.ReadAsync())
                     commandList.Add(new MinionCommandItem() 
                     { 
                         Name = reader["Name"].ToString().Trim(),
@@ -53,26 +102,29 @@ namespace Scrivener.Model
 
         }
 
-        public static QuickItem ReturnQuickItems()
+        public async static Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
+            if (role ==null) { return new QuickItem(); }
+
             List<QuickItemDBPull> CommandList = new List<QuickItemDBPull>();            
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM HD_Calls";         
-            pullall.Connection = QuickNotesDB;
+            pullall.CommandText = string.Format("SELECT * FROM {0}", role.QuickItem_Table);
+            pullall.Connection = MainDB;
 
             try
             {
-                QuickNotesDB.Open();
+                MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     CommandList.Add(new QuickItemDBPull() { Verbage = reader["QuickNotes_Verbage"].ToString(), Root_Folder = reader["QuickNotes_Root_Folder"].ToString(), Sub_Folder_1 = reader["QuickNotes_1"].ToString(), Sub_Folder_2 = reader["QuickNotes_2"].ToString(), Sub_Folder_3 = reader["QuickNotes_3"].ToString(), Sub_Folder_4 = reader["QuickNotes_4"].ToString(), Sub_Folder_5 = reader["QuickNotes_5"].ToString(), Sub_Folder_6 = reader["QuickNotes_6"].ToString(), Sub_Folder_7 = reader["QuickNotes_7"].ToString(), Sub_Folder_8 = reader["QuickNotes_8"].ToString(), Sub_Folder_9 = reader["QuickNotes_9"].ToString(), Sub_Folder_10 = reader["QuickNotes_10"].ToString() });
                 }
-                QuickNotesDB.Close();
+                MainDB.Close();
             }
             catch (Exception e)
             {
-
+                log.Error(e);
+                MainDB.Close();
             }
 
             List<QuickItemDBPull> Root_uniqueitems = CommandList.GroupBy(s => s.Root_Folder).Select(p => p.First()).ToList();
@@ -222,25 +274,29 @@ namespace Scrivener.Model
             return root;
         }
 
-        public async static Task<Siteitem> ReturnSiteItems(string _table)
+        public async static Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
+            if (role == null) { return new Siteitem(); }
+
             List<SiteDBPull> SiteCommandList = new List<SiteDBPull>();
             
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", _table);
-            pullall.Connection = QuickNotesDB;
+            pullall.CommandText = string.Format("SELECT * FROM {0}", role.SiteItem_Table);
+            pullall.Connection = MainDB;
 
             try
             {
-                QuickNotesDB.Open();
+                MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
                     SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString() });
-                QuickNotesDB.Close();
+                MainDB.Close();
             }
-            catch
+            catch ( Exception e )
             {
-
+                log.Warn(e);
+                Helpers.MetroMessageBox.Show("Exception!", e.ToString());
+                MainDB.Close();
             }
 
 

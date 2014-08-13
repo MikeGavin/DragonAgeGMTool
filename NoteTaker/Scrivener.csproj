@@ -192,6 +192,7 @@
     <Compile Include="Model\LocalDatabase.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
+    <Compile Include="Model\RoleItem.cs" />
     <Compile Include="Model\QuickItemDBPull.cs" />
     <Compile Include="Model\HistoryPull.cs" />
     <Compile Include="Model\IDataService.cs" />

@@ -17,7 +17,7 @@
     <Setting Name="User_Font_Size" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="QuickNotes_Visibility" Type="System.Boolean" Scope="User">
+    <Setting Name="QuickNotes_Visible" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Role" Type="System.Int32" Scope="User">
@@ -47,10 +47,7 @@
     <Setting Name="DashinNotes" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Role_Current" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Setting" Type="Scrivener.Model.QuickItem" Scope="User">
+    <Setting Name="Role_Current" Type="Scrivener.Model.RoleItem" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
