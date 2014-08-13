@@ -25,7 +25,7 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("11")]
         public int NoteFontSize {
             get {
                 return ((int)(this["NoteFontSize"]));

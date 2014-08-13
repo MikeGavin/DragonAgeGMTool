@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="NoteFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">11</Value>
     </Setting>
     <Setting Name="TabFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>

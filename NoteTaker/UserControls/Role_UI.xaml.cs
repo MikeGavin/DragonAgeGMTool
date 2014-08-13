@@ -35,8 +35,7 @@ namespace Scrivener.UserControls
             else
             {
                 Properties.Settings.Default.Save();           
-                    //var MWindow = new MainWindow();
-                    //MWindow.ShowDialog();
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
                 this.Close();
             }
         }

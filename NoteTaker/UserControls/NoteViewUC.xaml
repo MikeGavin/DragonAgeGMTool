@@ -35,7 +35,7 @@
                 </Style>
             </RichTextBox.Resources>
         </Toolkit:RichTextBox>-->
-        <TextBox AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" controls:TextboxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True">
+        <TextBox AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" controls:TextboxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <mvvmcmd:EventToCommand Command="{Binding Mode=OneWay, Path=DropCommand}" PassEventArgsToCommand="True" />
@@ -81,8 +81,8 @@
         </TreeView>
         <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding Root.SubItems}">
         </ListBox>
-        <StackPanel Visibility="{Binding MinionVisibility, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
-            <Expander DataContext="{Binding NoteMinion}"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">               
+        <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
+            <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">               
                 <Expander.Header>
                     <Grid>
                         <Grid>
