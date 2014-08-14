@@ -53,17 +53,17 @@ namespace Scrivener.Helpers
             var metroWindow = (Application.Current.MainWindow as MetroWindow);          
             var mySettings = new MetroDialogSettings()
             {
-                AffirmativeButtonText = SettingsViewModel.Roles[0].Name,
-                NegativeButtonText = SettingsViewModel.Roles[1].Name,
+                AffirmativeButtonText = MainViewModel.Roles[0].Name,
+                NegativeButtonText = MainViewModel.Roles[1].Name,
                 FirstAuxiliaryButtonText = "Cancel",
                 ColorScheme = MetroDialogColorScheme.Accented
             };
             
             MessageDialogResult temp = await metroWindow.ShowMessageAsync("Choose Role.", "No current role was found. Please choose from the following:", MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,mySettings);
             if (temp == MessageDialogResult.Affirmative)
-                return SettingsViewModel.Roles[0];
+                return MainViewModel.Roles[0];
             else if (temp == MessageDialogResult.Negative)
-                return SettingsViewModel.Roles[1];
+                return MainViewModel.Roles[1];
             else
             {
                 return null;

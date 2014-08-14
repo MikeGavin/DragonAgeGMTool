@@ -72,7 +72,7 @@ namespace Scrivener
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.SettingsViewModel.Load();
+            ViewModel.MainViewModel.WindowLoaded();
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)

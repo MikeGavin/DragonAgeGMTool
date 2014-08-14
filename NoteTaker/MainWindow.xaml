@@ -111,7 +111,10 @@
                         <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
                     </StackPanel>
                     <Label Content="Role"/>
-                    <ComboBox Height="20" ItemsSource="{Binding Source={x:Static ViewModel:SettingsViewModel.Roles}}" SelectedItem="{Binding CurrentRole, Mode=TwoWay}" DisplayMemberPath="Name" IsSynchronizedWithCurrentItem="True"/>
+                    <ComboBox Height="20" ItemsSource="{Binding Roles}" DisplayMemberPath="Name"
+                              SelectedValue="{Binding Role_Current, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={vm:Static Properties:Settings.Default}}" 
+                              
+                              />
                     <Label Content="Theme"/>
                     <ComboBox Name="ThemeBox" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged"/>
                     <Label Content="Accent"/>

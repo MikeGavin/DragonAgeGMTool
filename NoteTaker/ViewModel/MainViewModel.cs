@@ -47,20 +47,22 @@ namespace Scrivener.ViewModel
             Notes.CollectionChanged += OnNotesChanged;
 
             //Auto save settings on any change.
-            Properties.Settings.Default.SettingChanging += Default_SettingChanging;
-            SettingsViewModel.PropertyChanged += Settings_PropertyChanged;
-            
+            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+                        
             //Self Explained
             LoadUserSettings();
             CleanDatabase();           
             StartNoteSaveTask();
-            if (SettingsViewModel.CurrentRole != null) { NewNote(); }
-
+            if (Properties.Settings.Default.Role_Current != null) { NewNote(); }
         }
 
+        
+
+        
+        //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if ((e.PropertyName == "CurrentRole" | Notes.Count == 0) & SettingsViewModel.CurrentRole != null)
+            if ((e.PropertyName == "Role_Current" | Notes.Count == 0) & Properties.Settings.Default.Role_Current != null)
             {
                 //reset roll properties to force updates.
                 QuickItemTree = null;
@@ -69,19 +71,41 @@ namespace Scrivener.ViewModel
                 //open note after new DB pull
                 NewNote();
             }
+            Properties.Settings.Default.Save();
         }
 
-        public RoleItem CurrentRole { get { return SettingsViewModel.CurrentRole; } set { SettingsViewModel.CurrentRole = value; RaisePropertyChanged(); } }
+        private static ObservableCollection<RoleItem> _roles;
+        public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
+
+        public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { Properties.Settings.Default.Role_Current = value; RaisePropertyChanged(); } }
+
+        //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
+        public static async void WindowLoaded()
+        {
+            if (Properties.Settings.Default.Role_Current == null)
+            {
+                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
+                Properties.Settings.Default.Save();
+                if (Properties.Settings.Default.Role_Current == null)
+                {
+                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
+                    Environment.Exit(0);
+                }
+
+            }
+        }
+
+        
 
         //builds or gets QuickItems
         private QuickItem _root;
-        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(SettingsViewModel.CurrentRole).Result); } set { _root = value; RaisePropertyChanged(); } }
+        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current).Result); } set { _root = value; RaisePropertyChanged(); } }
         //builds or gets QuickSites
         private Siteitem _sites;
-        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
+        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(Properties.Settings.Default.Role_Current).Result); } set { _sites = value; RaisePropertyChanged(); } }
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(SettingsViewModel.CurrentRole).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
+        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
           
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
@@ -133,15 +157,15 @@ namespace Scrivener.ViewModel
             //async versions to attempt to keep interface from locking
             if (QuickItemTree == null)
             {
-                QuickItemTree = await LocalDatabase.ReturnQuickItems(SettingsViewModel.CurrentRole);
+                QuickItemTree = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
             }
             if (QuickSites == null)
             {
-                QuickSites = await LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole);
+                QuickSites = await LocalDatabase.ReturnSiteItems(Properties.Settings.Default.Role_Current);
             }
             if (MinionCommands == null)
             {
-                MinionCommands = await LocalDatabase.ReturnMinionCommands(SettingsViewModel.CurrentRole);
+                MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
             }
 
 
@@ -207,11 +231,6 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Settings       
-        //auto save settings.
-        void Default_SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
-        {
-            Properties.Settings.Default.Save();
-        }
 
         private void LoadUserSettings()
         {

@@ -198,9 +198,8 @@
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\MinionArgs.cs" />
     <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
-    <Compile Include="Model\Sitefiller.cs" />
+    <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="UserControls\Role_UI.xaml.cs">
       <DependentUpon>Role_UI.xaml</DependentUpon>
@@ -208,7 +207,7 @@
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
-    <Compile Include="Model\Treefiller.cs" />
+    <Compile Include="Model\Depreciated\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
       <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
     </Compile>

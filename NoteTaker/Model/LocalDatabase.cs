@@ -65,7 +65,7 @@ namespace Scrivener.Model
         public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
             //Return empty command list if role does not allow minion access.
-            if (role == null || role.Minion == false || SettingsViewModel.CurrentRole == null)
+            if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
             {
                 return new ObservableCollection<MinionCommandItem>();
             }
