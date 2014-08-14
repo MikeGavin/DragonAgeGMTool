@@ -63,7 +63,7 @@ namespace Scrivener.ViewModel
             if (Properties.Settings.Default.Role_Current != null) { NewNote(); }
 
         }
-    
+
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -74,7 +74,7 @@ namespace Scrivener.ViewModel
                 QuickSites = null;
                 MinionCommands = null;
                 //open note after new DB pull
-                NewNote();               
+                NewNote();
             }
             Properties.Settings.Default.Save();
         }
@@ -271,14 +271,14 @@ namespace Scrivener.ViewModel
 
         #region Call history
 
-        private string Tempnotes = "";
+        //builds or gets QuickSites
+        //private Siteitem _sites;
+        //public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
 
         private static void CreateCallHistory()
         {
             //creates Call History Database and populates table with todays date if none exist
-            string Date = DateTime.Now.ToString("D");
-            Date = Date.Replace(" ", "");
-            Date = Date.Replace(",", "");
+            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
             //creates DB and table for todays saving of notes 
             SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
             string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([ID],[Caller],[Notes]);", Date);
@@ -289,9 +289,7 @@ namespace Scrivener.ViewModel
         }
         private int SaveNotes()
         {
-            string Date = DateTime.Now.ToString("D");
-            Date = Date.Replace(" ", "");
-            Date = Date.Replace(",", "");
+            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
             string Title = "Title";
             string Text = "Text";
             int index = 0;
@@ -321,8 +319,6 @@ namespace Scrivener.ViewModel
             }
 
             Call_history.Close();
-
-            Tempnotes = Text;
 
             return index;
 
@@ -369,18 +365,10 @@ namespace Scrivener.ViewModel
         public async void CleanDatabase()
         {
             string Mondaycheck = DateTime.Now.ToString("dddd");
-            string Today = DateTime.Now.ToString("D");
-            Today = Today.Replace(" ", "");
-            Today = Today.Replace(",", "");
-            string Yesterday = DateTime.Now.AddDays(-1).ToString("D");
-            Yesterday = Yesterday.Replace(" ", "");
-            Yesterday = Yesterday.Replace(",", "");
-            string Saturday = DateTime.Now.AddDays(-2).ToString("D");
-            Saturday = Saturday.Replace(" ", "");
-            Saturday = Saturday.Replace(",", "");
-            string Friday = DateTime.Now.AddDays(-3).ToString("D");
-            Friday = Friday.Replace(" ", "");
-            Friday = Friday.Replace(",", "");
+            string Today = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+            string Yesterday = DateTime.Now.AddDays(-1).ToString("D").Replace(" ", "").Replace(",", "");
+            string Saturday = DateTime.Now.AddDays(-2).ToString("D").Replace(" ", "").Replace(",", "");
+            string Friday = DateTime.Now.AddDays(-3).ToString("D").Replace(" ", "").Replace(",", "");
 
             if (Mondaycheck == "Monday")
 
@@ -427,9 +415,7 @@ namespace Scrivener.ViewModel
 
         public async void Closereplacenotes()
         {
-            string Date = DateTime.Now.ToString("D");
-            Date = Date.Replace(" ", "");
-            Date = Date.Replace(",", "");
+            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
             SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
             await Call_history.OpenAsync();
             foreach (NoteViewModel n in Notes)

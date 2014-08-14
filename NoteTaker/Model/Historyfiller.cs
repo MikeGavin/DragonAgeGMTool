@@ -12,7 +12,8 @@ namespace Scrivener.Model
     {
         private Historyitem Historyroot;
         public Historyitem Root { get { return Historyroot; } set { Historyroot = value; } }
-        private string _historytable;
+        private string _table;
+
 
         private List<HistoryPull> HistoryCommandList = new List<HistoryPull>()
         {
@@ -21,16 +22,17 @@ namespace Scrivener.Model
 
         public Historyfiller(string table)
         {
-            _historytable = table;
+            _table = table;
         }
 
         public Historyitem fillhistory()
         {
-
+            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+            
             SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
             SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", _historytable);
+            pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
             pullall.Connection = CallHistory;
 
             try
@@ -56,7 +58,9 @@ namespace Scrivener.Model
                 Historyitem Root_Item = new Historyitem() { Title = item.Caller, Content = item.Notes };
 
                 Historyroot.SubItems.Add(Root_Item);
+
             }
+            
             return Historyroot;
         }
     }

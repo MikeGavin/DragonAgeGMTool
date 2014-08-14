@@ -98,6 +98,13 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
+            <!--<controls:Flyout vm:Name="SearchNotesFlyout" Position="Top" Height="65" Width="150" IsOpen="True" IsOpenChanged="SettingsFlyout_IsOpenChanged" Margin="-241,35,0,0" HorizontalAlignment="Left" IsTabStop="False">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Search Notes:" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="14"/>
+                    <TextBox Margin="5,0,0,0"></TextBox>
+                </StackPanel>
+            </controls:Flyout>-->
+
             <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="170" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
                 <StackPanel Margin="5">
                     <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
@@ -127,9 +134,25 @@
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" ToolTip="New Tab" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="history" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
+                    <MenuItem Header="&#xf1da;" ToolTip="Caller History" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value=""/>
+                                <Setter Property="CommandParameter" Value="{Binding Notes}"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        <MenuItem.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickHistory}">
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
+                            </HierarchicalDataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </Menu>
+            </Button>
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            
-            
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
                      
             

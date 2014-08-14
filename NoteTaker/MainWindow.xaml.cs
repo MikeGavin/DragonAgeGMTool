@@ -41,7 +41,12 @@ namespace Scrivener
                     Properties.Settings.Default.Accent = 2;
                 }
 
-                //Theme Settings
+                if (Properties.Settings.Default.Role == -1)
+                {
+                    LayoutRoot.Visibility = System.Windows.Visibility.Collapsed;
+                }
+
+               //Theme Settings
                 ThemeBox.Items.Add("Dark");
                 ThemeBox.Items.Add("Light");
                 if (Properties.Settings.Default.Theme == null)
@@ -114,6 +119,14 @@ namespace Scrivener
         {           
             var theme = ThemeManager.DetectAppStyle(Application.Current);
             ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme(string.Format("Base{0}", ThemeBox.SelectedItem)));
+        }
+
+        private void Roleupdated(object sender, SelectionChangedEventArgs e)
+        {
+            if (Properties.Settings.Default.Role == 0)
+            {
+                //LayoutRoot.Visibility = System.Windows.Visibility.Visible;
+            }
         }
     }
 }
