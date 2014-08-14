@@ -61,43 +61,6 @@ namespace Scrivener.ViewModel
             CleanDatabase();           
             StartNoteSaveTask();
             if (Properties.Settings.Default.Role_Current != null) { NewNote(); }
-
-        }
-
-        //Listener for settings changed properity in order to clear out imports
-        void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if ((e.PropertyName == "Role_Current" | Notes.Count == 0) & Properties.Settings.Default.Role_Current != null)
-            {
-                //reset roll properties to force updates.
-                QuickItemTree = null;
-                QuickSites = null;
-                MinionCommands = null;
-                //open note after new DB pull
-                NewNote();
-            }
-            Properties.Settings.Default.Save();
-        }
-
-        private static ObservableCollection<RoleItem> _roles;
-        public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
-
-        public static CollectionView RolesView { get; set; }
-        public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
-
-        //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
-        public static async void WindowLoaded()
-        {
-            if (Properties.Settings.Default.Role_Current == null)
-            {
-                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
-                Properties.Settings.Default.Save();
-                if (Properties.Settings.Default.Role_Current == null)
-                {
-                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
-                    Environment.Exit(0);
-                }
-            }
         }
 
         //builds or gets QuickItems
@@ -251,6 +214,42 @@ namespace Scrivener.ViewModel
                     break;
             }
 
+        }
+
+        //Listener for settings changed properity in order to clear out imports
+        void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if ((e.PropertyName == "Role_Current" | Notes.Count == 0) & Properties.Settings.Default.Role_Current != null)
+            {
+                //reset roll properties to force updates.
+                QuickItemTree = null;
+                QuickSites = null;
+                MinionCommands = null;
+                //open note after new DB pull
+                NewNote();
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        private static ObservableCollection<RoleItem> _roles;
+        public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
+
+        public static CollectionView RolesView { get; set; }
+        public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
+
+        //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
+        public static async void WindowLoaded()
+        {
+            if (Properties.Settings.Default.Role_Current == null)
+            {
+                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
+                Properties.Settings.Default.Save();
+                if (Properties.Settings.Default.Role_Current == null)
+                {
+                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
+                    Environment.Exit(0);
+                }
+            }
         }
 
         //Save Template

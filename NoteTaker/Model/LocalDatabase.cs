@@ -18,6 +18,7 @@ namespace Scrivener.Model
         //Temp until single DB instance
         private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
         private static SQLiteConnection MainDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory));
+        private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
         public static ObservableCollection<RoleItem> ReturnRoles()
         {
@@ -324,6 +325,31 @@ namespace Scrivener.Model
             return siteroot;
         }
 
-        
+        public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
+        {
+
+            ObservableCollection<HistoryItem> HistoryList = new ObservableCollection<HistoryItem>();
+            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
+            pullall.Connection = CallHistory;
+
+            try
+            {
+                CallHistory.Open();
+                SQLiteDataReader reader = pullall.ExecuteReader();
+                while (reader.Read())
+                    HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
+                CallHistory.Close();
+            }
+            catch(Exception e)
+            {
+                log.Error(e);
+            }
+
+            return HistoryList;
+
+        }
     }
 }

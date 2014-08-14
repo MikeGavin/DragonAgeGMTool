@@ -202,8 +202,9 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                var sort = _minionCommands.OrderByDescending(x => x.Version).ToList();
-                var item = sort[9];
+
+
+                var item = _minionCommands.First((j) => j.Version == "1.7.0_55" && j.Action == "Install");
                 await RunCommandItem(item);
             }
             catch (Exception e)
@@ -326,7 +327,6 @@ namespace Scrivener.ViewModel
 
         private async Task RunCommandItem(MinionCommandItem command)
         {
-
             await Machine.Kill_Defaultss();
             var result = await Machine.Command(command);
             string vresult = await UpdateItemVersion(command);

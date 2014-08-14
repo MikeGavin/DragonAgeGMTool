@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scrivener.Model
 {
-    class HistoryPull
+    public class HistoryItem
     {
         public string ID { get; set; }
         public string Caller { get; set; }
