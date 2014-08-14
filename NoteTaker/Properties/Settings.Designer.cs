@@ -109,7 +109,7 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Minion_Visibility {
             get {
                 return ((bool)(this["Minion_Visibility"]));

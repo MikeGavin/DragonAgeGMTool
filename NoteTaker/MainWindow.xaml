@@ -134,9 +134,9 @@
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" ToolTip="New Tab" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Button Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <!--<Button Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
                 <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="history" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf1da;" ToolTip="Caller History" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
+                    --><!--<MenuItem Header="&#xf1da;" ToolTip="Caller History" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
                                 <Setter Property="Command" Value=""/>
@@ -149,9 +149,9 @@
                                 <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
                             </HierarchicalDataTemplate>
                         </MenuItem.ItemTemplate>
-                    </MenuItem>
+                    </MenuItem>--><!--
                 </Menu>
-            </Button>
+            </Button>-->
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
                      

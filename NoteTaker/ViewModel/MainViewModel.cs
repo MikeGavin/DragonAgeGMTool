@@ -202,7 +202,7 @@ namespace Scrivener.ViewModel
         
         #endregion
 
-        #region Settings       
+        #region Settings
 
         private void LoadUserSettings()
         {
@@ -218,8 +218,8 @@ namespace Scrivener.ViewModel
                 default:
                     QuicknoteVisibility = Visibility.Visible.ToString();
                     break;
+                
             }
-
         }
 
         //Listener for settings changed properity in order to clear out imports
@@ -238,7 +238,9 @@ namespace Scrivener.ViewModel
                 MinionCommands = null;
                 //open note after new DB pull
                 NewNote();
+                Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
             }
+            
             Properties.Settings.Default.Save();
         }
 
@@ -261,6 +263,8 @@ namespace Scrivener.ViewModel
                     Environment.Exit(0);
                 }
             }
+            
+            
         }
 
         //Save Template
