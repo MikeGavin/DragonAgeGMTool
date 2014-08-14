@@ -172,8 +172,8 @@
                             </Style>
                         </MenuItem.ItemContainerStyle>
                         <MenuItem.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickSites}">
-                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}"/>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
                             </HierarchicalDataTemplate>
                         </MenuItem.ItemTemplate>
                     </MenuItem>

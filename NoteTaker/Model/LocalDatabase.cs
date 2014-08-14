@@ -305,24 +305,47 @@ namespace Scrivener.Model
             List<SiteDBPull> Root_uniqueitems = SiteCommandList.GroupBy(s => s.Parent).Select(p => p.First()).ToList();
             List<SiteDBPull> Site1uniqueitems = SiteCommandList.GroupBy(s => s.Child_1).Select(p => p.First()).ToList();
 
-            var siteroot = new Siteitem() { Title = "Menu" };
+            //var siteroot = new Siteitem() { Title = "Menu" };
 
-            foreach (SiteDBPull item in Root_uniqueitems)
+            //foreach (SiteDBPull item in Root_uniqueitems)
+            //{
+            //    Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
+
+            //    foreach (SiteDBPull item1 in Site1uniqueitems)
+            //    {
+            //        Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
+
+            //        if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
+            //        {
+            //            Root_Item.SubItems.Add(Sub_Item_1);
+            //        }
+            //    }
+            //    siteroot.SubItems.Add(Root_Item);
+            //}
+
+            var root = new Siteitem() { Title = "Menu" };
+
+            if (Root_uniqueitems.Count > 1)
             {
-                Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
-
-                foreach (SiteDBPull item1 in Site1uniqueitems)
+                foreach (SiteDBPull item in Root_uniqueitems)
                 {
-                    Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
-
-                    if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
+                    Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content= item.URL };
+                    if (Site1uniqueitems.Count > 1)
                     {
-                        Root_Item.SubItems.Add(Sub_Item_1);
+                        foreach (SiteDBPull item1 in Site1uniqueitems)
+                        {
+                            Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
+
+                            if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
+                            {
+                                Root_Item.SubItems.Add(Sub_Item_1);
+                            }
+                        }
                     }
+                    root.SubItems.Add(Root_Item);
                 }
-                siteroot.SubItems.Add(Root_Item);
             }
-            return siteroot;
+            return root;
         }
 
         public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()

@@ -48,10 +48,7 @@ namespace Scrivener.ViewModel
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
-            //Hack to set current role in combobox
-            RolesView = new CollectionView(Roles);
-            var Test = Roles.First((i)=>i.Name==Properties.Settings.Default.Role_Current.Name);            
-            RolesView.MoveCurrentTo(Test);
+
 
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;            
@@ -60,7 +57,16 @@ namespace Scrivener.ViewModel
             LoadUserSettings();
             CleanDatabase();           
             StartNoteSaveTask();
-            if (Properties.Settings.Default.Role_Current != null) { NewNote(); }
+            if (Properties.Settings.Default.Role_Current != null) 
+            {
+                //Hack to set current role in combobox
+                RolesView = new CollectionView(Roles);
+                var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+                RolesView.MoveCurrentTo(Test);
+                NewNote(); 
+            
+            
+            }
         }
 
         //builds or gets QuickItems
@@ -221,6 +227,11 @@ namespace Scrivener.ViewModel
         {
             if ((e.PropertyName == "Role_Current" | Notes.Count == 0) & Properties.Settings.Default.Role_Current != null)
             {
+                //Hack to set current role in combobox
+                RolesView = new CollectionView(Roles);
+                var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+                RolesView.MoveCurrentTo(Test);
+
                 //reset roll properties to force updates.
                 QuickItemTree = null;
                 QuickSites = null;

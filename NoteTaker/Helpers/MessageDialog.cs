@@ -60,7 +60,7 @@ namespace Scrivener.Helpers
                 ColorScheme = MetroDialogColorScheme.Accented
             };
             
-            MessageDialogResult temp = await metroWindow.ShowMessageAsync("Choose Role.", "No current role was found. Please choose from the following:", MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,mySettings);
+            MessageDialogResult temp = await metroWindow.ShowMessageAsync("Choose Role.", "No current role was found. Please choose from the following:", MessageDialogStyle.AffirmativeAndNegativeAndDoubleAuxiliary,mySettings);
             if (temp == MessageDialogResult.Affirmative)
                 return MainViewModel.Roles[0];
             else if (temp == MessageDialogResult.Negative)
