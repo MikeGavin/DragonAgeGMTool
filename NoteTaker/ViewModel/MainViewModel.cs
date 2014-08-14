@@ -139,7 +139,7 @@ namespace Scrivener.ViewModel
             {
                 QuickSites = await LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole);
             }
-            if (QuickItemTree == null)
+            if (MinionCommands == null)
             {
                 MinionCommands = await LocalDatabase.ReturnMinionCommands(SettingsViewModel.CurrentRole);
             }

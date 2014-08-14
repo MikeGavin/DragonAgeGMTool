@@ -49,7 +49,7 @@
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick" >
+                <i:EventTrigger EventName="MouseDoubleClick">
                     <mvvmcmd:EventToCommand Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseRightButtonDown">
@@ -57,7 +57,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <TreeView.InputBindings>
-                <KeyBinding Command="{Binding AppendQuickItemCommand}" Key="Enter" />
+                <KeyBinding Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" Key="Enter" />
             </TreeView.InputBindings>
             <TreeView.ItemContainerStyle>
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
