@@ -22,6 +22,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using NLog.Config;
 using Minion.ListItems;
+using System.ComponentModel;
+using System.Windows.Data;
 
 
 namespace Scrivener.ViewModel
@@ -46,19 +48,22 @@ namespace Scrivener.ViewModel
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
+            //Hack to set current role in combobox
+            RolesView = new CollectionView(Roles);
+            var Test = Roles.First((i)=>i.Name==Properties.Settings.Default.Role_Current.Name);            
+            RolesView.MoveCurrentTo(Test);
+
             //Auto save settings on any change.
-            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
-                        
+            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;            
+            
             //Self Explained
             LoadUserSettings();
             CleanDatabase();           
             StartNoteSaveTask();
             if (Properties.Settings.Default.Role_Current != null) { NewNote(); }
+
         }
-
-        
-
-        
+    
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -69,7 +74,7 @@ namespace Scrivener.ViewModel
                 QuickSites = null;
                 MinionCommands = null;
                 //open note after new DB pull
-                NewNote();
+                NewNote();               
             }
             Properties.Settings.Default.Save();
         }
@@ -77,7 +82,8 @@ namespace Scrivener.ViewModel
         private static ObservableCollection<RoleItem> _roles;
         public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
 
-        public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { Properties.Settings.Default.Role_Current = value; RaisePropertyChanged(); } }
+        public static CollectionView RolesView { get; set; }
+        public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
         public static async void WindowLoaded()
@@ -91,11 +97,8 @@ namespace Scrivener.ViewModel
                     await MetroMessageBox.Show(string.Empty, "Apathy is death.");
                     Environment.Exit(0);
                 }
-
             }
         }
-
-        
 
         //builds or gets QuickItems
         private QuickItem _root;

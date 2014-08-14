@@ -55,7 +55,8 @@ namespace Scrivener.Helpers
             {
                 AffirmativeButtonText = MainViewModel.Roles[0].Name,
                 NegativeButtonText = MainViewModel.Roles[1].Name,
-                FirstAuxiliaryButtonText = "Cancel",
+                FirstAuxiliaryButtonText = MainViewModel.Roles[2].Name,
+                SecondAuxiliaryButtonText = "Cancel",
                 ColorScheme = MetroDialogColorScheme.Accented
             };
             
@@ -64,6 +65,8 @@ namespace Scrivener.Helpers
                 return MainViewModel.Roles[0];
             else if (temp == MessageDialogResult.Negative)
                 return MainViewModel.Roles[1];
+            else if (temp == MessageDialogResult.FirstAuxiliary)
+                return MainViewModel.Roles[2];
             else
             {
                 return null;
