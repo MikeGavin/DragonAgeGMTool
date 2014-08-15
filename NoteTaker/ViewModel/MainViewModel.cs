@@ -45,6 +45,9 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
+            var testssss = new DataBaseWatcher();
+            testssss.Run();
+
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
@@ -288,8 +291,8 @@ namespace Scrivener.ViewModel
         #region Call history
 
         //builds or gets QuickSites
-        //private Siteitem _sites;
-        //public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(SettingsViewModel.CurrentRole).Result); } set { _sites = value; RaisePropertyChanged(); } }
+        private ObservableCollection<HistoryItem> _history;
+        public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
         private static void CreateCallHistory()
         {
@@ -323,10 +326,12 @@ namespace Scrivener.ViewModel
                     docount.ExecuteNonQuery();
                     index = Convert.ToInt32(docount.ExecuteScalar());
                     index++;
-
+                    
                     string insert = string.Format("INSERT INTO {0} (ID,Caller,Notes) values ('{1}','{2}','{3}');", Date, index, Title, Text);
-                    SQLiteCommand command = new SQLiteCommand(insert, Call_history);
-                    command.ExecuteNonQuery();
+                    
+                    SQLiteCommand insertcommand = new SQLiteCommand(insert, Call_history);
+                    
+                    insertcommand.ExecuteNonQuery();
                 }
             }
             catch (Exception e)
@@ -346,28 +351,41 @@ namespace Scrivener.ViewModel
             while (token.IsCancellationRequested == false)
             {
                 Thread.Sleep(30000);
-                string Date = DateTime.Now.ToString("D");
-                Date = Date.Replace(" ", "");
-                Date = Date.Replace(",", "");
+                string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+                string Title = "Title";
+                string Text = "Text";
                 SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
                 await Call_history.OpenAsync();
                 foreach (NoteViewModel n in Notes)
                 {
                     string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
                     string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
+                    
                     SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
                     SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
-
+                    
                     try
                     {
                         await replacetitlecommand.ExecuteNonQueryAsync();
                         await replacenotecommand.ExecuteNonQueryAsync();
+                        
                     }
                     catch (Exception e)
                     {
                         log.Error(e);
                     }
                 }
+
+                string cleantable = string.Format("DELETE FROM {0} WHERE Caller = '{1}' AND Notes = '{2}'", Date, Title, Text);
+                SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+                try
+                    {
+                        cleantablecommand.ExecuteNonQueryAsync();
+                    }
+                catch (Exception e)
+                    {
+                        log.Error(e);
+                    }
                 Call_history.Close();
             }
         }
@@ -377,7 +395,7 @@ namespace Scrivener.ViewModel
             Task noteSaving = new Task(() => ReplaceNotes(token), token, TaskCreationOptions.LongRunning);
             noteSaving.Start();
         }
-
+        
         public async void CleanDatabase()
         {
             string Mondaycheck = DateTime.Now.ToString("dddd");
@@ -432,26 +450,40 @@ namespace Scrivener.ViewModel
         public async void Closereplacenotes()
         {
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+            string Title = "Title";
+            string Text = "Text";
             SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-            await Call_history.OpenAsync();
+            Call_history.Open();
             foreach (NoteViewModel n in Notes)
             {
                 string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
                 string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
+                
                 SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
                 SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
-
                 try
                 {
-                    await replacetitlecommand.ExecuteNonQueryAsync();
-                    await replacenotecommand.ExecuteNonQueryAsync();
+                    replacetitlecommand.ExecuteNonQueryAsync();
+                    replacenotecommand.ExecuteNonQueryAsync();
                 }
                 catch (Exception e)
                 {
                     log.Error(e);
                 }
             }
+
+            string cleantable = string.Format("DELETE FROM {0} WHERE Caller = '{1}' AND Notes = '{2}'", Date, Title, Text);
+            SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+            try
+            { 
+                cleantablecommand.ExecuteNonQueryAsync(); 
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
             Call_history.Close();
+
         }
 
         #endregion
