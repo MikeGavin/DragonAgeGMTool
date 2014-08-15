@@ -291,7 +291,7 @@ namespace Scrivener.Model
                 MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
-                    SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString() });
+                    SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString(), Child_2 = reader["Child_2"].ToString() });
                 MainDB.Close();
             }
             catch ( Exception e )
@@ -304,6 +304,31 @@ namespace Scrivener.Model
 
             List<SiteDBPull> Root_uniqueitems = SiteCommandList.GroupBy(s => s.Parent).Select(p => p.First()).ToList();
             List<SiteDBPull> Site1uniqueitems = SiteCommandList.GroupBy(s => s.Child_1).Select(p => p.First()).ToList();
+            List<SiteDBPull> Site2uniqueitems = SiteCommandList.GroupBy(s => s.Child_2).Select(p => p.First()).ToList();
+
+            //var root = new Siteitem() { Title = "Menu" };
+
+            //if (Root_uniqueitems.Count > 1)
+            //{
+            //    foreach (SiteDBPull item in Root_uniqueitems)
+            //    {
+            //        Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
+            //        if (Site1uniqueitems.Count > 1)
+            //        {
+            //            foreach (SiteDBPull item1 in Site1uniqueitems)
+            //            {
+            //                Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
+
+            //                if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
+            //                {
+            //                    Root_Item.SubItems.Add(Sub_Item_1);
+            //                }
+            //            }
+            //        }
+            //        root.SubItems.Add(Root_Item);
+            //    }
+            //}
+
 
             var root = new Siteitem() { Title = "Menu" };
 
@@ -311,7 +336,7 @@ namespace Scrivener.Model
             {
                 foreach (SiteDBPull item in Root_uniqueitems)
                 {
-                    Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content= item.URL };
+                    Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
                     if (Site1uniqueitems.Count > 1)
                     {
                         foreach (SiteDBPull item1 in Site1uniqueitems)
@@ -321,6 +346,19 @@ namespace Scrivener.Model
                             if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
                             {
                                 Root_Item.SubItems.Add(Sub_Item_1);
+                            }
+
+                            if (Site2uniqueitems.Count > 1)
+                            {
+                                foreach (SiteDBPull item2 in Site2uniqueitems)
+                                {
+                                    Siteitem Sub_Item_2 = new Siteitem() { Title = item2.Child_2, Content = item2.URL };
+
+                                    if (item2.Child_1 == Sub_Item_1.Title && item2.Child_2 != string.Empty)
+                                    {
+                                        Sub_Item_1.SubItems.Add(Sub_Item_2);
+                                    }
+                                }
                             }
                         }
                     }

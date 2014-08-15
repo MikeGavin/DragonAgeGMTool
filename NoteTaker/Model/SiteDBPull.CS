@@ -11,5 +11,6 @@ namespace Scrivener.Model
         public string URL { get; set; }
         public string Parent { get; set; }
         public string Child_1 { get; set; }
+        public string Child_2 { get; set; }
     }
 }
