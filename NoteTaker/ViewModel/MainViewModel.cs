@@ -48,7 +48,7 @@ namespace Scrivener.ViewModel
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;
 
-
+            
 
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;            
@@ -254,6 +254,7 @@ namespace Scrivener.ViewModel
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
         public static async void WindowLoaded()
         {
+       //     Model.ExceptionReporting.Email(new NotImplementedException());
             if (Properties.Settings.Default.Role_Current == null)
             {
                 Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
@@ -340,7 +341,7 @@ namespace Scrivener.ViewModel
         }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
-        private async Task ReplaceNotes(CancellationToken token)
+        public async Task ReplaceNotes(CancellationToken token)
         {
             while (token.IsCancellationRequested == false)
             {
