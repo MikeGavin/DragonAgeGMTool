@@ -141,7 +141,7 @@ namespace Scrivener.Model
             List<QuickItemDBPull> Sub9uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_9).Select(p => p.First()).ToList();
             List<QuickItemDBPull> Sub10uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_10).Select(p => p.First()).ToList();
 
-
+            #region Fill Tree
             var root = new QuickItem() { Title = "Menu" };
 
             if (Root_uniqueitems.Count > 1)
@@ -274,6 +274,8 @@ namespace Scrivener.Model
                 }                
             }
             return root;
+
+#endregion
         }
 
         public async static Task<Siteitem> ReturnSiteItems(RoleItem role)
@@ -306,30 +308,7 @@ namespace Scrivener.Model
             List<SiteDBPull> Site1uniqueitems = SiteCommandList.GroupBy(s => s.Child_1).Select(p => p.First()).ToList();
             List<SiteDBPull> Site2uniqueitems = SiteCommandList.GroupBy(s => s.Child_2).Select(p => p.First()).ToList();
 
-            //var root = new Siteitem() { Title = "Menu" };
-
-            //if (Root_uniqueitems.Count > 1)
-            //{
-            //    foreach (SiteDBPull item in Root_uniqueitems)
-            //    {
-            //        Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
-            //        if (Site1uniqueitems.Count > 1)
-            //        {
-            //            foreach (SiteDBPull item1 in Site1uniqueitems)
-            //            {
-            //                Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
-
-            //                if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
-            //                {
-            //                    Root_Item.SubItems.Add(Sub_Item_1);
-            //                }
-            //            }
-            //        }
-            //        root.SubItems.Add(Root_Item);
-            //    }
-            //}
-
-
+            #region Fill Site
             var root = new Siteitem() { Title = "Menu" };
 
             if (Root_uniqueitems.Count > 1)
@@ -366,6 +345,8 @@ namespace Scrivener.Model
                 }
             }
             return root;
+
+            #endregion
         }
 
         public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()

@@ -10,7 +10,7 @@ namespace Scrivener.Model
 {
     public class DataBaseWatcher
     {
-        public string newDBpath = "C:\\Users\\michael.gavin\\Desktop";
+        public string newDBpath = "\\\\fs1\\EdTech\\Scrivener\\Database";
         public string oldDBpath = string.Format("{0}\\Resources", Environment.CurrentDirectory);
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -25,7 +25,6 @@ namespace Scrivener.Model
                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             // Only watch text files.
             watcher.Filter = "*.db";
-
             // Add event handlers.
             watcher.Changed += new FileSystemEventHandler(OnChanged);
             watcher.Created += new FileSystemEventHandler(OnChanged);
@@ -42,8 +41,8 @@ namespace Scrivener.Model
         private void OnChanged(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            
-            var extensions = new[] { ".db" }; 
+
+            var extensions = new[] { ".db" };
 
             var files = (from file in Directory.EnumerateFiles(newDBpath)
                          where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)
@@ -77,8 +76,6 @@ namespace Scrivener.Model
             {
                 File.Copy(file.Source, file.Destination, true);
             }
-
-            //File.Copy(string.Format("{0}\\QuickNotes.db", newDBpath), string.Format("{0}\\FUCK YOU COUCH.db", oldDBpath), true);
         }
     }
 
