@@ -190,6 +190,7 @@
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
+    <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
     <Compile Include="Model\LocalDatabase.cs" />
     <Compile Include="Model\DataItem.cs" />
