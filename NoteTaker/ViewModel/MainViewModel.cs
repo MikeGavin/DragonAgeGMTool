@@ -24,6 +24,7 @@ using NLog.Config;
 using Minion.ListItems;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Runtime.CompilerServices;
 
 
 namespace Scrivener.ViewModel
@@ -123,9 +124,9 @@ namespace Scrivener.ViewModel
         }
 
         //New Notes
-        private RelayCommand _newNoteCommand;
-        public RelayCommand NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand(NewNote)); } }
-        private async void NewNote()
+        private RelayCommand<string> _newNoteCommand;
+        public RelayCommand<string> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<string>((parm) => NewNote("RelayCommand") )); } }
+        private async void NewNote([CallerMemberName]string memberName = "")
         {
             //async versions to attempt to keep interface from locking
             if (QuickItemTree == null)
@@ -141,8 +142,8 @@ namespace Scrivener.ViewModel
                 MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
             }
 
-
             CreateCallHistory();
+            log.Debug("{0} ran NewNote", memberName);
             Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
             SelectedNote = Notes.Last();
         }
