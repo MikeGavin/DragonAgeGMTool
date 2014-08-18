@@ -47,7 +47,7 @@ namespace Scrivener.ViewModel
         {
             var testssss = new DataBaseWatcher();
             testssss.Run();
-            //Model.ExceptionReporting.Email(new NotImplementedException);
+            //Model.ExceptionReporting.Email(new NotImplementedException());
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             //Auto save settings on any change.

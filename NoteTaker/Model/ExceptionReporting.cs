@@ -19,9 +19,9 @@ namespace Scrivener.Model
            // Add a recipient.
            oMsg.To = "edtechsupport@ecotoh.org";
            //Subject line
-           oMsg.Subject = "[Scrivener] Exception Report.";
+           oMsg.Subject = string.Format("[Scrivener] {0}", e.GetBaseException().ToString());
            //add the body of the email
-           oMsg.Body = string.Format("Exception: {0}", e.ToString());
+           oMsg.Body = string.Format("{0}", e.ToString());
            oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
            // Send.
            ((Outlook._MailItem)oMsg).Send();
