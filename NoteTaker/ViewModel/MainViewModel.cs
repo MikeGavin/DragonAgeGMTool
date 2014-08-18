@@ -47,7 +47,10 @@ namespace Scrivener.ViewModel
         {
             var testssss = new DataBaseWatcher();
             testssss.Run();
+            
+            //Email error reporting test
             //Model.ExceptionReporting.Email(new NotImplementedException());
+            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             //Auto save settings on any change.
@@ -239,8 +242,7 @@ namespace Scrivener.ViewModel
                 //open note after new DB pull
                 NewNote();
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
-            }
-            
+            }            
             Properties.Settings.Default.Save();
         }
 
@@ -416,7 +418,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
-                        Model.ExceptionReporting.Email(e);
+                        //Model.ExceptionReporting.Email(e);
                     }
                 }
                 Call_history.Close();
@@ -437,7 +439,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
-                        Model.ExceptionReporting.Email(e);
+                        //Model.ExceptionReporting.Email(e);
                     }
                 }
                 Call_history.Close();
@@ -466,7 +468,7 @@ namespace Scrivener.ViewModel
                 catch (Exception e)
                 {
                     log.Error(e);
-                    Model.ExceptionReporting.Email(e);
+                    //Model.ExceptionReporting.Email(e);
                 }
             }
 
@@ -479,7 +481,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                Model.ExceptionReporting.Email(e);
+                //Model.ExceptionReporting.Email(e);
             }
             Call_history.Close();
 

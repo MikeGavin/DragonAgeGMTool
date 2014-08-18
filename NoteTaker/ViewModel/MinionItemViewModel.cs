@@ -202,8 +202,6 @@ namespace Scrivener.ViewModel
         {
             try
             {
-
-
                 var item = _minionCommands.First((j) => j.Version == "1.7.0_55" && j.Action == "Install");
                 await RunCommandItem(item);
             }

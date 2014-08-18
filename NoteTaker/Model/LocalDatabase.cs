@@ -379,7 +379,6 @@ namespace Scrivener.Model
             catch (Exception e)
             {
                 log.Error(e);
-                Model.ExceptionReporting.Email(e);
             }
 
             return HistoryList;
