@@ -17,16 +17,14 @@ namespace Scrivener.Model
            var oMsg = (Outlook.MailItem)oApp.CreateItem(Outlook.OlItemType.olMailItem);
            oMsg.Display(false);
            // Add a recipient.
-           oMsg.To = "david.staley@ecotoh.net";
+           oMsg.To = "edtechsupport@ecotoh.org";
            //Subject line
-           oMsg.Subject = "[Scrivrner] Exception Report.";
+           oMsg.Subject = "[Scrivener] Exception Report.";
            //add the body of the email
-           oMsg.Body = string.Format("Exception: {0}", e.ToString());         
-          
-            oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}",DateTime.Today.ToString("yyyy-mm-dd.log")));
+           oMsg.Body = string.Format("Exception: {0}", e.ToString());
+           oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
            // Send.
            ((Outlook._MailItem)oMsg).Send();
-
        }
     }
 }

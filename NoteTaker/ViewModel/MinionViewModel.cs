@@ -78,10 +78,18 @@ namespace Scrivener.ViewModel
 
                 if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(IPAddress.Parse(NewMinionIPAddress)) == true))
                 {
-                    MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
-                    SelectedMinion = MinionCollection.Last();
-                    NewMinionIPAddress = "10.39.";
-                    IsExpanded = true;
+                    try
+                    {
+                        MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
+                        SelectedMinion = MinionCollection.Last();
+                        NewMinionIPAddress = "10.39.";
+                        IsExpanded = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Model.ExceptionReporting.Email(e);
+                        Scrivener.Helpers.MetroMessageBox.Show("Error!", e.ToString());
+                    }
 
                     var test = MinionCollection.Last().GetType().GetProperties();
                 }

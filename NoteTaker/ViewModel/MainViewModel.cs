@@ -47,12 +47,9 @@ namespace Scrivener.ViewModel
         {
             var testssss = new DataBaseWatcher();
             testssss.Run();
-
+            //Model.ExceptionReporting.Email(new NotImplementedException);
             //Listen for note collection change
-            Notes.CollectionChanged += OnNotesChanged;
-
-            
-
+            Notes.CollectionChanged += OnNotesChanged;           
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;            
             
@@ -66,9 +63,7 @@ namespace Scrivener.ViewModel
                 RolesView = new CollectionView(Roles);
                 var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
                 RolesView.MoveCurrentTo(Test);
-                NewNote(); 
-            
-            
+                NewNote();  
             }
         }
 
@@ -199,6 +194,7 @@ namespace Scrivener.ViewModel
             }
             catch (Exception e)
             {
+                Model.ExceptionReporting.Email(e);
                 MetroMessageBox.Show("Error!", e.ToString());
             }
 
@@ -257,7 +253,6 @@ namespace Scrivener.ViewModel
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
         public static async void WindowLoaded()
         {
-       //     Model.ExceptionReporting.Email(new NotImplementedException());
             if (Properties.Settings.Default.Role_Current == null)
             {
                 Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
@@ -267,9 +262,7 @@ namespace Scrivener.ViewModel
                     await MetroMessageBox.Show(string.Empty, "Apathy is death.");
                     Environment.Exit(0);
                 }
-            }
-            
-            
+            }                     
         }
 
         //Save Template
@@ -337,6 +330,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
+                Model.ExceptionReporting.Email(e);
             }
 
             Call_history.Close();
@@ -373,6 +367,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
+                        Model.ExceptionReporting.Email(e);
                     }
                 }
 
@@ -421,6 +416,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
+                        Model.ExceptionReporting.Email(e);
                     }
                 }
                 Call_history.Close();
