@@ -282,9 +282,6 @@
     <Content Include="Resources\defaultkills.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Scrivener.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Scrivener_TemporaryKey.pfx" />
     <Resource Include="icon.ico" />
     <Content Include="Resources\FileDeleteList.txt">

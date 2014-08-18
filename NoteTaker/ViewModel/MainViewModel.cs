@@ -283,7 +283,7 @@ namespace Scrivener.ViewModel
 
         #region Call history
 
-        //builds or gets QuickSites
+        //builds or gets History
         private ObservableCollection<HistoryItem> _history;
         public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
@@ -367,7 +367,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
-                        Model.ExceptionReporting.Email(e);
+                        //Model.ExceptionReporting.Email(e);
                     }
                 }
 
@@ -375,7 +375,7 @@ namespace Scrivener.ViewModel
                 SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
                 try
                     {
-                        cleantablecommand.ExecuteNonQueryAsync();
+                        await cleantablecommand.ExecuteNonQueryAsync();
                     }
                 catch (Exception e)
                     {
@@ -437,6 +437,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         log.Error(e);
+                        Model.ExceptionReporting.Email(e);
                     }
                 }
                 Call_history.Close();
@@ -459,12 +460,13 @@ namespace Scrivener.ViewModel
                 SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
                 try
                 {
-                    replacetitlecommand.ExecuteNonQueryAsync();
-                    replacenotecommand.ExecuteNonQueryAsync();
+                   await  replacetitlecommand.ExecuteNonQueryAsync();
+                   await  replacenotecommand.ExecuteNonQueryAsync();
                 }
                 catch (Exception e)
                 {
                     log.Error(e);
+                    Model.ExceptionReporting.Email(e);
                 }
             }
 
@@ -472,11 +474,12 @@ namespace Scrivener.ViewModel
             SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
             try
             { 
-                cleantablecommand.ExecuteNonQueryAsync(); 
+                await cleantablecommand.ExecuteNonQueryAsync(); 
             }
             catch (Exception e)
             {
                 log.Error(e);
+                Model.ExceptionReporting.Email(e);
             }
             Call_history.Close();
 

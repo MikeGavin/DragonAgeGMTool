@@ -16,7 +16,7 @@ namespace Scrivener.Model
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         //Temp until single DB instance
-        private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
+        //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
         private static SQLiteConnection MainDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory));
         private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
@@ -98,6 +98,7 @@ namespace Scrivener.Model
             catch (Exception e)
             {
                 log.Error(e);
+                Model.ExceptionReporting.Email(e);
             }
 
             return commandList;
@@ -126,6 +127,7 @@ namespace Scrivener.Model
             catch (Exception e)
             {
                 log.Error(e);
+                Model.ExceptionReporting.Email(e);
                 MainDB.Close();
             }
 
@@ -148,7 +150,7 @@ namespace Scrivener.Model
             {
                 foreach (QuickItemDBPull item in Root_uniqueitems)
                 {
-                    QuickItem Root_Item = new QuickItem() { Title = item.Root_Folder };
+                    QuickItem Root_Item = new QuickItem() { Title = item.Root_Folder, Content = item.Verbage };
                     if (Sub1uniqueitems.Count > 1)
                     {
                         foreach (QuickItemDBPull item1 in Sub1uniqueitems)
@@ -296,10 +298,17 @@ namespace Scrivener.Model
                     SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString(), Child_2 = reader["Child_2"].ToString() });
                 MainDB.Close();
             }
-            catch ( Exception e )
+            //catch ( Exception e )
+            //{
+            //    log.Warn(e);
+            //    Helpers.MetroMessageBox.Show("Exception!", e.ToString());
+            //    MainDB.Close();
+            //}
+            catch (Exception e)
             {
-                log.Warn(e);
+                log.Error(e);
                 Helpers.MetroMessageBox.Show("Exception!", e.ToString());
+                Model.ExceptionReporting.Email(e);
                 MainDB.Close();
             }
 
@@ -367,9 +376,10 @@ namespace Scrivener.Model
                     HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
                 CallHistory.Close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error(e);
+                Model.ExceptionReporting.Email(e);
             }
 
             return HistoryList;
