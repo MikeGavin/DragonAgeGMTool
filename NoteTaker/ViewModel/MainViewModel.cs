@@ -240,8 +240,6 @@ namespace Scrivener.ViewModel
                 QuickItemTree = null;
                 QuickSites = null;
                 MinionCommands = null;
-                //open note after new DB pull
-                NewNote();
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
             }            
             Properties.Settings.Default.Save();

@@ -22,14 +22,15 @@ namespace Scrivener.Model
 
         public static ObservableCollection<RoleItem> ReturnRoles()
         {
+            ListenMainDB(true);
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Roles";
             pullall.Connection = MainDB;
+            log.Debug(pullall.CommandText);
             var importedRoles = new ObservableCollection<RoleItem>();
             try
-            {
-                log.Info("Opening {0}", MainDB.DataSource);
-                log.Info("CommandText {0}", pullall.CommandText.ToString());
+            {              
+                log.Info("CommandText: {0}", pullall.CommandText.ToString());
                 MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (reader.Read())
@@ -40,19 +41,44 @@ namespace Scrivener.Model
                         QuickItem_Table = reader["QuickItem_Table"].ToString().Trim(),
                         SiteItem_Table = reader["SiteItem_Table"].ToString().Trim()
                     });
-                log.Info("Closing {0}", MainDB.DataSource);
+               
                 MainDB.Close();
 
             }
             catch (Exception e)
             {
                 log.Error(e);
+                log.Info("Closing {0}", MainDB.DataSource);
                 MainDB.Close();
             }
 
+            ListenMainDB(false);
             return importedRoles;
 
+        }
+
+        private static void ListenMainDB(bool s)
+        {
+            if (s == true)
+            {
+                MainDB.StateChange += MainDB_StateChange;
+                MainDB.Trace += MainDB_Trace;
+            }
+            else
+            {
+                MainDB.StateChange -= MainDB_StateChange;
+                MainDB.Trace -= MainDB_Trace;
+            }
+        }
+        static void MainDB_Trace(object sender, TraceEventArgs e)
+        {
+            log.Debug("MainDB: {0}",e.Statement);
+        }
+        static void MainDB_StateChange(object sender, System.Data.StateChangeEventArgs e)
+        {
+            log.Debug("MainDB: {1}", e.GetType().ToString(), e.CurrentState.ToString());
         }        
+        
         private static bool StringToBool(string x)
         {
             bool result = false;
@@ -62,9 +88,9 @@ namespace Scrivener.Model
             }
             return result;       
         }       
-
         public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
+            ListenMainDB(true);
             //Return empty command list if role does not allow minion access.
             if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
             {
@@ -74,10 +100,10 @@ namespace Scrivener.Model
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Minion_Commands";
             pullall.Connection = MainDB;
+            log.Debug(pullall.CommandText);
             var commandList = new ObservableCollection<MinionCommandItem>();
             try
             {
-                log.Info("Opening {0}", MainDB.DataSource);
                 MainDB.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
@@ -91,28 +117,29 @@ namespace Scrivener.Model
                         Command = reader["Command"].ToString().Trim(),
                         Bit = reader["Bit"].ToString(),
                     });
-                log.Info("Closing {0}", MainDB.DataSource);
                 MainDB.Close();  
      
             }
             catch (Exception e)
             {
                 log.Error(e);
+                MainDB.Close(); 
                 Model.ExceptionReporting.Email(e);
             }
-
+            ListenMainDB(false);
             return commandList;
 
         }
 
         public async static Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
+            ListenMainDB(true);
             if (role ==null) { return new QuickItem(); }
-
             List<QuickItemDBPull> CommandList = new List<QuickItemDBPull>();            
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = string.Format("SELECT * FROM {0}", role.QuickItem_Table);
             pullall.Connection = MainDB;
+            log.Debug(pullall.CommandText);
 
             try
             {
@@ -275,6 +302,7 @@ namespace Scrivener.Model
                 root.SubItems.Add(Root_Item);
                 }                
             }
+            ListenMainDB(false);
             return root;
 
 #endregion
@@ -282,6 +310,7 @@ namespace Scrivener.Model
 
         public async static Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
+            ListenMainDB(true);
             if (role == null) { return new Siteitem(); }
 
             List<SiteDBPull> SiteCommandList = new List<SiteDBPull>();
@@ -289,6 +318,7 @@ namespace Scrivener.Model
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = string.Format("SELECT * FROM {0}", role.SiteItem_Table);
             pullall.Connection = MainDB;
+            log.Debug(pullall.CommandText);
 
             try
             {
@@ -353,6 +383,7 @@ namespace Scrivener.Model
                     root.SubItems.Add(Root_Item);
                 }
             }
+            ListenMainDB(false);
             return root;
 
             #endregion
@@ -360,19 +391,21 @@ namespace Scrivener.Model
 
         public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
         {
+            System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
+            CallHistory.StateChange += handel;
 
             ObservableCollection<HistoryItem> HistoryList = new ObservableCollection<HistoryItem>();
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
 
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
-            pullall.Connection = CallHistory;
-
+            pullall.Connection = CallHistory;            
+            log.Debug(pullall.CommandText);
             try
             {
-                CallHistory.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
+                await CallHistory.OpenAsync();
+                SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
+                while (await reader.ReadAsync())
                     HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
                 CallHistory.Close();
             }
@@ -380,7 +413,7 @@ namespace Scrivener.Model
             {
                 log.Error(e);
             }
-
+            CallHistory.StateChange -= handel;
             return HistoryList;
 
         }
