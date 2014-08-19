@@ -50,5 +50,32 @@
     <Setting Name="Role_Current" Type="Scrivener.Model.RoleItem" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="CellNumber" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CellProvider" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BreakWarning" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="BreakReturnWarning" Type="System.TimeSpan" Scope="User">
+      <Value Profile="(Default)">00:00:00</Value>
+    </Setting>
+    <Setting Name="BreakLunch" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CellProviderDropDown" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TxTWarning" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BreakClockTopPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="BreakClockLeftPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

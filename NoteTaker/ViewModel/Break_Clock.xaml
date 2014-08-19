@@ -1,0 +1,49 @@
+﻿<controls:MetroWindow x:Name="BreakClock" x:Class="Scrivener.ViewModel.Break_Clock"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Break_Clock" Height="169" Width="180" ResizeMode="CanMinimize" Background="#FF171717" Closing="SaveLocation" Foreground="{x:Null}" WindowTitleBrush="#FF017BCD" NonActiveBorderBrush="#FF017BCD" NonActiveGlowBrush="#FF017BCD" NonActiveWindowTitleBrush="#FF017BCD">
+    <Grid>
+        <Label Content="Current Time:" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <Label x:Name="CurrentTime" Content="Loading..." HorizontalAlignment="Left" Margin="82,0,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <Label Content="Return Time:" HorizontalAlignment="Left" Margin="5,26,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <Label x:Name="BreakClockReturnTime" Content="" HorizontalAlignment="Left" Margin="82,26,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <Button x:Name="_15min" Content="15min" HorizontalAlignment="Left" Height="22" Margin="10,57,0,0" Width="50" Click="AddBreakTime" FontFamily="Consolas" FontSize="11" VerticalAlignment="Top"/>
+        <Button x:Name="_30min" Content="30min" HorizontalAlignment="Left" Height="22" Margin="65,57,0,0" Width="50" Click="AddBreakTime" FontFamily="Consolas" FontSize="11" VerticalAlignment="Top"/>
+        <Button x:Name="_1hr" Content="1h" HorizontalAlignment="Left" Height="22" Margin="120,57,0,0" Width="50" Click="AddBreakTime" FontFamily="Consolas" FontSize="11" VerticalAlignment="Top"/>
+        <Button Content="Clear" HorizontalAlignment="Left" Height="22" Margin="10,84,0,0" Width="50" Click="ClearReturnTime" FontFamily="Consolas" FontSize="11" VerticalAlignment="Top"/>
+        <Expander x:Name="Cell_Profile" Header="Cell Profile:" HorizontalAlignment="Left" Height="178" Margin="-1,111,-8,-143" VerticalAlignment="Top" Width="183" Expanded="ExpandedCellProfile" Collapsed="CollapsedCellProfile" Foreground="White" BorderBrush="{x:Null}" Background="#FF017BCD">
+            <Grid>
+                <Label Content="Cell Number:" HorizontalAlignment="Left" Margin="-3,0,0,112" Foreground="White"/>
+                <TextBox x:Name="ProfileCellNumber" HorizontalAlignment="Left" Height="25" Margin="85,0,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="80" LostFocus="ProfileCellNumber_LostFocus"/>
+                <Label Content="Cell Provider:" HorizontalAlignment="Left" Margin="-3,31,0,81" Foreground="White"/>
+                <ComboBox x:Name="ProfileCellProvider" HorizontalAlignment="Left" Height="25" Margin="85,31,0,0" VerticalAlignment="Top" Width="80">
+                    <ComboBoxItem Content="Alltel" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="ATT" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="Boost Mobile" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="Sprint" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="Verizon" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="Virgin Mobile" HorizontalAlignment="Left" Width="80"/>
+                    <ComboBoxItem Content="T-Mobile" HorizontalAlignment="Left" Width="80"/>
+                </ComboBox>
+                <Label Content="Warning:" HorizontalAlignment="Left" Margin="-3,62,0,50" Foreground="White"/>
+                <ComboBox x:Name="BCProfileWarning" HorizontalAlignment="Left" Height="26" Margin="85,62,0,0" VerticalAlignment="Top" Width="80">
+                    <ComboBoxItem Content="0" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="1" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="2" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="3" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="4" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="5" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="10" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="15" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="20" HorizontalAlignment="Left" Width="20"/>
+                    <ComboBoxItem Content="25" HorizontalAlignment="Left" Width="20"/>
+                </ComboBox>
+                <!--<CheckBox x:Name="EnableWarning" Content="Enable txt warning" HorizontalAlignment="Left" Margin="4,93,0,27" Width="130" Foreground="White"/>-->
+                <Label Content="Text Warning:" HorizontalAlignment="Left" Margin="-3,93,0,19" Foreground="White"/>
+                <controls:ToggleSwitch x:Name="EnableWarning" Margin="82,93,6,15" Foreground="White"></controls:ToggleSwitch>
+                <Button Content="Save" HorizontalAlignment="Left" Height="22" Margin="4,116,0,0" VerticalAlignment="Top" Width="50" FontFamily="Consolas" FontSize="11" Click="SaveProfile"/>
+            </Grid>
+        </Expander>
+    </Grid>
+</controls:MetroWindow>

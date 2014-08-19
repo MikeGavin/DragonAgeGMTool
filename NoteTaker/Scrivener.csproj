@@ -159,6 +159,7 @@
     <Reference Include="System.Data.SQLite">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.93.0\lib\net451\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.0.14.0-ALPHA94\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -219,6 +220,9 @@
     <Compile Include="UserControls\Role_UI.xaml.cs">
       <DependentUpon>Role_UI.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\Break_Clock.xaml.cs">
+      <DependentUpon>Break_Clock.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
@@ -272,6 +276,10 @@
     <Page Include="UserControls\Role_UI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModel\Break_Clock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

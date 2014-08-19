@@ -288,20 +288,24 @@ namespace Scrivener.ViewModel
         private ObservableCollection<HistoryItem> _history;
         public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-        private static void CreateCallHistoryX()
+        private static void CreateCallHistory()
         {
-            //creates Call History Database and populates table with todays date if none exist
+            //String for naming the table
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-            //creates DB and table for todays saving of notes 
+            //DB connection
             SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            //creates Call History Database and populates table with todays date if none exist
             string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([ID],[Caller],[Notes]);", Date);
             SQLiteCommand command = new SQLiteCommand(query, Call_history);
+
             Call_history.Open();
+            //creates DB and table for todays saving of notes 
             command.ExecuteNonQuery();
             Call_history.Close();
         }
-        private int SaveNotesX()
+        private int SaveNotes()
         {
+            CreateCallHistory();
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
             string Title = "Title";
             string Text = "Text";

@@ -128,5 +128,11 @@ namespace Scrivener
                 //LayoutRoot.Visibility = System.Windows.Visibility.Visible;
             }
         }
+
+        private void Open_Break_Clock(object sender, RoutedEventArgs e)
+        {
+            var BClock = new Break_Clock();
+            BClock.Show();
+        }
     }
 }

@@ -153,6 +153,7 @@
                 </Menu>
             </Button>-->
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xf017;" ToolTip="Break Clock" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Click="Open_Break_Clock"/>
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
                      
             

@@ -213,5 +213,113 @@ namespace Scrivener.Properties {
                 this["Role_Current"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CellNumber {
+            get {
+                return ((string)(this["CellNumber"]));
+            }
+            set {
+                this["CellNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CellProvider {
+            get {
+                return ((string)(this["CellProvider"]));
+            }
+            set {
+                this["CellProvider"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BreakWarning {
+            get {
+                return ((int)(this["BreakWarning"]));
+            }
+            set {
+                this["BreakWarning"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:00")]
+        public global::System.TimeSpan BreakReturnWarning {
+            get {
+                return ((global::System.TimeSpan)(this["BreakReturnWarning"]));
+            }
+            set {
+                this["BreakReturnWarning"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BreakLunch {
+            get {
+                return ((string)(this["BreakLunch"]));
+            }
+            set {
+                this["BreakLunch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CellProviderDropDown {
+            get {
+                return ((string)(this["CellProviderDropDown"]));
+            }
+            set {
+                this["CellProviderDropDown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TxTWarning {
+            get {
+                return ((string)(this["TxTWarning"]));
+            }
+            set {
+                this["TxTWarning"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BreakClockTopPosition {
+            get {
+                return ((double)(this["BreakClockTopPosition"]));
+            }
+            set {
+                this["BreakClockTopPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BreakClockLeftPosition {
+            get {
+                return ((double)(this["BreakClockLeftPosition"]));
+            }
+            set {
+                this["BreakClockLeftPosition"] = value;
+            }
+        }
     }
 }
