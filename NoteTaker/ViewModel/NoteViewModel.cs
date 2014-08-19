@@ -22,14 +22,14 @@ namespace Scrivener.ViewModel
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands, int new_index)
+        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands)
         {
             Text = Properties.Settings.Default.Default_Note_Template;
             _minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             _root = _tree;
-            SaveIndex = new_index;
+            //SaveIndex = new_index;
 
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;

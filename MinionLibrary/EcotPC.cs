@@ -124,7 +124,7 @@ namespace Minion
                     if (IsOnline == true)
                     {
                         IsOnline = false;
-                        Log(log.Warn, "{0} has gone offline!", IPAddress.ToString());
+                        Log(log.Info, "{0} has gone offline!", IPAddress.ToString());
                         RaiseOnlineChanged(EventArgs.Empty);
 
                     }

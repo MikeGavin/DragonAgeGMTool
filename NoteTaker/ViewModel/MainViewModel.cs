@@ -60,7 +60,7 @@ namespace Scrivener.ViewModel
             //Self Explained
             LoadUserSettings();
             CleanDatabase();           
-            StartNoteSaveTask();
+            //StartNoteSaveTask();
             if (Properties.Settings.Default.Role_Current != null) 
             {
                 //Hack to set current role in combobox
@@ -142,9 +142,9 @@ namespace Scrivener.ViewModel
                 MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
             }
 
-            CreateCallHistory();
+            //CreateCallHistory();
             log.Debug("{0} ran NewNote", memberName);
-            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands, SaveNotes()));
+            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
             SelectedNote = Notes.Last();
         }
 
@@ -288,7 +288,7 @@ namespace Scrivener.ViewModel
         private ObservableCollection<HistoryItem> _history;
         public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-        private static void CreateCallHistory()
+        private static void CreateCallHistoryX()
         {
             //creates Call History Database and populates table with todays date if none exist
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
@@ -300,7 +300,7 @@ namespace Scrivener.ViewModel
             command.ExecuteNonQuery();
             Call_history.Close();
         }
-        private int SaveNotes()
+        private int SaveNotesX()
         {
             string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
             string Title = "Title";
@@ -385,7 +385,7 @@ namespace Scrivener.ViewModel
                 Call_history.Close();
             }
         }
-        private void StartNoteSaveTask()
+        private void StartNoteSaveTaskX()
         {
             var token = tokenSource.Token;
             Task noteSaving = new Task(() => ReplaceNotes(token), token, TaskCreationOptions.LongRunning);
