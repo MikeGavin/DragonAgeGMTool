@@ -59,7 +59,7 @@ namespace Scrivener.ViewModel
             
             //Self Explained
             LoadUserSettings();
-            CleanDatabase();           
+            //CleanDatabase();           
             //StartNoteSaveTask();
             if (Properties.Settings.Default.Role_Current != null) 
             {

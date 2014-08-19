@@ -370,9 +370,30 @@ namespace Minion
         {
             Processing++;
             Java = "Updating...";
-            string result = "0";
-            //RunKills = false;
-            string command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
+            string command;
+            string result = string.Empty;
+            if (File.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\Java\jre7\bin\java.exe", IPAddress)))
+            {              
+                command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
+                result = await JavaVersion(command, result);
+            }
+            else if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
+            {                
+                command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
+                result = await JavaVersion(command, result);
+            }
+            else
+            {
+                result = "NOT INSTALLED";
+            }
+        
+            Java = result;
+            Log(log.Trace, "Java version: " + result);
+            Processing--;
+            return Java;
+        }
+        private async Task<string> JavaVersion(string command, string result)
+        {
             var paexec = new Tool.PAExec(IPAddress, command);
             await paexec.Run();
             if (paexec.StandardError.Contains("java version") == true)
@@ -381,26 +402,9 @@ namespace Minion
             }
             else
             {
-                command = (@"""c:\Program Files\Java\jre7\bin\java.exe"" -version");
-                var paexec2 = new Tool.PAExec(IPAddress, command);
-                await paexec2.Run();
-                if (paexec.StandardError.Contains("java version") == true)
-                {
-                    result = paexec.StandardError.Split(new char[] { '\"', '\"' })[1];
-                }
-                else if (paexec.StandardError.Contains("-9"))
-                {
-                    result = "NOT INSTALLED";
-                }
-                else
-                {
-                    result = "ERROR";
-                }
+                result = "ERROR";
             }
-            Java = result;
-            Log(log.Trace, "Java version: " + result);
-            Processing--;
-            return Java;
+            return result;
         }
 
         public async Task<string> Get_Flash()
@@ -537,10 +541,38 @@ namespace Minion
         public async Task Kill_Defaultss()
         {
             Processing++;
-            string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
-            var kills = new Minion.Tool.PAExec(IPAddress, @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
-            Log(log.Info, "Running default kills");
-            await kills.Run();
+            var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
+            await gettasks.Run();
+            //Looks at tasks returned and only kills open tasks. Needs to be changed to a list to shorten code.
+            if (gettasks.StandardOutput.Contains("iexplore.exe"))
+            {
+                Log(log.Info, "Killing Task(s) iexplore.exe");
+                var kill = new Tool.PSKill(IPAddress, "iexplore.exe");
+                await kill.Run();
+            }
+            if (gettasks.StandardOutput.Contains("msiexec.exe"))
+            {
+                Log(log.Info, "Killing Task(s) javaws.exe");
+                var kill = new Tool.PSKill(IPAddress, "javaws.exe");
+                await kill.Run();
+            }
+            if (gettasks.StandardOutput.Contains("javaws.exe"))
+            {
+                Log(log.Info, "Killing Task(s) javaws.exe");
+                var kill = new Tool.PSKill(IPAddress, "javaws.exe");
+                await kill.Run();
+            }
+            if (gettasks.StandardOutput.Contains("jusched.exe"))
+            {
+                Log(log.Info, "Killing Task(s) jusched.exe");
+                var kill = new Tool.PSKill(IPAddress, "jusched.exe");
+                await kill.Run();
+            }
+
+            //string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
+            //var kills = new Minion.Tool.PAExec(IPAddress, @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
+            
+            //await kills.Run();
             Processing--;
         }
   
@@ -699,6 +731,10 @@ namespace Minion
         public async Task ProfileWipe_Enable()
         {
             Processing++;
+            
+            var UserProfileServiceFix = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s icacls c:\Users\Default\*  /inheritance:e /T /C");
+            await UserProfileServiceFix.Run();
+
             var file = new Tool.Files();
             file.EventLogged += PassEventLogged;
             await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", @"\temp\Delprof2_1.5.4\"));
