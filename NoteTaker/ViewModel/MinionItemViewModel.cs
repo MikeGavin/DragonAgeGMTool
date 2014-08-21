@@ -204,6 +204,8 @@ namespace Scrivener.ViewModel
             {
                 var item = _minionCommands.First((j) => j.Version == "1.7.0_55" && j.Action == "Install");
                 await RunCommandItem(item);
+                item = _minionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
+                await RunCommandItem(item);
             }
             catch (Exception e)
             {

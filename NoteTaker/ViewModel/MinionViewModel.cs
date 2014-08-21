@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System;
 using Minion.ListItems;
+using System.Text.RegularExpressions;
 
 namespace Scrivener.ViewModel
 {
@@ -70,28 +71,51 @@ namespace Scrivener.ViewModel
         public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinionItem)); } }
         public async void AddMinionItem()
         {
+            string possibleError;
             MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }
             MinionIPInputEnabeled = false;
-            if (Minion.Tool.IP.IPv4_Check(NewMinionIPAddress) == true)
-            {
+            Regex reg = new Regex("[a-zA-Z]+");
 
+            if (reg.IsMatch(NewMinionIPAddress))
+            {
+                try
+                {
+                    var returnedIPs = await Dns.GetHostAddressesAsync(NewMinionIPAddress);
+                    foreach (IPAddress ip in returnedIPs)
+                    {
+                        if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(ip) == true))
+                        {
+                            try
+                            {
+                                OpenMinion(ip);
+                                break;
+                            }
+                            catch (Exception e)
+                            {
+                                log.Error(e);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Helpers.MetroMessageBox.Show("DNS Error!", e.Message.ToString());
+                }
+            }
+            else if (Minion.Tool.IP.IPv4_Check(NewMinionIPAddress) == true)
+            {
                 if (await System.Threading.Tasks.Task.Run(() => Minion.Tool.IP.Ping(IPAddress.Parse(NewMinionIPAddress)) == true))
                 {
                     try
                     {
-                        MinionCollection.Add(new MinionItemViewModel(IPAddress.Parse(NewMinionIPAddress), _minionCommands));
-                        SelectedMinion = MinionCollection.Last();
-                        NewMinionIPAddress = "10.39.";
-                        IsExpanded = true;
+                        OpenMinion(IPAddress.Parse(NewMinionIPAddress));
                     }
                     catch (Exception e)
                     {
                         Model.ExceptionReporting.Email(e);
                         Scrivener.Helpers.MetroMessageBox.Show("Error!", e.ToString());
                     }
-
-                    var test = MinionCollection.Last().GetType().GetProperties();
                 }
                 else
                 {
@@ -104,6 +128,14 @@ namespace Scrivener.ViewModel
             }
             MinionIPInputEnabeled = true;
             MinionConnecting = false;
+        }
+
+        private void OpenMinion(IPAddress ip)
+        {
+            MinionCollection.Add(new MinionItemViewModel(ip, _minionCommands));
+            SelectedMinion = MinionCollection.Last();
+            NewMinionIPAddress = "10.39.";
+            IsExpanded = true;
         }
 
         //remove minion instance on self request

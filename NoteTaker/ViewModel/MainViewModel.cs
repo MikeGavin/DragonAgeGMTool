@@ -229,9 +229,9 @@ namespace Scrivener.ViewModel
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if ((e.PropertyName == "Role_Current" | Notes.Count == 0) & Properties.Settings.Default.Role_Current != null)
+            if ((e.PropertyName == "Role_Current" & Properties.Settings.Default.Role_Current != null))
             {
-                //Hack to set current role in combobox
+                ////Hack to set current role in combobox
                 RolesView = new CollectionView(Roles);
                 var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
                 RolesView.MoveCurrentTo(Test);
@@ -241,8 +241,12 @@ namespace Scrivener.ViewModel
                 QuickSites = null;
                 MinionCommands = null;
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
+                if (Notes.Count == 0)
+                {
+                    NewNote();
+                }
             }            
-            Properties.Settings.Default.Save();
+           // Properties.Settings.Default.Save();
         }
 
         private static ObservableCollection<RoleItem> _roles;
