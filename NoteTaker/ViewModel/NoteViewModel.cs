@@ -24,24 +24,25 @@ namespace Scrivener.ViewModel
 
         public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands)
         {
+            
             Text = Properties.Settings.Default.Default_Note_Template;
             _minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             _root = _tree;
             //SaveIndex = new_index;
-
+            
+            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+        }
 
-            //if (Properties.Settings.Default.Role == 1 || Properties.Settings.Default.Role == 0)
-            //{
-            //    MinionVisibility = Visibility.Visible.ToString();
-            //}
-            //else
-            //{
-            //    MinionVisibility = Visibility.Collapsed.ToString();
-            //}
+        private async void DataBaseWatcher_DataBaseUpdated(object sender, EventArgs e)
+        {
+            //_minionCommands = null;
+            _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+            //Root = null;
+            Root = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
         }
 
 

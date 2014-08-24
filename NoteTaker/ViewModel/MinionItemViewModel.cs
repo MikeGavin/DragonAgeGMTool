@@ -13,6 +13,7 @@ using NLog;
 using Scrivener.Helpers;
 using System.Windows.Data;
 using Minion.ListItems;
+using Scrivener.Model;
 
 namespace Scrivener.ViewModel
 {
@@ -53,8 +54,15 @@ namespace Scrivener.ViewModel
             BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
             Machine.EventLogged += Machine_EventLogged;
             Machine.PropertyChanged += Machine_PropertyChanged;
-
+            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             //var _ieCommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => (i.Name == "Update") && (i.Action == "Install")));           
+        }
+
+        private async void DataBaseWatcher_DataBaseUpdated(object sender, EventArgs e)
+        {
+            _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+            MinionStartCommands = null;
+            SetIECommands();
         }
 
         //Item title pulling IP address
@@ -111,7 +119,7 @@ namespace Scrivener.ViewModel
         
         
         private ObservableCollection<MinionCommandItem> _minionStartCommands;
-        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in _minionCommands where item.Action == "Start" select item).ToList())); } }
+        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in _minionCommands where item.Action == "Start" select item).ToList())); } protected set { _minionStartCommands = value; RaisePropertyChanged(); } }
         private RelayCommand<MinionCommandItem> _remoteStartCommand;
         public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } }
         public async Task RemoteStart(MinionCommandItem command)
@@ -167,24 +175,39 @@ namespace Scrivener.ViewModel
             //Listens for Bitness setting to populate context menu.
             if (e.PropertyName == "OSBit" && Machine.OSBit != null)
             {
-                IECommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
+                SetIECommands();
             }
         }
 
-        private RelayCommand _uninstallJavaCommand;
-        public RelayCommand UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand(async () => await Uninstall_Java())); } }
-        public async Task Uninstall_Java()
+        private void SetIECommands()
         {
+            IECommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
+        }
+
+        private RelayCommand<string> _uninstallJavaCommand;
+        public RelayCommand<string> UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand<string>(async (param) => await Uninstall_Java(param))); } }
+        public async Task Uninstall_Java(string bit)
+        {
+            string current;
+            if (bit =="64")
+            {
+                current = Machine.Java64;
+            }
+            else
+            {
+                current = Machine.Java32;
+            }
+
             try
             {
                 MinionCommandItem item;
-                if (Machine.Java == "NOT INSTALLED" || Machine.Java == "ERROR")
+                if (current == "NOT INSTALLED" || current == "ERROR")
                 {
                     item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
                 }
                 else
                 {
-                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == Machine.Java)) as MinionCommandItem;
+                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit==bit)) as MinionCommandItem;
                 }
                 await RunCommandItem(item);
             }
@@ -358,7 +381,19 @@ namespace Scrivener.ViewModel
         {
             string result = string.Empty;
             if (item.Name.ToLower().Contains("java"))
-                result = await Machine.Get_Java();
+            {
+                string ver;
+                await Machine.Get_Java();
+                if (item.Bit=="64")
+                {
+                    ver = Machine.Java64;
+                }
+                else
+                {
+                    ver = Machine.Java32;
+                }
+                result = string.Format("{0} {1}bit", ver, item.Bit);
+            }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();
             else if (item.Name.ToLower().Contains("shockwave"))

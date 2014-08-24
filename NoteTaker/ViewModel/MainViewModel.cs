@@ -25,12 +25,16 @@ using Minion.ListItems;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Runtime.CompilerServices;
+using System.Deployment.Application;
 
 
 namespace Scrivener.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        
+
+
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private readonly IDataService _dataService; // Used by MVVMLight 
@@ -42,13 +46,11 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-
         //Constructor
         public MainViewModel(IDataService dataService)
         {
-            var testssss = new DataBaseWatcher();
-            testssss.Run();
-            
+            var WatchDataBase = new DataBaseWatcher();
+            DataBaseWatcher.DataBaseUpdated += (o, e) => { ReloadData(); };
             //Email error reporting test
             //Model.ExceptionReporting.Email(new NotImplementedException());
             
@@ -237,9 +239,7 @@ namespace Scrivener.ViewModel
                 RolesView.MoveCurrentTo(Test);
 
                 //reset roll properties to force updates.
-                QuickItemTree = null;
-                QuickSites = null;
-                MinionCommands = null;
+                ReloadData();
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
                 if (Notes.Count == 0)
                 {
@@ -247,6 +247,13 @@ namespace Scrivener.ViewModel
                 }
             }            
            // Properties.Settings.Default.Save();
+        }
+
+        private void ReloadData()
+        {
+            QuickItemTree = null;
+            QuickSites = null;
+            MinionCommands = null;
         }
 
         private static ObservableCollection<RoleItem> _roles;
