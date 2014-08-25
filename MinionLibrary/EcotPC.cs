@@ -228,9 +228,12 @@ namespace Minion
         protected string _IEVersion;
         public string IEVersion { get { return _IEVersion; } set { _IEVersion = value; RaisePropertyChanged(); } }
 
-        protected string _Java;
-        public string Java { get { return _Java; } set { _Java = value; RaisePropertyChanged(); } }
-        
+        protected string _java64;
+        public string Java64 { get { return _java64; } set { _java64 = value; RaisePropertyChanged(); } }
+        protected string _java32;
+        public string Java32 { get { return _java32; } set { _java32 = value; RaisePropertyChanged(); } }
+
+
         protected string _Flash;
         public string Flash { get { return _Flash; } set { _Flash = value; RaisePropertyChanged(); } }
         
@@ -366,31 +369,52 @@ namespace Minion
             return IEVersion;
         }
 
-        public async Task<string> Get_Java()
+        public async Task Get_Java()
         {
             Processing++;
-            Java = "Updating...";
+            Java64 = Java32 = "Updating...";
             string command;
             string result = string.Empty;
-            if (File.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\Java\jre7\bin\java.exe", IPAddress)))
-            {              
-                command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
-                result = await JavaVersion(command, result);
-            }
-            else if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
-            {                
-                command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
-                result = await JavaVersion(command, result);
+            if (Directory.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\", IPAddress)))
+            {
+                //Is 64 bit machine
+                if (File.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\Java\jre7\bin\java.exe", IPAddress)))
+                {
+                    command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
+                    Java32 = await JavaVersion(command, result);
+                }
+                else
+                {
+                    Java32 = "NOT INSTALLED";
+                }
+
+                if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
+                {
+                    command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
+                    Java64 = await JavaVersion(command, result);
+                }
+                else
+                {
+                    Java64 = "NOT INSTALLED";
+                }
             }
             else
             {
-                result = "NOT INSTALLED";
+                Java64 = "N/A";
+                if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
+                {
+                    command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
+                    Java32 = await JavaVersion(command, result);
+                }
+                else
+                {
+                    Java32 = "NOT INSTALLED";
+                }
             }
-        
-            Java = result;
-            Log(log.Trace, "Java version: " + result);
+
+            Log(log.Trace, "Java32 version: " + Java32);
+            Log(log.Trace, "Java64 version: " + Java64);
             Processing--;
-            return Java;
         }
         private async Task<string> JavaVersion(string command, string result)
         {

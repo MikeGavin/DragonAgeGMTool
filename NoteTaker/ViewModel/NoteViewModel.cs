@@ -150,19 +150,23 @@ namespace Scrivener.ViewModel
         public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
         public void AppendQuickItem(QuickItem note)
         {
-            if (note.SubItems.Count == 0)
+            
+            if (note != null)
             {
                 try
                 {
-                    if (Properties.Settings.Default.DashinNotes == true)
+                    if (note.SubItems.Count == 0) // causes crash if null
                     {
-                        Text += "- " + note.Content + System.Environment.NewLine;
-                        //SaveNotes();
-                    }
-                    else if (Properties.Settings.Default.DashinNotes == false)
-                    {
-                        Text += note.Content + System.Environment.NewLine;
-                        //SaveNotes();
+                        if (Properties.Settings.Default.DashinNotes == true)
+                        {
+                            Text += "- " + note.Content + System.Environment.NewLine;
+                            //SaveNotes();
+                        }
+                        else if (Properties.Settings.Default.DashinNotes == false)
+                        {
+                            Text += note.Content + System.Environment.NewLine;
+                            //SaveNotes();
+                        }
                     }
                 }
                 catch (Exception e)
@@ -173,28 +177,28 @@ namespace Scrivener.ViewModel
             }
         }
         
-        private RelayCommand _copyQuickItemCommand;
-        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
-        public void CopyQuickItem()
-        {
-            //if (_selectedQuickItem != null)
-            //{
-            //    if (SelectedQuickItem.SubItems.Count > 0)
-            //        return;
-            //    else
-            //    {
-            //        try
-            //        {
-            //            Clipboard.SetText(SelectedQuickItem.Content);
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            log.Error(e);
-            //        }
+        //private RelayCommand _copyQuickItemCommand;
+        //public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+        //public void CopyQuickItem()
+        //{
+        //    //if (_selectedQuickItem != null)
+        //    //{
+        //    //    if (SelectedQuickItem.SubItems.Count > 0)
+        //    //        return;
+        //    //    else
+        //    //    {
+        //    //        try
+        //    //        {
+        //    //            Clipboard.SetText(SelectedQuickItem.Content);
+        //    //        }
+        //    //        catch (Exception e)
+        //    //        {
+        //    //            log.Error(e);
+        //    //        }
 
-            //    }
-            //}
-        } 
+        //    //    }
+        //    //}
+        //} 
         #endregion
     }
 }

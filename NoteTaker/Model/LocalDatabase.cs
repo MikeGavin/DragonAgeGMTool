@@ -17,12 +17,12 @@ namespace Scrivener.Model
 
         //Temp until single DB instance
         //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
-        private static SQLiteConnection MainDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory));
+        private static string MAINDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
         private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
         public static ObservableCollection<RoleItem> ReturnRoles()
         {
-            ListenMainDB(true);
+            var MainDB = new SQLiteConnection(MAINDB);
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Roles";
             pullall.Connection = MainDB;
@@ -51,33 +51,32 @@ namespace Scrivener.Model
                 log.Info("Closing {0}", MainDB.DataSource);
                 MainDB.Close();
             }
-
-            ListenMainDB(false);
             return importedRoles;
 
         }
 
-        private static void ListenMainDB(bool s)
-        {
-            if (s == true)
-            {
-                MainDB.StateChange += MainDB_StateChange;
-                MainDB.Trace += MainDB_Trace;
-            }
-            else
-            {
-                MainDB.StateChange -= MainDB_StateChange;
-                MainDB.Trace -= MainDB_Trace;
-            }
-        }
-        static void MainDB_Trace(object sender, TraceEventArgs e)
-        {
-            log.Debug("MainDB: {0}",e.Statement);
-        }
-        static void MainDB_StateChange(object sender, System.Data.StateChangeEventArgs e)
-        {
-            log.Debug("MainDB: {1}", e.GetType().ToString(), e.CurrentState.ToString());
-        }        
+        //private static void ListenMainDB(bool s)
+        //{
+
+        //    if (s == true)
+        //    {
+        //        MainDB.StateChange += MainDB_StateChange;
+        //        MainDB.Trace += MainDB_Trace;
+        //    }
+        //    else
+        //    {
+        //        MainDB.StateChange -= MainDB_StateChange;
+        //        MainDB.Trace -= MainDB_Trace;
+        //    }
+        //}
+        //static void MainDB_Trace(object sender, TraceEventArgs e)
+        //{
+        //    log.Debug("MainDB: {0}",e.Statement);
+        //}
+        //static void MainDB_StateChange(object sender, System.Data.StateChangeEventArgs e)
+        //{
+        //    log.Debug("MainDB: {1}", e.GetType().ToString(), e.CurrentState.ToString());
+        //}        
         
         private static bool StringToBool(string x)
         {
@@ -90,7 +89,7 @@ namespace Scrivener.Model
         }       
         public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
-            ListenMainDB(true);
+            var MainDB = new SQLiteConnection(MAINDB);
             //Return empty command list if role does not allow minion access.
             if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
             {
@@ -126,14 +125,14 @@ namespace Scrivener.Model
                 MainDB.Close(); 
                 Model.ExceptionReporting.Email(e);
             }
-            ListenMainDB(false);
+            
             return commandList;
 
         }
 
         public async static Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
-            ListenMainDB(true);
+            var MainDB = new SQLiteConnection(MAINDB);
             if (role ==null) { return new QuickItem(); }
             List<QuickItemDBPull> CommandList = new List<QuickItemDBPull>();            
             SQLiteCommand pullall = new SQLiteCommand();
@@ -302,7 +301,7 @@ namespace Scrivener.Model
                 root.SubItems.Add(Root_Item);
                 }                
             }
-            ListenMainDB(false);
+            
             return root;
 
 #endregion
@@ -310,7 +309,7 @@ namespace Scrivener.Model
 
         public async static Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
-            ListenMainDB(true);
+            var MainDB = new SQLiteConnection(MAINDB);
             if (role == null) { return new Siteitem(); }
 
             List<SiteDBPull> SiteCommandList = new List<SiteDBPull>();
@@ -383,7 +382,7 @@ namespace Scrivener.Model
                     root.SubItems.Add(Root_Item);
                 }
             }
-            ListenMainDB(false);
+            
             return root;
 
             #endregion

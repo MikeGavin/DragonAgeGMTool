@@ -53,6 +53,7 @@ namespace Scrivener.Model
 
         void watcher_Changed(object sender, FileSystemEventArgs e)
         {
+            System.Threading.Thread.Sleep(30000);
             CopyDBs();
             OnDataBaseUpdate();
         }
