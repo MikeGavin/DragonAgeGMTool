@@ -73,6 +73,15 @@ namespace Scrivener.Helpers
             }
         }
 
+        public static async Task ShowProgress(string title, string message)
+        {
+            var metroWindow = (Application.Current.MainWindow as MetroWindow);
+            metroWindow.MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Theme;
+
+            var controler = await metroWindow.ShowProgressAsync("UPDATING", "Downloading Database");
+            
+        }
+
 
     }
 }

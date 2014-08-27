@@ -6,39 +6,74 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Security.Permissions;
 using System.Data.SQLite;
+using System.Windows;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Scrivener.Model
 {
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string newDBpath = "\\\\fs1\\EdTech\\Scrivener\\Database";
-        private string oldDBpath = string.Format("{0}\\Resources", Environment.CurrentDirectory);
-        public static event EventHandler DataBaseUpdated;
-        private void OnDataBaseUpdate()
+        private string sourceDBpath { get { return BetaTest();} }
+        private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
+        public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
+        private void OnDataBaseUpdate(FileSystemEventArgs e)
         {
             if (DataBaseUpdated != null)
             {
-                DataBaseUpdated(this, new EventArgs());
+                DataBaseUpdated(this, e);
             }
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-    
+
+        private string BetaTest()
+        {
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                log.Debug("Application is network deployed");
+                try
+                {
+                    var deploy = System.Deployment.Application.ApplicationDeployment.CurrentDeployment;
+                    var uri = deploy.ActivationUri;
+                    // Also:
+                    //deploy.DataDirectory
+                    //deploy.UpdateLocation
+                    if (uri.AbsolutePath.Contains("Beta"))
+                    {
+                        log.Debug(@"Setting Database folder as {0}\Betabase", uri.AbsolutePath);
+                        return string.Format(@"{0}\Betabase", uri.AbsolutePath);
+                    }
+                    else
+                    {
+                        log.Debug(@"Setting Database folder as {0}\Betabase", uri.AbsolutePath);
+                        return string.Format(@"{0}\Database", uri.AbsolutePath);
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                }
+            }
+            else
+            {
+                log.Debug("Application is in debug");
+                return @"\\fs1\EdTech\ScrivenerBeta\Betabase";
+            }
+        }
 
         public DataBaseWatcher()
         {
-            if (!File.Exists(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory)))
-            {
-                CopyDBs();
-            }
-                      
+            //check for main DB and update. Needs changed to scan for all DB's
+
+            var t = SyncDBs();
+                   
             // Create a new FileSystemWatcher and set its properties.
             FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = newDBpath;
+            watcher.Path = sourceDBpath;
             /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
-            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            watcher.NotifyFilter = NotifyFilters.LastWrite;
             // Only watch text files.
             watcher.Filter = "*.sqlite";
             // Add event handlers.
@@ -53,70 +88,63 @@ namespace Scrivener.Model
 
         void watcher_Changed(object sender, FileSystemEventArgs e)
         {
+            var dest = appDBpath + e.Name;
+            var source = e.FullPath;
+
             System.Threading.Thread.Sleep(30000);
-            CopyDBs();
-            OnDataBaseUpdate();
+            CheckCopy(dest, source, e);
         }
-        //public void Run()
-        //{
-        //    if (!File.Exists(string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory)))
-        //    {
-        //        var extensions = new[] { ".sqlite" };
 
-        //        var files = (from file in Directory.EnumerateFiles(newDBpath)
-        //                     where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)
-        //                     select new
-        //                     {
-        //                         Source = file,
-        //                         Destination = Path.Combine(oldDBpath, Path.GetFileName(file))
-        //                     });
-
-        //        foreach (var file in files)
-        //        {
-        //            File.Copy(file.Source, file.Destination, true);
-        //        }
-        //    }
-
-        //    // Create a new FileSystemWatcher and set its properties.
-        //    FileSystemWatcher watcher = new FileSystemWatcher();
-        //    watcher.Path = newDBpath;
-        //    /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
-        //    watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-        //       | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-        //    // Only watch text files.
-        //    watcher.Filter = "*.sqlite";
-        //    // Add event handlers.
-        //    watcher.Changed += new FileSystemEventHandler(OnChanged);
-        //    watcher.Created += new FileSystemEventHandler(OnChanged);
-        //    watcher.Deleted += new FileSystemEventHandler(OnChanged);
-        //    watcher.Renamed += new RenamedEventHandler(OnRenamed);
-
-        //    // Begin watching.
-        //    watcher.EnableRaisingEvents = true;
-
-        //    // Wait for the user to quit the program.
-        //}
-
-        // Define the event handlers. 
-        private void CopyDBs()
+        private void CheckCopy(string destination, string source, FileSystemEventArgs e = null)
         {
-            // Specify what is done when a file is changed, created, or deleted.
+            if (File.Exists(destination)) //Checks is file exists
 
+            {
+                System.Security.Cryptography.HashAlgorithm ha = System.Security.Cryptography.HashAlgorithm.Create();
+                FileStream f1 = new FileStream(source, FileMode.Open);
+                FileStream f2 = new FileStream(destination, FileMode.Open);
+                /* Calculate Hash */
+                byte[] hash1 = ha.ComputeHash(f1);
+                byte[] hash2 = ha.ComputeHash(f2);
+                f1.Close();
+                f2.Close();
+                //Compare files and copy if destination does not match server
+                if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
+                {
+                    log.Info("New Database version detected in ", sourceDBpath);
+                    log.Debug("Copy [{0}] To [{1}]", source, destination);
+                    File.Copy(source, destination, true);
+                    OnDataBaseUpdate(e);
+                }
+
+            }
+            else //copies if no destination file/
+            {
+                log.Error("Database missing: {0} ", destination);
+                log.Debug("Copy [{0}] To [{1}]", source, destination);
+                File.Copy(source, destination, true);
+
+            }
+        }
+        
+        private async Task SyncDBs()
+        {
+            //Get a list of DB files and copy them
             var extensions = new[] { ".sqlite" };
 
-            var files = (from file in Directory.EnumerateFiles(newDBpath)
+            var files = (from file in Directory.EnumerateFiles(sourceDBpath)
                          where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)
                          select new
                          {
                              Source = file,
-                             Destination = Path.Combine(oldDBpath, Path.GetFileName(file))
+                             Destination = Path.Combine(appDBpath, Path.GetFileName(file))
                          });
 
             foreach (var file in files)
             {
                 try
                 {
-                    File.Copy(file.Source, file.Destination, true);
+                    CheckCopy(file.Destination, file.Source);
                 }
                 catch (Exception f)
                 {

@@ -71,7 +71,6 @@ namespace Scrivener.ViewModel
         public RelayCommand AddCommand { get { return _addCommand ?? (_addCommand = new RelayCommand(AddMinionItem)); } }
         public async void AddMinionItem()
         {
-            string possibleError;
             MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }
             MinionIPInputEnabeled = false;
@@ -100,7 +99,7 @@ namespace Scrivener.ViewModel
                 }
                 catch (Exception e)
                 {
-                    Helpers.MetroMessageBox.Show("DNS Error!", e.Message.ToString());
+                    var temp = Helpers.MetroMessageBox.Show("DNS Error!", e.Message.ToString());
                 }
             }
             else if (Minion.Tool.IP.IPv4_Check(NewMinionIPAddress) == true)
@@ -114,7 +113,7 @@ namespace Scrivener.ViewModel
                     catch (Exception e)
                     {
                         Model.ExceptionReporting.Email(e);
-                        Scrivener.Helpers.MetroMessageBox.Show("Error!", e.ToString());
+                        var temp = Scrivener.Helpers.MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                     }
                 }
                 else
@@ -146,8 +145,5 @@ namespace Scrivener.ViewModel
             if (MinionCollection.Count <= 0)
                 IsExpanded = false;
         }
-
-
-
     }
 }

@@ -14,6 +14,7 @@ using Scrivener.Helpers;
 using System.Windows.Data;
 using Minion.ListItems;
 using Scrivener.Model;
+using System.IO;
 
 namespace Scrivener.ViewModel
 {
@@ -58,11 +59,15 @@ namespace Scrivener.ViewModel
             //var _ieCommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => (i.Name == "Update") && (i.Action == "Install")));           
         }
 
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, EventArgs e)
+        private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
         {
-            _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-            MinionStartCommands = null;
-            SetIECommands();
+            if (e.Name.ToLower().Contains("scrivener.sqlite"))
+            {
+                log.Debug("Updating MinionCommands on Minion: {0}", Title);
+                _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+                MinionStartCommands = null;
+                SetIECommands();
+            }
         }
 
         //Item title pulling IP address
@@ -214,7 +219,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                 return;
             }
         }
@@ -233,7 +238,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                 return;
             }
         }
@@ -253,7 +258,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                 return;
             }
 
@@ -273,7 +278,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                 return;
             }
         }
@@ -309,7 +314,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
             }
         }
 
@@ -344,7 +349,7 @@ namespace Scrivener.ViewModel
             catch (Exception e)
             {
                 log.Error(e);
-                MetroMessageBox.Show("ERROR!", e.ToString());
+                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
             }
         }
 

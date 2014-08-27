@@ -15,6 +15,7 @@ using GalaSoft.MvvmLight;
 using Scrivener.Model;
 using Minion.ListItems;
 using Scrivener.Helpers;
+using System.IO;
 
 namespace Scrivener.ViewModel
 {
@@ -31,20 +32,22 @@ namespace Scrivener.ViewModel
             _titlechanged = false;
             _root = _tree;
             //SaveIndex = new_index;
-            
+
             DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
         }
 
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, EventArgs e)
+        private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
         {
-            //_minionCommands = null;
-            _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-            //Root = null;
-            Root = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
+            if (e.Name.ToLower().Contains("scrivener.sqlite"))
+            {
+                log.Debug("Updating MinionCommands on note {0}", Title);
+                _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+                log.Debug("Updating QuickItems on note {0}", Title);
+                Root = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
+            }
         }
-
 
         private string _minionVisibility;
         public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }
@@ -172,7 +175,7 @@ namespace Scrivener.ViewModel
                 catch (Exception e)
                 {
                     log.Error(e);
-                    MetroMessageBox.Show("NOPE!", e.ToString());
+                    var temp = MetroMessageBox.Show("NOPE!", e.ToString());
                 }
             }
         }

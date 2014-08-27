@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Minion.Tool
 {
-    internal class Files
+    public class Files
     {
         #region Custom Logger
         /// <summary>

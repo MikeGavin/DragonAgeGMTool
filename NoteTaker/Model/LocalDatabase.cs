@@ -17,21 +17,22 @@ namespace Scrivener.Model
 
         //Temp until single DB instance
         //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
-        private static string MAINDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
+        private static string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
         private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
         public static ObservableCollection<RoleItem> ReturnRoles()
         {
-            var MainDB = new SQLiteConnection(MAINDB);
+            log.Debug("Getting Roles");
+            var db = new SQLiteConnection(mainDB);
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Roles";
-            pullall.Connection = MainDB;
+            pullall.Connection = db;
             log.Debug(pullall.CommandText);
             var importedRoles = new ObservableCollection<RoleItem>();
             try
             {              
                 log.Info("CommandText: {0}", pullall.CommandText.ToString());
-                MainDB.Open();
+                db.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (reader.Read())
                     importedRoles.Add(new RoleItem()
@@ -42,42 +43,18 @@ namespace Scrivener.Model
                         SiteItem_Table = reader["SiteItem_Table"].ToString().Trim()
                     });
                
-                MainDB.Close();
+                db.Close();
 
             }
             catch (Exception e)
             {
                 log.Error(e);
-                log.Info("Closing {0}", MainDB.DataSource);
-                MainDB.Close();
+                log.Info("Closing {0}", db.DataSource);
+                db.Close();
             }
             return importedRoles;
 
-        }
-
-        //private static void ListenMainDB(bool s)
-        //{
-
-        //    if (s == true)
-        //    {
-        //        MainDB.StateChange += MainDB_StateChange;
-        //        MainDB.Trace += MainDB_Trace;
-        //    }
-        //    else
-        //    {
-        //        MainDB.StateChange -= MainDB_StateChange;
-        //        MainDB.Trace -= MainDB_Trace;
-        //    }
-        //}
-        //static void MainDB_Trace(object sender, TraceEventArgs e)
-        //{
-        //    log.Debug("MainDB: {0}",e.Statement);
-        //}
-        //static void MainDB_StateChange(object sender, System.Data.StateChangeEventArgs e)
-        //{
-        //    log.Debug("MainDB: {1}", e.GetType().ToString(), e.CurrentState.ToString());
-        //}        
-        
+        }    
         private static bool StringToBool(string x)
         {
             bool result = false;
@@ -87,9 +64,11 @@ namespace Scrivener.Model
             }
             return result;       
         }       
+
         public static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
-            var MainDB = new SQLiteConnection(MAINDB);
+            log.Debug("Getting Minion Commands for {0}", role.Name);
+            var db = new SQLiteConnection(mainDB);
             //Return empty command list if role does not allow minion access.
             if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
             {
@@ -98,12 +77,12 @@ namespace Scrivener.Model
 
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Minion_Commands";
-            pullall.Connection = MainDB;
+            pullall.Connection = db;
             log.Debug(pullall.CommandText);
             var commandList = new ObservableCollection<MinionCommandItem>();
             try
             {
-                MainDB.Open();
+                db.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
                     commandList.Add(new MinionCommandItem() 
@@ -116,13 +95,13 @@ namespace Scrivener.Model
                         Command = reader["Command"].ToString().Trim(),
                         Bit = reader["Bit"].ToString(),
                     });
-                MainDB.Close();  
+                db.Close();  
      
             }
             catch (Exception e)
             {
                 log.Error(e);
-                MainDB.Close(); 
+                db.Close(); 
                 Model.ExceptionReporting.Email(e);
             }
             
@@ -132,29 +111,30 @@ namespace Scrivener.Model
 
         public async static Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
-            var MainDB = new SQLiteConnection(MAINDB);
+            log.Debug("Returning QuickItems for {0}", role.Name);
+            var db = new SQLiteConnection(mainDB);
             if (role ==null) { return new QuickItem(); }
             List<QuickItemDBPull> CommandList = new List<QuickItemDBPull>();            
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = string.Format("SELECT * FROM {0}", role.QuickItem_Table);
-            pullall.Connection = MainDB;
+            pullall.Connection = db;
             log.Debug(pullall.CommandText);
 
             try
             {
-                MainDB.Open();
+                db.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
                 {
                     CommandList.Add(new QuickItemDBPull() { Verbage = reader["QuickNotes_Verbage"].ToString(), Root_Folder = reader["QuickNotes_Root_Folder"].ToString(), Sub_Folder_1 = reader["QuickNotes_1"].ToString(), Sub_Folder_2 = reader["QuickNotes_2"].ToString(), Sub_Folder_3 = reader["QuickNotes_3"].ToString(), Sub_Folder_4 = reader["QuickNotes_4"].ToString(), Sub_Folder_5 = reader["QuickNotes_5"].ToString(), Sub_Folder_6 = reader["QuickNotes_6"].ToString(), Sub_Folder_7 = reader["QuickNotes_7"].ToString(), Sub_Folder_8 = reader["QuickNotes_8"].ToString(), Sub_Folder_9 = reader["QuickNotes_9"].ToString(), Sub_Folder_10 = reader["QuickNotes_10"].ToString() });
                 }
-                MainDB.Close();
+                db.Close();
             }
             catch (Exception e)
             {
                 log.Error(e);
                 Model.ExceptionReporting.Email(e);
-                MainDB.Close();
+                db.Close();
             }
 
             List<QuickItemDBPull> Root_uniqueitems = CommandList.GroupBy(s => s.Root_Folder).Select(p => p.First()).ToList();
@@ -309,36 +289,31 @@ namespace Scrivener.Model
 
         public async static Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
-            var MainDB = new SQLiteConnection(MAINDB);
+            log.Debug("Getting SiteItems for {0}", role.Name);
+            var db = new SQLiteConnection(mainDB);
             if (role == null) { return new Siteitem(); }
 
             List<SiteDBPull> SiteCommandList = new List<SiteDBPull>();
             
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = string.Format("SELECT * FROM {0}", role.SiteItem_Table);
-            pullall.Connection = MainDB;
+            pullall.Connection = db;
             log.Debug(pullall.CommandText);
 
             try
             {
-                MainDB.Open();
+                db.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
                 while (await reader.ReadAsync())
                     SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString(), Child_2 = reader["Child_2"].ToString() });
-                MainDB.Close();
+                db.Close();
             }
-            //catch ( Exception e )
-            //{
-            //    log.Warn(e);
-            //    Helpers.MetroMessageBox.Show("Exception!", e.ToString());
-            //    MainDB.Close();
-            //}
             catch (Exception e)
             {
                 log.Error(e);
-                Helpers.MetroMessageBox.Show("Exception!", e.ToString());
+                var temp = Helpers.MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
                 Model.ExceptionReporting.Email(e);
-                MainDB.Close();
+                db.Close();
             }
 
 
@@ -388,33 +363,34 @@ namespace Scrivener.Model
             #endregion
         }
 
-        public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
-        {
-            System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
-            CallHistory.StateChange += handel;
+        //public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
+        //{
+        //    log.Debug("Getting History");
+        //    System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
+        //    CallHistory.StateChange += handel;
 
-            ObservableCollection<HistoryItem> HistoryList = new ObservableCollection<HistoryItem>();
-            string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+        //    ObservableCollection<HistoryItem> HistoryList = new ObservableCollection<HistoryItem>();
+        //    string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
 
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
-            pullall.Connection = CallHistory;            
-            log.Debug(pullall.CommandText);
-            try
-            {
-                await CallHistory.OpenAsync();
-                SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
-                while (await reader.ReadAsync())
-                    HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
-                CallHistory.Close();
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-            }
-            CallHistory.StateChange -= handel;
-            return HistoryList;
+        //    SQLiteCommand pullall = new SQLiteCommand();
+        //    pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
+        //    pullall.Connection = CallHistory;            
+        //    log.Debug(pullall.CommandText);
+        //    try
+        //    {
+        //        await CallHistory.OpenAsync();
+        //        SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
+        //        while (await reader.ReadAsync())
+        //            HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
+        //        CallHistory.Close();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        log.Error(e);
+        //    }
+        //    CallHistory.StateChange -= handel;
+        //    return HistoryList;
 
-        }
+        //}
     }
 }
