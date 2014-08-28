@@ -16,7 +16,7 @@ namespace Scrivener.Model
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private string _sourcedbpath;
-        private string sourceDBpath { get { return _sourcedbpath ?? (_sourcedbpath = BetaTest());} }
+        private string sourceDBpath { get { return _sourcedbpath ?? (_sourcedbpath = BetaTest()); } }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
@@ -63,7 +63,15 @@ namespace Scrivener.Model
             else
             {
                 log.Debug("Application is in debug");
-                return @"\\fs1\EdTech\ScrivenerBeta\Betabase";
+                if (File.Exists(@"\\fs1\EdTech\_EdTech\ScrivenerDebugDB\Scrivener.sqlite"))
+                {
+                    return @"\\fs1\EdTech\_EdTech\ScrivenerDebugDB\";
+                }
+                else
+                {
+                    log.Warn("Network debug database is not available. Create a Scrivener.sqlite database on your current desktop.");
+                    return string.Format("{0}", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                }
             }
         }
 
@@ -123,7 +131,7 @@ namespace Scrivener.Model
             }
             else //copies if no destination file/
             {
-                log.Error("Database missing: {0} ", destination);
+                log.Warn("Database missing: {0} ", destination);
                 log.Debug("Copy [{0}] To [{1}]", source, destination);
                 File.Copy(source, destination, true);
 
