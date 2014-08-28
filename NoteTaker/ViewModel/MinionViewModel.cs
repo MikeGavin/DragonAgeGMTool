@@ -77,7 +77,7 @@ namespace Scrivener.ViewModel
             Regex reg = new Regex("[a-zA-Z]+");
 
             if (reg.IsMatch(NewMinionIPAddress))
-            {
+            {                
                 try
                 {
                     var returnedIPs = await Dns.GetHostAddressesAsync(NewMinionIPAddress);

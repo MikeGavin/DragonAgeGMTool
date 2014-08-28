@@ -15,8 +15,7 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string _sourcedbpath;
-        private string sourceDBpath { get { return _sourcedbpath ?? (_sourcedbpath = BetaTest()); } }
+        private string sourceDBpath { get { return BetaTest();} }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
@@ -115,17 +114,17 @@ namespace Scrivener.Model
                 using (FileStream f1 = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), 
                                   f2 = new FileStream(destination, FileMode.Open,FileAccess.Read, FileShare.ReadWrite))
                 {
-                    /* Calculate Hash */
-                    byte[] hash1 = ha.ComputeHash(f1);
-                    byte[] hash2 = ha.ComputeHash(f2);
-                    //Compare files and copy if destination does not match server
-                    if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
-                    {
-                        log.Info("New Database version detected in ", sourceDBpath);
-                        log.Debug("Copy [{0}] To [{1}]", source, destination);
-                        File.Copy(source, destination, true);
-                        OnDataBaseUpdate(e);
-                    }
+                /* Calculate Hash */
+                byte[] hash1 = ha.ComputeHash(f1);
+                byte[] hash2 = ha.ComputeHash(f2);
+                //Compare files and copy if destination does not match server
+                if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
+                {
+                    log.Info("New Database version detected in ", sourceDBpath);
+                    log.Debug("Copy [{0}] To [{1}]", source, destination);
+                    File.Copy(source, destination, true);
+                    OnDataBaseUpdate(e);
+                }
                 }                
 
             }

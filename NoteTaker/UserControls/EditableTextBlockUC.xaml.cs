@@ -41,6 +41,7 @@ namespace Scrivener.UserControls
         {
             textBlock.Visibility = System.Windows.Visibility.Collapsed;
             editBox.Text = textBlock.Text;
+            editBox.SelectAll();
             editBox.Visibility = Visibility.Visible;
             editBox.Height = textBlock.Height;
             editBox.Width = textBlock.Width;
