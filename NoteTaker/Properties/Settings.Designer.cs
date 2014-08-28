@@ -85,10 +85,10 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool QuickNotes_Visible {
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility QuickNotes_Visible {
             get {
-                return ((bool)(this["QuickNotes_Visible"]));
+                return ((global::System.Windows.Visibility)(this["QuickNotes_Visible"]));
             }
             set {
                 this["QuickNotes_Visible"] = value;

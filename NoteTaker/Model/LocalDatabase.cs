@@ -358,10 +358,23 @@ namespace Scrivener.Model
                     root.SubItems.Add(Root_Item);
                 }
             }
-            
+            Sorting(root);  
+            root.SubItems = new ObservableCollection<Siteitem>(root.SubItems.OrderBy(n=> n.Title));
             return root;
 
             #endregion
+        }
+
+        private static void Sorting(Siteitem root)
+        {
+            foreach (Siteitem item in root.SubItems)
+            {
+                if (item.SubItems.Count > 0)
+                {
+                    item.SubItems = new ObservableCollection<Siteitem>(item.SubItems.OrderBy(n => n.Title));
+                    Sorting(item);
+                }
+            }
         }
 
         //public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()

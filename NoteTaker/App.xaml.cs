@@ -29,7 +29,7 @@ namespace Scrivener
             }
             else
             {
-                Model.ExceptionReporting.Email(e.Exception);
+                //Model.ExceptionReporting.Email(e.Exception);
                 ShowUnhandeledException(e);
             }
 

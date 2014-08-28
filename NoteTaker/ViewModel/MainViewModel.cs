@@ -140,17 +140,16 @@ namespace Scrivener.ViewModel
 
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }
-        private string _quicknoteVisibility;
-        public string QuicknoteVisibility { get { return _quicknoteVisibility; } set { _quicknoteVisibility = value; RaisePropertyChanged(); } }
+        public Visibility QuicknoteVisibility { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
         private void QuickNoteToggle()
         {
-            if (QuicknoteVisibility == Visibility.Collapsed.ToString())
+            if (QuicknoteVisibility == Visibility.Collapsed)
             {
-                QuicknoteVisibility = Visibility.Visible.ToString();
+                QuicknoteVisibility = Visibility.Visible;
             }
             else
             {
-                QuicknoteVisibility = Visibility.Collapsed.ToString();
+                QuicknoteVisibility = Visibility.Collapsed;
             }
         }
 
@@ -199,19 +198,6 @@ namespace Scrivener.ViewModel
         private void LoadUserSettings()
         {
             //Load user settings. Changed to switch to allow for null settings value crashing.
-            switch (Scrivener.Properties.Settings.Default.QuickNotes_Visible)
-            {
-                case true:
-                    QuicknoteVisibility = Visibility.Visible.ToString();
-                    break;
-                case false:
-                    QuicknoteVisibility = Visibility.Collapsed.ToString();
-                    break;
-                default:
-                    QuicknoteVisibility = Visibility.Visible.ToString();
-                    break;
-                
-            }
         }
 
         //Listener for settings changed properity in order to clear out imports
@@ -289,12 +275,25 @@ namespace Scrivener.ViewModel
         }
 
         //Allows getting of current version
-        private string _version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
-        public string Version { get { return _version; } protected set { _version = value; RaisePropertyChanged(); } }
+        public string AssemblyVersion { get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(); } }
+        public string PublishVersion 
+        { 
+            get 
+            { 
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) 
+                {
+                    return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                }
+                else
+                {
+                    return "Debug";
+                }
+            }
+        }
 
         #endregion
 
-        #region Call history
+        #region Call histor
 
         ////builds or gets History
         //private ObservableCollection<HistoryItem> _history;

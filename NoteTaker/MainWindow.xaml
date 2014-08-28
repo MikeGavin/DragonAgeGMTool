@@ -105,11 +105,13 @@
                 </StackPanel>
             </controls:Flyout>-->
 
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="170" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="350" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
                 <StackPanel Margin="5">
-                    <controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuickNotes_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                    <Label Content="{Binding PublishVersion}"/>
+                    <Label Content="{Binding AssemblyVersion}"/>
+                    <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
+                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                    <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                     <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
                     <StackPanel Orientation="Horizontal">
