@@ -26,6 +26,7 @@ namespace Scrivener.Model
             var db = new SQLiteConnection(mainDB);
             SQLiteCommand pullall = new SQLiteCommand();
             pullall.CommandText = "SELECT * FROM Roles";
+            
             pullall.Connection = db;
             log.Debug(pullall.CommandText);
             var importedRoles = new ObservableCollection<RoleItem>();

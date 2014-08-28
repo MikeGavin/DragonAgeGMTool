@@ -220,9 +220,8 @@ namespace Scrivener.ViewModel
             if ((e.PropertyName == "Role_Current" & Properties.Settings.Default.Role_Current != null))
             {
                 ////Hack to set current role in combobox
-                RolesView = new CollectionView(Roles);
-                var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
-                RolesView.MoveCurrentTo(Test);
+                var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+                RolesView.MoveCurrentTo(role);
 
                 //reset roll properties to force updates.
                 ReloadData(sender, "scrivener.sqlite");
@@ -231,8 +230,9 @@ namespace Scrivener.ViewModel
                 {
                     NewNote();
                 }
-            }            
-           // Properties.Settings.Default.Save();
+            }
+            Properties.Settings.Default.Save();
+            
         }
 
         private void ReloadData(object o, string f)
@@ -250,7 +250,7 @@ namespace Scrivener.ViewModel
         public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
 
         public static CollectionView _rolesView;
-        public CollectionView RolesView { get { return _rolesView; } set { _rolesView = value; RaisePropertyChanged(); } }
+        public CollectionView RolesView { get { return _rolesView ?? (_rolesView = new CollectionView(Roles)); } set { _rolesView = value; RaisePropertyChanged(); } }
         public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
@@ -269,9 +269,8 @@ namespace Scrivener.ViewModel
             }
 
                 //Hack to set current role in combobox
-                RolesView = new CollectionView(Roles);
-                var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
-                RolesView.MoveCurrentTo(Test);
+                var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+                RolesView.MoveCurrentTo(role);
                 if (Notes.Count == 0)
                 {
                     NewNote();
