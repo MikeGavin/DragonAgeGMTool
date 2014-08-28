@@ -15,7 +15,8 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string sourceDBpath { get { return BetaTest();} }
+        private string _sourcedbpath;
+        private string sourceDBpath { get { return _sourcedbpath ?? (_sourcedbpath = BetaTest());} }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
@@ -35,25 +36,28 @@ namespace Scrivener.Model
                 log.Debug("Application is network deployed");
                 try
                 {
-                    var deploy = System.Deployment.Application.ApplicationDeployment.CurrentDeployment;
-                    var uri = deploy.ActivationUri;
+
+                    log.Debug("Update Location: {0}", System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath);
+                    var uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
                     // Also:
                     //deploy.DataDirectory
                     //deploy.UpdateLocation
-                    if (uri.AbsolutePath.Contains("Beta"))
+                    if (uri.Contains("beta"))
                     {
-                        log.Debug(@"Setting Database folder as {0}\Betabase", uri.AbsolutePath);
-                        return string.Format(@"{0}\Betabase", uri.AbsolutePath);
+                        
+                        log.Debug(@"Setting Database folder as {0}betabase", uri);
+                        return string.Format(@"{0}betabase", uri);
                     }
                     else
                     {
-                        log.Debug(@"Setting Database folder as {0}\Betabase", uri.AbsolutePath);
-                        return string.Format(@"{0}\Database", uri.AbsolutePath);
+                        log.Debug(@"Setting Database folder as {0}database", uri);
+                        return string.Format(@"{0}database", uri);
                     }
                 }
                 catch (Exception e)
                 {
                     log.Error(e);
+                    return string.Empty;
                 }
             }
             else
@@ -66,7 +70,7 @@ namespace Scrivener.Model
         public DataBaseWatcher()
         {
             //check for main DB and update. Needs changed to scan for all DB's
-
+            log.Debug(sourceDBpath);
             var t = SyncDBs();
                    
             // Create a new FileSystemWatcher and set its properties.
@@ -98,24 +102,23 @@ namespace Scrivener.Model
         private void CheckCopy(string destination, string source, FileSystemEventArgs e = null)
         {
             if (File.Exists(destination)) //Checks is file exists
-
             {
                 System.Security.Cryptography.HashAlgorithm ha = System.Security.Cryptography.HashAlgorithm.Create();
-                FileStream f1 = new FileStream(source, FileMode.Open);
-                FileStream f2 = new FileStream(destination, FileMode.Open);
-                /* Calculate Hash */
-                byte[] hash1 = ha.ComputeHash(f1);
-                byte[] hash2 = ha.ComputeHash(f2);
-                f1.Close();
-                f2.Close();
-                //Compare files and copy if destination does not match server
-                if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
+                using (FileStream f1 = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), 
+                                  f2 = new FileStream(destination, FileMode.Open,FileAccess.Read, FileShare.ReadWrite))
                 {
-                    log.Info("New Database version detected in ", sourceDBpath);
-                    log.Debug("Copy [{0}] To [{1}]", source, destination);
-                    File.Copy(source, destination, true);
-                    OnDataBaseUpdate(e);
-                }
+                    /* Calculate Hash */
+                    byte[] hash1 = ha.ComputeHash(f1);
+                    byte[] hash2 = ha.ComputeHash(f2);
+                    //Compare files and copy if destination does not match server
+                    if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
+                    {
+                        log.Info("New Database version detected in ", sourceDBpath);
+                        log.Debug("Copy [{0}] To [{1}]", source, destination);
+                        File.Copy(source, destination, true);
+                        OnDataBaseUpdate(e);
+                    }
+                }                
 
             }
             else //copies if no destination file/

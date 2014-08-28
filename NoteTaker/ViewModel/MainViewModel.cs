@@ -249,7 +249,8 @@ namespace Scrivener.ViewModel
         private static ObservableCollection<RoleItem> _roles;
         public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
 
-        public static CollectionView RolesView { get; set; }
+        public static CollectionView _rolesView;
+        public CollectionView RolesView { get { return _rolesView; } set { _rolesView = value; RaisePropertyChanged(); } }
         public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
@@ -267,8 +268,6 @@ namespace Scrivener.ViewModel
                 }
             }
 
-            if (Properties.Settings.Default.Role_Current != null)
-            {
                 //Hack to set current role in combobox
                 RolesView = new CollectionView(Roles);
                 var Test = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
@@ -277,7 +276,7 @@ namespace Scrivener.ViewModel
                 {
                     NewNote();
                 }
-            }
+            
         }
 
         //Save Template
