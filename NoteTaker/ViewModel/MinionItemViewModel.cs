@@ -230,7 +230,18 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                var item = _minionCommands.First((j) => j.Version == "1.7.0_55" && j.Action == "Install");
+                var items = _minionCommands.Where((j) => j.Name == "Java" && j.Action == "Install").ToList<MinionCommandItem>();
+                var item = new MinionCommandItem();
+                foreach (var i in items)
+                {
+                    if (item.Version == null) { item = i; }
+                    
+                    
+                    if (Convert.ToInt32(i.Version.Remove(0,6)) > Convert.ToInt32(item.Version.Remove(0,6)))
+                    {
+                        item = i;
+                    }
+                }
                 await RunCommandItem(item);
                 item = _minionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
                 await RunCommandItem(item);
@@ -374,7 +385,7 @@ namespace Scrivener.ViewModel
                     RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", command.Name, command.Version));
                 else if (vresult == "ERROR")
                     RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", command.Name));
-                else if (vresult == command.Version)
+                else if (vresult.Contains(command.Version))
                     RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", command.Name, vresult));
                 else
                     RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", command.Name));
@@ -397,7 +408,7 @@ namespace Scrivener.ViewModel
                 {
                     ver = Machine.Java32;
                 }
-                result = string.Format("{0} {1}bit", ver, item.Bit);
+                result = ver;
             }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();

@@ -23,20 +23,20 @@ namespace Scrivener.Model
 
         public static void Email(Exception e)
         {
-            // Create the Outlook application.
-           var oApp = new Outlook.Application();
-           // Create a new mail item.
-           var oMsg = (Outlook.MailItem)oApp.CreateItem(Outlook.OlItemType.olMailItem);
-           oMsg.Display(false);
-           // Add a recipient.
-           oMsg.To = "edtechsupport@ecotoh.org";
-           //Subject line
-           oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
-           //add the body of the email
-           oMsg.Body = string.Format("{0}{1}{2}", GetPublishedVersion(), Environment.NewLine, e.ToString());
-           oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
-           // Send.
-           ((Outlook._MailItem)oMsg).Send();
+           // // Create the Outlook application.
+           //var oApp = new Outlook.Application();
+           //// Create a new mail item.
+           //var oMsg = (Outlook.MailItem)oApp.CreateItem(Outlook.OlItemType.olMailItem);
+           //oMsg.Display(false);
+           //// Add a recipient.
+           //oMsg.To = "edtechsupport@ecotoh.org";
+           ////Subject line
+           //oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
+           ////add the body of the email
+           //oMsg.Body = string.Format("{0}{1}{2}", GetPublishedVersion(), Environment.NewLine, e.ToString());
+           //oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
+           //// Send.
+           //((Outlook._MailItem)oMsg).Send();
        }
     }
 }
