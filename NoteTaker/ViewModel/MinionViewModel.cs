@@ -73,6 +73,7 @@ namespace Scrivener.ViewModel
         {
             MinionConnecting = true;
             if (NewMinionIPAddress == null) { return; }
+            NewMinionIPAddress = NewMinionIPAddress.Trim();
             MinionIPInputEnabeled = false;
             Regex reg = new Regex("[a-zA-Z]+");
 
