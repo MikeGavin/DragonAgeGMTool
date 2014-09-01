@@ -50,6 +50,7 @@ namespace Scrivener.ViewModel
         public event EventHandler<PasteEventArgs> PasteRequest;
         private void OnPasteRequest(string p)
         {
+            if (string.IsNullOrEmpty(p) || p == "Updating...") { return; }
             if (PasteRequest != null)
             {
                 PasteRequest( this, new PasteEventArgs() { PasteData = p} );

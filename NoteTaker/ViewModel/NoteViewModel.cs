@@ -126,12 +126,14 @@ namespace Scrivener.ViewModel
                 foreach (MinionItemViewModel minionItem in e.NewItems)
                 {
                     minionItem.NoteWrite += minionItem_NoteWrite;
+                    minionItem.PasteRequest += (s, p) => Text += p.PasteData.PadLeft(p.PasteData.Length + 1).PadRight(p.PasteData.Length + 1);
                 }
 
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (MinionItemViewModel minionItem in e.OldItems)
                 {
                     minionItem.NoteWrite -= minionItem_NoteWrite;
+                    minionItem.PasteRequest -= (s, p) => Text += string.Format(" {0} ", p.PasteData);
                 }
         }
         //fires on event to write note from minion instance with message

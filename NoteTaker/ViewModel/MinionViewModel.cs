@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System;
 using Minion.ListItems;
 using System.Text.RegularExpressions;
+using Scrivener.Model;
 
 namespace Scrivener.ViewModel
 {
@@ -24,6 +25,7 @@ namespace Scrivener.ViewModel
 
         public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
         {
+            SetMinionInputDefault();
             MinionCollection.CollectionChanged += OnMinionItemsChanged;
             _minionCommands = commands;
             //debuging
@@ -32,8 +34,9 @@ namespace Scrivener.ViewModel
             //AddMinionItem();
         }
 
+        private RoleItem _role;
         #region Public Properties
-        private string _NewMinionIPAddress = "10.39.";
+        private string _NewMinionIPAddress;
         public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
         private bool _minionIPInputEnabeled = true;
         public bool MinionIPInputEnabeled { get { return _minionIPInputEnabeled; } set { _minionIPInputEnabeled = value; RaisePropertyChanged(); } }
@@ -134,8 +137,21 @@ namespace Scrivener.ViewModel
         {
             MinionCollection.Add(new MinionItemViewModel(ip, _minionCommands));
             SelectedMinion = MinionCollection.Last();
-            NewMinionIPAddress = "10.39.";
+            SetMinionInputDefault();
             IsExpanded = true;
+        }
+
+        private void SetMinionInputDefault()
+        {
+            var loc = new ViewModelLocator();
+            if (loc.Main.CurrentRole.Name == "EdTech")
+            {
+                NewMinionIPAddress = string.Empty;
+            }
+            else
+            {
+                NewMinionIPAddress = "10.39.";
+            }
         }
 
         //remove minion instance on self request

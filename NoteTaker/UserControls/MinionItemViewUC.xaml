@@ -21,7 +21,7 @@
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Padding" Value="2"/>
-                        <Setter Property="Margin" Value="0,0,3,0"/>
+                        <Setter Property="Margin" Value="0,0,3,0"/>                       
                     </Style>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Foreground" Value="White"/>
@@ -84,7 +84,12 @@
         <Label Grid.Row="7" Grid.Column="0" Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
 
         <Label Content="{Binding Machine.PCName}" Grid.Row="0" Grid.Column="1">
-                <Label.ContextMenu>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
                         <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
@@ -94,7 +99,12 @@
                 </Label.ContextMenu>
             </Label>
         <Label Content="{Binding Machine.CurrentUser}" Grid.Column="1" Grid.Row="1">
-                <Label.ContextMenu>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
                         <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
@@ -104,12 +114,48 @@
                     </ContextMenu>
                 </Label.ContextMenu>
             </Label>
-        <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2"/>
-        <Label Content="{Binding Machine.RAM}" Grid.Column="1" Grid.Row="3"/>
-        <Label Content="{Binding Machine.OSBit}" Grid.Column="1" Grid.Row="4"/>
-        <Label Content="{Binding Machine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5"/>
-        <Label Content="{Binding Machine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6"/>
-        <Label Content="{Binding Machine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7"/>
+        <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
+        <Label Content="{Binding Machine.RAM}" Grid.Column="1" Grid.Row="3">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
+        <Label Content="{Binding Machine.OSBit}" Grid.Column="1" Grid.Row="4">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
+        <Label Content="{Binding Machine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
+        <Label Content="{Binding Machine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
+        <Label Content="{Binding Machine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
 
 
         <Label Content="IE" Foreground="Gray" Grid.Column="2" Grid.Row="0">
@@ -170,7 +216,12 @@
                    </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right">
-            <Label.ContextMenu>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Label.ContextMenu>
                 <ContextMenu ItemsSource="{Binding IECommands, IsAsync=True, UpdateSourceTrigger=PropertyChanged}">
                     <ContextMenu.ItemContainerStyle>
                         <Style TargetType="MenuItem">
@@ -202,6 +253,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="32"/>
@@ -220,6 +276,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Java64}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="64"/>
@@ -236,6 +297,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Flash}" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Flash" Command="{Binding UninstallFlashCommand}"/>
@@ -253,6 +319,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Shockwave}" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Shockwave" Command="{Binding UninstallShockwaveCommand}"/>
@@ -270,6 +341,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Reader}" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Reader" Command="{Binding UninstallReaderCommand}"/>
@@ -287,6 +363,11 @@
                 </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="6" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <mvvmcmd:EventToCommand Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <Label.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Quicktime" Command="{Binding UninstallQuicktimeCommand}"/>
