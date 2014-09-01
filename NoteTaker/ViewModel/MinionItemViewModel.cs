@@ -46,7 +46,17 @@ namespace Scrivener.ViewModel
             }
         }
         #endregion
-        
+
+        public event EventHandler<PasteEventArgs> PasteRequest;
+        private void OnPasteRequest(string p)
+        {
+            if (PasteRequest != null)
+            {
+                PasteRequest( this, new PasteEventArgs() { PasteData = p} );
+            }
+        }
+        public RelayCommand<string> PasteCommand { get { return new RelayCommand<string>((param) => OnPasteRequest(param)); } }      
+
         //Constructor
         public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
         {
