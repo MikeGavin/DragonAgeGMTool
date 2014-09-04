@@ -62,7 +62,7 @@ namespace Minion.Tool
             if (pingReply.Status == System.Net.NetworkInformation.IPStatus.Success)
             { log.Info("Ping Success (" + ip.ToString() +")"); return true; }
             else
-            { log.Error("Ping Failed (" + ip.ToString() + ")"); return false; }
+            { log.Warn("Ping Failed (" + ip.ToString() + ")"); return false; }
 
         }
     }

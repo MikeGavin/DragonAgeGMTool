@@ -36,7 +36,7 @@
     <MinimumRequiredVersion>1.50.0.2</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.52.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -212,6 +212,7 @@
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Helpers\CaretBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />

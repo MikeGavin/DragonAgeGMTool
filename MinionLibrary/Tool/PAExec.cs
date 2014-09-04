@@ -43,17 +43,16 @@ namespace Minion.Tool
                 if (ExitCode == -9) { errorData += "failed to launch app (remotely)"; }
                 if (ExitCode == -10) { errorData += "app was terminated after timeout expired"; }
                 if (ExitCode == -11) { errorData += "forcibly stopped with Ctrl-C / Ctrl-Break"; }
-                
-                nlog.Error("PAExec Arguments: {0}", StartInfo.Arguments);
+
+                nlog.Error("[PAExec Arguments] {1}{0}[StandardError]{0}{2}{0}[StandardOutput]{0}{3}{0}[Exit Code] {4}", System.Environment.NewLine, StartInfo.Arguments, StandardError, StandardOutput, errorData);
                 Log(log.Error, errorData);
-                nlog.Error("StandardError: {0}", StandardError);
             }
             else if (ExitCode > 0)
             {
-                nlog.Error("PAExec Arguments: {0}", StartInfo.Arguments);
-                Log(log.Error, StandardError = string.Format("PAExec ran but returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
+                nlog.Error("[PAExec Arguments] {1}{0}[StandardError]{0}{2}{0}[StandardOutput]{0}{3}{0}[Exit Code] {4}", System.Environment.NewLine, StartInfo.Arguments, StandardError, StandardOutput, ExitCode);
+                Log(log.Error, StandardError = string.Format("PAExec ran but command returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
             }
-
+            
         }
     }
 }

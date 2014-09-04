@@ -293,9 +293,21 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                MinionCommandItem item;
-                item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Install") && (f.Version != "All")) as MinionCommandItem;
+                var items = _minionCommands.Where((j) => j.Name == "Flash" && j.Action == "Install").ToList<MinionCommandItem>();
+                var item = new MinionCommandItem();
+                foreach (var i in items)
+                {
+                    if (item.Version == null) { item = i; }
+
+                    if (Convert.ToInt32(i.Version.Replace(".", string.Empty)) > Convert.ToInt32(item.Version.Replace(".", string.Empty)))
+                    {
+                        item = i;
+                    }
+                }
                 await RunCommandItem(item);
+                //MinionCommandItem item;
+                //item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Install") && (f.Version != "All")) as MinionCommandItem;
+                //await RunCommandItem(item);
             }
             catch (Exception e)
             {

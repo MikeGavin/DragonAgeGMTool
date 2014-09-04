@@ -55,6 +55,7 @@ namespace Scrivener.ViewModel
         #region Public Properties
         private int _saveIndex; // used for ID for note saving
         public int SaveIndex { get { return _saveIndex; } protected set { _saveIndex = value; RaisePropertyChanged(); } }
+        
 
         private static int _number = 0; // used to nuber default notes
         private bool _titlechanged = false; // defines if note title has already been changed
@@ -63,6 +64,8 @@ namespace Scrivener.ViewModel
 
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int _caretindex;
+        public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         #endregion        
 
         #region EventBased Actions

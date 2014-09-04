@@ -44,9 +44,20 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.ExceptionObject as Exception;
+            log.Fatal((ex.InnerException != null ? "\n" + ex.InnerException.Message : null));
+            MessageBox.Show(ex.Message, "Uncaught Thread Exception",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        
         //Constructor
         public MainViewModel(IDataService dataService)
         {
+
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             var WatchDataBase = new DataBaseWatcher();
             DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); };
             //Listen for note collection change
@@ -57,6 +68,7 @@ namespace Scrivener.ViewModel
             LoadUserSettings();
             //CleanDatabase();           
             //StartNoteSaveTask();
+            
         }
 
         //builds or gets QuickItems
@@ -241,8 +253,7 @@ namespace Scrivener.ViewModel
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
         public async void WindowLoaded()
-        {
-
+        {          
             if (Properties.Settings.Default.Role_Current == null)
             {
                 Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
@@ -263,7 +274,6 @@ namespace Scrivener.ViewModel
                 }
             
         }
-
         //Save Template
         private RelayCommand _savetemplatecommand;
         public RelayCommand SaveTemplateCommand { get { return _savetemplatecommand ?? (_savetemplatecommand = new RelayCommand(SaveTemplate)); } }
@@ -294,6 +304,14 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Call histor
+
+        public void SaveNotes()
+        {
+            foreach (NoteViewModel note in Notes)
+            {
+                System.IO.File.WriteAllText(@"C:\Users\Public\TestFolder\WriteText.txt", string.Empty);
+            }
+        }
 
         ////builds or gets History
         //private ObservableCollection<HistoryItem> _history;
