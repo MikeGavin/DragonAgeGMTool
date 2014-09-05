@@ -25,6 +25,7 @@ namespace Scrivener.ViewModel
 
         public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
         {
+            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             SetMinionInputDefault();
             MinionCollection.CollectionChanged += OnMinionItemsChanged;
             _minionCommands = commands;
@@ -47,7 +48,25 @@ namespace Scrivener.ViewModel
         #endregion
 
         //Commands from Constructor
-        private ObservableCollection<MinionCommandItem> _minionCommands;
+        protected ObservableCollection<MinionCommandItem> _minionCommands;
+        protected ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } private set { _minionCommands = value; RaisePropertyChanged(); } }
+
+        private async void DataBaseWatcher_DataBaseUpdated(object sender, System.IO.FileSystemEventArgs e)
+        {
+            if (e.Name.ToLower().Contains("scrivener.sqlite"))
+            {
+                log.Debug("Updating MinionCommands on MinionViewModel");
+                try
+                {
+                    MinionCommands = null;
+                    MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+                }
+                catch(Exception ex)
+                {
+                    log.Error(ex.Message);
+                }
+            }
+        }
 
         //Collection of Minion Items
         private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
@@ -135,8 +154,16 @@ namespace Scrivener.ViewModel
 
         private void OpenMinion(IPAddress ip)
         {
-            MinionCollection.Add(new MinionItemViewModel(ip, _minionCommands));
-            SelectedMinion = MinionCollection.Last();
+            try
+            {
+                MinionCollection.Add(new MinionItemViewModel(ip, MinionCommands));
+                SelectedMinion = MinionCollection.Last();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
+            
             SetMinionInputDefault();
             IsExpanded = true;
         }

@@ -43,13 +43,15 @@ namespace Scrivener
             MessageBox.Show(ex.Message, "FATAL ERROR: Program will terminate. Uncaught Thread Exception.",
                             MessageBoxButton.OK, MessageBoxImage.Error);
             if (!System.Diagnostics.Debugger.IsAttached)
+            {
                 Model.ExceptionReporting.Email(ex);
-            
+            }
+            Application.Current.Shutdown();
         }
 
         private void CurrentOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {            
-            nlog.Fatal((e.Exception != null ? "\n" + e.Exception.InnerException.Message : null));
+            nlog.Fatal(e.Exception.Message);
             MessageBox.Show(e.Exception.Message, "FATAL ERROR: Uncaught Thread Exception Program MAY terminate.",
                             MessageBoxButton.OK, MessageBoxImage.Error);
             if (!System.Diagnostics.Debugger.IsAttached)
@@ -60,15 +62,15 @@ namespace Scrivener
         }
 
 
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
+        //void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        //{
             
-            Exception ex = e.ExceptionObject as Exception;
-            nlog.Fatal((ex.InnerException != null ? "\n" + ex.InnerException.Message : null));
-            MessageBox.Show(ex.Message, "FATAL ERROR: Uncaught Thread Exception",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-            Model.ExceptionReporting.Email(ex);
-        }
+        //    Exception ex = e.ExceptionObject as Exception;
+        //    nlog.Fatal((ex.InnerException != null ? "\n" + ex.InnerException.Message : null));
+        //    MessageBox.Show(ex.Message, "FATAL ERROR: Uncaught Thread Exception",
+        //                    MessageBoxButton.OK, MessageBoxImage.Error);
+        //    Model.ExceptionReporting.Email(ex);
+        //}
 
 
     }

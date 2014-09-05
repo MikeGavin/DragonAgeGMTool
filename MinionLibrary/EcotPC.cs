@@ -357,7 +357,7 @@ namespace Minion
         #region Get Software Methods
 
         public async Task<string> Get_IE()
-        {
+        {            
             Processing++;
             IEVersion = "Updating...";
             var machineInfo = CommandList.Find(c => c.Name == "IE");

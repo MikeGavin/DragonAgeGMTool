@@ -76,7 +76,6 @@ namespace Scrivener.ViewModel
             {
                 log.Debug("Updating MinionCommands on Minion: {0}", Title);
                 _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                MinionStartCommands = null;
                 SetIECommands();
             }
         }
@@ -137,7 +136,7 @@ namespace Scrivener.ViewModel
         private ObservableCollection<MinionCommandItem> _minionStartCommands;
         public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in _minionCommands where item.Action == "Start" select item).ToList())); } protected set { _minionStartCommands = value; RaisePropertyChanged(); } }
         private RelayCommand<MinionCommandItem> _remoteStartCommand;
-        public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } }
+        public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } protected set { _remoteStartCommand = value; RaisePropertyChanged(); } }
         public async Task RemoteStart(MinionCommandItem command)
         {
             await Machine.Command(command);
