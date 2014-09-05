@@ -10,23 +10,49 @@ namespace Scrivener.Model
 {
     public class UpdateManager
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        public event EventHandler<System.ComponentModel.AsyncCompletedEventArgs> UpdateComplete;
+        private void OnUpdateComplete(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            log.Info("Update Complete");
+            if (UpdateComplete != null) { UpdateComplete(sender, e); }
+        }
+
+        private DateTime lastRead = DateTime.MinValue;
+        private ApplicationDeployment ad;
         public UpdateManager()
         {
-            FileSystemWatcher program = new FileSystemWatcher(@"\\fs1\EdTech\Scrivener", "*.exe");
-            program.NotifyFilter = NotifyFilters.LastWrite;
-            program.EnableRaisingEvents = true;
-            program.Changed += program_Changed;
-
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                ad = ApplicationDeployment.CurrentDeployment;
+                var uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
+                log.Debug("Update Location: {0}", uri);
+                FileSystemWatcher program = new FileSystemWatcher(uri, "*.exe");
+                program.NotifyFilter = NotifyFilters.LastWrite;
+                program.EnableRaisingEvents = true;
+                program.Changed += program_Changed;
+                ad.CheckForUpdateCompleted += ad_CheckForUpdateCompleted;
+                ad.UpdateCompleted += OnUpdateComplete;
+            }
         }
 
         private void program_Changed(object sender, FileSystemEventArgs e)
         {
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                var ad = ApplicationDeployment.CurrentDeployment;
-                ad.CheckForUpdateCompleted += ad_CheckForUpdateCompleted;
-                //ad.CheckForUpdateProgressChanged += ad_CheckForUpdateProgressChanged;
-                ad.CheckForUpdateAsync();
+                DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+                if (lastWriteTime != lastRead)
+                {
+                    log.Debug("File Changed: {0}", e.FullPath);
+                    try
+                    {
+                        ad.CheckForUpdateAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error(ex.Message);
+                    }
+                }
             }
         }
 
@@ -37,7 +63,20 @@ namespace Scrivener.Model
 
         void ad_CheckForUpdateCompleted(object sender, CheckForUpdateCompletedEventArgs e)
         {
-            throw new NotImplementedException();
+            log.Info("Update Check Complete");
+            if (e.UpdateAvailable == true)
+            {
+                log.Info("Update Available");             
+                try
+                {
+                    ad.UpdateAsync();                    
+                }
+                catch(Exception ex)
+                {
+                    log.Error(ex);   
+                }
+            }
+            log.Info("Update Unvailable");
         }
 
     }

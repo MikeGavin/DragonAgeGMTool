@@ -35,8 +35,6 @@ namespace Scrivener.Model
                 log.Debug("Application is network deployed");
                 try
                 {
-
-                    log.Debug("Update Location: {0}", System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath);
                     var uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
                     // Also:
                     //deploy.DataDirectory

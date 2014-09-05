@@ -44,14 +44,23 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-        
+
+        private bool _updated;
+        public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
+        private bool _dbupdated;
+        public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
+        private RelayCommand _dbUpdated_Click;
+        public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
+
         //Constructor
         public MainViewModel(IDataService dataService)
         {
             App.Fucked += SaveNotes;
+            var updateManager = new UpdateManager();
+            updateManager.UpdateComplete += (o, e) => { Updated = true; };
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             var WatchDataBase = new DataBaseWatcher();
-            DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); };
+            DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             //Auto save settings on any change.
@@ -59,8 +68,7 @@ namespace Scrivener.ViewModel
             //Self Explained
             LoadUserSettings();
             //CleanDatabase();           
-            //StartNoteSaveTask();
-            
+            //StartNoteSaveTask();            
         }
 
         public async void WindowLoaded()
@@ -85,6 +93,7 @@ namespace Scrivener.ViewModel
             }
 
         }
+
 
         //builds or gets QuickItems
         private QuickItem _root;
@@ -256,6 +265,7 @@ namespace Scrivener.ViewModel
                 QuickItemTree = null;
                 QuickSites = null;
                 MinionCommands = null;
+                
             }
         }
 

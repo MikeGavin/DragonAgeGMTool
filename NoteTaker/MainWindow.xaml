@@ -8,6 +8,7 @@
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
         xmlns:helpers="clr-namespace:Scrivener.Helpers"
+        xmlns:MahControls="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:Scrivener.UserControls"
         xmlns:Properties="clr-namespace:Scrivener.Properties" 
@@ -191,7 +192,11 @@
             </TextBox>
             <Button Content="&#xF1BB;" ToolTip="QuickNotes" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF013;" Click="Settings_Click" ToolTip="Settings"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-
+            <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+    
+            </Button>
+            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>            
+            
         </controls:WindowCommands>
     </controls:MetroWindow.WindowCommands>
     
