@@ -20,9 +20,17 @@ namespace Scrivener.UserControls
     /// </summary>
     public partial class NoteViewUC : UserControl
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         public NoteViewUC()
-        {
-            InitializeComponent();
+        {                       
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                log.Error(e.Message);
+            }
         }
 
         private void Noteareakeydown(object sender, KeyEventArgs e)

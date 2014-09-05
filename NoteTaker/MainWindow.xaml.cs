@@ -18,14 +18,23 @@ namespace Scrivener
     /// </summary>
     public partial class MainWindow : MetroWindow
 
-    {       
+    {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
         {
             this.Loaded += MainWindow_Loaded;
-            InitializeComponent();
+                       
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                log.Error(e.Message);
+            }
 
             //if (Properties.Settings.Default.Role == -1)
             //{

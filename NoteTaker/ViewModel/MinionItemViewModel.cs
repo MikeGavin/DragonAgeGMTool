@@ -75,17 +75,22 @@ namespace Scrivener.ViewModel
             if (e.Name.ToLower().Contains("scrivener.sqlite"))
             {
                 log.Debug("Updating MinionCommands on Minion: {0}", Title);
-                _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                SetIECommands();
+                try
+                {
+                    _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+                    SetIECommands();
+                }
+                catch(Exception ex)
+                {
+                    log.Error(ex.Message);
+                }
             }
         }
 
         //Item title pulling IP address
-        public string Title { get { return Machine.IPAddress.ToString(); } }
-        
+        public string Title { get { return Machine.IPAddress.ToString(); } }        
         //Instance of ECOTPC Item
         public Minion.EcotPC Machine { get; protected set; }
-
         //Commands from DB
         private ObservableCollection<MinionCommandItem> _minionCommands;
         

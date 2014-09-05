@@ -20,9 +20,17 @@ namespace Scrivener.UserControls
     /// </summary>
     public partial class MinionViewUC : UserControl
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         public MinionViewUC()
-        {
-            InitializeComponent();
+        {                
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception e)
+            {
+                log.Error(e.Message);
+            }
         }
     }
 }

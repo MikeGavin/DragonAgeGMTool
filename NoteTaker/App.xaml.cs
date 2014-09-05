@@ -11,6 +11,12 @@ namespace Scrivener
     public partial class App : Application
     {
         protected static NLog.Logger nlog = NLog.LogManager.GetCurrentClassLogger();
+        public static event EventHandler Fucked;
+        private void OnFucked()
+        {
+            if (Fucked != null) { Fucked(this, new EventArgs()); }
+        }
+
         static App()
         {
             DispatcherHelper.Initialize();
@@ -38,6 +44,7 @@ namespace Scrivener
 
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            OnFucked();
             Exception ex = e.ExceptionObject as Exception;
             nlog.Fatal((ex.InnerException != null ? "\n" + ex.InnerException.Message : null));
             MessageBox.Show(ex.Message, "FATAL ERROR: Program will terminate. Uncaught Thread Exception.",

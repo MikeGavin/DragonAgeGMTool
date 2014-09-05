@@ -44,19 +44,11 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Exception ex = e.ExceptionObject as Exception;
-            log.Fatal((ex.InnerException != null ? "\n" + ex.InnerException.Message : null));
-            MessageBox.Show(ex.Message, "Uncaught Thread Exception",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
-        }
         
         //Constructor
         public MainViewModel(IDataService dataService)
         {
-
+            App.Fucked += SaveNotes;
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             var WatchDataBase = new DataBaseWatcher();
             DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); };
@@ -69,6 +61,29 @@ namespace Scrivener.ViewModel
             //CleanDatabase();           
             //StartNoteSaveTask();
             
+        }
+
+        public async void WindowLoaded()
+        {
+            if (Properties.Settings.Default.Role_Current == null)
+            {
+                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
+                Properties.Settings.Default.Save();
+                if (Properties.Settings.Default.Role_Current == null)
+                {
+                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
+                    Environment.Exit(0);
+                }
+            }
+
+            //Hack to set current role in combobox
+            var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+            RolesView.MoveCurrentTo(role);
+            if (Notes.Count == 0)
+            {
+                NewNote();                
+            }
+
         }
 
         //builds or gets QuickItems
@@ -252,28 +267,7 @@ namespace Scrivener.ViewModel
         public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
-        public async void WindowLoaded()
-        {          
-            if (Properties.Settings.Default.Role_Current == null)
-            {
-                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
-                Properties.Settings.Default.Save();
-                if (Properties.Settings.Default.Role_Current == null)
-                {
-                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
-                    Environment.Exit(0);
-                }
-            }
 
-                //Hack to set current role in combobox
-                var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
-                RolesView.MoveCurrentTo(role);
-                if (Notes.Count == 0)
-                {
-                    NewNote();
-                }
-            
-        }
         //Save Template
         private RelayCommand _savetemplatecommand;
         public RelayCommand SaveTemplateCommand { get { return _savetemplatecommand ?? (_savetemplatecommand = new RelayCommand(SaveTemplate)); } }
@@ -305,11 +299,25 @@ namespace Scrivener.ViewModel
 
         #region Call histor
 
-        public void SaveNotes()
+        public void SaveNotes(object sender, EventArgs e)
         {
+            var crashTime = DateTime.Now;
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), crashTime.ToString().Replace(@"/", ".").Replace(":", ".")).Replace(" ", "_");
+            System.IO.Directory.CreateDirectory(path);
             foreach (NoteViewModel note in Notes)
             {
-                System.IO.File.WriteAllText(@"C:\Users\Public\TestFolder\WriteText.txt", string.Empty);
+                if (note.Text != string.Empty)
+                {
+                    var p = Path.Combine(path, string.Format(@"{0}.txt", note.Title));
+                    try
+                    {
+                        System.IO.File.WriteAllText(p, note.Text);
+                    }
+                    catch(Exception ex)
+                    {
+                        log.Fatal(ex);
+                    }
+                }
             }
         }
 
