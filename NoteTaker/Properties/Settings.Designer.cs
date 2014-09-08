@@ -25,10 +25,10 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("11")]
-        public int NoteFontSize {
+        [global::System.Configuration.DefaultSettingValueAttribute("13")]
+        public double NoteFontSize {
             get {
-                return ((int)(this["NoteFontSize"]));
+                return ((double)(this["NoteFontSize"]));
             }
             set {
                 this["NoteFontSize"] = value;
@@ -37,10 +37,10 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
-        public int TabFontSize {
+        [global::System.Configuration.DefaultSettingValueAttribute("14")]
+        public double TabFontSize {
             get {
-                return ((int)(this["TabFontSize"]));
+                return ((double)(this["TabFontSize"]));
             }
             set {
                 this["TabFontSize"] = value;
@@ -319,6 +319,18 @@ namespace Scrivener.Properties {
             }
             set {
                 this["BreakClockLeftPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string defrsd {
+            get {
+                return ((string)(this["defrsd"]));
+            }
+            set {
+                this["defrsd"] = value;
             }
         }
     }

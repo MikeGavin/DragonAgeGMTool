@@ -10,7 +10,7 @@ namespace Scrivener.Model
 {
     public static class ExceptionReporting
     {
-
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private static string GetPublishedVersion()
         {
             if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
@@ -23,20 +23,27 @@ namespace Scrivener.Model
 
         public static void Email(Exception e)
         {
-            // Create the Outlook application.
-            var oApp = new Outlook.Application();
-            // Create a new mail item.
-            var oMsg = (Outlook.MailItem)oApp.CreateItem(Outlook.OlItemType.olMailItem);
-            oMsg.Display(false);
-            // Add a recipient.
-            oMsg.To = "edtechsupport@ecotoh.org";
-            //Subject line
-            oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
-            //add the body of the email
-            oMsg.Body = string.Format("{0}{1}{2}", GetPublishedVersion(), Environment.NewLine, e.ToString());
-            oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
-            // Send.
-            ((Outlook._MailItem)oMsg).Send();
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                // Create the Outlook application.
+                var oApp = new Outlook.Application();
+                // Create a new mail item.
+                var oMsg = (Outlook.MailItem)oApp.CreateItem(Outlook.OlItemType.olMailItem);
+                oMsg.Display(false);
+                // Add a recipient.
+                oMsg.To = "edtechsupport@ecotoh.org";
+                //Subject line
+                oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
+                //add the body of the email
+                oMsg.Body = string.Format("{0}{1}{2}", GetPublishedVersion(), Environment.NewLine, e.ToString());
+                oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
+                // Send.
+                ((Outlook._MailItem)oMsg).Send();
+            }
+            else
+            {
+                log.Error("Not network deployed or would have generated email for exception {0}", e);
+            }
        }
     }
 }

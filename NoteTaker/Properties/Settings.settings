@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Scrivener.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="NoteFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">11</Value>
+    <Setting Name="NoteFontSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">13</Value>
     </Setting>
-    <Setting Name="TabFontSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+    <Setting Name="TabFontSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">14</Value>
     </Setting>
     <Setting Name="MaHapps_Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -76,6 +76,9 @@
     </Setting>
     <Setting Name="BreakClockLeftPosition" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="defrsd" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

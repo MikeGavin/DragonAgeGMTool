@@ -3,14 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                     xmlns:vm="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Properties="clr-namespace:Scrivener.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <TextBlock Name="textBlock"
-             Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="14" VerticalAlignment="Center" Margin="0"
+             Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0"
              MouseRightButtonUp="textBlock_MouseRightButtonUp" />
         <TextBox Name="editBox"
-             Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" />
+             Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Button Command="{Binding CloseNoteCommand}"
                             Content="X"

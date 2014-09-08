@@ -49,8 +49,16 @@ namespace Minion.Tool
             }
             else if (ExitCode > 0)
             {
-                nlog.Error("[PAExec Arguments] {1}{0}[StandardError]{0}{2}{0}[StandardOutput]{0}{3}{0}[Exit Code] {4}", System.Environment.NewLine, StartInfo.Arguments, StandardError, StandardOutput, ExitCode);
-                Log(log.Error, StandardError = string.Format("PAExec ran but command returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
+                if (_arguments.Contains("RMDIR") && StandardError.Contains("The system cannot find the file specified"))
+                {
+                    nlog.Warn("[PAExec Arguments] {1}{0}[StandardError]{0}{2}{0}[StandardOutput]{0}{3}{0}[Exit Code] {4}", System.Environment.NewLine, StartInfo.Arguments, StandardError, StandardOutput, ExitCode);
+                    Log(log.Warn, StandardError = string.Format("PAExec ran but command returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
+                }
+                else
+                {
+                    nlog.Error("[PAExec Arguments] {1}{0}[StandardError]{0}{2}{0}[StandardOutput]{0}{3}{0}[Exit Code] {4}", System.Environment.NewLine, StartInfo.Arguments, StandardError, StandardOutput, ExitCode);
+                    Log(log.Error, StandardError = string.Format("PAExec ran but command returned error {0} -- {1} --", ExitCode, StandardError.Trim()));
+                }
             }
             
         }

@@ -26,6 +26,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/MainSkin.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style vm:Key="EditableTabHeaderControl" 
 	TargetType="{vm:Type helpers:EditableTabHeaderControl}">
@@ -107,9 +108,27 @@
             </controls:Flyout>-->
 
             <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="350" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
-                <StackPanel Margin="5">
-                    <Label Content="{Binding PublishVersion}"/>
-                    <Label Content="{Binding AssemblyVersion}"/>
+                <StackPanel Margin="0">
+
+                    <Expander Header="Fonts">
+                        <Grid Width="auto">
+                            <Grid.RowDefinitions >
+                                <RowDefinition/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Label Content="Note Size" Grid.Row="0"/>
+                            <TextBlock Grid.Row="0" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Slider Grid.Row="0" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto"/>
+                            
+
+
+                            <Label Content="Tab Size" Grid.Row="1"/>
+                            <TextBlock Grid.Row="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Slider Grid.Row="1" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto"/>
+                            
+                            
+                        </Grid>
+                    </Expander>
                     <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
                     <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                     <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
