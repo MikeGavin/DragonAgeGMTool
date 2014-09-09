@@ -750,8 +750,8 @@ namespace Minion
             }
             var x = new Tool.Files();
 
-            x.Copy(@"\\fs1\HelpDesk\SHORTCUTS\Clear_IE_Cache.lnk", string.Format(@"\Users\{0}\Desktop\", CurrentUser));
-            
+            x.Copy(@"\\fs1\HelpDesk\SHORTCUTS\Clear_IE_Cache.lnk", string.Format(@"\\{0}\c$\Users\{1}\Desktop\",IPAddress, CurrentUser));
+            Log(log.Info, "Copied Clear_IE_Cache.lnk to Remote Desktop for clearing cache in IE. ");
             Processing--;
             Log(log.Info, "File cleanup complete");
         }
