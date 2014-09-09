@@ -27,6 +27,8 @@ using System.Windows.Data;
 using System.Runtime.CompilerServices;
 using System.Deployment.Application;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Linq;
 
 
 namespace Scrivener.ViewModel
@@ -55,22 +57,46 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
+            //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
+            
+            //Start auto update system and subscribe to event
             var updateManager = new UpdateManager();
-            updateManager.UpdateComplete += (o, e) => { Updated = true; };
-            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            updateManager.UpdateComplete += UpdateComplete;
+
+            //
             var WatchDataBase = new DataBaseWatcher();
             DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
+            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
+            
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;                      
+            
             //Self Explained
-            LoadUserSettings();
             //CleanDatabase();           
             //StartNoteSaveTask();            
         }
 
+        void UpdateComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Cancelled == false)
+            {
+                Updated = true;
+                Observable
+                    .Timer(DateTimeOffset.Parse("00:00:00-04:00"))
+                    .Subscribe(x =>
+                    {
+                        SaveNotes(this, new EventArgs());
+                        log.Debug("Quitting application due to installed update.");
+                        Process.GetCurrentProcess().Kill();
+                        
+                    });
+            }
+        }
+
+        //Runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
         {
             if (Properties.Settings.Default.Role_Current == null)
@@ -93,7 +119,6 @@ namespace Scrivener.ViewModel
             }
 
         }
-
 
         //builds or gets QuickItems
         private QuickItem _root;
@@ -230,11 +255,6 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Settings
-
-        private void LoadUserSettings()
-        {
-            //Load user settings. Changed to switch to allow for null settings value crashing.
-        }
 
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -748,6 +748,10 @@ namespace Minion
                 var paexec = new Tool.PAExec(IPAddress, s);
                 await paexec.Run();
             }
+            var x = new Tool.Files();
+
+            x.Copy(@"\\fs1\HelpDesk\SHORTCUTS\Clear_IE_Cache.lnk", string.Format(@"\Users\{0}\Desktop\", CurrentUser));
+            
             Processing--;
             Log(log.Info, "File cleanup complete");
         }

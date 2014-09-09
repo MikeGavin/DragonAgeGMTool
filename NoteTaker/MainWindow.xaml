@@ -19,7 +19,7 @@
         Width="722" 
         
         SaveWindowPosition="True" Margin="0"
-        ShowWindowCommandsOnTop="True" Icon="Icon.ico" ShowIconOnTitleBar="False"
+         Icon="Icon.ico" ShowIconOnTitleBar="False"
                       >
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -134,11 +134,12 @@
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
-    <controls:MetroWindow.WindowCommands>
+    <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button>
-                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
+            
+            <Button >
+                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
+                    <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickSites.SubItems, UpdateSourceTrigger=PropertyChanged}">
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
                                 <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
@@ -169,7 +170,7 @@
             <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>            
             
         </controls:WindowCommands>
-    </controls:MetroWindow.WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
     
     <Grid vm:Name="LayoutRoot" Margin="0">
         <Grid.RowDefinitions>

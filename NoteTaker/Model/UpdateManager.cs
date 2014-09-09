@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Deployment.Application;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,7 +70,7 @@ namespace Scrivener.Model
                 log.Info("Update Available");             
                 try
                 {
-                    ad.UpdateAsync();                    
+                    ad.UpdateAsync();
                 }
                 catch(Exception ex)
                 {
