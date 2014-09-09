@@ -8,7 +8,7 @@
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
         xmlns:helpers="clr-namespace:Scrivener.Helpers"
-        xmlns:MahControls="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+        
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:Scrivener.UserControls"
         xmlns:Properties="clr-namespace:Scrivener.Properties" 
@@ -100,56 +100,8 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <!--<controls:Flyout vm:Name="SearchNotesFlyout" Position="Top" Height="65" Width="150" IsOpen="True" IsOpenChanged="SettingsFlyout_IsOpenChanged" Margin="-241,35,0,0" HorizontalAlignment="Left" IsTabStop="False">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Search Notes:" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="14"/>
-                    <TextBox Margin="5,0,0,0"></TextBox>
-                </StackPanel>
-            </controls:Flyout>-->
-
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="350" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
-                <StackPanel Margin="0">
-
-                    <Expander Header="Fonts">
-                        <Grid Width="auto">
-                            <Grid.RowDefinitions >
-                                <RowDefinition/>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Label Content="Note Size" Grid.Row="0"/>
-                            <TextBlock Grid.Row="0" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Slider Grid.Row="0" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto"/>
-                            
-
-
-                            <Label Content="Tab Size" Grid.Row="1"/>
-                            <TextBlock Grid.Row="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Slider Grid.Row="1" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto"/>
-                            
-                            
-                        </Grid>
-                    </Expander>
-                    <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
-                    <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                    <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                    <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Save Template" FontSize="15" Margin="0,5,0,0" FontWeight="Medium">
-                        </TextBlock>
-                        <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
-                    </StackPanel>
-                    <Label Content="Role"/>
-                    <ComboBox Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding Path=RolesView}" DisplayMemberPath="Name"
-                              SelectedItem="{Binding Path=CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsSynchronizedWithCurrentItem="True"
-                              />
-                    <Label Content="Theme"/>
-                    <ComboBox Name="ThemeBox" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged"/>
-                    <Label Content="Accent"/>
-                    <ComboBox DisplayMemberPath="Name" Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged"/>
-                    <TextBlock Text="While you can change themes and accents at this time the current interface was layed out for the Dark / Blue layout and there are still things under repair to allow for theme changes" TextWrapping="Wrap"/>
-                </StackPanel>
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
+                <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>

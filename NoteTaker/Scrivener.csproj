@@ -36,7 +36,7 @@
     <MinimumRequiredVersion>1.50.0.2</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.53.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -231,6 +231,9 @@
     <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="Model\UpdateManager.cs" />
+    <Compile Include="UserControls\SettingsUC.xaml.cs">
+      <DependentUpon>SettingsUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\Break_Clock.xaml.cs">
       <DependentUpon>Break_Clock.xaml</DependentUpon>
     </Compile>
@@ -282,6 +285,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MinionViewUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ResourceDirectories\xmlns.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SettingsUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
