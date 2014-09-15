@@ -59,39 +59,49 @@ namespace Scrivener.ViewModel
                                 //Subject line
                                 oMsg.Subject = "";
                                 //add the body of the email
-                                if (Properties.Settings.Default.BreakWarning == 0)
-                                {
-                                    oMsg.Body = "Please return from " + Properties.Settings.Default.BreakLunch;
-                                }
-                                else if (Properties.Settings.Default.BreakWarning == 1)
+
+                                if (Properties.Settings.Default.BreakWarning != 0)
                                 {
                                     oMsg.Body = "You have " + Properties.Settings.Default.BreakWarning + " minute left on " + Properties.Settings.Default.BreakLunch + ".";
                                 }
-                                else if (Properties.Settings.Default.BreakWarning >= 2)
+                                else
                                 {
-                                    oMsg.Body = "You have " + Properties.Settings.Default.BreakWarning + " minutes left on " + Properties.Settings.Default.BreakLunch + ".";
+                                    oMsg.Body = "Please return from " + Properties.Settings.Default.BreakLunch;
                                 }
+                                
 
-                                //oMsg.Display(true);
-                                oMsg.Send();
-                                Form f = new Form();
-                                f.TopMost = true;
-                                System.Windows.Forms.MessageBox.Show(f, "This is your " + Properties.Settings.Default.BreakWarning + " minute warning");
+                                if (Properties.Settings.Default.BreakWarning != 0)
+                                {
+                                    oMsg.Send();
+                                    Form f = new Form();
+                                    f.TopMost = true;
+                                    System.Windows.Forms.MessageBox.Show(f, "This is your " + Properties.Settings.Default.BreakWarning + " minute warning");
+                                }
+                                else
+                                {
+
+                                }
                             }
                             else
                             {
-                                Form f = new Form();
-                                f.TopMost = true;
-                                System.Windows.Forms.MessageBox.Show(f, "This is your " + Properties.Settings.Default.BreakWarning + " minute warning");
+                                if (Properties.Settings.Default.BreakWarning == 0)
+                                {
+
+                                }
+                                else
+                                {
+                                    Form f = new Form();
+                                    f.TopMost = true;
+                                    System.Windows.Forms.MessageBox.Show(f, "This is your " + Properties.Settings.Default.BreakWarning + " minute warning");
+                                }
                             }
                         });
                     }
                 }
+
+
                 if (CurrentTime.ToString() == BreakClockReturnTime.ToString())
                 {
-                    //Form f = new Form();
-                    //f.TopMost = true;
-                    //System.Windows.Forms.MessageBox.Show("Please return from break.");
                     System.Windows.Forms.MessageBox.Show(new Form() { TopMost = true }, "Please return from break.");
                     BreakClockReturnTime.Content = "";
                     Properties.Settings.Default.BreakReturnWarning = new TimeSpan(0, 0, 0);
