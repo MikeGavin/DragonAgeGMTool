@@ -454,20 +454,52 @@ namespace Minion
         {
             Processing++;
             Shockwave = "Updating...";
-            var paexec = new Tool.PAExec(IPAddress, "-s REG query \"hklm\\Software\\Adobe\\Shockwave 12\\currentupdateversion\"");
-            await paexec.Run();
-            
-            if (paexec.StandardError.Contains("ERROR"))
+            List<string> paths = new List<string>();
+            if (Directory.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\", IPAddress)))
             {
-                Shockwave = "NOT INSTALLED";
+                //Is 64 bit machine              
+                paths.Add(@"C:\\Windows\\SysWOW64\\Adobe\\Shockwave 12\\swinit.exe");
+                paths.Add(@"C:\\Windows\\SysWOW64\\Adobe\\Shockwave 11\\swinit.exe");
             }
             else
             {
-                Shockwave = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Adobe\\Shockwave 12\\currentupdateversion\r\r\n    (Default)    REG_SZ    ", string.Empty).Trim(null);
+                paths.Add(@"C:\\Windows\\System32\\Adobe\\Shockwave 12\\swinit.exe");
+                paths.Add(@"C:\\Windows\\System32\\Adobe\\Shockwave 11\\swinit.exe");
             }
+            Shockwave = await WMICVersion(paths);
             Processing--;
-            Log(log.Trace, "Shockwave version: " + Shockwave);
             return Shockwave;
+
+            //var paexec = new Tool.PAExec(IPAddress, "-s REG query \"hklm\\Software\\Adobe\\Shockwave 12\\currentupdateversion\"");
+            //await paexec.Run();
+            
+            //if (paexec.StandardError.Contains("ERROR"))
+            //{
+            //    Shockwave = "NOT INSTALLED";
+            //}
+            //else
+            //{
+            //    Shockwave = paexec.StandardOutput.Replace("\r\r\nHKEY_LOCAL_MACHINE\\Software\\Adobe\\Shockwave 12\\currentupdateversion\r\r\n    (Default)    REG_SZ    ", string.Empty).Trim(null);
+            //}
+            
+            //Log(log.Trace, "Shockwave version: " + Shockwave);
+            //return Shockwave;
+        }
+
+        private async Task<string> WMICVersion(List<string> paths)
+        {
+            foreach (string path in paths)
+            {
+                var file = new Tool.PAExec(IPAddress, string.Format(@"wmic datafile where name='{0}' get version", path));
+                await file.Run();
+
+                if (!file.StandardError.Contains("No Instance(s) Available") && !file.StandardError.Contains("Invalid query"))
+                {
+                    return file.StandardOutput.Remove(0, 7).Trim(null);
+                }
+            }
+            return "NOT INSTALLED";
+
         }
 
         public async Task<string> Get_Reader()
@@ -765,7 +797,7 @@ namespace Minion
 
             var file = new Tool.Files();
             file.EventLogged += PassEventLogged;
-            await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", @"\temp\Delprof2_1.5.4\"));
+            await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", string.Format(@"\\{0}\c$\temp\Delprof2_1.5.4\", IPAddress)));
             file.EventLogged -= PassEventLogged;
 
             var add1 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);

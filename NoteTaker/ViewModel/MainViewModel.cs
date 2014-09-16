@@ -72,8 +72,8 @@ namespace Scrivener.ViewModel
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
-            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;                      
-            
+            Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
             //Self Explained
             //CleanDatabase();           
             //StartNoteSaveTask();            
@@ -81,20 +81,18 @@ namespace Scrivener.ViewModel
 
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
         {
-            if (e.Cancelled == false)
-            {
+
                 Updated = true;
                 Observable
-                    .Timer(DateTimeOffset.Parse("00:00:00-04:00"))
+                    .Timer(DateTimeOffset.Parse("23:59:00-04:00"))
                     .Subscribe(x =>
                     {
                         SaveNotes(this, new EventArgs());
                         log.Debug("Quitting application due to installed update.");
                         Process.GetCurrentProcess().Kill();
-                        
+
                     });
-            }
-        }
+        }   
 
         //Runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
