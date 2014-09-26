@@ -30,7 +30,7 @@
             </ResourceDictionary.MergedDictionaries>
             <Style vm:Key="EditableTabHeaderControl" 
 	TargetType="{vm:Type helpers:EditableTabHeaderControl}">
-                <!-- The template specified earlier will come here !-->
+                 <!--The template specified earlier will come here !-->
             </Style>
             <Style vm:Key="ItemContainerStyle" TargetType="{vm:Type TabItem}">
                 <Setter Property="HeaderTemplate">
