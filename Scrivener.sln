@@ -15,18 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{53D78E
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://servus.visualstudio.com/defaultcollection
-		SccProjectUniqueName0 = MinionLibrary\\Minion.csproj
-		SccProjectName0 = MinionLibrary
-		SccLocalPath0 = MinionLibrary
-		SccProjectUniqueName1 = NoteTaker\\Scrivener.csproj
-		SccProjectName1 = NoteTaker
-		SccLocalPath1 = NoteTaker
-		SccLocalPath2 = .
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
 		Beta|x64 = Beta|x64
