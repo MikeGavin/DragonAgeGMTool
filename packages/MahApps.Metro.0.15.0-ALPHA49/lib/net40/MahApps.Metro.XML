@@ -31,21 +31,6 @@
             Gets/sets the name of the Accent.
             </summary>
         </member>
-        <member name="T:MahApps.Metro.AppTheme">
-            <summary>
-            Represents the background theme of the application.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.AppTheme.Resources">
-            <summary>
-            The ResourceDictionary that represents this application theme.
-            </summary>
-        </member>
-        <member name="P:MahApps.Metro.AppTheme.Name">
-            <summary>
-            Gets the name of the application theme.
-            </summary>
-        </member>
         <member name="T:MahApps.Metro.Behaviours.BorderlessWindowBehavior">
             <summary>
             With this class we can make custom window styles.
@@ -76,30 +61,10 @@
             Shows all glow windows
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Behaviours.TabControlSelectFirstVisibleTabBehavior">
-            <summary>
-            <para>
-                Sets the first TabItem with Visibility="<see cref="F:System.Windows.Visibility.Visible"/>" as
-                the SelectedItem of the TabControl.
-            </para>
-            <para>
-                If there is no visible TabItem, null is set as the SelectedItem
-            </para>
-            </summary>
-        </member>
         <member name="T:MahApps.Metro.Controls.ComboBoxHelper">
             <summary>
             A helper class that provides various attached properties for the ComboBox control.
             <see cref="T:System.Windows.Controls.ComboBox"/>
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.CustomValidationPopup">
-            <summary>
-            This custom popup is used by the validation error template.
-            It provides some additional nice features:
-                - repositioning if host-window size or location changed
-                - repositioning if host-window gets maximized and vice versa
-                - it's only topmost if the host-window is activated
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.ControlsHelper">
@@ -139,6 +104,15 @@
             <summary>
             This property can be used to handle the style for CheckBox and RadioButton
             LeftToRight means content left and button right and RightToLeft vise versa
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.CustomValidationPopup">
+            <summary>
+            This custom popup is used by the validation error template.
+            It provides some additional nice features:
+                - repositioning if host-window size or location changed
+                - repositioning if host-window gets maximized and vice versa
+                - it's only topmost if the host-window is activated
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.Dialogs.BaseMetroDialog">
@@ -332,39 +306,6 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialog">
-            <summary>
-            An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
-            </summary>
-            <summary>
-            MessageDialog
-            </summary>
-        </member>
-        <member name="M:MahApps.Metro.Controls.Dialogs.MessageDialog.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialogResult">
-            <summary>
-            An enum representing the result of a Message Dialog.
-            </summary>
-        </member>
-        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialogStyle">
-            <summary>
-            An enum representing the different button states for a Message Dialog.
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative">
-            <summary>
-            Just "OK"
-            </summary>
-        </member>
-        <member name="F:MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative">
-            <summary>
-            "OK" and "Cancel"
-            </summary>
-        </member>
         <member name="T:MahApps.Metro.Controls.Dialogs.ProgressDialog">
             <summary>
             An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
@@ -480,7 +421,7 @@
             <seealso cref="T:MahApps.Metro.Controls.FlyoutsControl"/>
             </summary>
         </member>
-        <member name="E:MahApps.Metro.Controls.Flyout.IsOpenChanged">
+        <member name="F:MahApps.Metro.Controls.Flyout.IsOpenChangedEvent">
             <summary>
             An event that is raised when IsOpen changes.
             </summary>
@@ -488,6 +429,7 @@
         <member name="P:MahApps.Metro.Controls.Flyout.CloseCommand">
             <summary>
             An ICommand that executes when the flyout's close button is clicked.
+            Note that this won't execute when <see cref="P:MahApps.Metro.Controls.Flyout.IsOpen"/> is set to <c>false</c>.
             </summary>
         </member>
         <member name="P:MahApps.Metro.Controls.Flyout.HeaderTemplate">
@@ -586,6 +528,39 @@
         <member name="M:MahApps.Metro.Controls.GlowWindow.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialog">
+            <summary>
+            An internal control that represents a message dialog. Please use MetroWindow.ShowMessage instead!
+            </summary>
+            <summary>
+            MessageDialog
+            </summary>
+        </member>
+        <member name="M:MahApps.Metro.Controls.Dialogs.MessageDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialogResult">
+            <summary>
+            An enum representing the result of a Message Dialog.
+            </summary>
+        </member>
+        <member name="T:MahApps.Metro.Controls.Dialogs.MessageDialogStyle">
+            <summary>
+            An enum representing the different button states for a Message Dialog.
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.Dialogs.MessageDialogStyle.Affirmative">
+            <summary>
+            Just "OK"
+            </summary>
+        </member>
+        <member name="F:MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative">
+            <summary>
+            "OK" and "Cancel"
             </summary>
         </member>
         <member name="T:MahApps.Metro.Controls.MetroAnimatedSingleRowTabControl">
@@ -4737,6 +4712,21 @@
         </member>
         <member name="M:MahApps.Metro.Native.UnsafeNativeMethods.EnableMenuItem(System.IntPtr,System.UInt32,System.UInt32)">
             <devdoc>http://msdn.microsoft.com/en-us/library/windows/desktop/ms647636(v=vs.85).aspx</devdoc>
+        </member>
+        <member name="T:MahApps.Metro.AppTheme">
+            <summary>
+            Represents the background theme of the application.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.AppTheme.Resources">
+            <summary>
+            The ResourceDictionary that represents this application theme.
+            </summary>
+        </member>
+        <member name="P:MahApps.Metro.AppTheme.Name">
+            <summary>
+            Gets the name of the application theme.
+            </summary>
         </member>
         <member name="T:MahApps.Metro.ThemeManager">
             <summary>
