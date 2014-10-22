@@ -15,7 +15,7 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string sourceDBpath { get { return BetaTest();} }
+        private string sourceDBpath { get { return GetDBLocation();} }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
@@ -28,7 +28,7 @@ namespace Scrivener.Model
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
 
-        private string BetaTest()
+        private string GetDBLocation()
         {
             if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             {
@@ -39,11 +39,11 @@ namespace Scrivener.Model
                     // Also:
                     //deploy.DataDirectory
                     //deploy.UpdateLocation
-                    if (uri.Contains("beta"))
+                    if (uri.Contains("dev"))
                     {
                         
-                        log.Debug(@"Setting Database folder as {0}betabase", uri);
-                        return string.Format(@"{0}betabase", uri);
+                        log.Debug(@"Setting Database folder as {0}devbase", uri);
+                        return string.Format(@"{0}devbase", uri);
                     }
                     else
                     {
@@ -94,14 +94,20 @@ namespace Scrivener.Model
             // Begin watching.
             watcher.EnableRaisingEvents = true;
         }
-
+        
         void watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            var dest = appDBpath + e.Name;
-            var source = e.FullPath;
+            var localDB = appDBpath + e.Name;
+            var sourceDB = e.FullPath;          
+            
+            if (File.GetLastWriteTime(sourceDB) > File.GetLastWriteTime(localDB))
+            {
+                System.Threading.Thread.Sleep(30000); //Pause 30 seconds.
+                CheckCopy(localDB, sourceDB, e);                
+            }
+            // else discard the (duplicated) OnChanged event
 
-            System.Threading.Thread.Sleep(30000);
-            CheckCopy(dest, source, e);
+            
         }
 
         private void CheckCopy(string destination, string source, FileSystemEventArgs e = null)
@@ -109,21 +115,25 @@ namespace Scrivener.Model
             if (File.Exists(destination)) //Checks is file exists
             {
                 System.Security.Cryptography.HashAlgorithm ha = System.Security.Cryptography.HashAlgorithm.Create();
-                using (FileStream f1 = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), 
-                                  f2 = new FileStream(destination, FileMode.Open,FileAccess.Read, FileShare.ReadWrite))
+                using (FileStream f1 = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite),
+                                  f2 = new FileStream(destination, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                /* Calculate Hash */
-                byte[] hash1 = ha.ComputeHash(f1);
-                byte[] hash2 = ha.ComputeHash(f2);
-                //Compare files and copy if destination does not match server
-                if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
-                {
-                    log.Info("New Database version detected in ", sourceDBpath);
-                    log.Debug("Copy [{0}] To [{1}]", source, destination);
-                    File.Copy(source, destination, true);
-                    OnDataBaseUpdate(e);
-                }
-                }                
+                    /* Calculate Hash */
+                    byte[] hash1 = ha.ComputeHash(f1);
+                    byte[] hash2 = ha.ComputeHash(f2);
+                    //Compare files and copy if destination does not match server
+                    if (BitConverter.ToString(hash1) != BitConverter.ToString(hash2))
+                    {
+                        log.Info("New Database version detected in ", sourceDBpath);
+                        log.Debug("Copy [{0}] To [{1}]", source, destination);
+                        File.Copy(source, destination, true);
+                        OnDataBaseUpdate(e);
+                    }
+                    else
+                    {
+                        log.Debug("Remote DB matches current copy");
+                    }
+                }             
 
             }
             else //copies if no destination file/
