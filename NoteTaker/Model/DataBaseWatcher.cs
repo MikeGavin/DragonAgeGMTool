@@ -17,6 +17,7 @@ namespace Scrivener.Model
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private string sourceDBpath { get { return GetDBLocation();} }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
+        private Uri uri;
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
         {
@@ -30,69 +31,51 @@ namespace Scrivener.Model
 
         private string GetDBLocation()
         {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                log.Debug("Application is network deployed");
-                try
-                {
-                    var uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
-                    // Also:
-                    //deploy.DataDirectory
-                    //deploy.UpdateLocation
-                    if (uri.Contains("dev"))
-                    {
-                        
-                        log.Debug(@"Setting Database folder as {0}devbase", uri);
-                        return string.Format(@"{0}devbase", uri);
-                    }
-                    else
-                    {
-                        log.Debug(@"Setting Database folder as {0}database", uri);
-                        return string.Format(@"{0}database", uri);
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.Error(e);
-                    return string.Empty;
-                }
+            var uriString = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
+            // Also:
+            //deploy.DataDirectory
+            //deploy.UpdateLocation
+            if (uriString.ToLower().Contains("dev"))
+            {                    
+                log.Debug(@"Setting Database folder as {0}devbase", uri);
+                return string.Format(@"{0}devbase", uri);
             }
             else
             {
-                log.Debug("Application is in debug");
-                if (File.Exists(@"\\fs1\EdTech\_EdTech\ScrivenerDebugDB\Scrivener.sqlite"))
-                {
-                    return @"\\fs1\EdTech\_EdTech\ScrivenerDebugDB\";
-                }
-                else
-                {
-                    log.Warn("Network debug database is not available. Create a Scrivener.sqlite database on your current desktop.");
-                    return string.Format("{0}", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-                }
-            }
+                log.Debug(@"Setting Database folder as {0}database", uri);
+                return string.Format(@"{0}database", uri);
+            }          
         }
 
-        public DataBaseWatcher()
+        public DataBaseWatcher(Uri incommingUri)
         {
-            //check for main DB and update. Needs changed to scan for all DB's
-            log.Debug(sourceDBpath);
-            var t = SyncDBs();
-                   
-            // Create a new FileSystemWatcher and set its properties.
-            FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = sourceDBpath;
-            /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
-            // Only watch text files.
-            watcher.Filter = "*.sqlite";
-            // Add event handlers.
-            watcher.Changed += watcher_Changed;
-            watcher.Created += watcher_Changed;
-            //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
-            //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+            uri = incommingUri;
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                //check for main DB and update. Needs changed to scan for all DB's
+                log.Debug(sourceDBpath);
+                var t = SyncDBs();
 
-            // Begin watching.
-            watcher.EnableRaisingEvents = true;
+                // Create a new FileSystemWatcher and set its properties.
+                FileSystemWatcher watcher = new FileSystemWatcher();
+                watcher.Path = sourceDBpath;
+                /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
+                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                // Only watch text files.
+                watcher.Filter = "*.sqlite";
+                // Add event handlers.
+                watcher.Changed += watcher_Changed;
+                watcher.Created += watcher_Changed;
+                //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
+                //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+
+                // Begin watching.
+                watcher.EnableRaisingEvents = true;
+            }
+            else
+            {
+                throw new System.Deployment.Application.InvalidDeploymentException();
+            }
         }
         
         void watcher_Changed(object sender, FileSystemEventArgs e)

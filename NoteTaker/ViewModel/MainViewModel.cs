@@ -54,20 +54,18 @@ namespace Scrivener.ViewModel
         private RelayCommand _dbUpdated_Click;
         public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
 
+        private string appMode;
+        public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
+        
         //Constructor
         public MainViewModel(IDataService dataService)
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
-            
-            //Start auto update system and subscribe to event
-            var updateManager = new UpdateManager();
-            updateManager.UpdateComplete += UpdateComplete;
 
-            //
-            var WatchDataBase = new DataBaseWatcher();
-            DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
-            
+            //Checks deployment and enables update systems if necessary
+            DeploymentCheck();
+           
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
@@ -79,6 +77,36 @@ namespace Scrivener.ViewModel
             //StartNoteSaveTask();            
         }
 
+        //Deployment Systems
+        private void DeploymentCheck()
+        {
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
+                if (uri.LocalPath.ToLower().Contains("dev"))
+                {
+                    //Start auto update system and subscribe to event
+                    var updateManager = new UpdateManager(uri);
+                    updateManager.UpdateComplete += UpdateComplete;
+                    //listen for DB updates
+                    var WatchDataBase = new DataBaseWatcher(uri);
+                    DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
+                    AppMode = "development";
+                }
+                else if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivener"))
+                {
+                    AppMode = "Production";
+                }
+                else
+                {
+                    AppMode = "unknown";
+                }
+            }
+            else
+            {
+                AppMode = "debug";
+            }
+        }
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
         {
 
@@ -318,7 +346,7 @@ namespace Scrivener.ViewModel
                 }
                 else
                 {
-                    return "Debug";
+                    return "unplublished";
                 }
             }
         }

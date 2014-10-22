@@ -100,7 +100,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged">
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>

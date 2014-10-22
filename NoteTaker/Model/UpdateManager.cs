@@ -21,19 +21,23 @@ namespace Scrivener.Model
 
         private DateTime lastRead = DateTime.MinValue;
         private ApplicationDeployment ad;
-        public UpdateManager()
+        public UpdateManager(Uri uri)
         {
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 ad = ApplicationDeployment.CurrentDeployment;
-                var uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
-                log.Debug("Update Location: {0}", uri);
-                FileSystemWatcher program = new FileSystemWatcher(uri, "*.exe");
+                var uriString = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
+                log.Debug("Update Location: {0}", uriString);
+                FileSystemWatcher program = new FileSystemWatcher(uriString, "*.exe");
                 program.NotifyFilter = NotifyFilters.LastWrite;
                 program.EnableRaisingEvents = true;
                 program.Changed += program_Changed;
                 ad.CheckForUpdateCompleted += ad_CheckForUpdateCompleted;
                 ad.UpdateCompleted += OnUpdateComplete;
+            }
+            else
+            {
+                throw new System.Deployment.Application.InvalidDeploymentException();
             }
         }
 
