@@ -599,36 +599,23 @@ namespace Minion
             Processing++;
             var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
             await gettasks.Run();
-            //Looks at tasks returned and only kills open tasks. Needs to be changed to a list to shorten code.
-            if (gettasks.StandardOutput.Contains("iexplore.exe"))
-            {
-                Log(log.Info, "Killing Task(s) iexplore.exe");
-                var kill = new Tool.PSKill(IPAddress, "iexplore.exe");
-                await kill.Run();
-            }
-            if (gettasks.StandardOutput.Contains("msiexec.exe"))
-            {
-                Log(log.Info, "Killing Task(s) javaws.exe");
-                var kill = new Tool.PSKill(IPAddress, "javaws.exe");
-                await kill.Run();
-            }
-            if (gettasks.StandardOutput.Contains("javaws.exe"))
-            {
-                Log(log.Info, "Killing Task(s) javaws.exe");
-                var kill = new Tool.PSKill(IPAddress, "javaws.exe");
-                await kill.Run();
-            }
-            if (gettasks.StandardOutput.Contains("jusched.exe"))
-            {
-                Log(log.Info, "Killing Task(s) jusched.exe");
-                var kill = new Tool.PSKill(IPAddress, "jusched.exe");
-                await kill.Run();
-            }
+            //Looks at tasks returned and only kills open tasks. 
+            //Needs to be changed to a list to shorten code.
 
-            //string test = Environment.CurrentDirectory.ToString() + @"\Resources\defaultkills.bat";
-            //var kills = new Minion.Tool.PAExec(IPAddress, @"-s c:\temp\defaultkills.bat", test, @"\Temp\", true);
-            
-            //await kills.Run();
+            var processes = new List<string>() 
+            { 
+                "iexplore.exe", "msiexec.exe", "javaws.exe", "javaws.exe", "jusched.exe"
+            };
+
+            foreach (string process in processes)
+            {
+                if (gettasks.StandardOutput.Contains(process))
+                {
+                    Log(log.Info, "Killing Task(s) {0}", process);
+                    var kill = new Tool.PSKill(IPAddress, process);
+                    await kill.Run();
+                }
+            }
             Processing--;
         }
   
