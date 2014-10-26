@@ -594,28 +594,29 @@ namespace Minion
 
         #region Tools
 
-        public async Task Kill_Defaultss()
+        public async Task KillDefaults()
         {
             Processing++;
-            var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
-            await gettasks.Run();
-            //Looks at tasks returned and only kills open tasks. 
-            //Needs to be changed to a list to shorten code.
+            var killbatch = new Tool.PAExec(IPAddress, string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory), @"-accepteula -realtime -s c:\temp\defaultkills.bat");
+            await killbatch.Run();
+            //var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
+            //await gettasks.Run();
+            ////Looks at tasks returned and only kills open tasks. 
 
-            var processes = new List<string>() 
-            { 
-                "iexplore.exe", "msiexec.exe", "javaws.exe", "javaws.exe", "jusched.exe"
-            };
+            //var processes = new List<string>() 
+            //{ 
+            //    "iexplore.exe", "msiexec.exe", "javaws.exe", "javaws.exe", "jusched.exe"
+            //};
 
-            foreach (string process in processes)
-            {
-                if (gettasks.StandardOutput.Contains(process))
-                {
-                    Log(log.Info, "Killing Task(s) {0}", process);
-                    var kill = new Tool.PSKill(IPAddress, process);
-                    await kill.Run();
-                }
-            }
+            //foreach (string process in processes)
+            //{
+            //    if (gettasks.StandardOutput.Contains(process))
+            //    {
+            //        Log(log.Info, "Killing Task(s) {0}", process);
+            //        var kill = new Tool.PSKill(IPAddress, process);
+            //        await kill.Run();
+            //    }
+            //}
             Processing--;
         }
   

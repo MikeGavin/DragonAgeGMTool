@@ -178,7 +178,7 @@ namespace Scrivener.ViewModel
         public RelayCommand OpenCShareCommand { get { return _openCShareCommand ?? (_openCShareCommand = new RelayCommand(async () => await Machine.OpenCShare())); } }       
 
         private RelayCommand _defaultKillsCommand;
-        public RelayCommand DefaultKillsCommand { get { return _defaultKillsCommand ?? (_defaultKillsCommand = new RelayCommand(async () => await Machine.Kill_Defaultss())); } }
+        public RelayCommand DefaultKillsCommand { get { return _defaultKillsCommand ?? (_defaultKillsCommand = new RelayCommand(async () => await Machine.KillDefaults())); } }
              
 
         #endregion
@@ -393,7 +393,7 @@ namespace Scrivener.ViewModel
 
         private async Task RunCommandItem(MinionCommandItem command)
         {
-            await Machine.Kill_Defaultss();
+            await Machine.KillDefaults();
             var result = await Machine.Command(command);
             string vresult = await UpdateItemVersion(command);
 
