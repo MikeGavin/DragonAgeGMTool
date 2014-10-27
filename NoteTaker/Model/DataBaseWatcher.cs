@@ -15,9 +15,9 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string sourceDBpath { get { return GetDBLocation();} }
+        private string sourceDBpath { get; set; }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
-        private Uri uri;
+        //private Uri uri;
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
         {
@@ -29,52 +29,60 @@ namespace Scrivener.Model
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
 
-        private string GetDBLocation()
+        private string GetDBLocation(Uri uri)
         {
             var uriString = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
             // Also:
             //deploy.DataDirectory
             //deploy.UpdateLocation
             if (uriString.ToLower().Contains("dev"))
-            {                    
-                log.Debug(@"Setting Database folder as {0}devbase", uri);
-                return string.Format(@"{0}devbase", uri);
+            {
+                log.Debug(@"Setting Database folder as {0}devbase", uriString);
+                return string.Format(@"{0}devbase", uriString);
             }
             else
             {
-                log.Debug(@"Setting Database folder as {0}database", uri);
-                return string.Format(@"{0}database", uri);
+                log.Debug(@"Setting Database folder as {0}database", uriString);
+                return string.Format(@"{0}database", uriString);
             }          
         }
 
         public DataBaseWatcher(Uri incommingUri)
         {
-            uri = incommingUri;
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            
+            sourceDBpath = GetDBLocation(incommingUri);
+            if (Directory.Exists(sourceDBpath))
             {
-                //check for main DB and update. Needs changed to scan for all DB's
-                log.Debug(sourceDBpath);
-                var t = SyncDBs();
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    //check for main DB and update. Needs changed to scan for all DB's
+                    log.Debug(sourceDBpath);
+                    var t = SyncDBs();
 
-                // Create a new FileSystemWatcher and set its properties.
-                FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.Path = sourceDBpath;
-                /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
-                watcher.NotifyFilter = NotifyFilters.LastWrite;
-                // Only watch text files.
-                watcher.Filter = "*.sqlite";
-                // Add event handlers.
-                watcher.Changed += watcher_Changed;
-                watcher.Created += watcher_Changed;
-                //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
-                //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+                    // Create a new FileSystemWatcher and set its properties.
+                    FileSystemWatcher watcher = new FileSystemWatcher();
+                    watcher.Path = sourceDBpath;
+                    /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
+                    watcher.NotifyFilter = NotifyFilters.LastWrite;
+                    // Only watch text files.
+                    watcher.Filter = "*.sqlite";
+                    // Add event handlers.
+                    watcher.Changed += watcher_Changed;
+                    watcher.Created += watcher_Changed;
+                    //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
+                    //watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
-                // Begin watching.
-                watcher.EnableRaisingEvents = true;
+                    // Begin watching.
+                    watcher.EnableRaisingEvents = true;
+                }
+                else
+                {
+                    throw new System.Deployment.Application.InvalidDeploymentException();
+                }
             }
             else
             {
-                throw new System.Deployment.Application.InvalidDeploymentException();
+                log.Debug("{0} is unreachable. Not listening.", sourceDBpath);
             }
         }
         
