@@ -50,31 +50,38 @@ namespace Scrivener.Model
         public DataBaseWatcher(Uri incommingUri)
         {
             uri = incommingUri;
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            if (Directory.Exists(sourceDBpath))
             {
-                //check for main DB and update. Needs changed to scan for all DB's
-                log.Debug(sourceDBpath);
-                var t = SyncDBs();
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+                {
+                    //check for main DB and update. Needs changed to scan for all DB's
+                    log.Debug(sourceDBpath);
+                    var t = SyncDBs();
 
-                // Create a new FileSystemWatcher and set its properties.
-                FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.Path = sourceDBpath;
-                /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
-                watcher.NotifyFilter = NotifyFilters.LastWrite;
-                // Only watch text files.
-                watcher.Filter = "*.sqlite";
-                // Add event handlers.
-                watcher.Changed += watcher_Changed;
-                watcher.Created += watcher_Changed;
-                //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
-                //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+                    // Create a new FileSystemWatcher and set its properties.
+                    FileSystemWatcher watcher = new FileSystemWatcher();
+                    watcher.Path = sourceDBpath;
+                    /* Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. */
+                    watcher.NotifyFilter = NotifyFilters.LastWrite;
+                    // Only watch text files.
+                    watcher.Filter = "*.sqlite";
+                    // Add event handlers.
+                    watcher.Changed += watcher_Changed;
+                    watcher.Created += watcher_Changed;
+                    //watcher.Deleted += new FileSystemEventHandler(CopyDBs);
+                    //watcher.Renamed += new RenamedEventHandler(OnRenamed);
 
-                // Begin watching.
-                watcher.EnableRaisingEvents = true;
+                    // Begin watching.
+                    watcher.EnableRaisingEvents = true;
+                }
+                else
+                {
+                    throw new System.Deployment.Application.InvalidDeploymentException();
+                }
             }
             else
             {
-                throw new System.Deployment.Application.InvalidDeploymentException();
+                log.Debug("{0} is unreachable. Not listening.", sourceDBpath);
             }
         }
         
