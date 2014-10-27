@@ -15,9 +15,9 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string sourceDBpath { get { return GetDBLocation();} }
+        private string sourceDBpath { get; protected set; }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
-        private Uri uri;
+        //private Uri uri;
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
         private void OnDataBaseUpdate(FileSystemEventArgs e)
         {
@@ -29,7 +29,7 @@ namespace Scrivener.Model
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
 
-        private string GetDBLocation()
+        private string GetDBLocation(Uri uri)
         {
             var uriString = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
             // Also:
@@ -49,7 +49,8 @@ namespace Scrivener.Model
 
         public DataBaseWatcher(Uri incommingUri)
         {
-            uri = incommingUri;
+            
+            sourceDBpath = GetDBLocation(incommingUri);
             if (Directory.Exists(sourceDBpath))
             {
                 if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
