@@ -36,14 +36,14 @@ namespace Scrivener.Model
             //deploy.DataDirectory
             //deploy.UpdateLocation
             if (uriString.ToLower().Contains("dev"))
-            {                    
-                log.Debug(@"Setting Database folder as {0}devbase", uri);
-                return string.Format(@"{0}devbase", uri);
+            {
+                log.Debug(@"Setting Database folder as {0}devbase", uriString);
+                return string.Format(@"{0}devbase", uriString);
             }
             else
             {
-                log.Debug(@"Setting Database folder as {0}database", uri);
-                return string.Format(@"{0}database", uri);
+                log.Debug(@"Setting Database folder as {0}database", uriString);
+                return string.Format(@"{0}database", uriString);
             }          
         }
 
