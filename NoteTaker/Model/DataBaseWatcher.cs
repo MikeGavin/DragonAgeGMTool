@@ -15,7 +15,7 @@ namespace Scrivener.Model
     public class DataBaseWatcher
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-        private string sourceDBpath { get; protected set; }
+        private string sourceDBpath { get; set; }
         private string appDBpath = string.Format(@"{0}\Resources\", Environment.CurrentDirectory);
         //private Uri uri;
         public static event EventHandler<FileSystemEventArgs> DataBaseUpdated;
