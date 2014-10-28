@@ -11,8 +11,75 @@ using System.Threading.Tasks;
 
 namespace Scrivener.Model
 {
+
+    /// <summary>
+    /// Sample singleton object.
+    /// </summary>
+    public sealed class SiteStructure 
+    {
+        /// <summary>
+        /// Possible an expensive resource we need to only store in one place.
+        /// </summary>
+        public object[] _data = new object[10];
+
+        /// <summary>
+        /// Allocate ourselves. We have a private constructor, so no one else can.
+        /// </summary>
+        static readonly SiteStructure _instance = new SiteStructure();
+
+        /// <summary>
+        /// Access SiteStructure.Instance to get the singleton object.
+        /// Then call methods on that instance.
+        /// </summary>
+        public static SiteStructure Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// This is a private constructor, meaning no outsides have access.
+        /// </summary>
+        private SiteStructure()
+        {
+            // Initialize members, etc. here.
+        }
+    }
+
+    public sealed class Singleton
+    {
+        // Thread safe Singleton with fully lazy instantiation á la Jon Skeet:
+        // http://csharpindepth.com/Articles/General/Singleton.aspx
+        Singleton()
+        {
+        }
+        public string Test { get; set; }
+        public static Singleton Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        private class Nested
+        {
+            // Explicit static constructor to tell C# compiler
+            // not to mark type as beforefieldinit
+            static Nested()
+            {
+            }
+            
+            internal static readonly Singleton instance = new Singleton();
+        }
+    }
+
     public class ScrivDatabase
     {
+
+        
+     
+        
+
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         private static ObservableCollection<RoleItem> _roles;
@@ -21,6 +88,7 @@ namespace Scrivener.Model
         static ScrivDatabase()
         {
             //Roles = ReturnRoles();
+            
         }
         //Temp until single DB instance
         //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));

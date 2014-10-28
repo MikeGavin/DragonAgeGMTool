@@ -136,6 +136,11 @@ namespace Scrivener.ViewModel
                 }
             }
 
+            SiteStructure s = SiteStructure.Instance;
+            Singleton t = Singleton.Instance;
+            t.Test;
+
+            
             //Hack to set current role in combobox
             var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
             RolesView.MoveCurrentTo(role);
