@@ -47,10 +47,10 @@ namespace Scrivener.Model
             }          
         }
 
-        public DataBaseWatcher(Uri incommingUri)
+        public DataBaseWatcher(Uri incomingUri)
         {
             
-            sourceDBpath = GetDBLocation(incommingUri);
+            sourceDBpath = GetDBLocation(incomingUri);
             if (Directory.Exists(sourceDBpath))
             {
                 if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
