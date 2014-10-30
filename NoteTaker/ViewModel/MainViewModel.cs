@@ -46,7 +46,6 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-
         private bool _updated;
         public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
         private bool _dbupdated;
@@ -138,7 +137,7 @@ namespace Scrivener.ViewModel
 
             SiteStructure s = SiteStructure.Instance;
             Singleton t = Singleton.Instance;
-            t.Test;
+            var test = t.Roles;
 
             
             //Hack to set current role in combobox

@@ -4,8 +4,10 @@ using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SQLite;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,14 +47,14 @@ namespace Scrivener.Model
         }
     }
 
-    public sealed class Singleton
+    public sealed class Singleton : INotifyPropertyChanged
     {
         // Thread safe Singleton with fully lazy instantiation á la Jon Skeet:
         // http://csharpindepth.com/Articles/General/Singleton.aspx
         Singleton()
         {
+            Roles = LoadRoles();
         }
-        public string Test { get; set; }
         public static Singleton Instance
         {
             get
@@ -60,16 +62,79 @@ namespace Scrivener.Model
                 return Nested.instance;
             }
         }
-
         private class Nested
         {
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
             static Nested()
             {
+               
             }
-            
+
             internal static readonly Singleton instance = new Singleton();
+        }
+
+        internal void RaisePropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
+        private static string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
+        private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
+
+        public ObservableCollection<RoleItem> _roles;
+        public ObservableCollection<RoleItem> Roles { get { return _roles; } protected set { _roles = value; RaisePropertyChanged(); } }
+        private bool StringToBool(string x)
+        {
+            bool result = false;
+            if (x == "1")
+            {
+                result = true;
+            }
+            return result;
+        }
+        private ObservableCollection<RoleItem> LoadRoles()
+        {
+            //clear if reloading.
+            if (Roles != null)
+            {
+                Roles = null;
+            }
+            log.Debug("Getting Roles");
+            var db = new SQLiteConnection(mainDB);
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = "SELECT * FROM Roles";
+
+            pullall.Connection = db;
+            log.Debug(pullall.CommandText);
+            var importedRoles = new ObservableCollection<RoleItem>();
+            try
+            {
+                log.Info("CommandText: {0}", pullall.CommandText.ToString());
+                db.Open();
+                SQLiteDataReader reader = pullall.ExecuteReader();
+                while (reader.Read())
+                    importedRoles.Add(new RoleItem()
+                    {
+                        Name = reader["Name"].ToString().Trim(),
+                        Minion = StringToBool(reader["Minion"].ToString().Trim()),
+                        QuickItem_Table = reader["QuickItem_Table"].ToString().Trim(),
+                        SiteItem_Table = reader["SiteItem_Table"].ToString().Trim()
+                    });
+
+                db.Close();
+
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                log.Info("Closing {0}", db.DataSource);
+                db.Close();
+            }
+            return importedRoles;
+
         }
     }
 
