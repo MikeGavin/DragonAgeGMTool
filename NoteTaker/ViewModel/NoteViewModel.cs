@@ -123,7 +123,7 @@ namespace Scrivener.ViewModel
         private ObservableCollection<MinionCommandItem> _minionCommands;
         // local minion instance for this note.
         private MinionViewModel _noteMinion;
-        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
+        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
         //Register and Unregister Minion instances to allow writing to note
         void MinionCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

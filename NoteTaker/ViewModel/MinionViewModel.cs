@@ -23,7 +23,7 @@ namespace Scrivener.ViewModel
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
+        public MinionViewModel()
         {
             //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             SetMinionInputDefault();
@@ -33,7 +33,9 @@ namespace Scrivener.ViewModel
 
             //_NewMinionIPAddress = "192.168.1.114";
             //AddMinionItem();
+            DataB = DatabaseStorage.Instance;
         }
+        protected DatabaseStorage DataB { get; set; }
 
         //private RoleItem _role;
         #region Public Properties

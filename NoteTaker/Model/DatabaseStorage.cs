@@ -74,7 +74,7 @@ namespace Scrivener.Model
         private RoleItem _role;
         public RoleItem Role { get { return _role; } set { _role = value; RaisePropertyChanged(); LoadAll(); } }
 
-        public QuickItem _quickitems;
+        private QuickItem _quickitems;
         public QuickItem QuickItems { get { return _quickitems; } private set { _quickitems = value; RaisePropertyChanged(); } }
         public async Task LoadQuickItems()
         {
@@ -85,7 +85,7 @@ namespace Scrivener.Model
             QuickItems = await DataBaseReader.ReturnQuickItems(Role);
         }
 
-        public Siteitem _sites;
+        private Siteitem _sites;
         public Siteitem Sites { get { return _sites; } private set { _sites = value; RaisePropertyChanged(); } }
         public async Task LoadSites()
         {
@@ -96,7 +96,7 @@ namespace Scrivener.Model
             Sites = await DataBaseReader.ReturnSiteItems(Role);
         }
 
-        public ObservableCollection<MinionCommandItem> _minionCommands;
+        private ObservableCollection<MinionCommandItem> _minionCommands;
         public ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands; } private set { _minionCommands = value; RaisePropertyChanged(); } }
         public async Task LoadMinionCommands()
         {
