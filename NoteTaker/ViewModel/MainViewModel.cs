@@ -62,7 +62,7 @@ namespace Scrivener.ViewModel
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
-            DataB = Singleton.Instance;
+            DataB = DatabaseStorage.Instance;
             
             //Checks deployment and enables update systems if necessary
             DeploymentCheck();
@@ -80,8 +80,6 @@ namespace Scrivener.ViewModel
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
         {
-
-
             if (Properties.Settings.Default.Role_Current == null)
             {
                 Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
@@ -92,9 +90,9 @@ namespace Scrivener.ViewModel
                     Environment.Exit(0);
                 }
             }
-            await DataB.LoadSites(Properties.Settings.Default.Role_Current);
+            DataB.Role = Properties.Settings.Default.Role_Current;
             //Hack to set current role in combobox
-            var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+            var role = DataB.Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
             RolesView.MoveCurrentTo(role);
             if (Notes.Count == 0)
             {
@@ -151,14 +149,7 @@ namespace Scrivener.ViewModel
         //Singleton instance of the DB to sync data across view models
         //private Singleton _dataB;
         //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
-        public Singleton DataB { get; set; }
-
-        //builds or gets QuickItems
-        private QuickItem _root;
-        private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current).Result); } set { _root = value; RaisePropertyChanged(); } }
-        //Builds or gets collection of commands used by minion
-        private ObservableCollection<MinionCommandItem> _minionCommands;
-        private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
+        public DatabaseStorage DataB { get; set; }
           
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
@@ -207,19 +198,9 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<string>((parm) => NewNote("RelayCommand") )); } }
         private async void NewNote([CallerMemberName]string memberName = "")
         {
-            //async versions to attempt to keep interface from locking
-            if (QuickItemTree == null)
-            {
-                QuickItemTree = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
-            }
-            if (MinionCommands == null)
-            {
-                MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-            }
-
             //CreateCallHistory();
             log.Debug("{0} ran NewNote", memberName);
-            Notes.Add(new NoteViewModel(QuickItemTree, MinionCommands));
+            Notes.Add(new NoteViewModel());
             SelectedNote = Notes.Last();
         }
 
@@ -287,8 +268,9 @@ namespace Scrivener.ViewModel
         {
             if ((e.PropertyName == "Role_Current" & Properties.Settings.Default.Role_Current != null))
             {
+                DataB.Role = Properties.Settings.Default.Role_Current;
                 ////Hack to set current role in combobox
-                var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+                var role = DataB.Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
                 RolesView.MoveCurrentTo(role);
 
                 //reset roll properties to force updates.
@@ -303,24 +285,25 @@ namespace Scrivener.ViewModel
             
         }
 
-        private void ReloadData(object o, string f)
+        private async void ReloadData(object o, string f)
         {
             if (f.ToLower().Contains("scrivener.sqlite"))
             {
                 log.Debug("{0} requested nulling of tree, sites, & Minion commands.", o.ToString());
-                QuickItemTree = null;
-                DataB.LoadSites(Properties.Settings.Default.Role_Current);
-                MinionCommands = null;
+                await DataB.LoadAll();
+                //QuickItemTree = null;
+                //DataB.LoadSites(Properties.Settings.Default.Role_Current);
+                //MinionCommands = null;
                 
             }
         }
 
         
         //private static ObservableCollection<RoleItem> _roles;
-        public ObservableCollection<RoleItem> Roles { get { return DataB.Roles; } }
+        //public ObservableCollection<RoleItem> Roles { get { return DataB.Roles; } }
 
         public static CollectionView _rolesView;
-        public CollectionView RolesView { get { return _rolesView ?? (_rolesView = new CollectionView(Roles)); } set { _rolesView = value; RaisePropertyChanged(); } }
+        public CollectionView RolesView { get { return _rolesView ?? (_rolesView = new CollectionView(DataB.Roles)); } set { _rolesView = value; RaisePropertyChanged(); } }
         public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
         //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }

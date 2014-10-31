@@ -50,7 +50,7 @@ namespace Scrivener.Helpers
 
         public static async Task<Model.RoleItem> GetRole()
         {
-            var DB = Model.Singleton.Instance;
+            var DB = Model.DatabaseStorage.Instance;
             var metroWindow = (Application.Current.MainWindow as MetroWindow);          
             var mySettings = new MetroDialogSettings()
             {

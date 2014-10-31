@@ -49,7 +49,7 @@
             </i:Interaction.Triggers>
         </TextBox>
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
-        <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding Root.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250"
+        <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250"
                   >
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
@@ -85,7 +85,7 @@
 
 
         </TreeView>
-        <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding Root.SubItems}">
+        <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding DataB.QuickItems.SubItems}">
         </ListBox>
         <StackPanel Visibility="{Binding Minion_Visibility, Converter={StaticResource BoolToVis}, Source={vm:Static Properties:Settings.Default}}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">

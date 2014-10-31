@@ -25,17 +25,17 @@ namespace Scrivener.ViewModel
 
         public MinionViewModel(ObservableCollection<MinionCommandItem> commands)
         {
-            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             SetMinionInputDefault();
             MinionCollection.CollectionChanged += OnMinionItemsChanged;
-            _minionCommands = commands;
+            //_minionCommands = commands;
             //debuging
 
             //_NewMinionIPAddress = "192.168.1.114";
             //AddMinionItem();
         }
 
-        private RoleItem _role;
+        //private RoleItem _role;
         #region Public Properties
         private string _NewMinionIPAddress;
         public string NewMinionIPAddress { get { return _NewMinionIPAddress; } set { _NewMinionIPAddress = value; RaisePropertyChanged(); } }
@@ -48,25 +48,25 @@ namespace Scrivener.ViewModel
         #endregion
 
         //Commands from Constructor
-        protected ObservableCollection<MinionCommandItem> _minionCommands;
-        protected ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } private set { _minionCommands = value; RaisePropertyChanged(); } }
+        //protected ObservableCollection<MinionCommandItem> _minionCommands;
+        //protected ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } private set { _minionCommands = value; RaisePropertyChanged(); } }
 
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, System.IO.FileSystemEventArgs e)
-        {
-            if (e.Name.ToLower().Contains("scrivener.sqlite"))
-            {
-                log.Debug("Updating MinionCommands on MinionViewModel");
-                try
-                {
-                    MinionCommands = null;
-                    MinionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                }
-                catch(Exception ex)
-                {
-                    log.Error(ex.Message);
-                }
-            }
-        }
+        //private async void DataBaseWatcher_DataBaseUpdated(object sender, System.IO.FileSystemEventArgs e)
+        //{
+        //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
+        //    {
+        //        log.Debug("Updating MinionCommands on MinionViewModel");
+        //        try
+        //        {
+        //            MinionCommands = null;
+        //            MinionCommands = await DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            log.Error(ex.Message);
+        //        }
+        //    }
+        //}
 
         //Collection of Minion Items
         private ObservableCollection<MinionItemViewModel> _MinionCollection = new ObservableCollection<MinionItemViewModel>();
@@ -156,7 +156,7 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                MinionCollection.Add(new MinionItemViewModel(ip, MinionCommands));
+                MinionCollection.Add(new MinionItemViewModel(ip));
                 SelectedMinion = MinionCollection.Last();
             }
             catch (Exception e)

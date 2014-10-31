@@ -4,313 +4,23 @@ using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data.SQLite;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Scrivener.Model
 {
-
-    /// <summary>
-    /// Sample singleton object.
-    /// </summary>
-    public sealed class SiteStructure 
+    public class DataBaseReader
     {
-        /// <summary>
-        /// Possible an expensive resource we need to only store in one place.
-        /// </summary>
-        public object[] _data = new object[10];
-
-        /// <summary>
-        /// Allocate ourselves. We have a private constructor, so no one else can.
-        /// </summary>
-        static readonly SiteStructure _instance = new SiteStructure();
-
-        /// <summary>
-        /// Access SiteStructure.Instance to get the singleton object.
-        /// Then call methods on that instance.
-        /// </summary>
-        public static SiteStructure Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
-        /// This is a private constructor, meaning no outsides have access.
-        /// </summary>
-        private SiteStructure()
-        {
-            // Initialize members, etc. here.
-        }
-    }
-
-    public sealed class Singleton : INotifyPropertyChanged
-    {
-        // Thread safe Singleton with fully lazy instantiation á la Jon Skeet:
-        // http://csharpindepth.com/Articles/General/Singleton.aspx
-        Singleton()
-        {
-            Roles = LoadRoles();
-        }
-        public static Singleton Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-        private class Nested
-        {
-            // Explicit static constructor to tell C# compiler
-            // not to mark type as beforefieldinit
-            static Nested()
-            {
-               
-            }
-
-            internal static readonly Singleton instance = new Singleton();
-        }
-
-        internal void RaisePropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs(prop)); }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        private static string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
-        private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
-
-        private ObservableCollection<RoleItem> _roles;
-        public ObservableCollection<RoleItem> Roles { get { return _roles; } private set { _roles = value; RaisePropertyChanged(); } }
-        private bool StringToBool(string x)
-        {
-            bool result = false;
-            if (x == "1")
-            {
-                result = true;
-            }
-            return result;
-        }
-        private ObservableCollection<RoleItem> LoadRoles()
-        {
-            //clear if reloading.
-            if (Roles != null)
-            {
-                Roles = null;
-            }
-            log.Debug("Getting Roles");
-            var db = new SQLiteConnection(mainDB);
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Roles";
-
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
-            var importedRoles = new ObservableCollection<RoleItem>();
-            try
-            {
-                log.Info("CommandText: {0}", pullall.CommandText.ToString());
-                db.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
-                    importedRoles.Add(new RoleItem()
-                    {
-                        Name = reader["Name"].ToString().Trim(),
-                        Minion = StringToBool(reader["Minion"].ToString().Trim()),
-                        QuickItem_Table = reader["QuickItem_Table"].ToString().Trim(),
-                        SiteItem_Table = reader["SiteItem_Table"].ToString().Trim()
-                    });
-
-                db.Close();
-
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                log.Info("Closing {0}", db.DataSource);
-                db.Close();
-            }
-            return importedRoles;
-
-        }
-
-        public Siteitem _sites;
-        public Siteitem Sites { get { return _sites; } private set { _sites = value; RaisePropertyChanged(); } }
-        public async Task LoadSites(RoleItem role)
-        {
-            if (Sites != null)
-            {
-                Sites = null;
-            }
-            Sites = await ReturnSiteItems(role);
-        }
-        private async Task<Siteitem> ReturnSiteItems(RoleItem role)
-        {
-            log.Debug("Getting SiteItems for {0}", role.Name);
-            var db = new SQLiteConnection(mainDB);
-            if (role == null) { return new Siteitem(); }
-
-            List<SiteDBPull> SiteCommandList = new List<SiteDBPull>();
-
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", role.SiteItem_Table);
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
-
-            try
-            {
-                db.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (await reader.ReadAsync())
-                    SiteCommandList.Add(new SiteDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString(), Child_2 = reader["Child_2"].ToString() });
-                db.Close();
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                var temp = Helpers.MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
-                Model.ExceptionReporting.Email(e);
-                db.Close();
-            }
-
-
-            List<SiteDBPull> Root_uniqueitems = SiteCommandList.GroupBy(s => s.Parent).Select(p => p.First()).ToList();
-            List<SiteDBPull> Site1uniqueitems = SiteCommandList.GroupBy(s => s.Child_1).Select(p => p.First()).ToList();
-            List<SiteDBPull> Site2uniqueitems = SiteCommandList.GroupBy(s => s.Child_2).Select(p => p.First()).ToList();
-
-            #region Fill Site
-            var root = new Siteitem() { Title = "Menu" };
-
-            if (Root_uniqueitems.Count > 1)
-            {
-                foreach (SiteDBPull item in Root_uniqueitems)
-                {
-                    Siteitem Root_Item = new Siteitem() { Title = item.Parent, Content = item.URL };
-                    if (Site1uniqueitems.Count > 1)
-                    {
-                        foreach (SiteDBPull item1 in Site1uniqueitems)
-                        {
-                            Siteitem Sub_Item_1 = new Siteitem() { Title = item1.Child_1, Content = item1.URL };
-
-                            if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
-                            {
-                                Root_Item.SubItems.Add(Sub_Item_1);
-                            }
-
-                            if (Site2uniqueitems.Count > 1)
-                            {
-                                foreach (SiteDBPull item2 in Site2uniqueitems)
-                                {
-                                    Siteitem Sub_Item_2 = new Siteitem() { Title = item2.Child_2, Content = item2.URL };
-
-                                    if (item2.Child_1 == Sub_Item_1.Title && item2.Child_2 != string.Empty)
-                                    {
-                                        Sub_Item_1.SubItems.Add(Sub_Item_2);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    root.SubItems.Add(Root_Item);
-                }
-            }
-            Sorting(root);
-            root.SubItems = new ObservableCollection<Siteitem>(root.SubItems.OrderBy(n => n.Title));
-            return root;
-
-            #endregion
-        }
-        private void Sorting(Siteitem root)
-        {
-            foreach (Siteitem item in root.SubItems)
-            {
-                if (item.SubItems.Count > 0)
-                {
-                    item.SubItems = new ObservableCollection<Siteitem>(item.SubItems.OrderBy(n => n.Title));
-                    Sorting(item);
-                }
-            }
-        }
-
-        public async Task LoadMinionCommands(RoleItem role)
-        {
-            if (Sites != null)
-            {
-                Sites = null;
-            }
-            Sites = await ReturnSiteItems(role);
-        }
-        private static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
-        {
-            log.Debug("Getting Minion Commands for {0}", role.Name);
-            var db = new SQLiteConnection(mainDB);
-            //Return empty command list if role does not allow minion access.
-            if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
-            {
-                return new ObservableCollection<MinionCommandItem>();
-            }
-
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Minion_Commands";
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
-            var commandList = new ObservableCollection<MinionCommandItem>();
-            try
-            {
-                db.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (await reader.ReadAsync())
-                    commandList.Add(new MinionCommandItem()
-                    {
-                        Name = reader["Name"].ToString().Trim(),
-                        Action = reader["Action"].ToString().Trim(),
-                        Version = reader["Version"].ToString().Trim(),
-                        CopyFrom = reader["CopyFrom"].ToString().Trim(),
-                        CopyTo = reader["CopyTo"].ToString().Replace("c:", string.Empty).Trim(),
-                        Command = reader["Command"].ToString().Trim(),
-                        Bit = reader["Bit"].ToString(),
-                    });
-                db.Close();
-
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                db.Close();
-                Model.ExceptionReporting.Email(e);
-            }
-
-            return commandList;
-
-        }
-    }
-
-    public class ScrivDatabase
-    {
-
-        
-     
-        
-
-        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-
-        private static ObservableCollection<RoleItem> _roles;
-        //public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = ReturnRoles()); } protected set { _roles = value; RaiseProperityChanged(); } } 
-            
-        static ScrivDatabase()
-        {
-            //Roles = ReturnRoles();
-            
-        }
         //Temp until single DB instance
         //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
-        private static string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
-        private static SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
+        private string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
+        private SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
-        private static ObservableCollection<RoleItem> ReturnRoles()
+        public async Task<ObservableCollection<RoleItem>> ReturnRoles()
         {
             log.Debug("Getting Roles");
             var db = new SQLiteConnection(mainDB);
@@ -346,7 +56,7 @@ namespace Scrivener.Model
             return importedRoles;
 
         }    
-        private static bool StringToBool(string x)
+        private bool StringToBool(string x)
         {
             bool result = false;
             if (x == "1")
@@ -356,7 +66,7 @@ namespace Scrivener.Model
             return result;       
         }       
 
-        private static async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
+        public async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
         {
             log.Debug("Getting Minion Commands for {0}", role.Name);
             var db = new SQLiteConnection(mainDB);
@@ -400,7 +110,7 @@ namespace Scrivener.Model
 
         }
 
-        private async static Task<QuickItem> ReturnQuickItems(RoleItem role)
+        public async Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
             log.Debug("Returning QuickItems for {0}", role.Name);
             var db = new SQLiteConnection(mainDB);
@@ -578,7 +288,7 @@ namespace Scrivener.Model
 #endregion
         }
 
-        private async static Task<Siteitem> ReturnSiteItems(RoleItem role)
+        public async Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
             log.Debug("Getting SiteItems for {0}", role.Name);
             var db = new SQLiteConnection(mainDB);
@@ -654,7 +364,8 @@ namespace Scrivener.Model
 
             #endregion
         }
-        private static void Sorting(Siteitem root)
+
+        private void Sorting(Siteitem root)
         {
             foreach (Siteitem item in root.SubItems)
             {

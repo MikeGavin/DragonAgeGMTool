@@ -259,8 +259,8 @@
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
-    <Compile Include="Model\SingeltonTests.cs" />
-    <Compile Include="Model\LocalDatabase.cs" />
+    <Compile Include="Model\DatabaseStorage.cs" />
+    <Compile Include="Model\DatabaseReader.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\PasteEventArgs.cs" />

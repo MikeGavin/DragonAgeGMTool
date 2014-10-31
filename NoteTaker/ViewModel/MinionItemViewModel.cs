@@ -59,33 +59,33 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> PasteCommand { get { return new RelayCommand<string>((param) => OnPasteRequest(param)); } }      
 
         //Constructor
-        public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
+        public MinionItemViewModel(IPAddress IP)
         {
             Machine = new Minion.EcotPC(IP);
-            _minionCommands = commands;
+            //_minionCommands = commands;
             BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
             Machine.EventLogged += Machine_EventLogged;
             Machine.PropertyChanged += Machine_PropertyChanged;
-            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             //var _ieCommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => (i.Name == "Update") && (i.Action == "Install")));           
         }
 
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
-        {
-            if (e.Name.ToLower().Contains("scrivener.sqlite"))
-            {
-                log.Debug("Updating MinionCommands on Minion: {0}", Title);
-                try
-                {
-                    _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                    SetIECommands();
-                }
-                catch(Exception ex)
-                {
-                    log.Error(ex.Message);
-                }
-            }
-        }
+        //private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
+        //{
+        //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
+        //    {
+        //        log.Debug("Updating MinionCommands on Minion: {0}", Title);
+        //        try
+        //        {
+        //            _minionCommands = await DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+        //            SetIECommands();
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            log.Error(ex.Message);
+        //        }
+        //    }
+        //}
 
         //Item title pulling IP address
         public string Title { get { return Machine.IPAddress.ToString(); } }        
