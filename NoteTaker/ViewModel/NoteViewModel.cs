@@ -27,7 +27,10 @@ namespace Scrivener.ViewModel
 
         public NoteViewModel()
         {
+            //Creates a shared version of the menus
             DataB = DatabaseStorage.Instance;
+            //This creates a per instance version of the menus. 
+            Root = DataB.QuickItems;
             Text = Properties.Settings.Default.Default_Note_Template;
             //_minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
