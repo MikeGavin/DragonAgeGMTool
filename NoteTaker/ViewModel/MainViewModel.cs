@@ -35,6 +35,7 @@ namespace Scrivener.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         private readonly IDataService _dataService; // Used by MVVMLight 
@@ -61,7 +62,8 @@ namespace Scrivener.ViewModel
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
-
+            DataB = Singleton.Instance;
+            
             //Checks deployment and enables update systems if necessary
             DeploymentCheck();
            
@@ -74,6 +76,31 @@ namespace Scrivener.ViewModel
             //Self Explained
             //CleanDatabase();           
             //StartNoteSaveTask();            
+        }
+        //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
+        public async void WindowLoaded()
+        {
+
+
+            if (Properties.Settings.Default.Role_Current == null)
+            {
+                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
+                Properties.Settings.Default.Save();
+                if (Properties.Settings.Default.Role_Current == null)
+                {
+                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
+                    Environment.Exit(0);
+                }
+            }
+            await DataB.LoadSites(Properties.Settings.Default.Role_Current);
+            //Hack to set current role in combobox
+            var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
+            RolesView.MoveCurrentTo(role);
+            if (Notes.Count == 0)
+            {
+                NewNote();
+            }
+
         }
 
         //Deployment Systems
@@ -119,43 +146,16 @@ namespace Scrivener.ViewModel
                         Process.GetCurrentProcess().Kill();
 
                     });
-        }   
-
-        //Runs functions only availalbe after window has loaded and are unavailable in constructor.
-        public async void WindowLoaded()
-        {
-            if (Properties.Settings.Default.Role_Current == null)
-            {
-                Properties.Settings.Default.Role_Current = await MetroMessageBox.GetRole();
-                Properties.Settings.Default.Save();
-                if (Properties.Settings.Default.Role_Current == null)
-                {
-                    await MetroMessageBox.Show(string.Empty, "Apathy is death.");
-                    Environment.Exit(0);
-                }
-            }
-
-            SiteStructure s = SiteStructure.Instance;
-            Singleton t = Singleton.Instance;
-            var test = t.Roles;
-
-            
-            //Hack to set current role in combobox
-            var role = Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
-            RolesView.MoveCurrentTo(role);
-            if (Notes.Count == 0)
-            {
-                NewNote();                
-            }
-
         }
+
+        //Singleton instance of the DB to sync data across view models
+        //private Singleton _dataB;
+        //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
+        public Singleton DataB { get; set; }
 
         //builds or gets QuickItems
         private QuickItem _root;
         private QuickItem QuickItemTree { get { return _root ?? (_root = LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current).Result); } set { _root = value; RaisePropertyChanged(); } }
-        //builds or gets QuickSites
-        private Siteitem _sites;
-        public Siteitem QuickSites { get { return _sites ?? (_sites = LocalDatabase.ReturnSiteItems(Properties.Settings.Default.Role_Current).Result); } set { _sites = value; RaisePropertyChanged(); } }
         //Builds or gets collection of commands used by minion
         private ObservableCollection<MinionCommandItem> _minionCommands;
         private ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands ?? (_minionCommands = Model.LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current).Result); } set { _minionCommands = value; RaisePropertyChanged(); } }
@@ -211,10 +211,6 @@ namespace Scrivener.ViewModel
             if (QuickItemTree == null)
             {
                 QuickItemTree = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
-            }
-            if (QuickSites == null)
-            {
-                QuickSites = await LocalDatabase.ReturnSiteItems(Properties.Settings.Default.Role_Current);
             }
             if (MinionCommands == null)
             {
@@ -313,14 +309,15 @@ namespace Scrivener.ViewModel
             {
                 log.Debug("{0} requested nulling of tree, sites, & Minion commands.", o.ToString());
                 QuickItemTree = null;
-                QuickSites = null;
+                DataB.LoadSites(Properties.Settings.Default.Role_Current);
                 MinionCommands = null;
                 
             }
         }
 
-        private static ObservableCollection<RoleItem> _roles;
-        public static ObservableCollection<RoleItem> Roles { get { return _roles ?? (_roles = LocalDatabase.ReturnRoles()); } }
+        
+        //private static ObservableCollection<RoleItem> _roles;
+        public ObservableCollection<RoleItem> Roles { get { return DataB.Roles; } }
 
         public static CollectionView _rolesView;
         public CollectionView RolesView { get { return _rolesView ?? (_rolesView = new CollectionView(Roles)); } set { _rolesView = value; RaisePropertyChanged(); } }
