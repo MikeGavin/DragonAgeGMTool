@@ -210,35 +210,35 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand<string>(async (param) => await Uninstall_Java(param))); } }
         public async Task Uninstall_Java(string bit)
         {
-            string current;
-            if (bit =="64")
-            {
-                current = Machine.Java64;
-            }
-            else
-            {
-                current = Machine.Java32;
-            }
+            //string current;
+            //if (bit =="64")
+            //{
+            //    //current = Machine.Java64;
+            //}
+            //else
+            //{
+            //    //current = Machine.Java32;
+            //}
 
-            try
-            {
-                MinionCommandItem item;
-                if (current == "NOT INSTALLED" || current == "ERROR")
-                {
-                    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
-                }
-                else
-                {
-                    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit==bit)) as MinionCommandItem;
-                }
-                await RunCommandItem(item);
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
-                return;
-            }
+            //try
+            //{
+            //    MinionCommandItem item;
+            //    if (current == "NOT INSTALLED" || current == "ERROR")
+            //    {
+            //        item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
+            //    }
+            //    else
+            //    {
+            //        item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit==bit)) as MinionCommandItem;
+            //    }
+            //    await RunCommandItem(item);
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //    var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
+            //    return;
+            //}
         }
 
         private RelayCommand _installJavaCommand;
@@ -431,13 +431,13 @@ namespace Scrivener.ViewModel
                 await Machine.Get_Java();
                 if (item.Bit=="64")
                 {
-                    ver = Machine.Java64;
+                    //ver = Machine.Java64;
                 }
                 else
                 {
-                    ver = Machine.Java32;
+                    //ver = Machine.Java32;
                 }
-                result = ver;
+                //result = ver;
             }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();

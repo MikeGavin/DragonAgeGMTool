@@ -164,20 +164,13 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Label>
-        <Label Content="Java32" Foreground="Gray" Grid.Column="2" Grid.Row="1">
+        <Label Content="Java" Foreground="Gray" Grid.Column="2" Grid.Row="1">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="Java64" Foreground="Gray" Grid.Column="2" Grid.Row="2">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Label>
         <Label Content="Flash" Foreground="Gray" Grid.Column="2" Grid.Row="3">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
@@ -244,14 +237,16 @@
         </Label>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left">
-            <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
+            <!--<Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction Command="{Binding GetJavaCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
+            </Label>-->
+            
+            <ListBox ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" Width="auto" Height="auto"/>
+            <!--<Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
@@ -264,29 +259,8 @@
                         <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
                 </ContextMenu>
                 </Label.ContextMenu>
-            </Label>
+            </Label>-->
             </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left">
-            <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding GetJavaCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.Java64}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="64"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
-        </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="3" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
