@@ -598,6 +598,7 @@ namespace Minion
         public async Task KillDefaults()
         {
             Processing++;
+            Log(log.Info, "Killing Default Tasks on Remote");
             var killbatch = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s c:\temp\defaultkills.bat", string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory));
             await killbatch.Run();
             //var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
