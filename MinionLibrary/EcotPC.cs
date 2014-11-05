@@ -228,11 +228,12 @@ namespace Minion
         protected string _IEVersion;
         public string IEVersion { get { return _IEVersion; } set { _IEVersion = value; RaisePropertyChanged(); } }
 
-        protected string _java64;
-        public string Java64 { get { return _java64; } set { _java64 = value; RaisePropertyChanged(); } }
-        protected string _java32;
-        public string Java32 { get { return _java32; } set { _java32 = value; RaisePropertyChanged(); } }
-
+        //protected string _java64;
+        //public string Java64 { get { return _java64; } set { _java64 = value; RaisePropertyChanged(); } }
+        //protected string _java32;
+        //public string Java32 { get { return _java32; } set { _java32 = value; RaisePropertyChanged(); } }
+        protected ObservableCollection<string> _javas;
+        public ObservableCollection<string> Javas { get { return _javas; } set { _javas = value; RaisePropertyChanged(); } }
 
         protected string _Flash;
         public string Flash { get { return _Flash; } set { _Flash = value; RaisePropertyChanged(); } }
@@ -372,52 +373,52 @@ namespace Minion
         public async Task Get_Java()
         {
             Processing++;
-            Java64 = Java32 = "Updating...";
-            string command;
-            string result = string.Empty;
-            if (Directory.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\", IPAddress)))
+            Javas = new ObservableCollection<string>();
+            //Java64 = Java32 = "Updating...";
+            
+            var path = string.Format(@"\\{0}\c$\Program Files (x86)\", IPAddress);
+            if (Directory.Exists(path))
             {
                 //Is 64 bit machine
-                if (File.Exists(string.Format(@"\\{0}\c$\Program Files (x86)\Java\jre7\bin\java.exe", IPAddress)))
-                {
-                    command = @"""c:\Program Files (x86)\Java\jre7\bin\java.exe"" -version";
-                    Java32 = await JavaVersion(command, result);
-                }
-                else
-                {
-                    Java32 = "NOT INSTALLED";
-                }
-
-                if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
-                {
-                    command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
-                    Java64 = await JavaVersion(command, result);
-                }
-                else
-                {
-                    Java64 = "NOT INSTALLED";
-                }
+                await JavaFolderCheck(", 32-Bit", path);
+                path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
+                await JavaFolderCheck(", 64-Bit", path);
             }
             else
             {
-                Java64 = "N/A";
-                if (File.Exists(string.Format(@"\\{0}\c$\Program Files\Java\jre7\bin\java.exe", IPAddress)))
-                {
-                    command = @"""c:\Program Files\Java\jre7\bin\java.exe"" -version";
-                    Java32 = await JavaVersion(command, result);
-                }
-                else
-                {
-                    Java32 = "NOT INSTALLED";
-                }
+                //is 32 bit machine
+                path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
+                await JavaFolderCheck(", 32-Bit", path);
             }
-
-            Log(log.Trace, "Java32 version: " + Java32);
-            Log(log.Trace, "Java64 version: " + Java64);
+            if (Javas.Count <= 0)
+            {
+                Javas.Add("NOT INSTALLED");
+            }
             Processing--;
         }
-        private async Task<string> JavaVersion(string command, string result)
+
+        private async Task JavaFolderCheck(string bits, string path)
         {
+            string command;
+            var javaPath = Path.Combine(path, "Java");
+            if (Directory.Exists(javaPath))
+            {
+                var folders = Directory.GetDirectories(javaPath);
+                foreach (string folder in folders)
+                {
+                    var fullpathfile = Path.Combine(folder, @"bin\java.exe");
+                    if (File.Exists(fullpathfile))
+                    {
+                        DirectoryInfo folder1 = new DirectoryInfo(folder);
+                        command = string.Format(@"""c:\Program Files (x86)\Java\{0}\bin\Java.exe"" -version", folder1.Name);
+                        Javas.Add(await JavaVersion(command) + bits);
+                    }
+                }
+            }
+        }
+        private async Task<string> JavaVersion(string command)
+        {
+            string result = string.Empty;
             var paexec = new Tool.PAExec(IPAddress, command);
             await paexec.Run();
             if (paexec.StandardError.Contains("java version") == true)
@@ -597,7 +598,8 @@ namespace Minion
         public async Task KillDefaults()
         {
             Processing++;
-            var killbatch = new Tool.PAExec(IPAddress, string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory), @"-accepteula -realtime -s c:\temp\defaultkills.bat");
+            Log(log.Info, "Killing Default Tasks on Remote");
+            var killbatch = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s c:\temp\defaultkills.bat", string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory));
             await killbatch.Run();
             //var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
             //await gettasks.Run();

@@ -59,40 +59,42 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> PasteCommand { get { return new RelayCommand<string>((param) => OnPasteRequest(param)); } }      
 
         //Constructor
-        public MinionItemViewModel(IPAddress IP, ObservableCollection<MinionCommandItem> commands)
+        public MinionItemViewModel(IPAddress IP)
         {
             Machine = new Minion.EcotPC(IP);
-            _minionCommands = commands;
+            //DataB.MinionCommands = commands;
             BindingOperations.EnableCollectionSynchronization(LogCollection, _syncLock);
             Machine.EventLogged += Machine_EventLogged;
             Machine.PropertyChanged += Machine_PropertyChanged;
-            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
-            //var _ieCommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => (i.Name == "Update") && (i.Action == "Install")));           
+            DataB = DatabaseStorage.Instance;
+            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            //var _ieCommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => (i.Name == "Update") && (i.Action == "Install")));           
         }
-
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
-        {
-            if (e.Name.ToLower().Contains("scrivener.sqlite"))
-            {
-                log.Debug("Updating MinionCommands on Minion: {0}", Title);
-                try
-                {
-                    _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                    SetIECommands();
-                }
-                catch(Exception ex)
-                {
-                    log.Error(ex.Message);
-                }
-            }
-        }
+        private DatabaseStorage DataB { get; set; }
+        //private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
+        //{
+        //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
+        //    {
+        //        log.Debug("Updating MinionCommands on Minion: {0}", Title);
+        //        try
+        //        {
+        //            DataB.MinionCommands = await DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+        //            SetIECommands();
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            log.Error(ex.Message);
+        //        }
+        //    }
+        //}
 
         //Item title pulling IP address
         public string Title { get { return Machine.IPAddress.ToString(); } }        
         //Instance of ECOTPC Item
         public Minion.EcotPC Machine { get; protected set; }
         //Commands from DB
-        private ObservableCollection<MinionCommandItem> _minionCommands;
+        //private ObservableCollection<MinionCommandItem> DataB.MinionCommands;
+        
         
         //Event to raise and pass notewrite event
         public event EventHandler<Model.MinionArgs> NoteWrite;
@@ -139,7 +141,7 @@ namespace Scrivener.ViewModel
         
         
         private ObservableCollection<MinionCommandItem> _minionStartCommands;
-        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in _minionCommands where item.Action == "Start" select item).ToList())); } protected set { _minionStartCommands = value; RaisePropertyChanged(); } }
+        public ObservableCollection<MinionCommandItem> MinionStartCommands { get { return _minionStartCommands ?? (_minionStartCommands = new ObservableCollection<MinionCommandItem>((from item in DataB.MinionCommands where item.Action == "Start" select item).ToList())); } protected set { _minionStartCommands = value; RaisePropertyChanged(); } }
         private RelayCommand<MinionCommandItem> _remoteStartCommand;
         public RelayCommand<MinionCommandItem> RemoteStartCommand { get { return _remoteStartCommand ?? (_remoteStartCommand = new RelayCommand<MinionCommandItem>(async (param) => await RemoteStart(param))); } protected set { _remoteStartCommand = value; RaisePropertyChanged(); } }
         public async Task RemoteStart(MinionCommandItem command)
@@ -201,42 +203,52 @@ namespace Scrivener.ViewModel
 
         private void SetIECommands()
         {
-            IECommands = new ObservableCollection<MinionCommandItem>(_minionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
+            IECommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
         }
 
+        protected string _selectedjava;
+        public string SelectedJava { get { return _selectedjava; } set { _selectedjava = value; RaisePropertyChanged(); } }
         private RelayCommand<string> _uninstallJavaCommand;
         public RelayCommand<string> UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand<string>(async (param) => await Uninstall_Java(param))); } }
-        public async Task Uninstall_Java(string bit)
+        public async Task Uninstall_Java(string data)
         {
-            string current;
-            if (bit =="64")
-            {
-                current = Machine.Java64;
-            }
-            else
-            {
-                current = Machine.Java32;
-            }
-
+            MinionCommandItem item;
             try
             {
-                MinionCommandItem item;
-                if (current == "NOT INSTALLED" || current == "ERROR")
-                {
-                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
-                }
-                else
-                {
-                    item = _minionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit==bit)) as MinionCommandItem;
-                }
-                await RunCommandItem(item);
+                data = data.Replace("-Bit", string.Empty);
+                string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
+                string current = x[0];
+                string bit = x[1];
+                item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;               
             }
             catch (Exception e)
             {
-                log.Error(e);
-                var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
-                return;
+                log.Debug(e);
+                log.Error(string.Format("Could not find version, uninstalling all."));
+                item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;              
             }
+            await RunCommandItem(item);
+        }
+        private RelayCommand<int> _uninstallJavaCommand2;
+        public RelayCommand<int> UninstallJavaCommand2 { get { return _uninstallJavaCommand2 ?? (_uninstallJavaCommand2 = new RelayCommand<int>(async (param) => await Uninstall_Java2(param))); } }
+        public async Task Uninstall_Java2(int data)
+        {
+
+            //data = data.Replace("-Bit", string.Empty);
+            //string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
+            //string current = x[0];
+            //string bit = x[1];
+            //MinionCommandItem item;
+            //try
+            //{
+            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
+            //}
+            //await RunCommandItem(item);
         }
 
         private RelayCommand _installJavaCommand;
@@ -245,7 +257,7 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                var items = _minionCommands.Where((j) => j.Name == "Java" && j.Action == "Install").ToList<MinionCommandItem>();
+                var items = DataB.MinionCommands.Where((j) => j.Name == "Java" && j.Action == "Install").ToList<MinionCommandItem>();
                 var item = new MinionCommandItem();
                 foreach (var i in items)
                 {
@@ -258,7 +270,7 @@ namespace Scrivener.ViewModel
                     }
                 }
                 await RunCommandItem(item);
-                item = _minionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
+                item = DataB.MinionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
                 await RunCommandItem(item);
             }
             catch (Exception e)
@@ -277,7 +289,7 @@ namespace Scrivener.ViewModel
             {
                 MinionCommandItem item;
 
-                item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Flash") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
 
                 await RunCommandItem(item);
             }
@@ -297,7 +309,7 @@ namespace Scrivener.ViewModel
         {
             try
             {
-                var items = _minionCommands.Where((j) => j.Name == "Flash" && j.Action == "Install").ToList<MinionCommandItem>();
+                var items = DataB.MinionCommands.Where((j) => j.Name == "Flash" && j.Action == "Install").ToList<MinionCommandItem>();
                 var item = new MinionCommandItem();
                 foreach (var i in items)
                 {
@@ -310,7 +322,7 @@ namespace Scrivener.ViewModel
                 }
                 await RunCommandItem(item);
                 //MinionCommandItem item;
-                //item = _minionCommands.First(f => (f.Name == "Flash") && (f.Action == "Install") && (f.Version != "All")) as MinionCommandItem;
+                //item = DataB.MinionCommands.First(f => (f.Name == "Flash") && (f.Action == "Install") && (f.Version != "All")) as MinionCommandItem;
                 //await RunCommandItem(item);
             }
             catch (Exception e)
@@ -328,12 +340,12 @@ namespace Scrivener.ViewModel
             MinionCommandItem item;
             try
             {
-                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
             }
             catch (Exception e)
             {
                 log.Error(e);
-                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
             }
 
             await RunCommandItem(item);
@@ -346,7 +358,7 @@ namespace Scrivener.ViewModel
             try
             {
                 MinionCommandItem item;
-                item = _minionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Install")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Shockwave") && (f.Action == "Install")) as MinionCommandItem;
                 await RunCommandItem(item);
             }
             catch (Exception e)
@@ -363,12 +375,12 @@ namespace Scrivener.ViewModel
             MinionCommandItem item;
             try
             {
-                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "All")) as MinionCommandItem;
             }
             catch (Exception e)
             {
                 log.Error(e);
-                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Reader") && (f.Action == "Uninstall") && (f.Version == "WMIC")) as MinionCommandItem;
             }
 
             await RunCommandItem(item);
@@ -381,7 +393,7 @@ namespace Scrivener.ViewModel
             try
             {
                 MinionCommandItem item;
-                item = _minionCommands.First(f => (f.Name == "Reader") && (f.Action == "Install")) as MinionCommandItem;
+                item = DataB.MinionCommands.First(f => (f.Name == "Reader") && (f.Action == "Install")) as MinionCommandItem;
                 await RunCommandItem(item);
             }
             catch (Exception e)
@@ -429,13 +441,13 @@ namespace Scrivener.ViewModel
                 await Machine.Get_Java();
                 if (item.Bit=="64")
                 {
-                    ver = Machine.Java64;
+                    //ver = Machine.Java64;
                 }
                 else
                 {
-                    ver = Machine.Java32;
+                    //ver = Machine.Java32;
                 }
-                result = ver;
+                //result = ver;
             }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();

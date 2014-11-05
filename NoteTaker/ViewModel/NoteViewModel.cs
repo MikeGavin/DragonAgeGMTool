@@ -23,31 +23,36 @@ namespace Scrivener.ViewModel
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
-        public NoteViewModel(QuickItem _tree, ObservableCollection<MinionCommandItem> commands)
+        public DatabaseStorage DataB { get; set; }
+
+        public NoteViewModel()
         {
-            
+            //Creates a shared version of the menus
+            DataB = DatabaseStorage.Instance;
+            //This creates a per instance version of the menus. 
+            Root = DataB.QuickItems;
             Text = Properties.Settings.Default.Default_Note_Template;
-            _minionCommands = commands;
+            //_minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
-            _root = _tree;
+            //_root = _tree;
             //SaveIndex = new_index;
 
-            DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
         }
 
-        private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
-        {
-            if (e.Name.ToLower().Contains("scrivener.sqlite"))
-            {
-                log.Debug("Updating MinionCommands on note {0}", Title);
-                _minionCommands = await LocalDatabase.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-                log.Debug("Updating QuickItems on note {0}", Title);
-                Root = await LocalDatabase.ReturnQuickItems(Properties.Settings.Default.Role_Current);
-            }
-        }
+        //private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
+        //{
+        //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
+        //    {
+        //        log.Debug("Updating MinionCommands on note {0}", Title);
+        //        _minionCommands = await DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
+        //        log.Debug("Updating QuickItems on note {0}", Title);
+        //        Root = await DataBaseReader.ReturnQuickItems(Properties.Settings.Default.Role_Current);
+        //    }
+        //}
 
         private string _minionVisibility;
         public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }
@@ -121,7 +126,7 @@ namespace Scrivener.ViewModel
         private ObservableCollection<MinionCommandItem> _minionCommands;
         // local minion instance for this note.
         private MinionViewModel _noteMinion;
-        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel(_minionCommands)); } set { _noteMinion = value; RaisePropertyChanged(); } }
+        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
         //Register and Unregister Minion instances to allow writing to note
         void MinionCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

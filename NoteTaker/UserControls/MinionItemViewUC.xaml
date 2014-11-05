@@ -164,42 +164,35 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Label>
-        <Label Content="Java32" Foreground="Gray" Grid.Column="2" Grid.Row="1">
+        <Label Content="Java" Foreground="Gray" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="Java64" Foreground="Gray" Grid.Column="2" Grid.Row="2">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Label>
-        <Label Content="Flash" Foreground="Gray" Grid.Column="2" Grid.Row="3">
+        <Label Content="Flash" Foreground="Gray" Grid.Column="2" Grid.Row="2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetFlashCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="Shockwave" Foreground="Gray" Grid.Column="2" Grid.Row="4">
+        <Label Content="Shockwave" Foreground="Gray" Grid.Column="2" Grid.Row="3">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetShockwaveCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="Reader" Foreground="Gray" Grid.Column="2" Grid.Row="5">
+        <Label Content="Reader" Foreground="Gray" Grid.Column="2" Grid.Row="4">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetReaderCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-        <Label Content="Quicktime" Foreground="Gray" Grid.Column="2" Grid.Row="6">
+        <Label Content="Quicktime" Foreground="Gray" Grid.Column="2" Grid.Row="5">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding GetQuicktimeCommand}" />
@@ -228,18 +221,12 @@
                             <Setter Property="CommandParameter" Value="{Binding }"/>
                         </Style>
                     </ContextMenu.ItemContainerStyle>
-                    <ContextMenu.ItemTemplate>
-                        <DataTemplate DataType="{x:Type MenuItem}">
-                            <TextBlock Text="{Binding Path=FullName}"/>
-                        </DataTemplate>
-                    </ContextMenu.ItemTemplate>
-                    <!--<MenuItem Header="Install IE10" Command="{Binding InstalIE10Command}"/>
-                    <MenuItem Header="Install KB2533623" Command="{Binding InstallKB2533623Command}"/>
-                    <MenuItem Header="Install KB2670838" Command="{Binding InstallKB2670838Command}"/>
-                    <MenuItem Header="Install KB2729094" Command="{Binding InstallKB2729094Command}"/>
-                    <MenuItem Header="Install KB2731771" Command="{Binding InstallKB2731771Command}"/>
-                    <MenuItem Header="Install KB2786081" Command="{Binding InstallKB2786081Command}"/>-->
-                </ContextMenu>
+                        <ContextMenu.ItemTemplate>
+                            <DataTemplate DataType="{x:Type MenuItem}">
+                                <TextBlock Text="{Binding Path=FullName}"/>
+                            </DataTemplate>
+                        </ContextMenu.ItemTemplate>
+                    </ContextMenu>
             </Label.ContextMenu>
         </Label>
         </StackPanel>
@@ -251,7 +238,29 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
+            
+            <ListBox Name="MyListBox" ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right" Width="auto" Height="auto" SelectedItem="{Binding SelectedJava}" 
+                     Margin="0,0,3,0" Padding="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding }" Margin="0,0,4,0"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding ElementName=MyListBox, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava}"/>
+                        <MenuItem Header="Install Java" Command="{Binding InstallJavaCommand}"/>
+                        <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
+                    </ContextMenu>
+                    
+                </ListBox.ContextMenu>
+            </ListBox>
+            <!--<Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
@@ -264,30 +273,9 @@
                         <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
                 </ContextMenu>
                 </Label.ContextMenu>
-            </Label>
+            </Label>-->
             </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left">
-            <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonUp">
-                        <i:InvokeCommandAction Command="{Binding GetJavaCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.Java64}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="64"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Width="auto">
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="3" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -295,7 +283,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="{Binding Machine.Flash}" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Right">
+            <Label Content="{Binding Machine.Flash}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
@@ -309,7 +297,7 @@
                 </Label.ContextMenu>
             </Label>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" Width="auto">
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -331,7 +319,7 @@
                 </Label.ContextMenu>
             </Label>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" Width="auto">
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -339,7 +327,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="{Binding Machine.Reader}" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Right">
+            <Label Content="{Binding Machine.Reader}" Grid.Column="3" Grid.Row="4" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
@@ -353,7 +341,7 @@
                 </Label.ContextMenu>
             </Label>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" Width="auto">
+        <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -361,7 +349,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="6" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Label Content="{Binding Machine.Quicktime}" Grid.Column="3" Grid.Row="5" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
@@ -376,7 +364,13 @@
             </Label>
         </StackPanel>
         <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" IsSynchronizedWithCurrentItem="True" 
-                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Margin="0" Padding="1"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,3,0" Padding="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding }" Margin="0,0,4,0"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>
