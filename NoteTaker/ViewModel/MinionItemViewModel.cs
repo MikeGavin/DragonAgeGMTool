@@ -206,39 +206,49 @@ namespace Scrivener.ViewModel
             IECommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
         }
 
+        protected string _selectedjava;
+        public string SelectedJava { get { return _selectedjava; } set { _selectedjava = value; RaisePropertyChanged(); } }
         private RelayCommand<string> _uninstallJavaCommand;
         public RelayCommand<string> UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand<string>(async (param) => await Uninstall_Java(param))); } }
-        public async Task Uninstall_Java(string bit)
+        public async Task Uninstall_Java(string data)
         {
-            //string current;
-            //if (bit =="64")
-            //{
-            //    //current = Machine.Java64;
-            //}
-            //else
-            //{
-            //    //current = Machine.Java32;
-            //}
+            MinionCommandItem item;
+            try
+            {
+                data = data.Replace("-Bit", string.Empty);
+                string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
+                string current = x[0];
+                string bit = x[1];
+                item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;               
+            }
+            catch (Exception e)
+            {
+                log.Debug(e);
+                log.Error(string.Format("Could not find version, uninstalling all."));
+                item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;              
+            }
+            await RunCommandItem(item);
+        }
+        private RelayCommand<int> _uninstallJavaCommand2;
+        public RelayCommand<int> UninstallJavaCommand2 { get { return _uninstallJavaCommand2 ?? (_uninstallJavaCommand2 = new RelayCommand<int>(async (param) => await Uninstall_Java2(param))); } }
+        public async Task Uninstall_Java2(int data)
+        {
 
+            //data = data.Replace("-Bit", string.Empty);
+            //string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
+            //string current = x[0];
+            //string bit = x[1];
+            //MinionCommandItem item;
             //try
             //{
-            //    MinionCommandItem item;
-            //    if (current == "NOT INSTALLED" || current == "ERROR")
-            //    {
-            //        item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
-            //    }
-            //    else
-            //    {
-            //        item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit==bit)) as MinionCommandItem;
-            //    }
-            //    await RunCommandItem(item);
+            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;
             //}
             //catch (Exception e)
             //{
             //    log.Error(e);
-            //    var temp = MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
-            //    return;
+            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
             //}
+            //await RunCommandItem(item);
         }
 
         private RelayCommand _installJavaCommand;

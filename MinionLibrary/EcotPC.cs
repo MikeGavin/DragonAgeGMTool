@@ -235,7 +235,6 @@ namespace Minion
         protected ObservableCollection<string> _javas;
         public ObservableCollection<string> Javas { get { return _javas; } set { _javas = value; RaisePropertyChanged(); } }
 
-
         protected string _Flash;
         public string Flash { get { return _Flash; } set { _Flash = value; RaisePropertyChanged(); } }
         
@@ -381,21 +380,20 @@ namespace Minion
             if (Directory.Exists(path))
             {
                 //Is 64 bit machine
-                await JavaFolderCheck(" 32bit", path);
+                await JavaFolderCheck(", 32-Bit", path);
                 path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
-                await JavaFolderCheck(" 64bit", path);
+                await JavaFolderCheck(", 64-Bit", path);
             }
             else
             {
                 //is 32 bit machine
                 path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
-                await JavaFolderCheck(" 32bit", path);
+                await JavaFolderCheck(", 32-Bit", path);
             }
             if (Javas.Count <= 0)
             {
                 Javas.Add("NOT INSTALLED");
             }
-
             Processing--;
         }
 
@@ -600,7 +598,7 @@ namespace Minion
         public async Task KillDefaults()
         {
             Processing++;
-            var killbatch = new Tool.PAExec(IPAddress, string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory), @"-accepteula -realtime -s c:\temp\defaultkills.bat");
+            var killbatch = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s c:\temp\defaultkills.bat", string.Format(@"{0}\Resources\defaultkills.bat", Environment.CurrentDirectory));
             await killbatch.Run();
             //var gettasks = new Tool.PAExec(IPAddress, @"-accepteula -realtime -s tasklist");
             //await gettasks.Run();

@@ -245,7 +245,26 @@
                 </i:Interaction.Triggers>
             </Label>-->
             
-            <ListBox ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" Width="auto" Height="auto"/>
+            <ListBox Name="MyListBox" ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" Width="auto" Height="auto" SelectedItem="{Binding SelectedJava}">               
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding }"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding ElementName=MyListBox, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava}"/>
+                        <MenuItem Header="Install Java" Command="{Binding InstallJavaCommand}"/>
+                        <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
+                    </ContextMenu>
+                    
+                </ListBox.ContextMenu>
+            </ListBox>
             <!--<Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
