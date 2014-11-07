@@ -254,8 +254,21 @@
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava}"/>
-                        <MenuItem Header="Install Java" Command="{Binding InstallJavaCommand}"/>
+                        <MenuItem Header="Install Newest Java" Command="{Binding InstallJavaCommand}"/>
                         <MenuItem Header="Fix JNLP Assiciation" Command="{Binding FixJNLPCommand}"/>
+                        <MenuItem Header="Manual Command" ItemsSource="{Binding JavaCommands, UpdateSourceTrigger=PropertyChanged}">
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="Command" Value="{Binding UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Path=DataContext.RunItemCommand}"/>
+                                    <Setter Property="CommandParameter" Value="{Binding }"/>
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                            <MenuItem.ItemTemplate>
+                                <DataTemplate DataType="{x:Type MenuItem}">
+                                    <TextBlock Text="{Binding Path=FullName}"/>
+                                </DataTemplate>
+                            </MenuItem.ItemTemplate>
+                        </MenuItem>
                     </ContextMenu>
                     
                 </ListBox.ContextMenu>

@@ -411,7 +411,11 @@ namespace Minion
                     {
                         DirectoryInfo folder1 = new DirectoryInfo(folder);
                         command = string.Format(@"""c:\Program Files (x86)\Java\{0}\bin\Java.exe"" -version", folder1.Name);
-                        Javas.Add(await JavaVersion(command) + bits);
+                        var result = await JavaVersion(command);
+                        if (!result.Contains("ERROR"))
+                        {
+                            Javas.Add(result + bits);
+                        }
                     }
                 }
             }
