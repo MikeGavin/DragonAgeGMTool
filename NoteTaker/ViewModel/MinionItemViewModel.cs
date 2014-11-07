@@ -403,6 +403,8 @@ namespace Scrivener.ViewModel
             }
         }
 
+        #endregion
+
         private async Task RunCommandItem(MinionCommandItem command)
         {
             await Machine.KillDefaults();
@@ -434,20 +436,28 @@ namespace Scrivener.ViewModel
 
         private async Task<string> UpdateItemVersion(MinionCommandItem item)
         {
+            //Machine.Javas
+
             string result = string.Empty;
             if (item.Name.ToLower().Contains("java"))
             {
                 string ver;
                 await Machine.Get_Java();
-                if (item.Bit=="64")
+                foreach (string Java_Item in Machine.Javas)
                 {
-                    //ver = Machine.Java64;
+                    System.Windows.MessageBox.Show(Java_Item.ToString());
                 }
-                else
-                {
-                    //ver = Machine.Java32;
-                }
-                //result = ver;
+
+
+                //if (item.Bit=="64")
+                //{
+                //    //ver = Machine.Java64;
+                //}
+                //else
+                //{
+                //    //ver = Machine.Java32;
+                //}
+                ////result = ver;
             }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();
@@ -459,7 +469,6 @@ namespace Scrivener.ViewModel
                 result = await Machine.Get_Quicktime();
             return result;
         } 
-        #endregion
         
     }
 }
