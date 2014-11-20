@@ -380,15 +380,14 @@ namespace Minion
             if (Directory.Exists(path))
             {
                 //Is 64 bit machine
-                await JavaFolderCheck(", 32-Bit", path);
-                path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
-                await JavaFolderCheck(", 64-Bit", path);
+                
+                await JavaFolderCheck(", 32-Bit", @"Program Files (x86)");
+                await JavaFolderCheck(", 64-Bit", "Program Files");
             }
             else
             {
                 //is 32 bit machine
-                path = string.Format(@"\\{0}\c$\Program Files\", IPAddress);
-                await JavaFolderCheck(", 32-Bit", path);
+                await JavaFolderCheck(", 32-Bit", @"Program Files");
             }
             if (Javas.Count <= 0)
             {
@@ -397,8 +396,9 @@ namespace Minion
             Processing--;
         }
 
-        private async Task JavaFolderCheck(string bits, string path)
+        private async Task JavaFolderCheck(string bits, string pf)
         {
+            var path = string.Format(@"\\{0}\c$\{1}\", IPAddress, pf);
             string command;
             var javaPath = Path.Combine(path, "Java");
             if (Directory.Exists(javaPath))
@@ -410,7 +410,7 @@ namespace Minion
                     if (File.Exists(fullpathfile))
                     {
                         DirectoryInfo folder1 = new DirectoryInfo(folder);
-                        command = string.Format(@"""c:\Program Files (x86)\Java\{0}\bin\Java.exe"" -version", folder1.Name);
+                        command = string.Format(@"""c:\{1}\Java\{0}\bin\Java.exe"" -version", folder1.Name, pf);
                         var result = await JavaVersion(command);
                         if (!result.Contains("ERROR"))
                         {
