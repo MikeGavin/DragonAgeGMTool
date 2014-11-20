@@ -204,6 +204,14 @@ namespace Scrivener.ViewModel
             SelectedNote = Notes.Last();
         }
 
+        //Recall Notes
+        private RelayCommand<string> _RecallNoteCommand;
+        public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RelayCommand"))); } }
+        private async void RecallNote([CallerMemberName]string memberName = "")
+        {
+            //MessageBox.Show("ReCall NOTES");
+        }
+
         #region ToolBar Items
 
         private RelayCommand _QuickNoteToggleCommand;
