@@ -117,7 +117,7 @@ namespace Scrivener.ViewModel
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                     AppMode = "development";
                 }
-                else if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivener"))
+                else if (uri.LocalPath.ToLower().Contains(@"/edTech/scrivener"))
                 {
                     AppMode = "Production";
                 }
