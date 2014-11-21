@@ -238,6 +238,11 @@
 
                 </DataTemplate>
             </TabControl.ContentTemplate>
+            <TabControl.InputBindings>
+                <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />
+                <KeyBinding Command="{Binding SelectedNote.CloseNoteCommand}" Key="W" Modifiers="Ctrl"/>
+                <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
+            </TabControl.InputBindings>
         </TabControl>
         <!--<ToolBarPanel HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="213">
             <ToolBar Grid.Row="0" HorizontalAlignment="Left" Width="583" Margin="0,0,-370,0" FontFamily ="pack://application:,,,/Resources/#FontAwesome">

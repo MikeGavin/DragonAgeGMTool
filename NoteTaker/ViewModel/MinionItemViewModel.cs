@@ -15,6 +15,7 @@ using System.Windows.Data;
 using Minion.ListItems;
 using Scrivener.Model;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Scrivener.ViewModel
 {
@@ -198,9 +199,18 @@ namespace Scrivener.ViewModel
             if (e.PropertyName == "OSBit" && Machine.OSBit != null)
             {
                 SetIECommands();
+                SetJavaCommands();
             }
         }
 
+        private void SetJavaCommands()
+        {
+            JavaCommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => ((i.Name == "Java") )).OrderBy(i => i.Version));
+           
+        }
+
+        private ObservableCollection<MinionCommandItem> _javaCommands;
+        public ObservableCollection<MinionCommandItem> JavaCommands { get { return _javaCommands; } set { _javaCommands = value; RaisePropertyChanged(); } }
         private void SetIECommands()
         {
             IECommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
@@ -229,27 +239,6 @@ namespace Scrivener.ViewModel
             }
             await RunCommandItem(item);
         }
-        private RelayCommand<int> _uninstallJavaCommand2;
-        public RelayCommand<int> UninstallJavaCommand2 { get { return _uninstallJavaCommand2 ?? (_uninstallJavaCommand2 = new RelayCommand<int>(async (param) => await Uninstall_Java2(param))); } }
-        public async Task Uninstall_Java2(int data)
-        {
-
-            //data = data.Replace("-Bit", string.Empty);
-            //string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
-            //string current = x[0];
-            //string bit = x[1];
-            //MinionCommandItem item;
-            //try
-            //{
-            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;
-            //}
-            //catch (Exception e)
-            //{
-            //    log.Error(e);
-            //    item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == "All")) as MinionCommandItem;
-            //}
-            //await RunCommandItem(item);
-        }
 
         private RelayCommand _installJavaCommand;
         public RelayCommand InstallJavaCommand { get { return _installJavaCommand ?? (_installJavaCommand = new RelayCommand(async () => await Install_Java())); } }
@@ -262,16 +251,16 @@ namespace Scrivener.ViewModel
                 foreach (var i in items)
                 {
                     if (item.Version == null) { item = i; }
-                    
-                    
-                    if (Convert.ToInt32(i.Version.Remove(0,6)) > Convert.ToInt32(item.Version.Remove(0,6)))
+
+                    if (Convert.ToInt32(Regex.Replace(i.Version, @"[^\d]", string.Empty)) > Convert.ToInt32(Regex.Replace(item.Version, @"[^\d]", string.Empty)))
                     {
                         item = i;
                     }
                 }
                 await RunCommandItem(item);
-                item = DataB.MinionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
-                await RunCommandItem(item);
+                
+                //item = DataB.MinionCommands.First((j) => j.Action == "Fix" && j.Name == "Java");
+                //await RunCommandItem(item);
             }
             catch (Exception e)
             {
@@ -403,51 +392,117 @@ namespace Scrivener.ViewModel
             }
         }
 
+        #endregion
+
         private async Task RunCommandItem(MinionCommandItem command)
         {
             await Machine.KillDefaults();
             var result = await Machine.Command(command);
             string vresult = await UpdateItemVersion(command);
 
-            if (command.Action == "Uninstall")
+            if (command.Name != "Java")
             {
-                if (vresult == "NOT INSTALLED")
-                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall and {0} is now no longer reported as installed.", command.Name));
-                else if (vresult == "ERROR")
-                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but lookup of current {0} verson returned an error.", command.Name));
-                else
-                    RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but was unable to verify uninstall.", command.Name));
+                if (command.Action == "Uninstall")
+                {
+                    if (vresult == "NOT INSTALLED")
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall and {0} is now no longer reported as installed.", command.Name));
+                    else if (vresult == "ERROR")
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but lookup of current {0} verson returned an error.", command.Name));
+                    else
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but was unable to verify uninstall.", command.Name));
+                }
+                else if (command.Action == "Install")
+                {
+                    if (vresult == "NOT INSTALLED")
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", command.Name, command.Version));
+                    else if (vresult == "ERROR")
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", command.Name));
+                    else if (vresult.Contains(command.Version))
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", command.Name, vresult));
+                    else
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", command.Name));
+                }
             }
-            else if (command.Action == "Install")
+            else
             {
-                if (vresult == "NOT INSTALLED")
-                    RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", command.Name, command.Version));
-                else if (vresult == "ERROR")
-                    RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", command.Name));
-                else if (vresult.Contains(command.Version))
-                    RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", command.Name, vresult));
-                else
-                    RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", command.Name));
+                if (command.Action == "Uninstall" && command.Version != "All")
+                {
+                    if (!Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, version {1} is no longer installed.", command.Name, command.Version));
+                    }
+                    else
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, unable to verify version {1} was uninstalled.", command.Name, command.Version));
+                    }
+                }
+                else if (command.Action == "Uninstall" && command.Version == "All")
+                {
+                    if (!Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, {1} versions are no longer installed.", command.Name, command.Version));
+                    }
+                    else
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, unable to verify {1} version were uninstalled.", command.Name, command.Version));
+                    }
+                }
+                else if (command.Action == "Install")
+                {
+                    if (Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install, version {1} is now installed.", command.Name, command.Version));
+                    }
+                    else
+                    {
+                        RaiseNoteWrite(string.Format("Ran Minion {0} install, unable to verify version {1} was installed.", command.Name, command.Version));
+                    }                    
+                }
             }
+
+            //if (command.Action == "Uninstall")
+            //{
+            //    if (vresult == "NOT INSTALLED")
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall and {0} is now no longer reported as installed.", command.Name));
+            //    else if (vresult == "ERROR")
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but lookup of current {0} verson returned an error.", command.Name));
+            //    else
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} uninstall but was unable to verify uninstall.", command.Name));
+            //}
+            //else if (command.Action == "Install")
+            //{
+            //    if (vresult == "NOT INSTALLED")
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} install of version {1} but the install failed.", command.Name, command.Version));
+            //    else if (vresult == "ERROR")
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} install but version lookup returned an error.", command.Name));
+            //    else if (vresult.Contains(command.Version))
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} install and {0} version {1} is now installed.", command.Name, vresult));
+            //    else
+            //        RaiseNoteWrite(string.Format("Ran Minion {0} install but Minion was unable to verify install.", command.Name));
+            //}
 
         }
 
         private async Task<string> UpdateItemVersion(MinionCommandItem item)
         {
+            //Machine.Javas
+
             string result = string.Empty;
             if (item.Name.ToLower().Contains("java"))
             {
                 string ver;
                 await Machine.Get_Java();
-                if (item.Bit=="64")
-                {
-                    //ver = Machine.Java64;
-                }
-                else
-                {
-                    //ver = Machine.Java32;
-                }
-                //result = ver;
+
+
+                //if (item.Bit=="64")
+                //{
+                //    //ver = Machine.Java64;
+                //}
+                //else
+                //{
+                //    //ver = Machine.Java32;
+                //}
+                ////result = ver;
             }
             else if (item.Name.ToLower().Contains("flash"))
                 result = await Machine.Get_Flash();
@@ -459,7 +514,6 @@ namespace Scrivener.ViewModel
                 result = await Machine.Get_Quicktime();
             return result;
         } 
-        #endregion
         
     }
 }

@@ -124,7 +124,7 @@ namespace Scrivener.ViewModel
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                     AppMode = "development";
                 }
-                else if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivener"))
+                else if (uri.LocalPath.ToLower().Contains(@"/edTech/scrivener"))
                 {
                     AppMode = "Production";
                 }
@@ -213,6 +213,14 @@ namespace Scrivener.ViewModel
             log.Debug("{0} ran NewNote", memberName);
             Notes.Add(new NoteViewModel(CreatesHistory()));
             SelectedNote = Notes.Last();
+        }
+
+        //Recall Notes
+        private RelayCommand<string> _RecallNoteCommand;
+        public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RelayCommand"))); } }
+        private async void RecallNote([CallerMemberName]string memberName = "")
+        {
+            //MessageBox.Show("ReCall NOTES");
         }
 
         #region ToolBar Items
