@@ -25,7 +25,7 @@ namespace Scrivener.ViewModel
 
         public DatabaseStorage DataB { get; set; }
 
-        public NoteViewModel()
+        public NoteViewModel(int new_index)
         {
             //Creates a shared version of the menus
             DataB = DatabaseStorage.Instance;
@@ -36,7 +36,7 @@ namespace Scrivener.ViewModel
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
             //_root = _tree;
-            //SaveIndex = new_index;
+            SaveIndex = new_index;
 
             //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             this.TextChanged += Note_TextChanged;

@@ -19,8 +19,7 @@
         Width="722" 
         
         SaveWindowPosition="True" Margin="0"
-         Icon="Icon.ico" ShowIconOnTitleBar="False"
-                      >
+         Icon="Icon.ico" ShowIconOnTitleBar="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

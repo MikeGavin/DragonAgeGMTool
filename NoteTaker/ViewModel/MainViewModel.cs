@@ -62,6 +62,8 @@ namespace Scrivener.ViewModel
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
+            App.Fucked += Saveallnotesoncrash;
+
             DataB = DatabaseStorage.Instance;
             
             //Checks deployment and enables update systems if necessary
@@ -74,8 +76,13 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
             //Self Explained
-            //CleanDatabase();           
-            //StartNoteSaveTask();            
+            StartNoteSaveTask();
+            setmidnight();
+            CleanDatabase();
+            //HistoryCleanuponlaunch();
+
+            Application.Current.MainWindow.Closing += new CancelEventHandler(Saveallnotesonclose);
+
         }
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
@@ -173,6 +180,9 @@ namespace Scrivener.ViewModel
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
         }
+
+        public int lastnoteindex = 0;
+
         private async void CloseNote(NoteViewModel note)
         {            
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
@@ -180,13 +190,15 @@ namespace Scrivener.ViewModel
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
                 if (result == true)
                 {
-                    //Closereplacenotes();
+                    SaveCurrentTabOnClose(note);
+                    lastnoteindex = SelectedNote.SaveIndex;
                     Notes.Remove(note);
                 }
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
-                //Closereplacenotes();
+                SaveCurrentTabOnClose(note);
+                lastnoteindex = SelectedNote.SaveIndex;
                 Notes.Remove(note);
             }
             if (Notes.Count == 0)
@@ -198,9 +210,8 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<string>((parm) => NewNote("RelayCommand") )); } }
         private async void NewNote([CallerMemberName]string memberName = "")
         {
-            //CreateCallHistory();
             log.Debug("{0} ran NewNote", memberName);
-            Notes.Add(new NoteViewModel());
+            Notes.Add(new NoteViewModel(CreatesHistory()));
             SelectedNote = Notes.Last();
         }
 
@@ -337,7 +348,9 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region Call histor
+        #region Call history
+
+        
 
         public void SaveNotes(object sender, EventArgs e)
         {
@@ -361,210 +374,348 @@ namespace Scrivener.ViewModel
             }
         }
 
-        ////builds or gets History
+        //builds or gets History
         //private ObservableCollection<HistoryItem> _history;
         //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-        //private static void CreateCallHistory()
-        //{
-        //    //String for naming the table
-        //    string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-        //    //DB connection
-        //    SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-        //    //creates Call History Database and populates table with todays date if none exist
-        //    string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}]([ID],[Caller],[Notes]);", Date);
-        //    SQLiteCommand command = new SQLiteCommand(query, Call_history);
-
-        //    Call_history.Open();
-        //    //creates DB and table for todays saving of notes 
-        //    command.ExecuteNonQuery();
-        //    Call_history.Close();
-        //}
-        //private int SaveNotes()
-        //{
-        //    CreateCallHistory();
-        //    string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-        //    string Title = "Title";
-        //    string Text = "Text";
-        //    int index = 0;
-        //    SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-
-        //    string count = string.Format("SELECT COUNT (ID) from {0}", Date);
-
-        //    Call_history.Open();
-        //    try
-        //    {
-
-        //        using (SQLiteCommand docount = Call_history.CreateCommand())
-        //        {
-        //            docount.CommandText = count;
-        //            docount.ExecuteNonQuery();
-        //            index = Convert.ToInt32(docount.ExecuteScalar());
-        //            index++;
-                    
-        //            string insert = string.Format("INSERT INTO {0} (ID,Caller,Notes) values ('{1}','{2}','{3}');", Date, index, Title, Text);
-                    
-        //            SQLiteCommand insertcommand = new SQLiteCommand(insert, Call_history);
-                    
-        //            insertcommand.ExecuteNonQuery();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        log.Error(e);
-        //        Model.ExceptionReporting.Email(e);
-        //    }
-
-        //    Call_history.Close();
-
-        //    return index;
-
-        //}
-
-        //CancellationTokenSource tokenSource = new CancellationTokenSource();
-        //public async Task ReplaceNotes(CancellationToken token)
-        //{
-        //    while (token.IsCancellationRequested == false)
-        //    {
-        //        Thread.Sleep(30000);
-        //        string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-        //        string Title = "Title";
-        //        string Text = "Text";
-        //        SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-        //        await Call_history.OpenAsync();
-        //        foreach (NoteViewModel n in Notes)
-        //        {
-        //            string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
-        //            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
-                    
-        //            SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
-        //            SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
-                    
-        //            try
-        //            {
-        //                await replacetitlecommand.ExecuteNonQueryAsync();
-        //                await replacenotecommand.ExecuteNonQueryAsync();
+       
+        private int CreatesHistory()
+        {
+            //String for naming the table
+            string name = "CurrentHistory";
+            string name2 = "ArchiveHistory";
+            //DB connection
+            string Title = "Title";
+            string Text = "Text";
+            int initialcountvalue = 0;
+            int countvalue = 0;
+            int index = 0;
+            
+            
+            string initialcount = string.Format("SELECT COUNT (ID) from {0}", name);
+            string initialinsert = string.Format("INSERT INTO {0} (Date,Time,ID,Caller,Notes) values ('Date','Time','1','{1}','{2}');", name, Title, Text);
                         
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                log.Error(e);
-        //                //Model.ExceptionReporting.Email(e);
-        //            }
-        //        }
+            String count = "SELECT ID from CurrentHistory ORDER BY ID desc limit 1";
 
-        //        string cleantable = string.Format("DELETE FROM {0} WHERE Caller = '{1}' AND Notes = '{2}'", Date, Title, Text);
-        //        SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
-        //        try
-        //            {
-        //                await cleantablecommand.ExecuteNonQueryAsync();
-        //            }
-        //        catch (Exception e)
-        //            {
-        //                log.Error(e);
-        //            }
-        //        Call_history.Close();
-        //    }
-        //}
-        //private void StartNoteSaveTaskX()
-        //{
-        //    var token = tokenSource.Token;
-        //    Task noteSaving = new Task(() => ReplaceNotes(token), token, TaskCreationOptions.LongRunning);
-        //    noteSaving.Start();
-        //}
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            //creates Call History Database and populates table with todays date if none exist
+            string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name);
+            string query2 = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name2);
+            
+            SQLiteCommand command = new SQLiteCommand(query, Call_history);
+            SQLiteCommand command2 = new SQLiteCommand(query2, Call_history);
+            
+            Call_history.Open();
+            //creates DB and table for todays saving of notes 
+            command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();            
+
+            try
+            {
+                using (SQLiteCommand doinitialcount = Call_history.CreateCommand())
+                {
+                    doinitialcount.CommandText = initialcount;
+                    doinitialcount.ExecuteNonQuery();
+                    initialcountvalue = Convert.ToInt32(doinitialcount.ExecuteScalar());
+                    if (initialcountvalue == 0)
+                    {
+                        SQLiteCommand initialinsertcommand = new SQLiteCommand(initialinsert, Call_history);
+                        initialinsertcommand.ExecuteNonQuery();
+                        index = 1;
+                    }
+                    else if (initialcountvalue > 0)
+                    {
+                        using (SQLiteCommand docount = Call_history.CreateCommand())
+                        {
+                            docount.CommandText = count;
+                            docount.ExecuteNonQuery();
+                            countvalue = Convert.ToInt32(docount.ExecuteScalar());
+                        }                        
+
+                        index = countvalue;
+                        index++;
+
+                        string insert = string.Format("INSERT INTO {0} (Date,Time,ID,Caller,Notes) values ('Date','Time','{1}','{2}','{3}');", name, index, Title, Text);
+
+                        SQLiteCommand insertcommand = new SQLiteCommand(insert, Call_history);
+
+                        insertcommand.ExecuteNonQuery();
+                    }
+
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                Model.ExceptionReporting.Email(e);
+            }
+
+            Call_history.Close();
+
+            return index;
+        }
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        public async Task ReplaceHistory(CancellationToken token)
+        {
+            
+            while (token.IsCancellationRequested == false)
+            {
+                Thread.Sleep(30000);
+                string name = "CurrentHistory";
+                string Date = DateTime.Now.ToString("ddd MMM d yyyy");
+                string Time = DateTime.Now.ToString("HH:mm:ss");
+                string Title = "Title";
+                string Text = "Text";
+                SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                await Call_history.OpenAsync();
+                foreach (NoteViewModel n in Notes)
+                {
+                    string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
+                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, n.Text, n.SaveIndex);
+                    string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
+                    string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
+
+                    SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
+                    SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+                    SQLiteCommand replacedatecommand = new SQLiteCommand(replacedate, Call_history);
+                    SQLiteCommand replacetimecommand = new SQLiteCommand(replacetime, Call_history);
+
+                    try
+                    {
+                        await replacetitlecommand.ExecuteNonQueryAsync();
+                        await replacedatecommand.ExecuteNonQueryAsync();
+                        await replacenotecommand.ExecuteNonQueryAsync();
+                        await replacetimecommand.ExecuteNonQueryAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);
+                        //Model.ExceptionReporting.Email(e);
+                    }
+               }               
+                Call_history.Close();
+                midnighttimer();    
+            }
+        }
+        private void StartNoteSaveTask()
+        {
+            var token = tokenSource.Token;
+            Task noteSaving = new Task(() => ReplaceHistory(token), token, TaskCreationOptions.LongRunning);
+            noteSaving.Start();
+        }
+
+        public void CleanDatabase()
+        {
+            //string Mondaycheck = DateTime.Now.ToString("dddd");
+            string Today = DateTime.Now.ToString("ddd MMM d yyyy");
+            //string Yesterday = DateTime.Now.AddDays(-1).ToString("ddd MMM d yyyy");
+            //string Saturday = DateTime.Now.AddDays(-2).ToString("ddd MMM d yyyy");
+            //string Friday = DateTime.Now.AddDays(-3).ToString("ddd MMM d yyyy");
+
+            //if (Mondaycheck == "Monday")
+            //{
+                SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                Call_history.Open();
+
+                {
+                    string copy = String.Format("INSERT INTO ArchiveHistory (Date,Time,ID,Caller,Notes) SELECT Date,Time,ID,Caller,Notes FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
+                    string cleanup = String.Format("DELETE FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
+                    string cleanupdefaultinarch = "DELETE FROM ArchiveHistory WHERE Date LIKE 'Date'";
+                    SQLiteCommand docopy = new SQLiteCommand(copy, Call_history);
+                    SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
+                    SQLiteCommand docleanupdefaultinarch = new SQLiteCommand(cleanupdefaultinarch, Call_history);
+
+                    try
+                    {
+                        docopy.ExecuteNonQuery();
+                        docleanup.ExecuteNonQuery();
+                        docleanupdefaultinarch.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(e);
+                        //Model.ExceptionReporting.Email(e);
+                    }
+                }
+                Call_history.Close();
+            ////}
+            ////else if (Mondaycheck != "Monday")
+            ////{
+                //SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                //Call_history.Open();
+
+                //{
+                //    string copy = String.Format("INSERT INTO ArchiveHistory (Date,Time,ID,Caller,Notes) SELECT Date,Time,ID,Caller,Notes FROM CurrentHistory WHERE Date NOT LIKE '{0}' AND Date NOT LIKE '{1}'", Today, Yesterday);
+                //    string cleanup = String.Format("DELETE FROM CurrentHistory WHERE Date NOT LIKE '{0}' AND Date NOT LIKE '{1}'", Today, Yesterday);
+                //    string cleanupdefaultinarch = "DELETE FROM ArchiveHistory WHERE Date LIKE 'Date'";
+                //    SQLiteCommand docopy = new SQLiteCommand(copy, Call_history);
+                //    SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
+                //    SQLiteCommand docleanupdefaultinarch = new SQLiteCommand(cleanupdefaultinarch, Call_history);
+
+                //    try
+                //    {
+                //        docopy.ExecuteNonQuery();
+                //        docleanup.ExecuteNonQuery();
+                //        docleanupdefaultinarch.ExecuteNonQuery();
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        log.Error(e);
+                //        //Model.ExceptionReporting.Email(e);
+                //    }
+                //}
+                //Call_history.Close();
+            //}
+        }
+
+        string timertoday = null;
         
-        //public async void CleanDatabase()
+        public void setmidnight()
+        {
+            string today = DateTime.Now.Date.ToString();
+            
+            timertoday = today;
+        }
+
+        public void midnighttimer()
+        {
+            string today = DateTime.Now.Date.ToString();
+            
+            if (today != timertoday)
+            {
+                MessageBox.Show("It worked");
+                CleanDatabase();
+                setmidnight();
+            }
+            else { }            
+        }
+
+        public void Saveallnotesonclose(object sender, CancelEventArgs e)
+        {
+            SaveAllNotes();
+        }
+
+        public void Saveallnotesoncrash(object sender, EventArgs e)
+        {
+            SaveAllNotes();
+        }
+
+        private void SaveAllNotes()
+        {
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            Call_history.Open();
+            foreach (NoteViewModel n in Notes)
+            {
+                SaveCurrentTabOnClose(n);
+            }
+            Call_history.Close();
+        }
+
+        private static void SaveCurrentTabOnClose(NoteViewModel n)
+
+        {
+            //String for naming the table
+            string name = "CurrentHistory";
+            //String for creating time stamp
+            string Date = DateTime.Now.ToString("ddd MMM d yyyy");
+            string Time = DateTime.Now.ToString("HH:mm:ss");
+            //Strings for replacing "Caller" and "Notes" value
+            string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
+            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, n.Text, n.SaveIndex);
+            string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
+            string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
+            //Database Path
+            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            //Updates notes in Database
+            Call_history.Open();
+            SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
+            SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+            SQLiteCommand replacedatecommand = new SQLiteCommand(replacedate, Call_history);
+            SQLiteCommand replacetimecommand = new SQLiteCommand(replacetime, Call_history);
+            try
+            {
+                replacetitlecommand.ExecuteNonQuery();
+                replacenotecommand.ExecuteNonQuery();
+                replacedatecommand.ExecuteNonQuery();
+                replacetimecommand.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                //Model.ExceptionReporting.Email(e);
+            }
+            
+            HistoryCleanup(n, name, Call_history);
+            Call_history.Close();
+        }
+
+        private static void HistoryCleanup(NoteViewModel n, string name, SQLiteConnection Call_history)
+        {
+            //Deletes call from history if notes match default template
+            if (n.Text == Properties.Settings.Default.Default_Note_Template.ToString())
+            {
+                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.SaveIndex);
+
+                SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+
+                try
+                {
+                    cleantablecommand.ExecuteNonQueryAsync();
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                    //Model.ExceptionReporting.Email(e);
+                }
+            }
+            //Deletes call from history if notes are empty
+            if (n.Text == "")
+            {
+                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.SaveIndex);
+
+                SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+
+                try
+                {
+                    cleantablecommand.ExecuteNonQueryAsync();
+                }
+                catch (Exception e)
+                {
+                    log.Error(e);
+                    //Model.ExceptionReporting.Email(e);
+                }
+            }
+        }
+
+        //private static void HistoryCleanuponlaunch()
         //{
-        //    string Mondaycheck = DateTime.Now.ToString("dddd");
-        //    string Today = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-        //    string Yesterday = DateTime.Now.AddDays(-1).ToString("D").Replace(" ", "").Replace(",", "");
-        //    string Saturday = DateTime.Now.AddDays(-2).ToString("D").Replace(" ", "").Replace(",", "");
-        //    string Friday = DateTime.Now.AddDays(-3).ToString("D").Replace(" ", "").Replace(",", "");
+        //        string arch = "ArchiveHistory";
+        //        string current = "CurrentHistory";
 
-        //    if (Mondaycheck == "Monday")
+        //        string blank = "";
+        //        string template = Properties.Settings.Default.Default_Note_Template.ToString();
 
-        //    {
+        //        string cleanarch = string.Format("DELETE FROM {0} WHERE Notes = '{1}'", arch, template, blank);
+        //        string cleancurrent = string.Format("DELETE FROM {0} WHERE Notes = '{1}'", current, template, blank);
+
         //        SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-        //        await Call_history.OpenAsync();
-
-        //        {
-        //            string cleanup = String.Format("PRAGMA writable_schema = 1;delete from sqlite_master where type = 'table' AND name NOT LIKE '{0}' AND name NOT LIKE '{1}' AND name NOT LIKE '{2}';PRAGMA writable_schema = 0;", Today, Friday, Saturday);
-        //            SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
-
-        //            try
-        //            {
-        //                await docleanup.ExecuteNonQueryAsync();
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                log.Error(e);
-        //                //Model.ExceptionReporting.Email(e);
-        //            }
-        //        }
-        //        Call_history.Close();
-        //    }
-        //    else if (Mondaycheck != "Monday")
-        //    {
-        //        SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-        //        await Call_history.OpenAsync();
-
-        //        {
-        //            string cleanup = String.Format("PRAGMA writable_schema = 1;delete from sqlite_master where type = 'table' AND name NOT LIKE '{0}' AND name NOT LIKE '{1}';PRAGMA writable_schema = 0;", Today, Yesterday);
-        //            SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
-
-        //            try
-        //            {
-        //                await docleanup.ExecuteNonQueryAsync();
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                log.Error(e);
-        //                //Model.ExceptionReporting.Email(e);
-        //            }
-        //        }
-        //        Call_history.Close();
-        //    }
-        //}
-
-        //public async void Closereplacenotes()
-        //{
-        //    string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
-        //    string Title = "Title";
-        //    string Text = "Text";
-        //    SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
-        //    Call_history.Open();
-        //    foreach (NoteViewModel n in Notes)
-        //    {
-        //        string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", Date, n.Title, n.SaveIndex);
-        //        string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", Date, n.Text, n.SaveIndex);
                 
-        //        SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
-        //        SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+        //        SQLiteCommand cleanarchcommand = new SQLiteCommand(cleanarch, Call_history);
+        //        SQLiteCommand cleancurrentcommand = new SQLiteCommand(cleancurrent, Call_history);
+
         //        try
         //        {
-        //           await  replacetitlecommand.ExecuteNonQueryAsync();
-        //           await  replacenotecommand.ExecuteNonQueryAsync();
+        //            MessageBox.Show("FUZZY WUZZY GOPHER NUTS");
+        //            cleanarchcommand.ExecuteNonQuery();
+        //            cleancurrentcommand.ExecuteNonQuery();
         //        }
         //        catch (Exception e)
         //        {
         //            log.Error(e);
         //            //Model.ExceptionReporting.Email(e);
         //        }
-        //    }
-
-        //    string cleantable = string.Format("DELETE FROM {0} WHERE Caller = '{1}' AND Notes = '{2}'", Date, Title, Text);
-        //    SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
-        //    try
-        //    { 
-        //        await cleantablecommand.ExecuteNonQueryAsync(); 
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        log.Error(e);
-        //        //Model.ExceptionReporting.Email(e);
-        //    }
-        //    Call_history.Close();
-
         //}
 
         #endregion
