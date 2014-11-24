@@ -76,6 +76,7 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
             //Self Explained
+            createfolder();
             StartNoteSaveTask();
             setmidnight();
             CleanDatabase();
@@ -191,14 +192,24 @@ namespace Scrivener.ViewModel
                 if (result == true)
                 {
                     SaveCurrentTabOnClose(note);
-                    lastnoteindex = SelectedNote.SaveIndex;
+                    if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
+                    {
+                        lastnoteindex = SelectedNote.SaveIndex;
+                        
+                    }
+                    else { }
                     Notes.Remove(note);
                 }
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
                 SaveCurrentTabOnClose(note);
-                lastnoteindex = SelectedNote.SaveIndex;
+                if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
+                {
+                    lastnoteindex = SelectedNote.SaveIndex;
+
+                }
+                else { }
                 Notes.Remove(note);
             }
             if (Notes.Count == 0)
@@ -215,12 +226,51 @@ namespace Scrivener.ViewModel
             SelectedNote = Notes.Last();
         }
 
+        
         //Recall Notes
         private RelayCommand<string> _RecallNoteCommand;
         public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RelayCommand"))); } }
         private async void RecallNote([CallerMemberName]string memberName = "")
         {
-            //MessageBox.Show("ReCall NOTES");
+            string lasttext = String.Format("SELECT Notes FROM CurrentHistory WHERE ID = '{0}'", lastnoteindex);
+            string lasttitle = String.Format("SELECT Caller FROM CurrentHistory WHERE ID = '{0}'", lastnoteindex);
+            string lasttextvalue = "";
+            string lasttitlevalue = "";
+
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            //SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
+
+            using (SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;"))
+            {
+                Call_history.Open();
+
+                using (SQLiteCommand lastcalltext = Call_history.CreateCommand())
+                {
+                    lastcalltext.CommandText = lasttext;
+                    lastcalltext.ExecuteNonQuery();
+                    lasttextvalue = Convert.ToString(lastcalltext.ExecuteScalar());
+                }
+                using (SQLiteCommand lastcalltitle = Call_history.CreateCommand())
+                {
+                    lastcalltitle.CommandText = lasttitle;
+                    lastcalltitle.ExecuteNonQuery();
+                    lasttitlevalue = Convert.ToString(lastcalltitle.ExecuteScalar());
+                }  
+
+                Call_history.Close();
+
+                if (lastnoteindex != 0)
+                {
+                    lasttextvalue = lasttextvalue.Replace("`", "'");
+                    NewNote();
+                    SelectedNote.Text = lasttextvalue;
+                    SelectedNote.Title = lasttitlevalue;
+                    lastnoteindex = 0;
+                }
+                else if (lastnoteindex == 0)
+                { }
+
+            }
         }
 
         #region ToolBar Items
@@ -386,7 +436,13 @@ namespace Scrivener.ViewModel
         //private ObservableCollection<HistoryItem> _history;
         //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-       
+       public void createfolder()
+        {
+           string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
+           if (!Directory.Exists(folder))
+               Directory.CreateDirectory(folder);
+        }
+
         private int CreatesHistory()
         {
             //String for naming the table
@@ -405,7 +461,8 @@ namespace Scrivener.ViewModel
                         
             String count = "SELECT ID from CurrentHistory ORDER BY ID desc limit 1";
 
-            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
             //creates Call History Database and populates table with todays date if none exist
             string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name);
             string query2 = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name2);
@@ -476,12 +533,15 @@ namespace Scrivener.ViewModel
                 string Time = DateTime.Now.ToString("HH:mm:ss");
                 string Title = "Title";
                 string Text = "Text";
-                SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                
+                AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+                SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
                 await Call_history.OpenAsync();
                 foreach (NoteViewModel n in Notes)
                 {
+                    string correcttext = n.Text.Replace("'", "`");
                     string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
-                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, n.Text, n.SaveIndex);
+                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.SaveIndex);
                     string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
                     string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
 
@@ -524,7 +584,8 @@ namespace Scrivener.ViewModel
 
             //if (Mondaycheck == "Monday")
             //{
-                SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
                 Call_history.Open();
 
                 {
@@ -551,7 +612,8 @@ namespace Scrivener.ViewModel
             ////}
             ////else if (Mondaycheck != "Monday")
             ////{
-                //SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+                //AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+                //SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
                 //Call_history.Open();
 
                 //{
@@ -612,7 +674,8 @@ namespace Scrivener.ViewModel
 
         private void SaveAllNotes()
         {
-            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
             Call_history.Open();
             foreach (NoteViewModel n in Notes)
             {
@@ -630,12 +693,14 @@ namespace Scrivener.ViewModel
             string Date = DateTime.Now.ToString("ddd MMM d yyyy");
             string Time = DateTime.Now.ToString("HH:mm:ss");
             //Strings for replacing "Caller" and "Notes" value
+            string correcttext = n.Text.Replace("'", "`");
             string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
-            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, n.Text, n.SaveIndex);
+            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.SaveIndex);
             string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
             string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
             //Database Path
-            SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
             //Updates notes in Database
             Call_history.Open();
             SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
@@ -657,6 +722,7 @@ namespace Scrivener.ViewModel
             
             HistoryCleanup(n, name, Call_history);
             Call_history.Close();
+            
         }
 
         private static void HistoryCleanup(NoteViewModel n, string name, SQLiteConnection Call_history)
@@ -670,7 +736,7 @@ namespace Scrivener.ViewModel
 
                 try
                 {
-                    cleantablecommand.ExecuteNonQueryAsync();
+                    cleantablecommand.ExecuteNonQueryAsync();                    
                 }
                 catch (Exception e)
                 {
@@ -708,7 +774,8 @@ namespace Scrivener.ViewModel
         //        string cleanarch = string.Format("DELETE FROM {0} WHERE Notes = '{1}'", arch, template, blank);
         //        string cleancurrent = string.Format("DELETE FROM {0} WHERE Notes = '{1}'", current, template, blank);
 
-        //        SQLiteConnection Call_history = new SQLiteConnection("Data Source=Call_History.db;Version=3;New=True;Compress=True;");
+        //AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        //    SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
                 
         //        SQLiteCommand cleanarchcommand = new SQLiteCommand(cleanarch, Call_history);
         //        SQLiteCommand cleancurrentcommand = new SQLiteCommand(cleancurrent, Call_history);
