@@ -61,8 +61,9 @@ namespace Scrivener.ViewModel
         public MainViewModel(IDataService dataService)
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
-            App.Fucked += SaveNotes;
+            App.Fucked += DumpNotes;
             App.Fucked += (s,e) => SaveAllNotes();
+            Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
             DataB = DatabaseStorage.Instance;
             
@@ -82,7 +83,7 @@ namespace Scrivener.ViewModel
             CleanDatabase();
             //HistoryCleanuponlaunch();
 
-            Application.Current.MainWindow.Closing += new CancelEventHandler(Saveallnotesonclose);
+
 
         }
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
@@ -147,7 +148,7 @@ namespace Scrivener.ViewModel
                     .Timer(DateTimeOffset.Parse("23:59:00-04:00"))
                     .Subscribe(x =>
                     {
-                        SaveNotes(this, new EventArgs());
+                        DumpNotes(this, new EventArgs());
                         log.Debug("Quitting application due to installed update.");
                         Process.GetCurrentProcess().Kill();
 
@@ -413,7 +414,7 @@ namespace Scrivener.ViewModel
 
         
 
-        public void SaveNotes(object sender, EventArgs e)
+        public void DumpNotes(object sender, EventArgs e)
         {
             var crashTime = DateTime.Now;
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), crashTime.ToString().Replace(@"/", ".").Replace(":", ".")).Replace(" ", "_");
