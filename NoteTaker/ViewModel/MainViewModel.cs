@@ -62,7 +62,7 @@ namespace Scrivener.ViewModel
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
-            App.Fucked += Saveallnotesoncrash;
+            App.Fucked += (s,e) => SaveAllNotes();
 
             DataB = DatabaseStorage.Instance;
             
@@ -659,11 +659,6 @@ namespace Scrivener.ViewModel
         }
 
         public void Saveallnotesonclose(object sender, CancelEventArgs e)
-        {
-            SaveAllNotes();
-        }
-
-        public void Saveallnotesoncrash(object sender, EventArgs e)
         {
             SaveAllNotes();
         }
