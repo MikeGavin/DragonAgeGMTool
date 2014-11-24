@@ -36,7 +36,7 @@ namespace Scrivener.Model
                 oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
                 //add the body of the email
                 oMsg.Body = string.Format("{0}{1}{2}", GetPublishedVersion(), Environment.NewLine, e.ToString());
-                oMsg.Attachments.Add(string.Format(@"c:\Temp\Scrivener Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd")));
+                oMsg.Attachments.Add(string.Format(@"{1}\Scrivener\Logs\{0}.log", DateTime.Today.ToString("yyyy-MM-dd"), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
                 // Send.
                 ((Outlook._MailItem)oMsg).Send();
             }
