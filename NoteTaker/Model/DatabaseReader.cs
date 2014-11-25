@@ -8,6 +8,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Scrivener.Model
 {
@@ -377,34 +378,48 @@ namespace Scrivener.Model
             }
         }
 
-        //public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
-        //{
-        //    log.Debug("Getting History");
-        //    System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
-        //    CallHistory.StateChange += handel;
+        public async Task<HistoryItem> ReturnHistory()
+        {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            SQLiteConnection Call_History = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
 
-        //    ObservableCollection<HistoryItem> HistoryList = new ObservableCollection<HistoryItem>();
-        //    string Date = DateTime.Now.ToString("D").Replace(" ", "").Replace(",", "");
+            log.Debug("Getting History");
+            System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
+            Call_History.StateChange += handel;
 
-        //    SQLiteCommand pullall = new SQLiteCommand();
-        //    pullall.CommandText = string.Format("SELECT * FROM {0}", Date);
-        //    pullall.Connection = CallHistory;            
-        //    log.Debug(pullall.CommandText);
-        //    try
-        //    {
-        //        await CallHistory.OpenAsync();
-        //        SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
-        //        while (await reader.ReadAsync())
-        //            HistoryList.Add(new HistoryItem() { ID = reader["ID"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
-        //        CallHistory.Close();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        log.Error(e);
-        //    }
-        //    CallHistory.StateChange -= handel;
-        //    return HistoryList;
+            List<HistoryDBPull> HistoryList = new List<HistoryDBPull>();
+            string Today = "CurrentHistory";
 
-        //}
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = string.Format("SELECT * FROM {0}", Today);
+            pullall.Connection = Call_History;
+            log.Debug(pullall.CommandText);
+            try
+            {
+                await Call_History.OpenAsync();
+                SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
+                while (await reader.ReadAsync())
+                    HistoryList.Add(new HistoryDBPull() { Date = reader["Date"].ToString(), Time = reader["Time"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
+                Call_History.Close();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+            }
+
+            var root = new HistoryItem() { Title = "Menu" };
+
+            List<HistoryDBPull> Root_uniquetime = HistoryList.GroupBy(s => s.Time).Select(p => p.First()).ToList();
+
+            foreach (HistoryDBPull Item in Root_uniquetime)
+            {
+                HistoryItem Root_Item = new HistoryItem() { Title = Item.Date + ", " + Item.Time, Content = Item.Notes };
+                root.SubItems.Add(Root_Item);
+            }            
+
+            Call_History.StateChange -= handel;
+            return root;
+
+        }
     }
 }

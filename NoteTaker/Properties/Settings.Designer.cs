@@ -333,5 +333,28 @@ namespace Scrivener.Properties {
                 this["defrsd"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility History_Visibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["History_Visibility"]));
+            }
+            set {
+                this["History_Visibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime History_Date {
+            get {
+                return ((global::System.DateTime)(this["History_Date"]));
+            }
+            set {
+                this["History_Date"] = value;
+            }
+        }
     }
 }
