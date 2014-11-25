@@ -79,8 +79,10 @@ namespace Scrivener.ViewModel
             //Self Explained
             SettingsFolder();
             StartNoteSaveTask();
+            SetRecallDate();
             setmidnight();
             CleanDatabase();
+
             //HistoryCleanuponlaunch();
 
 
@@ -284,12 +286,37 @@ namespace Scrivener.ViewModel
             if (QuicknoteVisibility == Visibility.Collapsed)
             {
                 QuicknoteVisibility = Visibility.Visible;
+
+                if(HistoryVisibility == Visibility.Visible)
+                {
+                    HistoryVisibility = Visibility.Collapsed;
+                }                
             }
             else
             {
                 QuicknoteVisibility = Visibility.Collapsed;
             }
         }
+        private RelayCommand _HistoryToggleCommand;
+        public RelayCommand HistoryToggleCommand { get { return _HistoryToggleCommand ?? (_HistoryToggleCommand = new RelayCommand(HistoryToggle)); } }
+        public Visibility HistoryVisibility { get { return Properties.Settings.Default.History_Visibility; } set { Properties.Settings.Default.History_Visibility = value; RaisePropertyChanged(); } }
+
+        private void HistoryToggle()
+        {
+            if (HistoryVisibility == Visibility.Collapsed)
+            {
+                HistoryVisibility = Visibility.Visible;
+                if (QuicknoteVisibility == Visibility.Visible)
+                {
+                    QuicknoteVisibility = Visibility.Collapsed;
+                }    
+            }
+            else
+            {
+                HistoryVisibility = Visibility.Collapsed;
+            }
+        }
+        public DateTime HistoryDate { get { return Properties.Settings.Default.History_Date; } set { Properties.Settings.Default.History_Date = value; RaisePropertyChanged(); } }
 
         //Search EKB
         private string _searchData;
@@ -310,6 +337,14 @@ namespace Scrivener.ViewModel
         public void OpenLink(string link)
         {
             Process.Start(link);
+        }
+
+        private RelayCommand<string> _openHistoryCommand;
+        public RelayCommand<string> OpenHistoryCommand { get { return _openHistoryCommand ?? (_openHistoryCommand = new RelayCommand<string>((pram) => OpenHistory(pram))); } }
+        public void OpenHistory(string history)
+        {
+            NewNote();
+            SelectedNote.Text = history;
         }
 
         //Copy All
@@ -518,6 +553,11 @@ namespace Scrivener.ViewModel
             return index;
         }
 
+        public void SetRecallDate()
+        {
+            Properties.Settings.Default.History_Date = DateTime.Now; ;
+        }
+
         CancellationTokenSource tokenSource = new CancellationTokenSource();
         public async Task ReplaceHistory(CancellationToken token)
         {
@@ -561,7 +601,8 @@ namespace Scrivener.ViewModel
                     }
                }               
                 Call_history.Close();
-                midnighttimer();    
+                midnighttimer();
+                //DataB.LoadHistoryItems();
             }
         }
         private void StartNoteSaveTask()
@@ -714,7 +755,6 @@ namespace Scrivener.ViewModel
             
             HistoryCleanup(n, name, Call_history);
             Call_history.Close();
-            
         }
 
         private static void HistoryCleanup(NoteViewModel n, string name, SQLiteConnection Call_history)

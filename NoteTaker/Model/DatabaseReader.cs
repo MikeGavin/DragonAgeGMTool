@@ -8,7 +8,6 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Scrivener.Model
 {
@@ -408,6 +407,7 @@ namespace Scrivener.Model
             }
 
             var root = new HistoryItem() { Title = "Menu" };
+
 
             List<HistoryDBPull> Root_uniquetime = HistoryList.GroupBy(s => s.Time).Select(p => p.First()).ToList();
 
