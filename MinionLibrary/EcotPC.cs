@@ -704,7 +704,7 @@ namespace Minion
 
         }
 
-        public async Task<bool> FixJNLPAssoication()
+        public async Task<bool> AddNLPAssoication()
         {
             Log(log.Info, "Trying JNLP fix");
             Processing++;
@@ -712,7 +712,18 @@ namespace Minion
             {
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=<JNLPFILE>");
                 await assoc.Run();
-                var paexec = new Tool.PAExec(IPAddress, @"ftype jnlpfile=""c:\Program Files (x86)\Java\jre7\bin\javaws.exe"" ""%1""");
+
+                string path;
+                if (x64 == true)
+                {
+                    path = "Program Files (x86)";
+                }
+                else
+                {
+                    path = "Program Files";
+                }
+
+                var paexec = new Tool.PAExec(IPAddress, string.Format(@"ftype jnlpfile=""c:\{0}\Java\jre7\bin\javaws.exe"" ""%1""", path));
                 await paexec.Run();
                 Processing--;
                 return true;
