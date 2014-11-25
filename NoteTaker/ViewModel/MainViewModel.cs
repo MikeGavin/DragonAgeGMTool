@@ -655,7 +655,7 @@ namespace Scrivener.ViewModel
             
             if (today != timertoday)
             {
-                MessageBox.Show("It worked");
+                //MessageBox.Show("It worked");
                 CleanDatabase();
                 setmidnight();
             }
