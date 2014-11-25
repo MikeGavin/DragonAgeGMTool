@@ -62,7 +62,7 @@ namespace Scrivener.ViewModel
         {
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += SaveNotes;
-            App.Fucked += Saveallnotesoncrash;
+            App.Fucked += (s,e) => SaveAllNotes();
 
             DataB = DatabaseStorage.Instance;
             
@@ -76,7 +76,7 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
             //Self Explained
-            createfolder();
+            SettingsFolder();
             StartNoteSaveTask();
             setmidnight();
             CleanDatabase();
@@ -332,6 +332,16 @@ namespace Scrivener.ViewModel
 
         #region Settings
 
+        private void SettingsFolder()
+        {
+            //check for settings folder. Create if missing.
+            var settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
+            if (!Directory.Exists(settingsFolder))
+            {
+                Directory.CreateDirectory(settingsFolder);
+            }
+        }
+
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -358,7 +368,7 @@ namespace Scrivener.ViewModel
         {
             if (f.ToLower().Contains("scrivener.sqlite"))
             {
-                log.Debug("{0} requested nulling of tree, sites, & Minion commands.", o.ToString());
+                log.Debug("{0} requested db reload.", o.ToString());
                 await DataB.LoadAll();
                 //QuickItemTree = null;
                 //DataB.LoadSites(Properties.Settings.Default.Role_Current);
@@ -367,17 +377,10 @@ namespace Scrivener.ViewModel
             }
         }
 
-        
-        //private static ObservableCollection<RoleItem> _roles;
-        //public ObservableCollection<RoleItem> Roles { get { return DataB.Roles; } }
-
         public static CollectionView _rolesView;
         public CollectionView RolesView { get { return _rolesView ?? (_rolesView = new CollectionView(DataB.Roles)); } set { _rolesView = value; RaisePropertyChanged(); } }
         public RoleItem CurrentRole { get { return Properties.Settings.Default.Role_Current; } set { if (value != Properties.Settings.Default.Role_Current) { Properties.Settings.Default.Role_Current = value; } RaisePropertyChanged(); } }
 
-        //public bool QuicknotesVisible { get { return Properties.Settings.Default.QuickNotes_Visible; } set { Properties.Settings.Default.QuickNotes_Visible = value; RaisePropertyChanged(); } }
-
-        //Save Template
         private RelayCommand _savetemplatecommand;
         public RelayCommand SaveTemplateCommand { get { return _savetemplatecommand ?? (_savetemplatecommand = new RelayCommand(SaveTemplate)); } }
         public void SaveTemplate()
@@ -435,13 +438,6 @@ namespace Scrivener.ViewModel
         //builds or gets History
         //private ObservableCollection<HistoryItem> _history;
         //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
-
-       public void createfolder()
-        {
-           string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
-           if (!Directory.Exists(folder))
-               Directory.CreateDirectory(folder);
-        }
 
         private int CreatesHistory()
         {
@@ -663,11 +659,6 @@ namespace Scrivener.ViewModel
         }
 
         public void Saveallnotesonclose(object sender, CancelEventArgs e)
-        {
-            SaveAllNotes();
-        }
-
-        public void Saveallnotesoncrash(object sender, EventArgs e)
         {
             SaveAllNotes();
         }
