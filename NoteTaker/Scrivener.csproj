@@ -24,7 +24,7 @@
     <RestorePackages>true</RestorePackages>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>95382808</NuGetPackageImportStamp>
-    <PublishUrl>\\fs1\EdTech\Scrivener\</PublishUrl>
+    <PublishUrl>\\fs1\EdTech\ScrivenerDev\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -38,7 +38,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.60.1.%2a</ApplicationVersion>
+    <ApplicationVersion>1.60.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
