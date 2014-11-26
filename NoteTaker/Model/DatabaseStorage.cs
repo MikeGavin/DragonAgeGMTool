@@ -107,10 +107,20 @@ namespace Scrivener.Model
             MinionCommands = await DataBaseReader.ReturnMinionCommands(Role);
         }
 
+        private Phoneitem _phoneitems;
+        public Phoneitem Phoneitems { get { return _phoneitems; } private set { _phoneitems = value; RaisePropertyChanged(); } }
+        public async Task LoadPhoneDirectory()
+        {
+            Phoneitems = await DataBaseReader.ReturnPhoneItems();
+        }
+
+        
+
         public async Task LoadAll()
         {
             await LoadMinionCommands();
             await LoadQuickItems();
+            await LoadPhoneDirectory();            
             await LoadSites(); //For some reason loading this item first causes the binding to not work.        
         }
       

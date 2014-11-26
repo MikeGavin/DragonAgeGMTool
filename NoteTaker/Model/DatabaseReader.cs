@@ -377,6 +377,68 @@ namespace Scrivener.Model
             }
         }
 
+        public async Task<Phoneitem> ReturnPhoneItems()
+        {
+            log.Debug("Getting Phone Items");
+            var db = new SQLiteConnection(mainDB);
+            string name = "Phone_Directory";
+            List<PhoneDBPull> SiteCommandList = new List<PhoneDBPull>();
+
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = string.Format("SELECT * FROM {0}", name);
+            pullall.Connection = db;
+            log.Debug(pullall.CommandText);
+
+            try
+            {
+                db.Open();
+                SQLiteDataReader reader = pullall.ExecuteReader();
+                while (await reader.ReadAsync())
+                    SiteCommandList.Add(new PhoneDBPull() { URL = reader["URL"].ToString(), Parent = reader["Parent"].ToString(), Child_1 = reader["Child_1"].ToString()});
+                db.Close();
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                var temp = Helpers.MetroMessageBox.Show("ERMAHGERD ERER!", e.ToString());
+                Model.ExceptionReporting.Email(e);
+                db.Close();
+            }
+
+
+            List<PhoneDBPull> Root_uniqueitems = SiteCommandList.GroupBy(s => s.Parent).Select(p => p.First()).ToList();
+            List<PhoneDBPull> Site1uniqueitems = SiteCommandList.GroupBy(s => s.Child_1).Select(p => p.First()).ToList();
+
+            #region Fill Phone
+            var root = new Phoneitem() { Title = "Menu" };
+
+            if (Root_uniqueitems.Count > 1)
+            {
+                foreach (PhoneDBPull item in Root_uniqueitems)
+                {
+                    Phoneitem Root_Item = new Phoneitem() { Title = item.Parent, Content = item.URL };
+                    if (Site1uniqueitems.Count > 1)
+                    {
+                        foreach (PhoneDBPull item1 in Site1uniqueitems)
+                        {
+                            Phoneitem Sub_Item_1 = new Phoneitem() { Title = item1.Child_1, Content = item1.URL };
+
+                            if (item1.Parent == Root_Item.Title && item1.Child_1 != string.Empty)
+                            {
+                                Root_Item.SubItems.Add(Sub_Item_1);
+                            }
+                        }
+                    }
+                    root.SubItems.Add(Root_Item);
+                }
+            }
+            //Sorting(root);
+            root.SubItems = new ObservableCollection<Phoneitem>(root.SubItems.OrderBy(n => n.Title));
+            return root;
+
+            #endregion
+        }
+
         //public static async Task<ObservableCollection<HistoryItem>> ReturnHistory()
         //{
         //    log.Debug("Getting History");
