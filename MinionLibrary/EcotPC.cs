@@ -10,6 +10,7 @@ using System.Threading;
 using Minion.ListItems;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 
 namespace Minion
@@ -228,12 +229,8 @@ namespace Minion
         protected string _IEVersion;
         public string IEVersion { get { return _IEVersion; } set { _IEVersion = value; RaisePropertyChanged(); } }
 
-        //protected string _java64;
-        //public string Java64 { get { return _java64; } set { _java64 = value; RaisePropertyChanged(); } }
-        //protected string _java32;
-        //public string Java32 { get { return _java32; } set { _java32 = value; RaisePropertyChanged(); } }
-        protected ObservableCollection<string> _javas;
-        public ObservableCollection<string> Javas { get { return _javas; } set { _javas = value; RaisePropertyChanged(); } }
+        protected ObservableCollection<RemoteProgramData> _javas;
+        public ObservableCollection<RemoteProgramData> Javas { get { return _javas; } set { _javas = value; RaisePropertyChanged(); } }
 
         protected string _Flash;
         public string Flash { get { return _Flash; } set { _Flash = value; RaisePropertyChanged(); } }
@@ -373,7 +370,7 @@ namespace Minion
         public async Task Get_Java()
         {
             Processing++;
-            Javas = new ObservableCollection<string>();
+            Javas = new ObservableCollection<RemoteProgramData>();
             //Java64 = Java32 = "Updating...";
             
             var path = string.Format(@"\\{0}\c$\Program Files (x86)\", IPAddress);
@@ -381,8 +378,8 @@ namespace Minion
             {
                 //Is 64 bit machine
                 
-                await JavaFolderCheck(", 32-Bit", @"Program Files (x86)");
-                await JavaFolderCheck(", 64-Bit", "Program Files");
+                await JavaFolderCheck("32-Bit", @"Program Files (x86)");
+                await JavaFolderCheck("64-Bit", "Program Files");
             }
             else
             {
@@ -391,7 +388,7 @@ namespace Minion
             }
             if (Javas.Count <= 0)
             {
-                Javas.Add("NOT INSTALLED");
+                Javas.Add(new RemoteProgramData { Version = "Not Installed", Name = "Java" });
             }
             Processing--;
         }
@@ -410,11 +407,12 @@ namespace Minion
                     if (File.Exists(fullpathfile))
                     {
                         DirectoryInfo folder1 = new DirectoryInfo(folder);
-                        command = string.Format(@"""c:\{1}\Java\{0}\bin\Java.exe"" -version", folder1.Name, pf);
+                        var fulllocalpath = string.Format(@"c:\{1}\Java\{0}", folder1.Name, pf);
+                        command = string.Format(@"""{0}\bin\Java.exe"" -version", fulllocalpath);
                         var result = await JavaVersion(command);
                         if (!result.Contains("ERROR"))
                         {
-                            Javas.Add(result + bits);
+                            Javas.Add(new RemoteProgramData { Version = result, Name = "Java", FullPath = fulllocalpath, InstallFolder = path, Bit = bits });
                         }
                     }
                 }
@@ -706,25 +704,25 @@ namespace Minion
 
         public async Task<bool> AddNLPAssoication()
         {
-            Log(log.Info, "Trying JNLP fix");
+            if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
+            Log(log.Info, "Adding Java to JNLP 'Open with'");
             Processing++;
             try
             {
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=<JNLPFILE>");
                 await assoc.Run();
 
-                string path;
-                if (x64 == true)
+                foreach (var java in Javas)
                 {
-                    path = "Program Files (x86)";
-                }
-                else
-                {
-                    path = "Program Files";
+                    if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
+
+                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
+                    await paexec.Run();
+
                 }
 
-                var paexec = new Tool.PAExec(IPAddress, string.Format(@"ftype jnlpfile=""c:\{0}\Java\jre7\bin\javaws.exe"" ""%1""", path));
-                await paexec.Run();
+                Log(log.Info, "Process complete");
+
                 Processing--;
                 return true;
             }

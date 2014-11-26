@@ -10,8 +10,8 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-        
-        <ResourceDictionary>
+
+                <ResourceDictionary>
                     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}" >
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="IsReadOnly" Value="True"/>
@@ -20,7 +20,7 @@
                         <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Padding" Value="2"/>
-                        <Setter Property="Margin" Value="0,0,3,0"/>                       
+                        <Setter Property="Margin" Value="0,0,3,0"/>
                     </Style>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="Foreground" Value="White"/>
@@ -89,14 +89,14 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
-                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
-                        <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
-                        
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
+                <ContextMenu>
+                    <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
+                    <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
+                    <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
+
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
         <Label Content="{Binding Machine.CurrentUser}" Grid.Column="1" Grid.Row="1">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
@@ -104,15 +104,15 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
-                        <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
-                        <MenuItem Header="Backup Profile" Command="{Binding BackupProfileCommand}"/>
-                        <MenuItem Header="Enable Profile Wipe" Command="{Binding EnableProfileWipeCommand}"/>
-                        <MenuItem Header="Disable Profile Wipe" Command="{Binding DisableProfileWipeCommand}"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
+                <ContextMenu>
+                    <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
+                    <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
+                    <MenuItem Header="Backup Profile" Command="{Binding BackupProfileCommand}"/>
+                    <MenuItem Header="Enable Profile Wipe" Command="{Binding EnableProfileWipeCommand}"/>
+                    <MenuItem Header="Disable Profile Wipe" Command="{Binding DisableProfileWipeCommand}"/>
+                </ContextMenu>
+            </Label.ContextMenu>
+        </Label>
         <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
@@ -165,47 +165,47 @@
             </i:Interaction.Triggers>
         </Label>
         <Label Content="Java" Foreground="Gray" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GetJavaCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
         <Label Content="Flash" Foreground="Gray" Grid.Column="2" Grid.Row="2">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding GetFlashCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GetFlashCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
         <Label Content="Shockwave" Foreground="Gray" Grid.Column="2" Grid.Row="3">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding GetShockwaveCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GetShockwaveCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
         <Label Content="Reader" Foreground="Gray" Grid.Column="2" Grid.Row="4">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding GetReaderCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GetReaderCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
         <Label Content="Quicktime" Foreground="Gray" Grid.Column="2" Grid.Row="5">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding GetQuicktimeCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GetQuicktimeCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Label>
         <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Left">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonUp">
                         <i:InvokeCommandAction Command="{Binding GetIECommand}"/>
                     </i:EventTrigger>
-                   </i:Interaction.Triggers>
+                </i:Interaction.Triggers>
             </Label>
             <Label Content="{Binding Machine.IEVersion}" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right">
                 <i:Interaction.Triggers>
@@ -214,21 +214,21 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Label.ContextMenu>
-                <ContextMenu ItemsSource="{Binding IECommands, IsAsync=True, UpdateSourceTrigger=PropertyChanged}">
-                    <ContextMenu.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <Setter Property="Command" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Label}}, Path=DataContext.RunItemCommand}"/>
-                            <Setter Property="CommandParameter" Value="{Binding }"/>
-                        </Style>
-                    </ContextMenu.ItemContainerStyle>
+                    <ContextMenu ItemsSource="{Binding IECommands, IsAsync=True, UpdateSourceTrigger=PropertyChanged}">
+                        <ContextMenu.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Label}}, Path=DataContext.RunItemCommand}"/>
+                                <Setter Property="CommandParameter" Value="{Binding }"/>
+                            </Style>
+                        </ContextMenu.ItemContainerStyle>
                         <ContextMenu.ItemTemplate>
                             <DataTemplate DataType="{x:Type MenuItem}">
                                 <TextBlock Text="{Binding Path=FullName}"/>
                             </DataTemplate>
                         </ContextMenu.ItemTemplate>
                     </ContextMenu>
-            </Label.ContextMenu>
-        </Label>
+                </Label.ContextMenu>
+            </Label>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="0" Width="auto" Height="auto" VerticalAlignment='Center'>
@@ -238,22 +238,22 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Label>
-            
-            <ListBox Name="MyListBox" ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right" Width="auto" Height="auto" SelectedItem="{Binding SelectedJava}" 
-                     Margin="0,0,3,0" Padding="2">
+
+            <ListBox Name="MyListBox" ItemsSource ="{Binding Machine.Javas}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right" Width="auto" Height="20" SelectedItem="{Binding SelectedJava}" 
+                     Margin="0,0,3,0" Padding="2" VerticalAlignment="Top">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding }" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding Path=FullVersion }" Margin="0,0,4,0"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding ElementName=MyListBox, Path=SelectedItem}"/>
+                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding ElementName=MyListBox, Path=SelectedItem.FullVersion}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava}"/>
+                        <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava.FullVersion}"/>
                         <MenuItem Header="Install Newest Java" Command="{Binding InstallJavaCommand}"/>
                         <MenuItem Header="Add JNLP Assiciation" Command="{Binding AddJNLPCommand}"/>
                         <MenuItem Header="Manual Command" ItemsSource="{Binding JavaCommands, UpdateSourceTrigger=PropertyChanged}">
@@ -270,7 +270,7 @@
                             </MenuItem.ItemTemplate>
                         </MenuItem>
                     </ContextMenu>
-                    
+
                 </ListBox.ContextMenu>
             </ListBox>
             <!--<Label Content="{Binding Machine.Java32}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Right">
@@ -287,7 +287,7 @@
                 </ContextMenu>
                 </Label.ContextMenu>
             </Label>-->
-            </StackPanel>
+        </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" Width="auto">
             <Label Content="&#xf021;" Style="{StaticResource RefreshButton}" Grid.Column="3" Grid.Row="3" Width="auto" Height="auto" VerticalAlignment='Center'>
                 <i:Interaction.Triggers>

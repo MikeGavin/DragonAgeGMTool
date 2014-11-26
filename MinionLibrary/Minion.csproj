@@ -109,6 +109,7 @@
     <Compile Include="ListItems\EcotPCCommand.cs" />
     <Compile Include="ListItems\MinionCommandItem.cs" />
     <Compile Include="ListItems\ProperityItem.cs" />
+    <Compile Include="ListItems\RemoteProgramData.cs" />
     <Compile Include="LogEventArgs.cs" />
     <Compile Include="Tool\File.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
