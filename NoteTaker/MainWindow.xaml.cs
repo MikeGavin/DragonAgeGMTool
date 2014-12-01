@@ -112,10 +112,5 @@ namespace Scrivener
             var BClock = new Break_Clock();
             BClock.Show();
         }
-
-        private void Dial(object sender, RoutedEventArgs e)
-        {
-            Process.Start("tel:9-");
-        }
     }
 }
