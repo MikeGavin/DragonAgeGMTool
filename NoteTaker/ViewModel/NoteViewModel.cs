@@ -43,6 +43,24 @@ namespace Scrivener.ViewModel
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
         }
 
+        public NoteViewModel(string text, string title)
+        {
+            //Creates a shared version of the menus
+            DataB = DatabaseStorage.Instance;
+            //This creates a per instance version of the menus. 
+            Root = DataB.QuickItems;
+            Text = text;
+            //_minionCommands = commands;
+            Title = title;
+            _titlechanged = true;
+            //_root = _tree;
+            SaveIndex = 0; //??
+
+            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            this.TextChanged += Note_TextChanged;
+            NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+        }
+
         //private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
         //{
         //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
