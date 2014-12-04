@@ -4,6 +4,7 @@ using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -300,6 +301,11 @@ namespace Scrivener.Model
             pullall.CommandText = string.Format("SELECT * FROM {0}", role.SiteItem_Table);
             pullall.Connection = db;
             log.Debug(pullall.CommandText);
+
+            SQLiteDataAdapter ObjDataAdapter = new SQLiteDataAdapter(pullall);
+            DataSet dataSet = new DataSet();
+            ObjDataAdapter.Fill(dataSet, role.SiteItem_Table);
+
 
             try
             {

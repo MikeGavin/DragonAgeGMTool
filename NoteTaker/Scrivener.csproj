@@ -271,6 +271,7 @@
     <Compile Include="Model\HistoryDBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\MinionArgs.cs" />
+    <Compile Include="Model\SaveNotes.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />

@@ -22,10 +22,8 @@ namespace Scrivener.ViewModel
     public class NoteViewModel : ViewModelBase
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
-
-        public DatabaseStorage DataB { get; set; }
-
-        public NoteViewModel(int new_index)
+      
+        public NoteViewModel()
         {
             //Creates a shared version of the menus
             DataB = DatabaseStorage.Instance;
@@ -35,8 +33,9 @@ namespace Scrivener.ViewModel
             //_minionCommands = commands;
             Title = string.Format("Note {0}", ++_number);
             _titlechanged = false;
-            //_root = _tree;
-            SaveIndex = new_index;
+            
+            //Used for saving unique notes
+            Guid = Guid.NewGuid();
 
             //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
             this.TextChanged += Note_TextChanged;
@@ -58,8 +57,10 @@ namespace Scrivener.ViewModel
         public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }
 
         #region Public Properties
-        private int _saveIndex; // used for ID for note saving
-        public int SaveIndex { get { return _saveIndex; } protected set { _saveIndex = value; RaisePropertyChanged(); } }
+        public DatabaseStorage DataB { get; set; }
+
+        private Guid _guid; // used for ID for note saving
+        public Guid Guid { get { return _guid; } protected set { _guid = value; RaisePropertyChanged(); } }
         
 
         private static int _number = 0; // used to nuber default notes

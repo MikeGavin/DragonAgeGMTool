@@ -194,29 +194,27 @@ namespace Scrivener.ViewModel
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
                 if (result == true)
                 {
-                    SaveCurrentTabOnClose(note);
-                    if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
-                    {
-                        lastnoteindex = SelectedNote.SaveIndex;
-                        
-                    }
-                    else { }
-                    Notes.Remove(note);
+                    SetLastNote(note);
                 }
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
-                SaveCurrentTabOnClose(note);
-                if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
-                {
-                    lastnoteindex = SelectedNote.SaveIndex;
-
-                }
-                else { }
-                Notes.Remove(note);
+                SetLastNote(note);
             }
             if (Notes.Count == 0)
                 NewNote();
+        }
+
+        private void SetLastNote(NoteViewModel note)
+        {
+            SaveCurrentTabOnClose(note);
+            if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
+            {
+                lastnoteindex = SelectedNote.Guid;
+
+            }
+            else { }
+            Notes.Remove(note);
         }
 
         //New Notes
@@ -225,7 +223,7 @@ namespace Scrivener.ViewModel
         private async void NewNote([CallerMemberName]string memberName = "")
         {
             log.Debug("{0} ran NewNote", memberName);
-            Notes.Add(new NoteViewModel(CreatesHistory()));
+            Notes.Add(new NoteViewModel());
             SelectedNote = Notes.Last();
         }
 
@@ -475,84 +473,6 @@ namespace Scrivener.ViewModel
         //private ObservableCollection<HistoryItem> _history;
         //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-        private int CreatesHistory()
-        {
-            //String for naming the table
-            string name = "CurrentHistory";
-            string name2 = "ArchiveHistory";
-            //DB connection
-            string Title = "Title";
-            string Text = "Text";
-            int initialcountvalue = 0;
-            int countvalue = 0;
-            int index = 0;
-            
-            
-            string initialcount = string.Format("SELECT COUNT (ID) from {0}", name);
-            string initialinsert = string.Format("INSERT INTO {0} (Date,Time,ID,Caller,Notes) values ('Date','Time','1','{1}','{2}');", name, Title, Text);
-                        
-            String count = "SELECT ID from CurrentHistory ORDER BY ID desc limit 1";
-
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-            //creates Call History Database and populates table with todays date if none exist
-            string query = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name);
-            string query2 = string.Format("CREATE TABLE IF NOT EXISTS [{0}](Date Text,Time Text,ID Integer,Caller Text,Notes Text)", name2);
-            
-            SQLiteCommand command = new SQLiteCommand(query, Call_history);
-            SQLiteCommand command2 = new SQLiteCommand(query2, Call_history);
-            
-            Call_history.Open();
-            //creates DB and table for todays saving of notes 
-            command.ExecuteNonQuery();
-            command2.ExecuteNonQuery();            
-
-            try
-            {
-                using (SQLiteCommand doinitialcount = Call_history.CreateCommand())
-                {
-                    doinitialcount.CommandText = initialcount;
-                    doinitialcount.ExecuteNonQuery();
-                    initialcountvalue = Convert.ToInt32(doinitialcount.ExecuteScalar());
-                    if (initialcountvalue == 0)
-                    {
-                        SQLiteCommand initialinsertcommand = new SQLiteCommand(initialinsert, Call_history);
-                        initialinsertcommand.ExecuteNonQuery();
-                        index = 1;
-                    }
-                    else if (initialcountvalue > 0)
-                    {
-                        using (SQLiteCommand docount = Call_history.CreateCommand())
-                        {
-                            docount.CommandText = count;
-                            docount.ExecuteNonQuery();
-                            countvalue = Convert.ToInt32(docount.ExecuteScalar());
-                        }                        
-
-                        index = countvalue;
-                        index++;
-
-                        string insert = string.Format("INSERT INTO {0} (Date,Time,ID,Caller,Notes) values ('Date','Time','{1}','{2}','{3}');", name, index, Title, Text);
-
-                        SQLiteCommand insertcommand = new SQLiteCommand(insert, Call_history);
-
-                        insertcommand.ExecuteNonQuery();
-                    }
-
-                    
-                }
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                Model.ExceptionReporting.Email(e);
-            }
-
-            Call_history.Close();
-
-            return index;
-        }
-
         public void SetRecallDate()
         {
             Properties.Settings.Default.History_Date = DateTime.Now; ;
@@ -577,10 +497,10 @@ namespace Scrivener.ViewModel
                 foreach (NoteViewModel n in Notes)
                 {
                     string correcttext = n.Text.Replace("'", "`");
-                    string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
-                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.SaveIndex);
-                    string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
-                    string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
+                    string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.Guid);
+                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.Guid);
+                    string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.Guid);
+                    string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.Guid);
 
                     SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
                     SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
@@ -727,10 +647,10 @@ namespace Scrivener.ViewModel
             string Time = DateTime.Now.ToString("HH:mm:ss");
             //Strings for replacing "Caller" and "Notes" value
             string correcttext = n.Text.Replace("'", "`");
-            string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.SaveIndex);
-            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.SaveIndex);
-            string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.SaveIndex);
-            string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.SaveIndex);
+            string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.Guid);
+            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.Guid);
+            string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.Guid);
+            string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.Guid);
             //Database Path
             AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
@@ -762,7 +682,7 @@ namespace Scrivener.ViewModel
             //Deletes call from history if notes match default template
             if (n.Text == Properties.Settings.Default.Default_Note_Template.ToString())
             {
-                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.SaveIndex);
+                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
 
                 SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
 
@@ -779,7 +699,7 @@ namespace Scrivener.ViewModel
             //Deletes call from history if notes are empty
             if (n.Text == "")
             {
-                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.SaveIndex);
+                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
 
                 SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
 
