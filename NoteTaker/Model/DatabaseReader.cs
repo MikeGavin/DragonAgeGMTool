@@ -302,11 +302,6 @@ namespace Scrivener.Model
             pullall.Connection = db;
             log.Debug(pullall.CommandText);
 
-            SQLiteDataAdapter ObjDataAdapter = new SQLiteDataAdapter(pullall);
-            DataSet dataSet = new DataSet();
-            ObjDataAdapter.Fill(dataSet, role.SiteItem_Table);
-
-
             try
             {
                 db.Open();

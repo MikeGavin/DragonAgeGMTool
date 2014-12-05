@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Scrivener.Model
 {
-    interface INote
+    public interface INote
     {
         Guid Guid { get; }
         string Text { get; set; }

@@ -31,9 +31,11 @@ namespace Scrivener
             //this.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-            
-            Application.Current.DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                Application.Current.DispatcherUnhandledException += CurrentOnDispatcherUnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            }
             //Dispatcher.UnhandledException += DispatcherOnUnhandledException;
         }
 

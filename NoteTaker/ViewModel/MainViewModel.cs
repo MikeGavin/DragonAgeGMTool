@@ -78,15 +78,7 @@ namespace Scrivener.ViewModel
 
             //Self Explained
             SettingsFolder();
-            StartNoteSaveTask();
-            SetRecallDate();
-            setmidnight();
-            CleanDatabase();
-
-            //HistoryCleanuponlaunch();
-
-
-
+            //StartNoteSaveTask();
         }
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
@@ -105,6 +97,15 @@ namespace Scrivener.ViewModel
             //Hack to set current role in combobox
             var role = DataB.Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
             RolesView.MoveCurrentTo(role);
+            var openNotes = await noteManager.GetOpenNotes();
+            if (openNotes.Count > 0)
+            {
+                foreach (INote n in openNotes)
+                {                 
+                    Notes.Add( new NoteViewModel(n));
+                }
+                SelectedNote = Notes.FirstOrDefault();
+            }
             if (Notes.Count == 0)
             {
                 NewNote();
@@ -144,7 +145,6 @@ namespace Scrivener.ViewModel
         }
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
         {
-
                 Updated = true;
                 Observable
                     .Timer(DateTimeOffset.Parse("23:59:00-04:00"))
@@ -165,8 +165,8 @@ namespace Scrivener.ViewModel
         //Note Collection
         private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
         public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
-        private NoteViewModel _SelectedNote;
-        public NoteViewModel SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
+        private INote _SelectedNote;
+        public INote SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
 
         //Closing of notes
         void OnNotesChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -185,10 +185,9 @@ namespace Scrivener.ViewModel
             CloseNote(note);
         }
 
-        public int lastnoteindex = 0;
-
         private async void CloseNote(NoteViewModel note)
-        {            
+        {
+            noteManager.SaveCurrent(note);
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
@@ -201,19 +200,21 @@ namespace Scrivener.ViewModel
             {
                 SetLastNote(note);
             }
+
             if (Notes.Count == 0)
+            {
                 NewNote();
+            }
         }
 
-        private void SetLastNote(NoteViewModel note)
+        private async Task SetLastNote(NoteViewModel note)
         {
-            if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
-            {
-                //lastnoteindex = SelectedNote.Guid;
-
-            }
-            else { }
+            //if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
+            //{
+                lastClosedNote = note;
+            //}
             Notes.Remove(note);
+            await noteManager.ArchiveCurrent(note);
         }
 
         //New Notes
@@ -226,51 +227,55 @@ namespace Scrivener.ViewModel
             SelectedNote = Notes.Last();
         }
 
-        
+        private INote lastClosedNote;
         //Recall Notes
         private RelayCommand<string> _RecallNoteCommand;
         public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RelayCommand"))); } }
         private async void RecallNote([CallerMemberName]string memberName = "")
         {
-            string lasttext = String.Format("SELECT Notes FROM CurrentHistory WHERE ID = '{0}'", lastnoteindex);
-            string lasttitle = String.Format("SELECT Caller FROM CurrentHistory WHERE ID = '{0}'", lastnoteindex);
-            string lasttextvalue = "";
-            string lasttitlevalue = "";
+            
+            Notes.Add(lastClosedNote as NoteViewModel);
+            SelectedNote = Notes.Last();
+            lastClosedNote = null;
+            //string lasttext = String.Format("SELECT Notes FROM CurrentHistory WHERE ID = '{0}'", lastClosedNote);
+            //string lasttitle = String.Format("SELECT Caller FROM CurrentHistory WHERE ID = '{0}'", lastClosedNote);
+            //string lasttextvalue = "";
+            //string lasttitlevalue = "";
 
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            //SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
+            //AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            ////SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
 
-            using (SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;"))
-            {
-                Call_history.Open();
+            //using (SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;"))
+            //{
+            //    Call_history.Open();
 
-                using (SQLiteCommand lastcalltext = Call_history.CreateCommand())
-                {
-                    lastcalltext.CommandText = lasttext;
-                    lastcalltext.ExecuteNonQuery();
-                    lasttextvalue = Convert.ToString(lastcalltext.ExecuteScalar());
-                }
-                using (SQLiteCommand lastcalltitle = Call_history.CreateCommand())
-                {
-                    lastcalltitle.CommandText = lasttitle;
-                    lastcalltitle.ExecuteNonQuery();
-                    lasttitlevalue = Convert.ToString(lastcalltitle.ExecuteScalar());
-                }  
+            //    using (SQLiteCommand lastcalltext = Call_history.CreateCommand())
+            //    {
+            //        lastcalltext.CommandText = lasttext;
+            //        lastcalltext.ExecuteNonQuery();
+            //        lasttextvalue = Convert.ToString(lastcalltext.ExecuteScalar());
+            //    }
+            //    using (SQLiteCommand lastcalltitle = Call_history.CreateCommand())
+            //    {
+            //        lastcalltitle.CommandText = lasttitle;
+            //        lastcalltitle.ExecuteNonQuery();
+            //        lasttitlevalue = Convert.ToString(lastcalltitle.ExecuteScalar());
+            //    }  
 
-                Call_history.Close();
+            //    Call_history.Close();
 
-                if (lastnoteindex != 0)
-                {
-                    lasttextvalue = lasttextvalue.Replace("`", "'");
-                    NewNote();
-                    SelectedNote.Text = lasttextvalue;
-                    SelectedNote.Title = lasttitlevalue;
-                    lastnoteindex = 0;
-                }
-                else if (lastnoteindex == 0)
-                { }
+            //    if (lastClosedNote != 0)
+            //    {
+            //        lasttextvalue = lasttextvalue.Replace("`", "'");
+            //        NewNote();
+            //        SelectedNote.Text = lasttextvalue;
+            //        SelectedNote.Title = lasttitlevalue;
+            //        lastClosedNote = 0;
+            //    }
+            //    else if (lastClosedNote == 0)
+            //    { }
 
-            }
+            //}
         }
 
         #region ToolBar Items
@@ -388,10 +393,6 @@ namespace Scrivener.ViewModel
                 //reset roll properties to force updates.
                 ReloadData(sender, "scrivener.sqlite");
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
-                if (Notes.Count == 0)
-                {
-                    NewNote();
-                }
             }
             Properties.Settings.Default.Save();
             
@@ -443,10 +444,7 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Call history
-
-        
-
-        public void DumpNotes(object sender, EventArgs e)
+        private void DumpNotes(object sender, EventArgs e)
         {
             var crashTime = DateTime.Now;
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), crashTime.ToString().Replace(@"/", ".").Replace(":", ".")).Replace(" ", "_");
@@ -468,183 +466,179 @@ namespace Scrivener.ViewModel
             }
         }
 
-        //builds or gets History
-        //private ObservableCollection<HistoryItem> _history;
-        //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
-
-        public void SetRecallDate()
-        {
-            Properties.Settings.Default.History_Date = DateTime.Now; ;
-        }
-
-        CancellationTokenSource tokenSource = new CancellationTokenSource();
-        public async Task ReplaceHistory(CancellationToken token)
-        {
-            
-            while (token.IsCancellationRequested == false)
-            {
-                Thread.Sleep(30000);
-                string name = "CurrentHistory";
-                string Date = DateTime.Now.ToString("ddd MMM d yyyy");
-                string Time = DateTime.Now.ToString("HH:mm:ss");
-                string Title = "Title";
-                string Text = "Text";
-                
-                AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-                SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-                await Call_history.OpenAsync();
-                foreach (NoteViewModel n in Notes)
-                {
-                    string correcttext = n.Text.Replace("'", "`");
-                    string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.Guid);
-                    string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.Guid);
-                    string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.Guid);
-                    string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.Guid);
-
-                    SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
-                    SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
-                    SQLiteCommand replacedatecommand = new SQLiteCommand(replacedate, Call_history);
-                    SQLiteCommand replacetimecommand = new SQLiteCommand(replacetime, Call_history);
-
-                    try
-                    {
-                        await replacetitlecommand.ExecuteNonQueryAsync();
-                        await replacedatecommand.ExecuteNonQueryAsync();
-                        await replacenotecommand.ExecuteNonQueryAsync();
-                        await replacetimecommand.ExecuteNonQueryAsync();
-                    }
-                    catch (Exception e)
-                    {
-                        log.Error(e);
-                        //Model.ExceptionReporting.Email(e);
-                    }
-               }               
-                Call_history.Close();
-                midnighttimer();
-                //DataB.LoadHistoryItems();
-            }
-        }
-        private void StartNoteSaveTask()
-        {
-            var token = tokenSource.Token;
-            Task noteSaving = new Task(() => ReplaceHistory(token), token, TaskCreationOptions.LongRunning);
-            noteSaving.Start();
-        }
-
-        public void CleanDatabase()
-        {
-            //string Mondaycheck = DateTime.Now.ToString("dddd");
-            string Today = DateTime.Now.ToString("ddd MMM d yyyy");
-            //string Yesterday = DateTime.Now.AddDays(-1).ToString("ddd MMM d yyyy");
-            //string Saturday = DateTime.Now.AddDays(-2).ToString("ddd MMM d yyyy");
-            //string Friday = DateTime.Now.AddDays(-3).ToString("ddd MMM d yyyy");
-
-            //if (Mondaycheck == "Monday")
-            //{
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-                Call_history.Open();
-
-                {
-                    string copy = String.Format("INSERT INTO ArchiveHistory (Date,Time,ID,Caller,Notes) SELECT Date,Time,ID,Caller,Notes FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
-                    string cleanup = String.Format("DELETE FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
-                    string cleanupdefaultinarch = "DELETE FROM ArchiveHistory WHERE Date LIKE 'Date'";
-                    SQLiteCommand docopy = new SQLiteCommand(copy, Call_history);
-                    SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
-                    SQLiteCommand docleanupdefaultinarch = new SQLiteCommand(cleanupdefaultinarch, Call_history);
-
-                    try
-                    {
-                        docopy.ExecuteNonQuery();
-                        docleanup.ExecuteNonQuery();
-                        docleanupdefaultinarch.ExecuteNonQuery();
-                    }
-                    catch (Exception e)
-                    {
-                        log.Error(e);
-                        //Model.ExceptionReporting.Email(e);
-                    }
-                }
-                Call_history.Close();
-        }
-
-        string timertoday = null;
-        
-        public void setmidnight()
-        {
-            string today = DateTime.Now.Date.ToString();
-            
-            timertoday = today;
-        }
-
-        public void midnighttimer()
-        {
-            string today = DateTime.Now.Date.ToString();
-            
-            if (today != timertoday)
-            {
-                //MessageBox.Show("It worked");
-                CleanDatabase();
-                setmidnight();
-            }
-            else { }            
-        }
+        private NoteManager noteManager = new NoteManager();
 
         public void Saveallnotesonclose(object sender, CancelEventArgs e)
         {
             SaveAllNotes();
         }
 
-        private void SaveAllNotes()
+        private async void SaveAllNotes()
         {
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-            Call_history.Open();
             foreach (NoteViewModel n in Notes)
             {
-                SaveCurrentTabOnClose(n);
+                await noteManager.SaveCurrent(n);
             }
-            Call_history.Close();
+            
         }
 
+        //builds or gets History
+        //private ObservableCollection<HistoryItem> _history;
+        //public ObservableCollection<HistoryItem> QuickHistory { get { return _history ?? (_history = LocalDatabase.ReturnHistory().Result); } set { _history = value; RaisePropertyChanged(); } }
 
-        private static void HistoryCleanup(NoteViewModel n, string name, SQLiteConnection Call_history)
-        {
-            //Deletes call from history if notes match default template
-            if (n.Text == Properties.Settings.Default.Default_Note_Template.ToString())
-            {
-                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
+        //public void SetRecallDate()
+        //{
+        //    Properties.Settings.Default.History_Date = DateTime.Now; ;
+        //}
 
-                SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+        //CancellationTokenSource tokenSource = new CancellationTokenSource();
+        //public async Task ReplaceHistory(CancellationToken token)
+        //{
+            
+        //    while (token.IsCancellationRequested == false)
+        //    {
+        //        Thread.Sleep(30000);
+        //        string name = "CurrentHistory";
+        //        string Date = DateTime.Now.ToString("ddd MMM d yyyy");
+        //        string Time = DateTime.Now.ToString("HH:mm:ss");
+        //        string Title = "Title";
+        //        string Text = "Text";
+                
+        //        AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        //        SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
+        //        await Call_history.OpenAsync();
+        //        foreach (NoteViewModel n in Notes)
+        //        {
+        //            string correcttext = n.Text.Replace("'", "`");
+        //            string replacetitle = string.Format("UPDATE {0} SET Caller = '{1}' WHERE ID = '{2}';", name, n.Title, n.Guid);
+        //            string replacenote = string.Format("UPDATE {0} SET Notes = '{1}' WHERE ID = '{2}';", name, correcttext, n.Guid);
+        //            string replacedate = string.Format("UPDATE {0} SET Date = '{1}' WHERE ID = '{2}';", name, Date, n.Guid);
+        //            string replacetime = string.Format("UPDATE {0} SET Time = '{1}' WHERE ID = '{2}';", name, Time, n.Guid);
 
-                try
-                {
-                    cleantablecommand.ExecuteNonQueryAsync();                    
-                }
-                catch (Exception e)
-                {
-                    log.Error(e);
-                    //Model.ExceptionReporting.Email(e);
-                }
-            }
-            //Deletes call from history if notes are empty
-            if (n.Text == "")
-            {
-                string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
+        //            SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, Call_history);
+        //            SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, Call_history);
+        //            SQLiteCommand replacedatecommand = new SQLiteCommand(replacedate, Call_history);
+        //            SQLiteCommand replacetimecommand = new SQLiteCommand(replacetime, Call_history);
 
-                SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+        //            try
+        //            {
+        //                await replacetitlecommand.ExecuteNonQueryAsync();
+        //                await replacedatecommand.ExecuteNonQueryAsync();
+        //                await replacenotecommand.ExecuteNonQueryAsync();
+        //                await replacetimecommand.ExecuteNonQueryAsync();
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                log.Error(e);
+        //                //Model.ExceptionReporting.Email(e);
+        //            }
+        //       }               
+        //        Call_history.Close();
+        //    }
+        //}
+        //private void StartNoteSaveTask()
+        //{
+        //    var token = tokenSource.Token;
+        //    Task noteSaving = new Task(() => ReplaceHistory(token), token, TaskCreationOptions.LongRunning);
+        //    noteSaving.Start();
+        //}
 
-                try
-                {
-                    cleantablecommand.ExecuteNonQueryAsync();
-                }
-                catch (Exception e)
-                {
-                    log.Error(e);
-                    //Model.ExceptionReporting.Email(e);
-                }
-            }
-        }
+        //public void CleanDatabase()
+        //{
+        //    //string Mondaycheck = DateTime.Now.ToString("dddd");
+        //    string Today = DateTime.Now.ToString("ddd MMM d yyyy");
+        //    //string Yesterday = DateTime.Now.AddDays(-1).ToString("ddd MMM d yyyy");
+        //    //string Saturday = DateTime.Now.AddDays(-2).ToString("ddd MMM d yyyy");
+        //    //string Friday = DateTime.Now.AddDays(-3).ToString("ddd MMM d yyyy");
+
+        //    //if (Mondaycheck == "Monday")
+        //    //{
+        //    AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        //    SQLiteConnection Call_history = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
+        //        Call_history.Open();
+
+        //        {
+        //            string copy = String.Format("INSERT INTO ArchiveHistory (Date,Time,ID,Caller,Notes) SELECT Date,Time,ID,Caller,Notes FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
+        //            string cleanup = String.Format("DELETE FROM CurrentHistory WHERE Date NOT LIKE '{0}'", Today);
+        //            string cleanupdefaultinarch = "DELETE FROM ArchiveHistory WHERE Date LIKE 'Date'";
+        //            SQLiteCommand docopy = new SQLiteCommand(copy, Call_history);
+        //            SQLiteCommand docleanup = new SQLiteCommand(cleanup, Call_history);
+        //            SQLiteCommand docleanupdefaultinarch = new SQLiteCommand(cleanupdefaultinarch, Call_history);
+
+        //            try
+        //            {
+        //                docopy.ExecuteNonQuery();
+        //                docleanup.ExecuteNonQuery();
+        //                docleanupdefaultinarch.ExecuteNonQuery();
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                log.Error(e);
+        //                //Model.ExceptionReporting.Email(e);
+        //            }
+        //        }
+        //        Call_history.Close();
+        //}
+
+        //string timertoday = null;
+        
+        //public void setmidnight()
+        //{
+        //    string today = DateTime.Now.Date.ToString();
+            
+        //    timertoday = today;
+        //}
+
+        //public void midnighttimer()
+        //{
+        //    string today = DateTime.Now.Date.ToString();
+            
+        //    if (today != timertoday)
+        //    {
+        //        //MessageBox.Show("It worked");
+        //        CleanDatabase();
+        //        setmidnight();
+        //    }
+        //    else { }            
+        //}
+
+        //private static void HistoryCleanup(NoteViewModel n, string name, SQLiteConnection Call_history)
+        //{
+        //    //Deletes call from history if notes match default template
+        //    if (n.Text == Properties.Settings.Default.Default_Note_Template.ToString())
+        //    {
+        //        string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
+
+        //        SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+
+        //        try
+        //        {
+        //            cleantablecommand.ExecuteNonQueryAsync();                    
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            log.Error(e);
+        //            //Model.ExceptionReporting.Email(e);
+        //        }
+        //    }
+        //    //Deletes call from history if notes are empty
+        //    if (n.Text == "")
+        //    {
+        //        string cleantable = string.Format("DELETE FROM {0} WHERE ID = '{1}'", name, n.Guid);
+
+        //        SQLiteCommand cleantablecommand = new SQLiteCommand(cleantable, Call_history);
+
+        //        try
+        //        {
+        //            cleantablecommand.ExecuteNonQueryAsync();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            log.Error(e);
+        //            //Model.ExceptionReporting.Email(e);
+        //        }
+        //    }
+        //}
 
         //private static void HistoryCleanuponlaunch()
         //{

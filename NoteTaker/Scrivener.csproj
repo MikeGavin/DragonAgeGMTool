@@ -264,6 +264,7 @@
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\HistoryItem.cs" />
+    <Compile Include="Model\NoteType.cs" />
     <Compile Include="Model\PasteEventArgs.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\RoleItem.cs" />
@@ -271,7 +272,7 @@
     <Compile Include="Model\HistoryDBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
     <Compile Include="Model\MinionArgs.cs" />
-    <Compile Include="Model\SaveNotes.cs" />
+    <Compile Include="Model\NoteManager.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />

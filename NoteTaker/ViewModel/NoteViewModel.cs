@@ -30,17 +30,17 @@ namespace Scrivener.ViewModel
             //This creates a per instance version of the menus. 
             Root = DataB.QuickItems;
             //Used for saving unique notes
-            Guid = Guid.NewGuid();
             
             if (incomingNote == null)
             {
+                Guid = Guid.NewGuid();
                 Text = Properties.Settings.Default.Default_Note_Template;
                 Title = string.Format("Note {0}", ++_number);
                 _titlechanged = false;
-
             }
             else
             {
+                Guid = incomingNote.Guid;
                 Text = incomingNote.Text;
                 Title = incomingNote.Title;
                 _titlechanged = true;
