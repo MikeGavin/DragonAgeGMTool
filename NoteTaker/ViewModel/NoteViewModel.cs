@@ -19,39 +19,36 @@ using System.IO;
 
 namespace Scrivener.ViewModel
 {
-    public class NoteViewModel : ViewModelBase
+    public class NoteViewModel : ViewModelBase, INote
     {
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
       
-        public NoteViewModel()
+        public NoteViewModel(INote incomingNote = null)
         {
             //Creates a shared version of the menus
             DataB = DatabaseStorage.Instance;
             //This creates a per instance version of the menus. 
             Root = DataB.QuickItems;
-            Text = Properties.Settings.Default.Default_Note_Template;
-            //_minionCommands = commands;
-            Title = string.Format("Note {0}", ++_number);
-            _titlechanged = false;
-            
             //Used for saving unique notes
             Guid = Guid.NewGuid();
+            
+            if (incomingNote == null)
+            {
+                Text = Properties.Settings.Default.Default_Note_Template;
+                Title = string.Format("Note {0}", ++_number);
+                _titlechanged = false;
 
-            //DataBaseWatcher.DataBaseUpdated += DataBaseWatcher_DataBaseUpdated;
+            }
+            else
+            {
+                Text = incomingNote.Text;
+                Title = incomingNote.Title;
+                _titlechanged = true;
+            }
+                        
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
         }
-
-        //private async void DataBaseWatcher_DataBaseUpdated(object sender, FileSystemEventArgs e)
-        //{
-        //    if (e.Name.ToLower().Contains("scrivener.sqlite"))
-        //    {
-        //        log.Debug("Updating MinionCommands on note {0}", Title);
-        //        _minionCommands = await DataBaseReader.ReturnMinionCommands(Properties.Settings.Default.Role_Current);
-        //        log.Debug("Updating QuickItems on note {0}", Title);
-        //        Root = await DataBaseReader.ReturnQuickItems(Properties.Settings.Default.Role_Current);
-        //    }
-        //}
 
         private string _minionVisibility;
         public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }

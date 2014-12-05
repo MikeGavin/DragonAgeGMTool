@@ -282,6 +282,7 @@
     <Compile Include="ViewModel\Break_Clock.xaml.cs">
       <DependentUpon>Break_Clock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\INote.cs" />
     <Compile Include="ViewModel\MinionItemViewModel.cs" />
     <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
