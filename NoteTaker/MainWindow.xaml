@@ -7,14 +7,13 @@
         xmlns:vm="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
-        xmlns:helpers="clr-namespace:Scrivener.Helpers"
-        
+        xmlns:helpers="clr-namespace:Scrivener.Helpers"       
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:Scrivener.UserControls"
         xmlns:Properties="clr-namespace:Scrivener.Properties" 
         xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" vm:Class="Scrivener.MainWindow"
         xmlns:model="clr-namespace:Scrivener.Model"
-        mc:Ignorable="d ignore"
+        mc:Ignorable=" ignore"
         Height="500.3"
         Width="722" 
         
@@ -27,10 +26,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style vm:Key="EditableTabHeaderControl" 
-	TargetType="{vm:Type helpers:EditableTabHeaderControl}">
-                 <!--The template specified earlier will come here !-->
-            </Style>
+            <Style vm:Key="EditableTabHeaderControl" TargetType="{vm:Type helpers:EditableTabHeaderControl}"/>
+
             <Style vm:Key="ItemContainerStyle" TargetType="{vm:Type TabItem}">
                 <Setter Property="HeaderTemplate">
                     <Setter.Value>
@@ -41,9 +38,11 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
             <Style vm:Key="FontAwesome">
                 <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/Resources/#FontAwesome" />
             </Style>
+
             <Style vm:Key="EditableLabelStyle" TargetType="{vm:Type Label}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -80,9 +79,6 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </EventTrigger>
-                                <!--<Trigger Property="IsMouseOver" Value="true">
-                                    <Setter TargetName="textBox" Property="Opacity" Value="1"/>
-                                </Trigger>-->
                                 <Trigger Property="IsEnabled" Value="false">
                                     <Setter Property="Foreground" Value="{DynamicResource {vm:Static SystemColors.GrayTextBrushKey}}"/>
                                 </Trigger>
@@ -99,7 +95,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout vm:Name="SettingsFlyout" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -107,35 +103,17 @@
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" ToolTip="New Tab" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <!--<Button Margin="0,-3,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
-                <Menu FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="history" Background="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}">
-                    <MenuItem Header="&#xf1da;" ToolTip="Caller History" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding QuickHistory, UpdateSourceTrigger=PropertyChanged}">
-                        <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="Command" Value=""/>
-                                <Setter Property="CommandParameter" Value="{Binding Notes}"/>
-                                <Setter Property="FontSize" Value="12"/>
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
-                        <MenuItem.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding QuickHistory}">
-                                <TextBlock Text="{Binding Path=Caller}" ToolTip="{Binding Path=Content}"/>
-                            </HierarchicalDataTemplate>
-                        </MenuItem.ItemTemplate>
-                    </MenuItem>
-                </Menu>
-            </Button>-->
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xf017;" ToolTip="Break Clock" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Click="Open_Break_Clock"/>
             <!--By wrapping the menu item in a button it inherates some of the effects of the other buttons making them look the same-->
-                     
-            
+
+
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            
+
             <Button >
                 <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
                     <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
@@ -162,73 +140,29 @@
                 </TextBox.InputBindings>
             </TextBox>
             <Button Content="&#xF1BB;" ToolTip="QuickNotes" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Button Content="&#xf073;" ToolTip="Note History" Command="{Binding HistoryToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xF013;" Click="Settings_Click" ToolTip="Settings"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
-    
+
             </Button>
-            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>            
-            
+            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
-    
+
     <Grid vm:Name="LayoutRoot" Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="248*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TabControl vm:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2">
+        <TabControl vm:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <TabControl.ItemTemplate>
 
                 <DataTemplate>
-                    <UserControls:EditableTextBlockUC Text="{Binding Title, Mode=TwoWay}"
-                />
-                    <!--<DockPanel Width="Auto" Margin="0">                       
-                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CloseNoteCommand}"
-                            Content="X"
-                            DockPanel.Dock="Right"
-                            Focusable="False"
-                            FontWeight="Bold"  
-                            Margin="0,1,0,0"
-                            Padding="0"
-                            VerticalContentAlignment="Center"
-                            Width="15" Height="15" 
-                            BorderThickness="0"
-                            FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome"                          
-                            >
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                        -->
-                    <!--<Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="RosyBrown"/>
-                                            Does not work with current button style
-                                        </Trigger>-->
-                    <!--
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-
-                        <TextBlock Text="{Binding Title}" FontSize="14" VerticalAlignment="Center" Margin="0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
-                                            <Setter Property="Foreground" Value="#CC119EDA"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="False">
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </DataTrigger>                                       
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DockPanel>-->
+                    <UserControls:EditableTextBlockUC Text="{Binding Title, Mode=TwoWay}"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
 
@@ -240,14 +174,6 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <!--<ToolBarPanel HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="213">
-            <ToolBar Grid.Row="0" HorizontalAlignment="Left" Width="583" Margin="0,0,-370,0" FontFamily ="pack://application:,,,/Resources/#FontAwesome">
-                <Button Content="&#xf067;" Height="26" Width="26" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-                <Button Content="&#xf013;" Height="26" Width="26" Click="Settings_Click"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-                <Button Content="&#xf1bb;" Height="26" Width="26" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            </ToolBar>
-        </ToolBarPanel>-->
-
     </Grid>
     <controls:MetroWindow.InputBindings>
         <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />

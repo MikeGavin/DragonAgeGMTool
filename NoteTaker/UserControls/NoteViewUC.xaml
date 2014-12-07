@@ -82,34 +82,11 @@
                     <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-
-
         </TreeView>
-
-        <WrapPanel Name="historypanel" Visibility="{Binding Main.HistoryVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250">
-            <DatePicker SelectedDate="{Binding Main.HistoryDate}"/>
-            <Button >
-                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
-                    <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="History" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.HistoryItems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                        <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="Command" Value="{Binding Main.OpenHistoryCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
-                                <Setter Property="CommandParameter" Value="{Binding Content}"/>
-                                <Setter Property="FontSize" Value="12"/>
-                            </Style>
-                        </MenuItem.ItemContainerStyle>
-                        <MenuItem.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
-                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
-                            </HierarchicalDataTemplate>
-                        </MenuItem.ItemTemplate>
-                    </MenuItem>
-                </Menu>
-            </Button>           
-
-        </WrapPanel>
+        
         <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding DataB.QuickItems.SubItems}">
         </ListBox>
+        
         <StackPanel Visibility="{Binding Minion_Visibility, Converter={StaticResource BoolToVis}, Source={vm:Static Properties:Settings.Default}}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">
                 <Expander.Header>

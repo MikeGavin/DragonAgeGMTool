@@ -28,7 +28,7 @@ namespace Scrivener.Model
         private string MainTableName { get { return "OpenNotes"; } }
         private string ArchiveTableName { get { return "NoteArchive"; } }
         //private SQLiteConnection noteDatabase = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-        private string noteDatabase = @"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;";
+        private string noteDatabase = @"Data Source=|DataDirectory|\Scrivener\notedata.db;Version=3;New=True;Compress=True;";
 
         ///<summary>
         ///<para>creates Call History Database and populates table with todays date if none exist</para>
@@ -90,19 +90,11 @@ namespace Scrivener.Model
 
         }
 
-        //test of .net guid generation for indexing. Need more unique item as count of items in tables will not work with 2 tables.
-        private void guid()
-        {
-            Guid guid = Guid.NewGuid();
-            string str = guid.ToString();
-            Guid test = Guid.Parse(str);
-        }
-
         private async Task SaveNote(INote n, string tablename)
         {
             //String for creating time stamp
-            string Date = DateTime.Now.ToString("ddd MMM d yyyy");
-            string Time = DateTime.Now.ToString("HH:mm:ss");
+            var Date = DateTime.Now.ToString("d");
+            var Time = DateTime.Now.ToString("T");
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
                                             SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}',
@@ -110,32 +102,9 @@ namespace Scrivener.Model
             var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
                                             VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title, n.Text, Date, Time);
 
-
-            //await WriteDatabase(update);
+            await WriteDatabase(update);
             await WriteDatabase(command);
 
-
-            //Updates notes in Database
-            //await noteDatabase.OpenAsync();
-            //SQLiteCommand replacetitlecommand = new SQLiteCommand(replacetitle, noteDatabase);
-            //SQLiteCommand replacenotecommand = new SQLiteCommand(replacenote, noteDatabase);
-            //SQLiteCommand replacedatecommand = new SQLiteCommand(replacedate, noteDatabase);
-            //SQLiteCommand replacetimecommand = new SQLiteCommand(replacetime, noteDatabase);
-            //try
-            //{
-            //    replacetitlecommand.ExecuteNonQuery();
-            //    replacenotecommand.ExecuteNonQuery();
-            //    replacedatecommand.ExecuteNonQuery();
-            //    replacetimecommand.ExecuteNonQuery();
-            //}
-            //catch (Exception e)
-            //{
-            //    log.Error(e);
-            //    //Model.ExceptionReporting.Email(e);
-            //}
-
-            ////HistoryCleanup(n, tablename, Call_history);
-            //noteDatabase.Close();
         }
 
         private async Task DeleteNote(INote n, string tableName)
@@ -156,7 +125,7 @@ namespace Scrivener.Model
             await DeleteNote(n, MainTableName);
         }
 
-        public async Task<ObservableCollection<NoteType>> GetOpenNotes()
+        public async Task<ObservableCollection<NoteType>> GetCurrentNotes()
         {
             log.Debug("Getting Open Notes");
             var db = new SQLiteConnection(noteDatabase);
@@ -197,6 +166,50 @@ namespace Scrivener.Model
             }
     
             return openNotes;
+        }
+
+        public async Task<ObservableCollection<NoteType>> GetArchivedNotes(DateTime searchDate)
+        {
+            log.Debug("Searching Archive Notes");
+            var db = new SQLiteConnection(noteDatabase);
+            SQLiteCommand pullall = new SQLiteCommand();
+            pullall.CommandText = string.Format("SELECT * FROM {0} WHERE Date = '{1}'", ArchiveTableName, searchDate.ToString("d"));
+
+            pullall.Connection = db;
+            log.Debug(pullall.CommandText);
+            var archiveSearch = new ObservableCollection<NoteType>();
+            try
+            {
+                log.Info("CommandText: {0}", pullall.CommandText.ToString());
+                await db.OpenAsync();
+                SQLiteDataReader reader = pullall.ExecuteReader();
+                while (await reader.ReadAsync())
+                {
+                    var guid = reader["guid"].ToString().Trim();
+                    var title = reader["Title"].ToString().Trim();
+                    var text = reader["Notes"].ToString().Trim();
+                    var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
+                    try
+                    {
+                        archiveSearch.Add(new NoteType(title, text, datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error(ex);
+                    }
+                }
+
+                db.Close();
+
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                log.Info("Closing {0}", db.DataSource);
+                db.Close();
+            }
+
+            return archiveSearch;
         }
 
     }
