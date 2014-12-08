@@ -186,7 +186,6 @@ namespace Scrivener.ViewModel
 
         private async void CloseNote(NoteViewModel note)
         {
-            await noteManager.SaveCurrent(note);
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
@@ -208,6 +207,7 @@ namespace Scrivener.ViewModel
 
         private async Task SetLastNote(NoteViewModel note)
         {
+            await noteManager.SaveCurrent(note);
             //if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
             //{
                 lastClosedNote = note;

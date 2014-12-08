@@ -97,7 +97,7 @@ namespace Scrivener.Model
             var Time = DateTime.Now.ToString("T");
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
-                                            SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}',
+                                            SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
                                             WHERE guid = '{5}';", tablename, n.Title, n.Text, Date, Time, n.Guid.ToString());
             var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
                                             VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title, n.Text, Date, Time);
