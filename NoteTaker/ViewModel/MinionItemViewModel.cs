@@ -153,8 +153,8 @@ namespace Scrivener.ViewModel
         private RelayCommand _rebootCommand;
         public RelayCommand RebootCommand { get { return _rebootCommand ?? (_rebootCommand = new RelayCommand(async () => await Machine.Reboot())); } }
 
-        private RelayCommand _fixJNLPCommand;
-        public RelayCommand FixJNLPCommand { get { return _fixJNLPCommand ?? (_fixJNLPCommand = new RelayCommand(async () => await Machine.FixJNLPAssoication())); } }
+        private RelayCommand _addJNLPCommand;
+        public RelayCommand AddJNLPCommand { get { return _addJNLPCommand ?? (_addJNLPCommand = new RelayCommand(async () => await Machine.AddNLPAssoication())); } }
 
         private RelayCommand _disableProfileWipeCommand;
         public RelayCommand DisableProfileWipeCommand { get { return _disableProfileWipeCommand ?? (_disableProfileWipeCommand = new RelayCommand(async () => await Machine.ProfileWipe_Disable())); } }
@@ -216,8 +216,8 @@ namespace Scrivener.ViewModel
             IECommands = new ObservableCollection<MinionCommandItem>(DataB.MinionCommands.Where(i => ((i.Name == "Update") || (i.Name == "IE")) && (i.Action == "Install") && (i.Bit == Machine.OSBit.Remove(2))));
         }
 
-        protected string _selectedjava;
-        public string SelectedJava { get { return _selectedjava; } set { _selectedjava = value; RaisePropertyChanged(); } }
+        protected Minion.ListItems.RemoteProgramData _selectedjava;
+        public Minion.ListItems.RemoteProgramData SelectedJava { get { return _selectedjava; } set { _selectedjava = value; RaisePropertyChanged(); } }
         private RelayCommand<string> _uninstallJavaCommand;
         public RelayCommand<string> UninstallJavaCommand { get { return _uninstallJavaCommand ?? (_uninstallJavaCommand = new RelayCommand<string>(async (param) => await Uninstall_Java(param))); } }
         public async Task Uninstall_Java(string data)
@@ -226,7 +226,7 @@ namespace Scrivener.ViewModel
             try
             {
                 data = data.Replace("-Bit", string.Empty);
-                string[] x = System.Text.RegularExpressions.Regex.Split(data, ", ");
+                string[] x = System.Text.RegularExpressions.Regex.Split(data, " ");
                 string current = x[0];
                 string bit = x[1];
                 item = DataB.MinionCommands.First(j => (j.Name == "Java") && (j.Action == "Uninstall") && (j.Version == current) && (j.Bit == bit)) as MinionCommandItem;               
@@ -427,7 +427,7 @@ namespace Scrivener.ViewModel
             {
                 if (command.Action == "Uninstall" && command.Version != "All")
                 {
-                    if (!Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    if (!Machine.Javas.Any(p => p.FullVersion ==  (command.Version + " " + command.Bit + "-Bit")))
                     {
                         RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, version {1} is no longer installed.", command.Name, command.Version));
                     }
@@ -438,7 +438,7 @@ namespace Scrivener.ViewModel
                 }
                 else if (command.Action == "Uninstall" && command.Version == "All")
                 {
-                    if (!Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    if (!Machine.Javas.Any(p => p.FullVersion == (command.Version + " " + command.Bit + "-Bit")))
                     {
                         RaiseNoteWrite(string.Format("Ran Minion {0} uninstall, {1} versions are no longer installed.", command.Name, command.Version));
                     }
@@ -449,14 +449,14 @@ namespace Scrivener.ViewModel
                 }
                 else if (command.Action == "Install")
                 {
-                    if (Machine.Javas.Contains(command.Version + ", " + command.Bit + "-Bit"))
+                    if (Machine.Javas.Any(p => p.FullVersion == (command.Version + " " + command.Bit + "-Bit")))
                     {
                         RaiseNoteWrite(string.Format("Ran Minion {0} install, version {1} is now installed.", command.Name, command.Version));
                     }
                     else
                     {
                         RaiseNoteWrite(string.Format("Ran Minion {0} install, unable to verify version {1} was installed.", command.Name, command.Version));
-                    }                    
+                    }
                 }
             }
 
