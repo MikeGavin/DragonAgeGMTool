@@ -54,7 +54,7 @@ namespace Scrivener.ViewModel
             if (string.IsNullOrEmpty(p) || p == "Updating...") { return; }
             if (PasteRequest != null)
             {
-                PasteRequest( this, new PasteEventArgs() { PasteData = p} );
+                PasteRequest( this, new PasteEventArgs() { PasteData = "test"} );
             }
         }
         public RelayCommand<string> PasteCommand { get { return new RelayCommand<string>((param) => OnPasteRequest(param)); } }      
