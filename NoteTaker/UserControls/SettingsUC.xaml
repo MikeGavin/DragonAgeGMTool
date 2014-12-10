@@ -24,19 +24,19 @@
                 <Setter Property="FontWeight" Value="Medium"/>
             </Style>
 
-            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <!--<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
 
-            </Style>
+            </Style>-->
             <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
                 <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16"></Setter>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <TabControl TabStripPlacement="Right">
-        <TabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top">
+    <controls:MetroTabControl TabStripPlacement="Right">
+        <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top">
             <StackPanel Margin="0" Width="auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -119,8 +119,8 @@
                     </Grid>
                 </Expander>
             </StackPanel>
-        </TabItem>
-        <TabItem Header="History" VerticalAlignment="Top">
+        </controls:MetroTabItem>
+        <controls:MetroTabItem Header="History" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -152,8 +152,8 @@
                 </ListView>
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}"/>
             </Grid>
-        </TabItem>
-        <TabItem Header="Templates" VerticalAlignment="Top">
+        </controls:MetroTabItem>
+        <!--<TabItem Header="Templates" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -171,6 +171,6 @@
                 <ListView Grid.Row="1" Grid.Column="0"/>
                 <TextBox Grid.Row="1" Grid.Column="1"/>
             </Grid>
-        </TabItem>
-    </TabControl>
+        </TabItem>-->
+    </controls:MetroTabControl>
 </UserControl>

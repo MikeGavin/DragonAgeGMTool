@@ -95,7 +95,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Position="Right" Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" TitleVisibility="Hidden"  Width="auto" Theme="Accent" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -134,7 +134,7 @@
             </Button>
             <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
-                                     VerticalAlignment="Center" Width="151" controls:TextboxHelper.ClearTextButton="True" controls:TextboxHelper.Watermark="Search EKB">
+                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Search EKB">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
