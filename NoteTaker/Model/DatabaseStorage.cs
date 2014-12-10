@@ -20,7 +20,7 @@ namespace Scrivener.Model
         // http://csharpindepth.com/Articles/General/Singleton.aspx
         DatabaseStorage()
         {
-            LoadRoles();
+            Task.Run(async () => await LoadRoles());
         }
         public static DatabaseStorage Instance
         {
@@ -72,7 +72,7 @@ namespace Scrivener.Model
         }
 
         private RoleItem _role;
-        public RoleItem Role { get { return _role; } set { _role = value; RaisePropertyChanged(); LoadAll(); } }
+        public RoleItem Role { get { return _role; } set { _role = value; RaisePropertyChanged(); Task.Run(async () => await LoadAll()); } }
 
         private QuickItem _quickitems;
         public QuickItem QuickItems { get { return _quickitems; } private set { _quickitems = value; RaisePropertyChanged(); } }

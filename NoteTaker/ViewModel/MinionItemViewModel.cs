@@ -490,7 +490,7 @@ namespace Scrivener.ViewModel
             string result = string.Empty;
             if (item.Name.ToLower().Contains("java"))
             {
-                string ver;
+                //string ver;
                 await Machine.Get_Java();
 
 

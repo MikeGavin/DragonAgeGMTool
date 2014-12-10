@@ -19,7 +19,7 @@ namespace Scrivener.Model
         public NoteManager()
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            CreatesHistory();
+            Task.Run(async () => await CreatesHistory());
         }
 
 

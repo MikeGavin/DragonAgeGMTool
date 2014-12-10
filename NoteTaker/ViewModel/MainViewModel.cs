@@ -238,9 +238,11 @@ namespace Scrivener.ViewModel
         public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm) )); } }
         private async void NewNote([CallerMemberName]string memberName = "", INote note = null )
         {
-            log.Debug("{0} ran NewNote", memberName);
-            Notes.Add(new NoteViewModel(note));
-            SelectedNote = Notes.Last();
+            await Task.Run( ()=> {
+                log.Debug("{0} ran NewNote", memberName);
+                Notes.Add(new NoteViewModel(note));
+                SelectedNote = Notes.Last();
+             });
         }
 
         private INote lastClosedNote;
@@ -249,12 +251,15 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RecallNote"))); } }
         private async void RecallNote([CallerMemberName]string memberName = "")
         {
-            if (lastClosedNote != null)
+            await Task.Run(() =>
             {
-                Notes.Add(lastClosedNote as NoteViewModel);
-                SelectedNote = Notes.Last();
-                lastClosedNote = null;
-            }
+                if (lastClosedNote != null)
+                {
+                    Notes.Add(lastClosedNote as NoteViewModel);
+                    SelectedNote = Notes.Last();
+                    lastClosedNote = null;
+                }
+            });
         }
 
 
