@@ -36,7 +36,7 @@ namespace Scrivener.Model
                 log.Info("CommandText: {0}", pullall.CommandText.ToString());
                 db.Open();
                 SQLiteDataReader reader = pullall.ExecuteReader();
-                while (reader.Read())
+                while (await reader.ReadAsync())
                     importedRoles.Add(new RoleItem()
                     {
                         Name = reader["Name"].ToString().Trim(),
