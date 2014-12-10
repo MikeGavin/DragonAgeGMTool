@@ -60,6 +60,12 @@ namespace Scrivener.ViewModel
         //Constructor
         public MainViewModel(IDataService dataService)
         {
+            //Retreave previous version settings.
+            if (Properties.Settings.Default.UpgradeSettings)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.UpgradeSettings = false;
+            }
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += (s,e) => SaveAllNotes();
             Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
