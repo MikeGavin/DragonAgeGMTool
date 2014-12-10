@@ -37,6 +37,7 @@ namespace Scrivener.ViewModel
                 Text = Properties.Settings.Default.Default_Note_Template;
                 Title = string.Format("Note {0}", ++_number);
                 _titlechanged = false;
+                LastUpdated = DateTime.Now;
             }
             else
             {
@@ -44,6 +45,7 @@ namespace Scrivener.ViewModel
                 Text = incomingNote.Text;
                 Title = incomingNote.Title;
                 _titlechanged = true;
+                LastUpdated = incomingNote.LastUpdated;
             }
                         
             this.TextChanged += Note_TextChanged;
@@ -66,8 +68,8 @@ namespace Scrivener.ViewModel
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
-        private Nullable<DateTime> _lastUpdated;
-        public Nullable<DateTime> LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
+        private DateTime _lastUpdated;
+        public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
         private int _caretindex;
         public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }

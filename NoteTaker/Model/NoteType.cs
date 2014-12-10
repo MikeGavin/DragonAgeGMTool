@@ -12,7 +12,7 @@ namespace Scrivener.Model
         public Guid Guid { get { return _guid; } protected set { _guid = value; } }
         public string Text { get; set; }
         public string Title { get; set; }
-        public Nullable<DateTime> LastUpdated{ get; set; }
+        public DateTime LastUpdated{ get; protected set; }
 
         public NoteType(Guid guid, string title, string text)
         {
@@ -23,12 +23,14 @@ namespace Scrivener.Model
         public NoteType()
         {
             Guid = Guid.NewGuid();
+            LastUpdated = DateTime.Now;
         }
         public NoteType(string title, string text)
         {
             Guid = Guid.NewGuid();
             Title = title;
             Text = text;
+            LastUpdated = DateTime.Now;
         }
         public NoteType(string title, string text, DateTime lastupdated)
         {

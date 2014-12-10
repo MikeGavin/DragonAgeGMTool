@@ -93,8 +93,8 @@ namespace Scrivener.Model
         private async Task SaveNote(INote n, string tablename)
         {
             //String for creating time stamp
-            var Date = DateTime.Now.ToString("d");
-            var Time = DateTime.Now.ToString("T");
+            var Date = n.LastUpdated.ToString("d");
+            var Time = n.LastUpdated.ToString("T");
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
                                             SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
