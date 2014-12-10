@@ -80,12 +80,16 @@ namespace Scrivener.Model
                     {
                         await cmd.ExecuteNonQueryAsync();
                     }
+                    conn.Close();
                 }
             }
             catch(SQLiteException ex)
             {
                 if (ex.ResultCode == SQLiteErrorCode.Busy)
                     log.Error("Database is locked by another process!");
+                else
+                    log.Error(ex);
+                
             }
 
         }
