@@ -249,10 +249,12 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RecallNote"))); } }
         private async void RecallNote([CallerMemberName]string memberName = "")
         {
-            
-            Notes.Add(lastClosedNote as NoteViewModel);
-            SelectedNote = Notes.Last();
-            lastClosedNote = null;
+            if (lastClosedNote != null)
+            {
+                Notes.Add(lastClosedNote as NoteViewModel);
+                SelectedNote = Notes.Last();
+                lastClosedNote = null;
+            }
         }
 
 

@@ -133,7 +133,7 @@ namespace Scrivener.ViewModel
 
         #region Minion
         //Commands from constructor
-        private ObservableCollection<MinionCommandItem> _minionCommands;
+        //private ObservableCollection<MinionCommandItem> _minionCommands;
         // local minion instance for this note.
         private MinionViewModel _noteMinion;
         public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
