@@ -6,5 +6,6 @@ namespace Scrivener.Model
         Guid Guid { get; }
         string Text { get; set; }
         string Title { get; set; }
+        Nullable<DateTime> LastUpdated { get; }
     }
 }

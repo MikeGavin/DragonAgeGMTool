@@ -64,15 +64,23 @@ namespace Scrivener.ViewModel
         private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
-
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private Nullable<DateTime> _lastUpdated;
+        public Nullable<DateTime> LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
+
         private int _caretindex;
         public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         #endregion        
 
         #region EventBased Actions
         //Text change events for note
+        public void RaiseNoteSave()
+        {
+            if (SaveNoteRequest != null) { SaveNoteRequest(this, new EventArgs()); }
+        }
+        public event EventHandler SaveNoteRequest;
+
         internal void RaiseTextChanged()
         {
             if (TextChanged != null) { TextChanged(this, new EventArgs()); }
@@ -81,6 +89,7 @@ namespace Scrivener.ViewModel
         //listener runs regex checks on text change
         void Note_TextChanged(object sender, EventArgs e)
         {
+            LastUpdated = DateTime.Now;
             Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b\s+");
             Regex sepid = new Regex(@"[a-z]{2,3}[0-9]{5,6} ", RegexOptions.IgnoreCase);
 
@@ -102,6 +111,7 @@ namespace Scrivener.ViewModel
                 }
 
             }
+            RaiseNoteSave();
         }
 
         /// <summary>

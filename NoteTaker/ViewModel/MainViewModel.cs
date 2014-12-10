@@ -172,11 +172,28 @@ namespace Scrivener.ViewModel
         {
             if (e.NewItems != null && e.NewItems.Count != 0)
                 foreach (NoteViewModel note in e.NewItems)
+                {
                     note.RequestClose += this.OnNoteRequestClose;
+                    note.SaveNoteRequest += note_SaveNoteRequest;
+                }
 
             if (e.OldItems != null && e.OldItems.Count != 0)
                 foreach (NoteViewModel workspace in e.OldItems)
+                {
                     workspace.RequestClose -= this.OnNoteRequestClose;
+                    workspace.SaveNoteRequest -= note_SaveNoteRequest;
+                }
+
+        }
+
+        private void note_SaveNoteRequest(object sender, EventArgs e)
+        {
+            // this uses a task to save every time a change is detected in order to prevent sluggy database issues. 
+            Task t = Task.Factory.StartNew(async () => 
+            {
+                await noteManager.SaveCurrent(sender as NoteViewModel);
+            });
+           
         }
         void OnNoteRequestClose(object sender, EventArgs e)
         {
