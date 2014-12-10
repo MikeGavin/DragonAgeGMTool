@@ -61,6 +61,7 @@ namespace Scrivener.ViewModel
         public MainViewModel(IDataService dataService)
         {
             //Retreave previous version settings.
+            //http://stackoverflow.com/questions/622764/persisting-app-config-variables-in-updates-via-click-once-deployment/622813#622813
             if (Properties.Settings.Default.UpgradeSettings)
             {
                 Properties.Settings.Default.Upgrade();
