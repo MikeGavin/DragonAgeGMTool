@@ -75,6 +75,7 @@ namespace Scrivener.ViewModel
         public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         #endregion        
 
+        
         #region EventBased Actions
         //Text change events for note
         public void RaiseNoteSave()
@@ -89,6 +90,7 @@ namespace Scrivener.ViewModel
         }
         public event EventHandler TextChanged;
         //listener runs regex checks on text change
+        private DateTime lastsaved = DateTime.Now;
         void Note_TextChanged(object sender, EventArgs e)
         {
             LastUpdated = DateTime.Now;
@@ -113,7 +115,15 @@ namespace Scrivener.ViewModel
                 }
 
             }
-            RaiseNoteSave();
+            
+            //Saves note on change if one secend has passed since the last save to prevent DB locks.
+            var oneSec = new TimeSpan(0,0,0,1);
+            if (DateTime.Now > lastsaved + oneSec)
+            {
+                lastsaved = DateTime.Now;
+                RaiseNoteSave();
+                log.Debug("Saved note");
+            }
         }
 
         /// <summary>
