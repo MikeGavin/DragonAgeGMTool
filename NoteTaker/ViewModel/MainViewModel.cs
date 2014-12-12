@@ -149,11 +149,11 @@ namespace Scrivener.ViewModel
                     log.Error(e);
                 }
 
-                if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivenerdev\scrivener.application"))
+                if (uri.LocalPath == @"\\fs1\EdTech\ScrivenerDev\Scrivener.application")
                 {
                     AppMode = "development";
                 }
-                else if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivener\scrivener.application"))
+                else if (uri.LocalPath == (@"\\fs1\EdTech\Scrivener\Scrivener.application"))
                 {
                     AppMode = "production";
                 }
