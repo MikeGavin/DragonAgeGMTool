@@ -125,6 +125,7 @@ namespace Scrivener.ViewModel
             if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             {
                 Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
+                log.Debug("uri.LocalPath: {0}", uri.LocalPath.ToString());
                 if (uri.LocalPath.ToLower().Contains("dev"))
                 {
                     //Start auto update system and subscribe to event
@@ -137,7 +138,13 @@ namespace Scrivener.ViewModel
                 }
                 else if (uri.LocalPath.ToLower().Contains(@"/edTech/scrivener"))
                 {
-                    AppMode = "Production";
+                    //Start auto update system and subscribe to event
+                    var updateManager = new UpdateManager(uri);
+                    updateManager.UpdateComplete += UpdateComplete;
+                    //listen for DB updates
+                    var WatchDataBase = new DataBaseWatcher(uri);
+                    DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
+                    AppMode = "production";
                 }
                 else
                 {
@@ -364,10 +371,6 @@ namespace Scrivener.ViewModel
             {
                 log.Debug("{0} requested db reload.", o.ToString());
                 await DataB.LoadAll();
-                //QuickItemTree = null;
-                //DataB.LoadSites(Properties.Settings.Default.Role_Current);
-                //MinionCommands = null;
-                
             }
         }
 

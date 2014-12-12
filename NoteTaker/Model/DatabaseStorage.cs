@@ -49,6 +49,7 @@ namespace Scrivener.Model
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         private DataBaseReader DataBaseReader = new DataBaseReader();
+       
 
         private ObservableCollection<RoleItem> _roles;
         public ObservableCollection<RoleItem> Roles { get { return _roles; } private set { _roles = value; RaisePropertyChanged(); } }
