@@ -169,8 +169,8 @@ namespace Scrivener.ViewModel
         public DatabaseStorage DataB { get; set; }
           
         //Note Collection
-        private ObservableCollection<NoteViewModel> _Notes = new ObservableCollection<NoteViewModel>();
-        public ObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
+        private MTObservableCollection<NoteViewModel> _Notes = new MTObservableCollection<NoteViewModel>();
+        public MTObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
         private INote _SelectedNote;
         public INote SelectedNote { get { return _SelectedNote; } set { _SelectedNote = value; RaisePropertyChanged(); } }
 
@@ -209,33 +209,30 @@ namespace Scrivener.ViewModel
         }
 
         private async void CloseNote(NoteViewModel note)
-        {
+        {                        
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
                 if (result == true)
                 {
-                    await SetLastNote(note);
+                    await SetLastSaveClose(note);
                 }
             }
             else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
             {
-                await SetLastNote(note);
+                await SetLastSaveClose(note);
             }
 
             if (Notes.Count == 0)
             {
                 NewNote();
-            }
+            }            
         }
 
-        private async Task SetLastNote(NoteViewModel note)
+        private async Task SetLastSaveClose(NoteViewModel note)
         {
             await noteManager.SaveCurrent(note);
-            //if (note.Text != Properties.Settings.Default.Default_Note_Template.ToString() && note.Text != "")
-            //{
-                lastClosedNote = note;
-            //}
+            lastClosedNote = note;
             Notes.Remove(note);
             await noteManager.ArchiveCurrent(note);
         }
@@ -245,25 +242,29 @@ namespace Scrivener.ViewModel
         public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm) )); } }
         private async void NewNote([CallerMemberName]string memberName = "", INote note = null )
         {
+            await Task.Factory.StartNew(() =>
+            {
                 log.Debug("{0} ran NewNote", memberName);
                 Notes.Add(new NoteViewModel(note));
                 SelectedNote = Notes.Last();
+            });
         }
 
         private INote lastClosedNote;
         //Recall Notes
         private RelayCommand<string> _RecallNoteCommand;
-        public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>((parm) => RecallNote("RecallNote"))); } }
-        private async void RecallNote([CallerMemberName]string memberName = "")
+        public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>(async (parm) => await RecallNote("RecallNote"))); } }
+        private async Task RecallNote([CallerMemberName]string memberName = "")
         {
-
+            await Task.Factory.StartNew(() => 
+            {
                 if (lastClosedNote != null)
                 {
                     Notes.Add(lastClosedNote as NoteViewModel);
                     SelectedNote = Notes.Last();
                     lastClosedNote = null;
                 }
-
+            });
         }
 
 
