@@ -126,29 +126,40 @@ namespace Scrivener.ViewModel
             {
                 Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
                 log.Debug("uri.LocalPath: {0}", uri.LocalPath.ToString());
-                if (uri.LocalPath.ToLower().Contains("dev"))
+
+                try
                 {
                     //Start auto update system and subscribe to event
                     var updateManager = new UpdateManager(uri);
                     updateManager.UpdateComplete += UpdateComplete;
+                }
+                catch(Exception e)
+                {
+                    log.Error(e);
+                }
+                
+                try
+                {
                     //listen for DB updates
                     var WatchDataBase = new DataBaseWatcher(uri);
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
+                }
+                catch(Exception e)
+                {
+                    log.Error(e);
+                }
+
+                if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivenerdv\scrivener.application"))
+                {
                     AppMode = "development";
                 }
-                else if (uri.LocalPath.ToLower().Contains(@"/edTech/scrivener"))
+                else if (uri.LocalPath.ToLower().Contains(@"\\fs1\edTech\scrivener\scrivener.application"))
                 {
-                    //Start auto update system and subscribe to event
-                    var updateManager = new UpdateManager(uri);
-                    updateManager.UpdateComplete += UpdateComplete;
-                    //listen for DB updates
-                    var WatchDataBase = new DataBaseWatcher(uri);
-                    DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                     AppMode = "production";
                 }
                 else
                 {
-                    AppMode = "unknown";
+                    AppMode = uri.LocalPath.ToLower();
                 }
             }
             else

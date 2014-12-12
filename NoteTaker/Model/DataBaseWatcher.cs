@@ -48,8 +48,7 @@ namespace Scrivener.Model
         }
 
         public DataBaseWatcher(Uri incomingUri)
-        {
-            
+        {            
             sourceDBpath = GetDBLocation(incomingUri);
             if (Directory.Exists(sourceDBpath))
             {
