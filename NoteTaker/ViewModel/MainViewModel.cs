@@ -208,7 +208,7 @@ namespace Scrivener.ViewModel
             CloseNote(note);
         }
 
-        private async void CloseNote(NoteViewModel note)
+        private async Task CloseNote(NoteViewModel note)
         {                        
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
@@ -231,10 +231,13 @@ namespace Scrivener.ViewModel
 
         private async Task SetLastSaveClose(NoteViewModel note)
         {
-            await noteManager.SaveCurrent(note);
-            lastClosedNote = note;
-            Notes.Remove(note);
-            await noteManager.ArchiveCurrent(note);
+            await Task.Factory.StartNew(async () =>
+            {
+                await noteManager.SaveCurrent(note);
+                lastClosedNote = note;
+                Notes.Remove(note);
+                await noteManager.ArchiveCurrent(note);
+            });
         }
 
         //New Notes
