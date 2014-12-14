@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"  
              d:DesignHeight="300" d:DesignWidth="300"
-             Width="auto" Height="auto"
+             Width="auto" Height="auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
              >
 
     <UserControl.Resources>
@@ -35,7 +35,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <controls:MetroTabControl TabStripPlacement="Right">
+    <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
         <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top">
             <StackPanel Margin="0" Width="auto">
                 <Grid>
@@ -68,8 +68,9 @@
                     <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
                     <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
                 </StackPanel>
-                <controls:ToggleSwitch Header="Close Warning" OnLabel="Visible" OffLabel="Hidden" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Visible" OffLabel="Hidden" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                 <Expander Header="Fonts" Margin="0">
                     <Grid Width="auto">
                         <Grid.RowDefinitions >
@@ -89,8 +90,6 @@
                         <TextBox BorderThickness="0" Margin="4"
                                 IsReadOnly="True" Grid.Row="1" Grid.Column="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                         <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-
-
                     </Grid>
                 </Expander>
                 <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->

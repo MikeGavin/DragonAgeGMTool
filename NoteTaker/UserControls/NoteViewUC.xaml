@@ -94,7 +94,8 @@
                         <Grid>
                             <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0" HorizontalAlignment="Left" BorderThickness="0"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
-                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" Background="{DynamicResource AccentColorBrush2}" >
+                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" Background="{DynamicResource AccentColorBrush2}" 
+                                     controls:TextBoxHelper.Watermark="Search IP">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding AddCommand}" Key="Return"/>
                                 </TextBox.InputBindings>

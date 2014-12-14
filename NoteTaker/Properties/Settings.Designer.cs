@@ -368,5 +368,17 @@ namespace Scrivener.Properties {
                 this["UpgradeSettings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TabVisibility {
+            get {
+                return ((bool)(this["TabVisibility"]));
+            }
+            set {
+                this["TabVisibility"] = value;
+            }
+        }
     }
 }
