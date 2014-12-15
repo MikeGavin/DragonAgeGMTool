@@ -37,6 +37,7 @@
 
     <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
         <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="0" Width="auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -118,6 +119,7 @@
                     </Grid>
                 </Expander>
             </StackPanel>
+                </ScrollViewer>
         </controls:MetroTabItem>
         <controls:MetroTabItem Header="History" VerticalAlignment="Top">
             <Grid MinWidth="400">
