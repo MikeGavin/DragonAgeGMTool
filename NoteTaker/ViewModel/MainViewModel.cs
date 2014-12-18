@@ -227,7 +227,7 @@ namespace Scrivener.ViewModel
         }
 
         private async Task CloseNote(NoteViewModel note)
-        {                        
+        {
             if (Scrivener.Properties.Settings.Default.Close_Warning == true)
             {
                 var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
@@ -244,7 +244,7 @@ namespace Scrivener.ViewModel
             if (Notes.Count == 0)
             {
                 NewNote();
-            }            
+            }
         }
 
         private async Task SetLastSaveClose(NoteViewModel note)
@@ -256,6 +256,25 @@ namespace Scrivener.ViewModel
                 Notes.Remove(note);
                 await noteManager.ArchiveCurrent(note);
             });
+        }
+
+        private RelayCommand _closeAllNotesCommand;
+        public RelayCommand CloseAllNotesCommand { get { return _closeAllNotesCommand ?? (_closeAllNotesCommand = new RelayCommand(CloseAllNotes)); } }
+
+        private async void CloseAllNotes()
+        {
+            foreach (NoteViewModel n in Notes)
+            {
+                await CloseNote(n);
+            }
+
+            //----this is my hacked fix which only partially works as is----
+            //foreach (NoteViewModel n in Notes)
+            //{
+            //    await noteManager.ArchiveCurrent(n);
+            //}
+            //Notes.Clear();
+            //NewNote();
         }
 
         //New Notes
@@ -302,8 +321,60 @@ namespace Scrivener.ViewModel
             }
             else
             {
-                QuicknoteVisibility = Visibility.Collapsed;
+                QuicknoteVisibility = Visibility.Collapsed;                
             }
+        }
+
+        private RelayCommand _SettingsExpandCommand;
+        public RelayCommand SettingsExpandCommand { get { return _SettingsExpandCommand ?? (_SettingsExpandCommand = new RelayCommand(SettingsExpand)); } }
+        public void SettingsExpand()
+        {
+            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+                Properties.Settings.Default.HistoryVisibility = false;
+                Properties.Settings.Default.SettingsVisibility = true;
+            }
+            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+                Properties.Settings.Default.HistoryVisibility = false;
+                Properties.Settings.Default.SettingsVisibility = true;
+            }
+            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+            }
+            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = false;                
+            }
+
+        }
+
+        private RelayCommand _openHistoryCommand;
+        public RelayCommand OpenHistoryCommand { get { return _openHistoryCommand ?? (_openHistoryCommand = new RelayCommand(OpenHistory)); } }
+        public void OpenHistory()
+        {
+            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+                Properties.Settings.Default.HistoryVisibility = true;
+                Properties.Settings.Default.SettingsVisibility = false;
+            }
+            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+                Properties.Settings.Default.HistoryVisibility = true;
+                Properties.Settings.Default.SettingsVisibility = false;
+            }            
+            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = false;
+                Properties.Settings.Default.HistoryVisibility = false;
+                Properties.Settings.Default.SettingsVisibility = true;
+            }
+
         }
 
         //Search EKB

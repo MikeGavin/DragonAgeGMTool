@@ -37,6 +37,11 @@
                      </Style.Triggers>
                 </Style>
             </Button.Style>
+            <Button.ToolTip>
+                <ToolTip>
+                    <TextBlock TextAlignment="Center">Close Tab<LineBreak/>Ctrl+W</TextBlock>
+                </ToolTip>
+            </Button.ToolTip>
         </Button>
     </DockPanel>
 </UserControl>

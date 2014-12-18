@@ -14,11 +14,12 @@ namespace Scrivener.Model
         public string Title { get; set; }
         public DateTime LastUpdated{ get; protected set; }
 
-        public NoteType(Guid guid, string title, string text)
+        public NoteType(Guid guid, string title, string text, DateTime datetime)
         {
             Guid = guid;                       
             Title = title;
             Text = text;
+            LastUpdated = datetime;
         }
         public NoteType()
         {

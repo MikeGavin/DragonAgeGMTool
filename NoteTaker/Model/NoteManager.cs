@@ -149,9 +149,10 @@ namespace Scrivener.Model
                     var guid = reader["guid"].ToString().Trim();
                     var title = reader["Title"].ToString().Trim();
                     var text = reader["Notes"].ToString().Trim();
+                    var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
                     try
                     {
-                        openNotes.Add(new NoteType(Guid.Parse(guid), title, text));                    
+                        openNotes.Add(new NoteType(Guid.Parse(guid), title, text, datetime));                    
                     }
                     catch(Exception ex)
                     {

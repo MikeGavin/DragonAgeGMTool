@@ -9,6 +9,7 @@ using System;
 
 using System.Linq;
 using Scrivener.UserControls;
+using GalaSoft.MvvmLight.Command;
 
 
 namespace Scrivener
@@ -68,19 +69,6 @@ namespace Scrivener
             var test = new ViewModelLocator();
             test.Main.WindowLoaded();
             
-        }
-
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            if (SettingsFlyout.IsOpen == false)
-            {
-                SettingsFlyout.IsOpen = true;
-            }
-            else
-            {
-                SettingsFlyout.IsOpen = false;
-            }
-
         }
 
         private void TabLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

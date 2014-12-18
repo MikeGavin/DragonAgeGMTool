@@ -36,7 +36,12 @@
     </UserControl.Resources>
 
     <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-        <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top">
+        <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            <controls:MetroTabItem.ToolTip>
+                <ToolTip>
+                    <TextBlock TextAlignment="Center">F1</TextBlock>
+                </ToolTip>
+            </controls:MetroTabItem.ToolTip>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="0" Width="auto">
                 <Grid>
@@ -121,8 +126,13 @@
             </StackPanel>
                 </ScrollViewer>
         </controls:MetroTabItem>
-        <controls:MetroTabItem Header="History" VerticalAlignment="Top">
-            <Grid MinWidth="400">
+        <controls:MetroTabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            <controls:MetroTabItem.ToolTip>
+                <ToolTip>
+                    <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
+                </ToolTip>
+            </controls:MetroTabItem.ToolTip>
+            <Grid MinWidth="400" MaxWidth="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition/>
@@ -151,7 +161,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
             </Grid>
         </controls:MetroTabItem>
         <!--<TabItem Header="Templates" VerticalAlignment="Top">

@@ -95,14 +95,20 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="False" IsOpenChanged="SettingsFlyout_IsOpenChanged" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button Content="&#xF067;" ToolTip="New Tab" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">New Tab<LineBreak/>Ctrl+T</TextBlock>                        
+                    </ToolTip>                    
+                </Button.ToolTip>
+            </Button>
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
             <Button Content="&#xf017;" ToolTip="Break Clock" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Click="Open_Break_Clock"/>
         </controls:WindowCommands>
@@ -135,8 +141,20 @@
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
             </TextBox>
-            <Button Content="&#xF1BB;" ToolTip="QuickNotes" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Button Content="&#xF013;" Click="Settings_Click" ToolTip="Settings"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
+            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">QuickNotes<LineBreak/>Ctrl+Q</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
             <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
             <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
         </controls:WindowCommands>
@@ -168,5 +186,9 @@
         <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />
         <KeyBinding Command="{Binding SelectedNote.CloseNoteCommand}" Key="W" Modifiers="Ctrl"/>
         <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
+        <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F1" />
+        <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
+        <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
+        <KeyBinding Command="{Binding OpenHistoryCommand}" Key="H" Modifiers="Control" />
     </controls:MetroWindow.InputBindings>
 </controls:MetroWindow>
