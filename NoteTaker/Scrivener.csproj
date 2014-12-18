@@ -278,6 +278,8 @@
     <Compile Include="Model\MTObservableCollection-T.cs" />
     <Compile Include="Model\NoteType.cs" />
     <Compile Include="Model\PasteEventArgs.cs" />
+    <Compile Include="Model\PhoneDBPull.cs" />
+    <Compile Include="Model\Phoneitem.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\RoleItem.cs" />
     <Compile Include="Model\QuickItemDBPull.cs" />

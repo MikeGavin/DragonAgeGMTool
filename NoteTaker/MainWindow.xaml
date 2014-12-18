@@ -134,6 +134,24 @@
                     </MenuItem>
                 </Menu>
             </Button>
+            <Button>
+                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="phone" Background="{x:Null}">
+                    <MenuItem Style="{x:Null}" Header="&#xf095;" ToolTip="Phone Directory" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Phoneitems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">                        
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Main.OpenCallCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+                                <Setter Property="CommandParameter" Value="{Binding Content}"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        <MenuItem.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                            </HierarchicalDataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </Menu>
+            </Button>
             <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
                                      VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Search EKB">

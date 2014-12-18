@@ -390,6 +390,20 @@ namespace Scrivener.ViewModel
             Process.Start(link);
         }
 
+        private RelayCommand<string> _openCallCommand;
+        public RelayCommand<string> OpenCallCommand { get { return _openCallCommand ?? (_openCallCommand = new RelayCommand<string>((pram) => OpenCall(pram))); } }
+        public void OpenCall(string call)
+        {
+            Process.Start(call);
+        }
+
+        private RelayCommand<string> _dialCommand;
+        public RelayCommand<string> DialCommand { get { return _dialCommand ?? (_dialCommand = new RelayCommand<string>((pram) => Dial())); } }
+        public void Dial()
+        {
+            Process.Start("tel:9-");
+        }
+
         //Copy All
         private RelayCommand _copyallcommand;
         public RelayCommand CopyAllCommand { get { return _copyallcommand ?? (_copyallcommand = new RelayCommand(CopyAll)); } }

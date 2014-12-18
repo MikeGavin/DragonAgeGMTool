@@ -49,7 +49,7 @@ namespace Scrivener.Model
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
 
         private DataBaseReader DataBaseReader = new DataBaseReader();
-       
+
 
         private ObservableCollection<RoleItem> _roles;
         public ObservableCollection<RoleItem> Roles { get { return _roles; } private set { _roles = value; RaisePropertyChanged(); } }
@@ -108,6 +108,15 @@ namespace Scrivener.Model
             MinionCommands = await DataBaseReader.ReturnMinionCommands(Role);
         }
 
+        private Phoneitem _phoneitems;
+        public Phoneitem Phoneitems { get { return _phoneitems; } private set { _phoneitems = value; RaisePropertyChanged(); } }
+        public async Task LoadPhoneDirectory()
+        {
+            Phoneitems = await DataBaseReader.ReturnPhoneItems();
+        }
+
+        
+
         private HistoryItem _HistoryItems;
         public HistoryItem HistoryItems { get { return _HistoryItems; } private set { _HistoryItems = value; RaisePropertyChanged(); } }
         public async Task LoadHistoryItems()
@@ -120,6 +129,7 @@ namespace Scrivener.Model
             await LoadMinionCommands();
             await LoadHistoryItems();
             await LoadQuickItems();
+            await LoadPhoneDirectory();            
             await LoadSites(); //For some reason loading this item first causes the binding to not work.        
         }
       
