@@ -263,18 +263,10 @@ namespace Scrivener.ViewModel
 
         private async void CloseAllNotes()
         {
-            foreach (NoteViewModel n in Notes)
+            foreach (NoteViewModel n in Notes.ToList())
             {
                 await CloseNote(n);
             }
-
-            //----this is my hacked fix which only partially works as is----
-            //foreach (NoteViewModel n in Notes)
-            //{
-            //    await noteManager.ArchiveCurrent(n);
-            //}
-            //Notes.Clear();
-            //NewNote();
         }
 
         //New Notes
