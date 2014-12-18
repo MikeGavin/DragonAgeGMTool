@@ -709,14 +709,16 @@ namespace Minion
             Processing++;
             try
             {
-                var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=<JNLPFILE>");
+                var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
                 await assoc.Run();
 
                 foreach (var java in Javas)
                 {
                     if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
-
-                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
+                    
+                    //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
+                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
+                    //System.Windows.MessageBox.Show(test);
                     await paexec.Run();
 
                 }
