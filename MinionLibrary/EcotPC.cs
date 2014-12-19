@@ -712,16 +712,36 @@ namespace Minion
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
                 await assoc.Run();
 
-                foreach (var java in Javas)
-                {
-                    if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
+                var javatoassoc = new RemoteProgramData();
+                javatoassoc.Version = "0";
+                if (Javas.Count > 1)
+                {                   
+                    foreach (var java in Javas)
+                    {
+                        if (java.Version == null || java.Version.ToLower().Contains("not installed")) { return false; }
+                        try
+                        {
+                            if (Convert.ToInt32(Regex.Replace(java.Version, @"[^\d]", string.Empty)) > Convert.ToInt32(Regex.Replace(javatoassoc.Version, @"[^\d]", string.Empty)))
+                            {
+                                javatoassoc = java;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            nlog.Error(ex);
+                        }
+                    }
                     
-                    //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
-                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
-                    //System.Windows.MessageBox.Show(test);
-                    await paexec.Run();
-
                 }
+                else
+                {
+                    javatoassoc = Javas.FirstOrDefault();
+                }
+
+                //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
+                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", javatoassoc.FullPath));
+                //System.Windows.MessageBox.Show(test);
+                await paexec.Run();
 
                 Log(log.Info, "Process complete");
 
