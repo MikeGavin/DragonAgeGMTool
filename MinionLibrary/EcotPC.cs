@@ -714,7 +714,7 @@ namespace Minion
                 NTAccount f = new NTAccount(CurrentUser);
                 SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                
-                var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
+                var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"-s REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
 
                 await fixreg.Run();
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
