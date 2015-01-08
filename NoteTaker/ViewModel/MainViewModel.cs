@@ -354,6 +354,12 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.HistoryVisibility = true;
                 Properties.Settings.Default.SettingsVisibility = false;
             }
+            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+                Properties.Settings.Default.HistoryVisibility = true;
+                Properties.Settings.Default.SettingsVisibility = false;
+            }
             else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == false)
             {
                 Properties.Settings.Default.SettingsExpanded = true;

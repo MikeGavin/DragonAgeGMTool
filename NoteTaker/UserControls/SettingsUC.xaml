@@ -7,6 +7,7 @@
              xmlns:Properties="clr-namespace:Scrivener.Properties"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:MahControls="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"  
              d:DesignHeight="300" d:DesignWidth="300"
@@ -142,14 +143,14 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <DatePicker Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <DatePicker Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{x:Static sys:DateTime.Now}" DisplayDateEnd="{x:Static sys:DateTime.Now}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectedDateChanged">
                             <i:InvokeCommandAction Command="{Binding Path=HistoryLookupCommand}" CommandParameter="{Binding ElementName=datePicker, Path=SelectedDate}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>
-                <Button Content="Re-Open" Grid.Column="1" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Right"/>
+                <Button Content="Re-Open" Grid.Column="1" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Right" BorderThickness="0"/>
                 <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
