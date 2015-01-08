@@ -723,10 +723,9 @@ namespace Minion
                 foreach (var java in Javas)
                 {
                     if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
-                    
-                //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
-                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", javatoassoc.FullPath));
-                //System.Windows.MessageBox.Show(test);
+                                
+                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", javatoassoc.FullPath));
+                
                     await paexec.Run();
 
                 }
