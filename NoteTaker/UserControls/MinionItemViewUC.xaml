@@ -255,7 +255,7 @@
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava.FullVersion}"/>
                         <MenuItem Header="Install Newest Java" Command="{Binding InstallJavaCommand}"/>
-                        <MenuItem Header="Add JNLP Assiciation" Command="{Binding AddJNLPCommand}"/>
+                        <MenuItem Header="Fix JNLP Association" Command="{Binding AddJNLPCommand}"/>
                         <MenuItem Header="Manual Command" ItemsSource="{Binding JavaCommands, UpdateSourceTrigger=PropertyChanged}">
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">

@@ -11,6 +11,8 @@ using Minion.ListItems;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using System.Security.Principal;
+using System.Windows;
 
 
 namespace Minion
@@ -704,21 +706,28 @@ namespace Minion
 
         public async Task<bool> AddNLPAssoication()
         {
+
             if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
-            Log(log.Info, "Adding Java to JNLP 'Open with'");
+            Log(log.Info, "Correcting .jnlp file association");
             Processing++;
             try
             {
+                NTAccount f = new NTAccount(CurrentUser);
+                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+               
+                var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
+
+                await fixreg.Run();
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
-                await assoc.Run();
+                
 
                 foreach (var java in Javas)
                 {
                     if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
                     
-                    //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
+                //    //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
                     var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
-                    //System.Windows.MessageBox.Show(test);
+                //    //System.Windows.MessageBox.Show(test);
                     await paexec.Run();
 
                 }
