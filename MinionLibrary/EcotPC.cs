@@ -706,7 +706,6 @@ namespace Minion
 
         public async Task<bool> AddNLPAssoication()
         {
-
             if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
             Log(log.Info, "Correcting .jnlp file association");
             Processing++;
@@ -725,9 +724,9 @@ namespace Minion
                 {
                     if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
                     
-                //    //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
-                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath));
-                //    //System.Windows.MessageBox.Show(test);
+                //string test = string.Format(@"ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", java.FullPath);
+                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", javatoassoc.FullPath));
+                //System.Windows.MessageBox.Show(test);
                     await paexec.Run();
 
                 }
