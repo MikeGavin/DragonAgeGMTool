@@ -704,7 +704,7 @@ namespace Minion
 
         }
 
-        public async Task<bool> AddNLPAssoication()
+        public async Task<bool> FixJNLPAssoication()
         {
             if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
             Log(log.Info, "Correcting .jnlp file association");
@@ -718,17 +718,24 @@ namespace Minion
 
                 await fixreg.Run();
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
-                
 
+                //picks newest version of java from list.
+                var newest = new RemoteProgramData();
                 foreach (var java in Javas)
                 {
                     if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
-                                
-                    var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", javatoassoc.FullPath));
-                
-                    await paexec.Run();
+                    if (newest.Version == null) { newest = java; }
 
+                    if (Convert.ToInt32(Regex.Replace(java.Version, @"[^\d]", string.Empty)) > Convert.ToInt32(Regex.Replace(newest.Version, @"[^\d]", string.Empty)))
+                    {
+                        if (java.Bit.Contains("32"))
+                        {
+                            newest = java;
+                        }
+                    }          
                 }
+                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", newest.FullPath));
+                await paexec.Run();
 
                 Log(log.Info, "Process complete");
 
