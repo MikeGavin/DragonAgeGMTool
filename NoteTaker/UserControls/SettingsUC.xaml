@@ -149,7 +149,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>
-                <Button Content="Re-Open" Grid.Column="1" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand.SelectedItem}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Right"/>
+                <Button Content="Re-Open" Grid.Column="1" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Right"/>
                 <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
