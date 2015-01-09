@@ -153,8 +153,8 @@ namespace Scrivener.ViewModel
         private RelayCommand _rebootCommand;
         public RelayCommand RebootCommand { get { return _rebootCommand ?? (_rebootCommand = new RelayCommand(async () => await Machine.Reboot())); } }
 
-        private RelayCommand _addJNLPCommand;
-        public RelayCommand AddJNLPCommand { get { return _addJNLPCommand ?? (_addJNLPCommand = new RelayCommand(async () => await Machine.FixJNLPAssoication())); } }
+        private RelayCommand<RemoteProgramData> _addJNLPCommand;
+        public RelayCommand<RemoteProgramData> AddJNLPCommand { get { return _addJNLPCommand ?? (_addJNLPCommand = new RelayCommand<RemoteProgramData>(async (param) => { if (param == null) { return; } await Machine.SetJNLPAssoication(param); RaiseNoteWrite(string.Format(@"Set .jnlp assoication to {0}", param.FullVersion)); })); } }
 
         private RelayCommand _disableProfileWipeCommand;
         public RelayCommand DisableProfileWipeCommand { get { return _disableProfileWipeCommand ?? (_disableProfileWipeCommand = new RelayCommand(async () => await Machine.ProfileWipe_Disable())); } }
