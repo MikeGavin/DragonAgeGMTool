@@ -719,6 +719,7 @@ namespace Minion
                 await fixreg.Run();
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
 
+                await assoc.Run();
                 //picks newest version of java from list.
                 var newest = new RemoteProgramData();
                 foreach (var java in Javas)
