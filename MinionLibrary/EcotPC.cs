@@ -706,25 +706,26 @@ namespace Minion
 
         public async Task<bool> FixJNLPAssoication()
         {
-            if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
+            if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed")) || Javas.Count == 0 || Javas == null) { return false; }
             Log(log.Info, "Correcting .jnlp file association");
             Processing++;
             try
             {
-                NTAccount f = new NTAccount(CurrentUser);
-                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                var f = new NTAccount(CurrentUser);
+                var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                
                 var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"-s REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
-
                 await fixreg.Run();
+
                 var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
+                await assoc.Run();
 
                 await assoc.Run();
                 //picks newest version of java from list.
                 var newest = new RemoteProgramData();
                 foreach (var java in Javas)
                 {
-                    if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
+                    if (java == null || java.Version.ToLower().Contains("not installed")) { Processing--; return false; }
                     if (newest.Version == null) { newest = java; }
 
                     if (Convert.ToInt32(Regex.Replace(java.Version, @"[^\d]", string.Empty)) > Convert.ToInt32(Regex.Replace(newest.Version, @"[^\d]", string.Empty)))
