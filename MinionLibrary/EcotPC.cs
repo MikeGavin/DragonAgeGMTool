@@ -711,8 +711,8 @@ namespace Minion
             Processing++;
             try
             {
-                NTAccount f = new NTAccount(CurrentUser);
-                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                var f = new NTAccount(CurrentUser);
+                var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                
                 var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"-s REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
                 await fixreg.Run();
