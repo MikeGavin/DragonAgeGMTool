@@ -209,29 +209,29 @@ namespace Scrivener.ViewModel
                 }
             }
         }
-        
-        //private RelayCommand _copyQuickItemCommand;
-        //public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
-        //public void CopyQuickItem()
-        //{
-        //    //if (_selectedQuickItem != null)
-        //    //{
-        //    //    if (SelectedQuickItem.SubItems.Count > 0)
-        //    //        return;
-        //    //    else
-        //    //    {
-        //    //        try
-        //    //        {
-        //    //            Clipboard.SetText(SelectedQuickItem.Content);
-        //    //        }
-        //    //        catch (Exception e)
-        //    //        {
-        //    //            log.Error(e);
-        //    //        }
 
-        //    //    }
-        //    //}
-        //} 
+        private RelayCommand _copyQuickItemCommand;
+        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+        public void CopyQuickItem()
+        {
+            //if (_selectedQuickItem != null)
+            //{
+            //    if (SelectedQuickItem.SubItems.Count > 0)
+            //        return;
+            //    else
+            //    {
+            //        try
+            //        {
+            //            Clipboard.SetText(SelectedQuickItem.Content);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            log.Error(e);
+            //        }
+
+            //    }
+            //}
+        } 
         #endregion
     }
 }

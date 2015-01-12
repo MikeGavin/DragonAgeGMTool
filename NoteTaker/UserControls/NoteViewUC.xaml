@@ -50,36 +50,47 @@
         </TextBox>
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
         <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250"
-                  >
+                   >
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
-                    <i:InvokeCommandAction Command="{Binding CopyQuickItemCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+
+
             <TreeView.InputBindings>
                 <KeyBinding Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" Key="Enter" />
+                
             </TreeView.InputBindings>
+            
             <TreeView.ItemContainerStyle>
+                
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <!--<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>-->
+                    <Setter Property="helpers:MouseDoubleClick.Command"
+                    Value="{Binding DataContext.AppendQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                    <Setter Property="helpers:MouseDoubleClick.CommandParameter"
+                    Value="{Binding }"/>
+
                     <!--<Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="FontWeight" Value="Bold"/>
                         </Trigger>
+                        
                     </Style.Triggers>-->
                 </Style>
             </TreeView.ItemContainerStyle>
-
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
-                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                <HierarchicalDataTemplate DataType="{x:Type TreeViewItem}" ItemsSource="{Binding SubItems}">
+                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}">
+                        <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DataContext.AppendQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}" CommandParameter="{Binding }" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DataContext.CopyQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                    </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
