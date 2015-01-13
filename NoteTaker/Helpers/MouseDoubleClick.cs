@@ -53,7 +53,7 @@ namespace Scrivener.Helpers
             }
         }
 
-        private static void OnMouseDoubleClick(object sender, RoutedEventArgs e)
+        private static void OnMouseDoubleClick(object sender, MouseEventArgs e)
         {
             Control control = sender as Control;
             ICommand command = (ICommand)control.GetValue(CommandProperty);
