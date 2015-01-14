@@ -36,14 +36,14 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+    <controls:MetroTabControl TabStripPlacement="Right"  Margin="0, -50, 0, 0" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
         <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
             <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">F1</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0, 40, 0, 0">
             <StackPanel Margin="0" Width="auto">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -58,11 +58,11 @@
                     </Grid.RowDefinitions>
 
                     <Label Content="Deployment" FontSize="10" Grid.Column="0"/>
-                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10"/>
-                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10"/>
-                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
-                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10"/>
-                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10"/>
+                        <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10" />
+                        <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10"/>
+                        <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
+                        <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10"/>
+                        <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10"/>
 
                     <Label Content="Role" FontSize="15" FontWeight="Medium" Grid.Column="0" Grid.Row="3" Width="auto" Margin="0,5,0,5"/>
                     <ComboBox Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding Path=RolesView}" DisplayMemberPath="Name"
