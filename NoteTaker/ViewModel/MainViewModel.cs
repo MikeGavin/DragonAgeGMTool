@@ -83,7 +83,6 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
             //Self Explained
-            GetHistory();
             SettingsFolder();
             //StartNoteSaveTask();
         }
