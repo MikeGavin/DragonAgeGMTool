@@ -268,6 +268,7 @@
     <Compile Include="Helpers\CaretBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
+    <Compile Include="Helpers\MouseDoubleClick.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
     <Compile Include="Model\DatabaseStorage.cs" />

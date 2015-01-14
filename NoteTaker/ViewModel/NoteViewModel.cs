@@ -16,6 +16,7 @@ using Scrivener.Model;
 using Minion.ListItems;
 using Scrivener.Helpers;
 using System.IO;
+using System.Windows.Input;
 
 namespace Scrivener.ViewModel
 {
@@ -183,21 +184,24 @@ namespace Scrivener.ViewModel
         public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
         public void AppendQuickItem(QuickItem note)
         {
-            
             if (note != null)
             {
                 try
                 {
                     if (note.SubItems.Count == 0) // causes crash if null
                     {
-                        if (Properties.Settings.Default.DashinNotes == true)
+                        if (Keyboard.Modifiers == ModifierKeys.Control)
                         {
-                            Text += "- " + note.Content + System.Environment.NewLine;
+                            Text += " " + note.Content;
+                        }
+                        else if (Properties.Settings.Default.DashinNotes == true)
+                        {
+                            Text +=  System.Environment.NewLine + "- " + note.Content;
                             //SaveNotes();
                         }
                         else if (Properties.Settings.Default.DashinNotes == false)
                         {
-                            Text += note.Content + System.Environment.NewLine;
+                            Text += System.Environment.NewLine + note.Content;
                             //SaveNotes();
                         }
                     }
@@ -209,29 +213,29 @@ namespace Scrivener.ViewModel
                 }
             }
         }
-        
-        //private RelayCommand _copyQuickItemCommand;
-        //public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
-        //public void CopyQuickItem()
-        //{
-        //    //if (_selectedQuickItem != null)
-        //    //{
-        //    //    if (SelectedQuickItem.SubItems.Count > 0)
-        //    //        return;
-        //    //    else
-        //    //    {
-        //    //        try
-        //    //        {
-        //    //            Clipboard.SetText(SelectedQuickItem.Content);
-        //    //        }
-        //    //        catch (Exception e)
-        //    //        {
-        //    //            log.Error(e);
-        //    //        }
 
-        //    //    }
-        //    //}
-        //} 
+        private RelayCommand _copyQuickItemCommand;
+        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
+        public void CopyQuickItem()
+        {
+            //if (_selectedQuickItem != null)
+            //{
+            //    if (SelectedQuickItem.SubItems.Count > 0)
+            //        return;
+            //    else
+            //    {
+            //        try
+            //        {
+            //            Clipboard.SetText(SelectedQuickItem.Content);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            log.Error(e);
+            //        }
+
+            //    }
+            //}
+        } 
         #endregion
     }
 }
