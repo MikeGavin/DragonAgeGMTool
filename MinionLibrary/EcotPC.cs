@@ -806,7 +806,7 @@ namespace Minion
             await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", string.Format(@"\\{0}\c$\temp\Delprof2_1.5.4\", IPAddress)));
             file.EventLogged -= PassEventLogged;
 
-            var add1 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);
+            var add1 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", string.Format(@"/create /s \\{0} /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:{1}""", IPAddress.ToString(), CurrentUser));
             var add2 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @"  /sc onlogon /ru SYSTEM /tn ""remove wipe"" /tr ""c:\temp\Delprof2_1.5.4\remove.bat""");
             await add1.Run();
             await add2.Run();
