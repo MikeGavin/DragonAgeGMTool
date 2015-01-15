@@ -428,5 +428,17 @@ namespace Scrivener.Properties {
                 this["Closingall"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public string Settings_Visibility {
+            get {
+                return ((string)(this["Settings_Visibility"]));
+            }
+            set {
+                this["Settings_Visibility"] = value;
+            }
+        }
     }
 }
