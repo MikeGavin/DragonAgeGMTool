@@ -95,7 +95,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Header="Settings" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout vm:Name="SettingsFlyout" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -207,6 +207,6 @@
         <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F1" />
         <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
         <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
-        <KeyBinding Command="{Binding OpenHistoryCommand}" Key="H" Modifiers="Control" />
+        <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F2"/>
     </controls:MetroWindow.InputBindings>
 </controls:MetroWindow>

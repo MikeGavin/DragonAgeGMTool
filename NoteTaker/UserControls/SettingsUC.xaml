@@ -36,136 +36,177 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-        <controls:MetroTabItem Header="General" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-            <!--<controls:MetroTabItem.ToolTip>
+    <Grid Margin="0,-50,0,0">
+
+        <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <controls:MetroTabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">F1</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="0" Width="auto">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <Label Content="Deployment" FontSize="10" Grid.Column="0"/>
-                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10"/>
-                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10"/>
-                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
-                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10"/>
-                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10"/>
-
-                    <Label Content="Role" FontSize="15" FontWeight="Medium" Grid.Column="0" Grid.Row="3" Width="auto" Margin="0,5,0,5"/>
-                    <ComboBox Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding Path=RolesView}" DisplayMemberPath="Name"
-                              SelectedItem="{Binding Path=CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsSynchronizedWithCurrentItem="True" Grid.Column="1" Width="auto" Margin="5" Grid.Row="3"
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto" Margin="0,60,0,0">
+                    <StackPanel Margin="0" Width="auto">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            
+                            <Label Content="Role" FontSize="15" FontWeight="Medium" Grid.Column="0" Grid.Row="3" Width="auto" Margin="0,5,0,5"/>
+                            <ComboBox vm:Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding RolesView}" DisplayMemberPath="Name"
+								SelectedItem="{Binding CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								IsSynchronizedWithCurrentItem="True" Grid.Column="1" Width="auto" Margin="5" Grid.Row="3"
                               />
 
-                </Grid>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
-                    <Button Content="&#xf0c7;" Background="{x:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
-                </StackPanel>
-                <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <Expander Header="Fonts" Margin="0">
-                    <Grid Width="auto">
-                        <Grid.RowDefinitions >
-                            <RowDefinition/>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions >
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Content="Note Size" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox BorderThickness="0" Margin="4"
-                                IsReadOnly="True" Grid.Row="0" Grid.Column="1" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Slider Grid.Row="0" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                        <Label Content="Tab Size" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox BorderThickness="0" Margin="4"
-                                IsReadOnly="True" Grid.Row="1" Grid.Column="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                        <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                    </Grid>
-                </Expander>
-                <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
+                            <Button Content="&#xF0C7;" Background="{vm:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
+                        </StackPanel>
+                        <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Expander Header="Fonts" Margin="0">
+                            <Grid Width="auto">
+                                <Grid.RowDefinitions >
+                                    <RowDefinition/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Note Size" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox BorderThickness="0" Margin="4"
+									IsReadOnly="True" Grid.Row="0" Grid.Column="1" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                <Slider Grid.Row="0" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                                <Label Content="Tab Size" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox BorderThickness="0" Margin="4"
+									IsReadOnly="True" Grid.Row="1" Grid.Column="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </Expander>
+                        <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
 
-                <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
+                        <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
                     <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
 
 
-                <Expander Header="Theme" Margin="0">
-                    <Grid>
-                        <Grid.RowDefinitions >
-                            <RowDefinition/>
-                            <RowDefinition />
+                        <Expander Header="Theme" Margin="0">
+                            <Grid>
+                                <Grid.RowDefinitions >
+                                    <RowDefinition/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Content="Theme" Grid.Column="0" Grid.Row="0"/>
+                                <ComboBox vm:Name="ThemeBox" Grid.Column="1" Grid.Row="0" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged" Width="auto"/>
+
+                                <Label Content="Accent" Grid.Row="1" Grid.Column="0"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" DisplayMemberPath="Name" vm:Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged" Width="auto"/>
+
+                            </Grid>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </controls:MetroTabItem>
+            <controls:MetroTabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <!--<controls:MetroTabItem.ToolTip>
+                <ToolTip>
+                    <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
+                </ToolTip>
+            </controls:MetroTabItem.ToolTip>-->
+                <ScrollViewer MaxWidth="250" Margin="0,60,0,0" MinWidth="300" >
+                    <Grid Width="300" Height="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions >
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="Theme" Grid.Column="0" Grid.Row="0"/>
-                        <ComboBox Name="ThemeBox" Grid.Column="1" Grid.Row="0" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged" Width="auto"/>
-
-                        <Label Content="Accent" Grid.Row="1" Grid.Column="0"/>
-                        <ComboBox Grid.Row="1" Grid.Column="1" DisplayMemberPath="Name" Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged" Width="auto"/>
-
+                        <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" DisplayDateEnd="{vm:Static sys:DateTime.Now}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedDateChanged">
+                                    <i:InvokeCommandAction Command="{Binding HistoryLookupCommand}" CommandParameter="{Binding SelectedDate, ElementName=datePicker}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </DatePicker>
+                        <Button Grid.Column="1" Grid.RowSpan="2" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center">
+                            <TextBlock TextAlignment="Center" HorizontalAlignment="Center">
+                                Re-Open<LineBreak/>Selected<LineBreak/>Note
+                            </TextBlock>
+                        </Button>
+                        <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <TextBlock Text="{Binding Title}"/>
+                                        <TextBlock Text=" "/>
+                                        <TextBlock Text="{Binding LastUpdated, StringFormat=T}"/>
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
                     </Grid>
-                </Expander>
-            </StackPanel>
                 </ScrollViewer>
-        </controls:MetroTabItem>
-        <controls:MetroTabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            </controls:MetroTabItem>
+            <!--<controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">-->
             <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-            <Grid MinWidth="400" MaxWidth="400">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <DatePicker Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" DisplayDateEnd="{x:Static sys:DateTime.Now}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectedDateChanged">
-                            <i:InvokeCommandAction Command="{Binding Path=HistoryLookupCommand}" CommandParameter="{Binding ElementName=datePicker, Path=SelectedDate}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </DatePicker>
-                <Button Content="Re-Open" Grid.Column="1" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Right" BorderThickness="0"/>
-                <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel>
-                                <TextBlock Text="{Binding Title }"/>
-                                <TextBlock Text=" "/>
-                                <TextBlock Text="{Binding LastUpdated, StringFormat=T}"/>
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
+            <!--<Grid MinWidth="600" MaxWidth="600">
+                <TabControl>
+                    <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
+                        <Grid>
+                            <Grid.RowDitefinions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDitefinions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="1" Grid.Column="0"  Text="Please replace:"></TextBlock>-->
+            <!--<ListView Grid.Row="2" Grid.Column="0" vm:Name="bflistView" Width="100" SelectionMode="Multiple" HorizontalAlignment="Center"> 
+                                <ListViewItem Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                <ListViewItem Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                            </ListView>-->
+            <!--</Grid>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
+                    </TabItem>
+                </TabControl>
             </Grid>
-        </controls:MetroTabItem>
-        <!--<TabItem Header="Templates" VerticalAlignment="Top">
+        </controls:MetroTabItem>-->
+            <!--<TabItem Header="Templates" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -184,5 +225,24 @@
                 <TextBox Grid.Row="1" Grid.Column="1"/>
             </Grid>
         </TabItem>-->
-    </controls:MetroTabControl>
+        </controls:MetroTabControl>
+        <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="150" Margin="60,-10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>            
+            <Label Content="Deployment" FontSize="10" Grid.Column="0" Padding="5,0"/>
+            <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10" Padding="5,0"/>
+            <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10" Padding="5,0"/>
+            <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10" Padding="5,0"/>
+            <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10" Padding="5,0"/>
+            <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10" Padding="5,0"/>            
+        </Grid>
+    </Grid>
 </UserControl>
