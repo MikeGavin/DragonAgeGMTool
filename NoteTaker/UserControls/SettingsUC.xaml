@@ -147,12 +147,8 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </DatePicker>
-                        <Button Grid.Column="1" Grid.RowSpan="2" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center">
-                            <TextBlock TextAlignment="Center" HorizontalAlignment="Center">
-                                Re-Open<LineBreak/>Selected<LineBreak/>Note
-                            </TextBlock>
-                        </Button>
-                        <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}">
+                        <Button Grid.Column="1" Content="Re-Open" Grid.Row="0" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center"/>
+                        <ListView vm:Name="listView" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}" HorizontalAlignment="Center" Width="160">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <WrapPanel>
