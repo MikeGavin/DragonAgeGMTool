@@ -794,6 +794,48 @@ namespace Minion
             Log(log.Info, "File cleanup complete");
         }
 
+        public async Task LockTaskbar()
+        {
+            Log(log.Info, "Locking Taskbar...");
+            Processing++;
+            var f = new NTAccount(CurrentUser);
+            var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+
+            var locktb = new Tool.PAExec(IPAddress, string.Format(@"-s Reg add HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarSizeMove /t REG_DWORD /d 0 /f", s.ToString()));
+            try
+            {
+                await locktb.Run();
+                Processing--;
+                Log(log.Info, "Taskbar locked");                
+            }
+            catch (Exception ex)
+            {
+                Processing--;
+                Log(log.Error, ex.ToString());                
+            }
+        }
+
+        public async Task UnlockTaskbar()
+        {
+            Log(log.Info, "Unlocking Taskbar...");
+            Processing++;
+            var f = new NTAccount(CurrentUser);
+            var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+
+            var unlocktb = new Tool.PAExec(IPAddress, string.Format(@"-s Reg add HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarSizeMove /t REG_DWORD /d 1 /f", s.ToString()));
+            try
+            {
+                await unlocktb.Run();
+                Processing--;
+                Log(log.Info, "Taskbar locked");
+            }
+            catch (Exception ex)
+            {
+                Processing--;
+                Log(log.Error, ex.ToString());
+            }
+        }
+
         public async Task ProfileWipe_Enable()
         {
             Processing++;

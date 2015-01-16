@@ -93,7 +93,8 @@
                     <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
                     <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
                     <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
-
+                    <MenuItem Header="Lock Taskbar" Command="{Binding LockTaskbarCommand}"/>
+                    <MenuItem Header="Unlock Taskbar" Command="{Binding UnlockTaskbarCommand}"/>
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
