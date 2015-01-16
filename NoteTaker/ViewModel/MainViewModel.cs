@@ -121,7 +121,7 @@ namespace Scrivener.ViewModel
         {
             //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
             var deployment = new DeploymentData(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
-
+            AppMode = deployment.Mode;
             if (deployment.NetworkDeployed == true)
             {
                 try
@@ -143,7 +143,7 @@ namespace Scrivener.ViewModel
                 catch(Exception e)
                 {
                     log.Error(e);
-                }
+                }                
             }
         }
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
