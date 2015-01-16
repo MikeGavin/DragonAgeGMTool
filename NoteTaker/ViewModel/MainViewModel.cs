@@ -29,6 +29,9 @@ using System.Deployment.Application;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
+using NLog.Targets;
+using NLog;
+using NLog.Targets.Wrappers;
 
 
 namespace Scrivener.ViewModel
@@ -38,6 +41,8 @@ namespace Scrivener.ViewModel
 
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        
+        
         private readonly IDataService _dataService; // Used by MVVMLight 
 
         ////public override void Cleanup()
@@ -71,21 +76,60 @@ namespace Scrivener.ViewModel
             App.Fucked += (s,e) => SaveAllNotes();
             Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
-            DataB = DatabaseStorage.Instance;
-            
             //Checks deployment and enables update systems if necessary
             DeploymentCheck();
+
+            //create DB singleton
+            DataB = DatabaseStorage.Instance;           
            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
-
-            //Self Explained
-            SettingsFolder();
-            //StartNoteSaveTask();
         }
+
+        private void SetLogFilePath(string targetName, string pathName)
+        {
+            string fileName = null;
+
+            if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
+            {
+                Target target = LogManager.Configuration.FindTargetByName(targetName);
+                if (target == null)
+                {
+                    throw new Exception("Could not find target named: " + targetName);
+                }
+
+                FileTarget fileTarget = null;
+                WrapperTargetBase wrapperTarget = target as WrapperTargetBase;
+
+                // Unwrap the target if necessary.
+                if (wrapperTarget == null)
+                {
+                    fileTarget = target as FileTarget;
+                }
+                else
+                {
+                    fileTarget = wrapperTarget.WrappedTarget as FileTarget;
+                }
+
+                if (fileTarget == null)
+                {
+                    throw new Exception("Could not get a FileTarget from " + target.GetType());
+                }
+
+                fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
+                log.Debug("logfile path set");
+                var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+                fileName = fileTarget.FileName.Render(logEventInfo);            
+            }
+            else
+            {
+                throw new Exception("LogManager contains no Configuration or there are no named targets");
+            }
+        }
+
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
         {
@@ -122,49 +166,32 @@ namespace Scrivener.ViewModel
         //Deployment Systems
         private void DeploymentCheck()
         {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
+            var deployment = new DeploymentData(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            SetLogFilePath("LogFile", deployment.SettingsFolder);
+            AppMode = deployment.Mode;
+            if (deployment.NetworkDeployed == true)
             {
-                Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
-                log.Debug("uri.LocalPath: {0}", uri.LocalPath.ToString());
-
                 try
                 {
                     //Start auto update system and subscribe to event
-                    var updateManager = new UpdateManager(uri);
+                    var updateManager = new UpdateManager(deployment.UpdateLocation);
                     updateManager.UpdateComplete += UpdateComplete;
                 }
                 catch(Exception e)
                 {
                     log.Error(e);
-                }
-                
+                }                
                 try
                 {
                     //listen for DB updates
-                    var WatchDataBase = new DataBaseWatcher(uri);
+                    var WatchDataBase = new DataBaseWatcher(deployment.UpdateLocation);
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                 }
                 catch(Exception e)
                 {
                     log.Error(e);
-                }
-
-                if (uri.LocalPath == @"\\fs1\EdTech\ScrivenerDev\Scrivener.application")
-                {
-                    AppMode = "development";
-                }
-                else if (uri.LocalPath == (@"\\fs1\EdTech\Scrivener\Scrivener.application"))
-                {
-                    AppMode = "production";
-                }
-                else
-                {
-                    AppMode = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
-                }
-            }
-            else
-            {
-                AppMode = "debug";
+                }                
             }
         }
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
@@ -431,10 +458,9 @@ namespace Scrivener.ViewModel
 
         #region Settings
 
-        private void SettingsFolder()
+        private void SettingsFolder(string settingsFolder)
         {
-            //check for settings folder. Create if missing.
-            var settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
+            //check for settings folder. Create if missing.            
             if (!Directory.Exists(settingsFolder))
             {
                 Directory.CreateDirectory(settingsFolder);

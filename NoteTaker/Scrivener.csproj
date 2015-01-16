@@ -271,6 +271,7 @@
     <Compile Include="Helpers\MouseDoubleClick.cs" />
     <Compile Include="Helpers\TextBoxBehavior.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
+    <Compile Include="Model\DeploymentData.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
     <Compile Include="Model\DatabaseStorage.cs" />
     <Compile Include="Model\DatabaseReader.cs" />
