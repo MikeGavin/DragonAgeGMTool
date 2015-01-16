@@ -704,39 +704,24 @@ namespace Minion
 
         }
 
-        public async Task<bool> FixJNLPAssoication()
+        public async Task<bool> SetJNLPAssoication(RemoteProgramData toset)
         {
-            if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed"))) { return false; }
-            Log(log.Info, "Correcting .jnlp file association");
+            if (toset == null) { return false; }
+            if (Javas.Any(j => j.FullVersion.ToLower().Contains("not installed")) || Javas.Count == 0 || Javas == null) { return false; }
+            Log(log.Info, string.Format("Setting .jnlp file association to {0}", toset.FullVersion));
             Processing++;
             try
             {
-                NTAccount f = new NTAccount(CurrentUser);
-                SecurityIdentifier s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+                var f = new NTAccount(CurrentUser);
+                var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
                
                 var fixreg  = new Tool.PAExec(IPAddress, string.Format(@"-s REG DELETE ""HKU\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.jnlp\UserChoice"" /v Progid /f", s.ToString()));
-
                 await fixreg.Run();
-                var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
 
+                var assoc = new Tool.PAExec(IPAddress, @"cmd /c assoc .jnlp=jnlpfile");
                 await assoc.Run();
 
-                //picks newest version of java from list.
-                var newest = new RemoteProgramData();
-                foreach (var java in Javas)
-                {
-                    if (java == null || java.Version.ToLower().Contains("not installed")) { return false; }
-                    if (newest.Version == null) { newest = java; }
-
-                    if (Convert.ToInt32(Regex.Replace(java.Version, @"[^\d]", string.Empty)) > Convert.ToInt32(Regex.Replace(newest.Version, @"[^\d]", string.Empty)))
-                    {
-                        if (java.Bit.Contains("32"))
-                        {
-                            newest = java;
-                        }
-                    }          
-                }
-                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", newest.FullPath));
+                var paexec = new Tool.PAExec(IPAddress, string.Format(@"cmd /c ftype jnlpfile=""{0}\bin\javaws.exe"" ""%1""", toset.FullPath));
                 await paexec.Run();
 
                 Log(log.Info, "Process complete");
@@ -809,6 +794,48 @@ namespace Minion
             Log(log.Info, "File cleanup complete");
         }
 
+        public async Task LockTaskbar()
+        {
+            Log(log.Info, "Locking Taskbar...");
+            Processing++;
+            var f = new NTAccount(CurrentUser);
+            var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+
+            var locktb = new Tool.PAExec(IPAddress, string.Format(@"-s Reg add HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarSizeMove /t REG_DWORD /d 0 /f", s.ToString()));
+            try
+            {
+                await locktb.Run();
+                Processing--;
+                Log(log.Info, "Taskbar locked. A restart is required.");                
+            }
+            catch (Exception ex)
+            {
+                Processing--;
+                Log(log.Error, ex.ToString());                
+            }
+        }
+
+        public async Task UnlockTaskbar()
+        {
+            Log(log.Info, "Unlocking Taskbar...");
+            Processing++;
+            var f = new NTAccount(CurrentUser);
+            var s = (SecurityIdentifier)f.Translate(typeof(SecurityIdentifier));
+
+            var unlocktb = new Tool.PAExec(IPAddress, string.Format(@"-s Reg add HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced /v TaskbarSizeMove /t REG_DWORD /d 1 /f", s.ToString()));
+            try
+            {
+                await unlocktb.Run();
+                Processing--;
+                Log(log.Info, "Taskbar unlocked. A restart is required.");
+            }
+            catch (Exception ex)
+            {
+                Processing--;
+                Log(log.Error, ex.ToString());
+            }
+        }
+
         public async Task ProfileWipe_Enable()
         {
             Processing++;
@@ -821,7 +848,7 @@ namespace Minion
             await Task.Run(() => file.Copy(@"\\fs1\HelpDesk\TOOLS\3rdParty\Delprof2 1.5.4", string.Format(@"\\{0}\c$\temp\Delprof2_1.5.4\", IPAddress)));
             file.EventLogged -= PassEventLogged;
 
-            var add1 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @" /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:""" + CurrentUser);
+            var add1 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", string.Format(@"/create /s \\{0} /sc onstart /delay 0000:10 /rl HIGHEST /ru SYSTEM /tn ""Profile wipe"" /tr ""c:\temp\Delprof2_1.5.4\delprof2.exe /u /id:{1}""", IPAddress.ToString(), CurrentUser));
             var add2 = new Tool.StandardProcess(@"c:\windows\system32\", "schtasks.exe", @"/create /s \\" + IPAddress.ToString() + @"  /sc onlogon /ru SYSTEM /tn ""remove wipe"" /tr ""c:\temp\Delprof2_1.5.4\remove.bat""");
             await add1.Run();
             await add2.Run();

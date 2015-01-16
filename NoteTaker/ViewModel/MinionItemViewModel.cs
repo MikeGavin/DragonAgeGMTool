@@ -153,8 +153,8 @@ namespace Scrivener.ViewModel
         private RelayCommand _rebootCommand;
         public RelayCommand RebootCommand { get { return _rebootCommand ?? (_rebootCommand = new RelayCommand(async () => await Machine.Reboot())); } }
 
-        private RelayCommand _addJNLPCommand;
-        public RelayCommand AddJNLPCommand { get { return _addJNLPCommand ?? (_addJNLPCommand = new RelayCommand(async () => await Machine.FixJNLPAssoication())); } }
+        private RelayCommand<RemoteProgramData> _addJNLPCommand;
+        public RelayCommand<RemoteProgramData> AddJNLPCommand { get { return _addJNLPCommand ?? (_addJNLPCommand = new RelayCommand<RemoteProgramData>(async (param) => { if (param == null) { return; } await Machine.SetJNLPAssoication(param); RaiseNoteWrite(string.Format(@"Ran Minion set .jnlp association to {0}", param.FullVersion)); })); } }
 
         private RelayCommand _disableProfileWipeCommand;
         public RelayCommand DisableProfileWipeCommand { get { return _disableProfileWipeCommand ?? (_disableProfileWipeCommand = new RelayCommand(async () => await Machine.ProfileWipe_Disable())); } }
@@ -173,6 +173,12 @@ namespace Scrivener.ViewModel
 
         private RelayCommand _fileCleanupCommand;
         public RelayCommand FileCleanupCommand { get { return _fileCleanupCommand ?? (_fileCleanupCommand = new RelayCommand(async () => await Machine.FileCleanup())); } }
+
+        private RelayCommand _lockTaskbarCommand;
+        public RelayCommand LockTaskbarCommand { get { return _lockTaskbarCommand ?? (_lockTaskbarCommand = new RelayCommand(async () => await Machine.LockTaskbar())); } }
+
+        private RelayCommand _unlockTaskbarCommand;
+        public RelayCommand UnlockTaskbarCommand { get { return _unlockTaskbarCommand ?? (_unlockTaskbarCommand = new RelayCommand(async () => await Machine.UnlockTaskbar())); } }
 
         private RelayCommand _openDamewareCommand;
         public RelayCommand OpenDamewareCommand { get { return _openDamewareCommand ?? (_openDamewareCommand = new RelayCommand(async () => await Machine.OpenDameware())); } }

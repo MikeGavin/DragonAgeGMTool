@@ -93,7 +93,8 @@
                     <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
                     <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
                     <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
-
+                    <!--<MenuItem Header="Lock Taskbar" Command="{Binding LockTaskbarCommand}"/>
+                    <MenuItem Header="Unlock Taskbar" Command="{Binding UnlockTaskbarCommand}"/>-->
                 </ContextMenu>
             </Label.ContextMenu>
         </Label>
@@ -255,7 +256,7 @@
                     <ContextMenu>
                         <MenuItem Header="Uninstall Java" Command="{Binding UninstallJavaCommand}" CommandParameter="{Binding SelectedJava.FullVersion}"/>
                         <MenuItem Header="Install Newest Java" Command="{Binding InstallJavaCommand}"/>
-                        <MenuItem Header="Fix JNLP Association" Command="{Binding AddJNLPCommand}"/>
+                        <MenuItem Header="Set JNLP Association" Command="{Binding AddJNLPCommand}" CommandParameter="{Binding SelectedJava}"/>
                         <MenuItem Header="Manual Command" ItemsSource="{Binding JavaCommands, UpdateSourceTrigger=PropertyChanged}">
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">

@@ -6,12 +6,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
              xmlns:helpers="clr-namespace:Scrivener.Helpers"
-             xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+             xmlns:cmd ="http://www.galasoft.ch/mvvmlight"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:Properties="clr-namespace:Scrivener.Properties" 
              xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" 
              xmlns:UserControls="clr-namespace:Scrivener.UserControls"
-             xmlns:Toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:Toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"                    
              mc:Ignorable="d" Margin="0"
              >
     <UserControl.Resources>
@@ -40,46 +40,72 @@
             </RichTextBox.Resources>
         </Toolkit:RichTextBox>-->
         <TextBox helpers:CaretBehavior.ObserveCaret="True" FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-            AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" >
+            AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" 
+                 Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" 
+                 VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" 
+                 helpers:TextBoxBehaviour.ScrollOnTextChanged="True">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=DropCommand}"  />
-                    <!--PassEventArgsToCommand="True"-->
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
-        <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250"
-                  >
+        <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" 
+                  Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" 
+                  Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250">
+            
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
+            
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseRightButtonDown">
-                    <i:InvokeCommandAction Command="{Binding CopyQuickItemCommand}"/>
-                </i:EventTrigger>
+                <!--<i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedQuickItem}"/>
+                    <cmd:EventToCommand Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedQuickItem}" PassEventArgsToCommand="True"/>
+                </i:EventTrigger>-->
             </i:Interaction.Triggers>
-            <TreeView.InputBindings>
+
+
+            <!--<TreeView.InputBindings>
                 <KeyBinding Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" Key="Enter" />
-            </TreeView.InputBindings>
+            </TreeView.InputBindings>-->
+            
             <TreeView.ItemContainerStyle>
+                
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                    <!--<Style.Triggers>
+                    <Setter Property="helpers:MouseDoubleClick.Command" 
+                            Value="{Binding DataContext.AppendQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                    <Setter Property="helpers:MouseDoubleClick.CommandParameter" 
+                            Value="{Binding }"/>
+                    <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="FontWeight" Value="Bold"/>
+                            <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                            <Setter Property="IsSelected" Value="True"/>
                         </Trigger>
-                    </Style.Triggers>-->
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                            <Setter Property="IsSelected" Value="False"/>
+                        </Trigger>
+
+                    </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
-
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
-                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                    <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}">                   
+                    <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DataContext.AppendQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}" CommandParameter="{Binding }"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="PreviewMouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DataContext.CopyQuickItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                    </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

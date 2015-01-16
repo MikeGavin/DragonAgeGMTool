@@ -104,5 +104,8 @@
     <Setting Name="Closingall" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Settings_Visibility" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Visible</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
