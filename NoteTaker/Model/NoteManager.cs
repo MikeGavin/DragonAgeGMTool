@@ -18,7 +18,8 @@ namespace Scrivener.Model
         //Constructor
         public NoteManager()
         {
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
             Task.Run(async () => await CreatesHistory());
         }
 
@@ -28,7 +29,7 @@ namespace Scrivener.Model
         private string MainTableName { get { return "OpenNotes"; } }
         private string ArchiveTableName { get { return "NoteArchive"; } }
         //private SQLiteConnection noteDatabase = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-        private string noteDatabase = @"Data Source=|DataDirectory|\Scrivener\notedata.db;Version=3;New=True;Compress=True;";
+        private string noteDatabase = @"Data Source=|DataDirectory|\notedata.db;Version=3;New=True;Compress=True;";
 
         ///<summary>
         ///<para>creates Call History Database and populates table with todays date if none exist</para>

@@ -378,53 +378,53 @@ namespace Scrivener.Model
             }
         }
 
-        public async Task<HistoryItem> ReturnHistory()
-        {
-            //Get setting path and data.
-            var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        //public async Task<HistoryItem> ReturnHistory()
+        //{
+        //    //Get setting path and data.
+        //    var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             
-            AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
-            SQLiteConnection Call_History = new SQLiteConnection(@"Data Source=|DataDirectory|\\userdata.db;Version=3;New=True;Compress=True;");
+        //    AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
+        //    SQLiteConnection Call_History = new SQLiteConnection(@"Data Source=|DataDirectory|\\userdata.db;Version=3;New=True;Compress=True;");
 
-            log.Debug("Getting History");
-            System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
-            Call_History.StateChange += handel;
+        //    log.Debug("Getting History");
+        //    System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
+        //    Call_History.StateChange += handel;
 
-            List<HistoryDBPull> HistoryList = new List<HistoryDBPull>();
-            string Today = "CurrentHistory";
+        //    List<HistoryDBPull> HistoryList = new List<HistoryDBPull>();
+        //    string Today = "CurrentHistory";
 
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", Today);
-            pullall.Connection = Call_History;
-            log.Debug(pullall.CommandText);
-            try
-            {
-                await Call_History.OpenAsync();
-                SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
-                while (await reader.ReadAsync())
-                    HistoryList.Add(new HistoryDBPull() { Date = reader["Date"].ToString(), Time = reader["Time"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
-                Call_History.Close();
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-            }
+        //    SQLiteCommand pullall = new SQLiteCommand();
+        //    pullall.CommandText = string.Format("SELECT * FROM {0}", Today);
+        //    pullall.Connection = Call_History;
+        //    log.Debug(pullall.CommandText);
+        //    try
+        //    {
+        //        await Call_History.OpenAsync();
+        //        SQLiteDataReader reader = await pullall.ExecuteReaderAsync() as SQLiteDataReader;
+        //        while (await reader.ReadAsync())
+        //            HistoryList.Add(new HistoryDBPull() { Date = reader["Date"].ToString(), Time = reader["Time"].ToString(), Caller = reader["Caller"].ToString(), Notes = reader["Notes"].ToString() });
+        //        Call_History.Close();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        log.Error(e);
+        //    }
 
-            var root = new HistoryItem() { Title = "Menu" };
+        //    var root = new HistoryItem() { Title = "Menu" };
 
 
-            List<HistoryDBPull> Root_uniquetime = HistoryList.GroupBy(s => s.Time).Select(p => p.First()).ToList();
+        //    List<HistoryDBPull> Root_uniquetime = HistoryList.GroupBy(s => s.Time).Select(p => p.First()).ToList();
 
-            foreach (HistoryDBPull Item in Root_uniquetime)
-            {
-                HistoryItem Root_Item = new HistoryItem() { Title = Item.Date + ", " + Item.Time, Content = Item.Notes };
-                root.SubItems.Add(Root_Item);
-            }
+        //    foreach (HistoryDBPull Item in Root_uniquetime)
+        //    {
+        //        HistoryItem Root_Item = new HistoryItem() { Title = Item.Date + ", " + Item.Time, Content = Item.Notes };
+        //        root.SubItems.Add(Root_Item);
+        //    }
 
-            Call_History.StateChange -= handel;
-            return root;
+        //    Call_History.StateChange -= handel;
+        //    return root;
 
-        }
+        //}
 
         public async Task<Phoneitem> ReturnPhoneItems()
         {
