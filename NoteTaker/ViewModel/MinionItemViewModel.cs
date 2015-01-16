@@ -174,6 +174,12 @@ namespace Scrivener.ViewModel
         private RelayCommand _fileCleanupCommand;
         public RelayCommand FileCleanupCommand { get { return _fileCleanupCommand ?? (_fileCleanupCommand = new RelayCommand(async () => await Machine.FileCleanup())); } }
 
+        private RelayCommand _lockTaskbarCommand;
+        public RelayCommand LockTaskbarCommand { get { return _lockTaskbarCommand ?? (_lockTaskbarCommand = new RelayCommand(async () => await Machine.LockTaskbar())); } }
+
+        private RelayCommand _unlockTaskbarCommand;
+        public RelayCommand UnlockTaskbarCommand { get { return _unlockTaskbarCommand ?? (_unlockTaskbarCommand = new RelayCommand(async () => await Machine.UnlockTaskbar())); } }
+
         private RelayCommand _openDamewareCommand;
         public RelayCommand OpenDamewareCommand { get { return _openDamewareCommand ?? (_openDamewareCommand = new RelayCommand(async () => await Machine.OpenDameware())); } }
 
