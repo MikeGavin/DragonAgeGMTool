@@ -806,7 +806,7 @@ namespace Minion
             {
                 await locktb.Run();
                 Processing--;
-                Log(log.Info, "Taskbar locked");                
+                Log(log.Info, "Taskbar locked. A restart is required.");                
             }
             catch (Exception ex)
             {
@@ -827,7 +827,7 @@ namespace Minion
             {
                 await unlocktb.Run();
                 Processing--;
-                Log(log.Info, "Taskbar locked");
+                Log(log.Info, "Taskbar unlocked. A restart is required.");
             }
             catch (Exception ex)
             {
