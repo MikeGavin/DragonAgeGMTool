@@ -380,9 +380,11 @@ namespace Scrivener.Model
 
         public async Task<HistoryItem> ReturnHistory()
         {
+            //Get setting path and data.
             var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            
             AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
-            SQLiteConnection Call_History = new SQLiteConnection(@"Data Source=|DataDirectory|\userdata.db;Version=3;New=True;Compress=True;");
+            SQLiteConnection Call_History = new SQLiteConnection(@"Data Source=|DataDirectory|\\userdata.db;Version=3;New=True;Compress=True;");
 
             log.Debug("Getting History");
             System.Data.StateChangeEventHandler handel = (s, e) => log.Debug("CallHistory: {0}", e.CurrentState);
