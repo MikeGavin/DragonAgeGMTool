@@ -71,20 +71,17 @@ namespace Scrivener.ViewModel
             App.Fucked += (s,e) => SaveAllNotes();
             Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
-            DataB = DatabaseStorage.Instance;
-            
             //Checks deployment and enables update systems if necessary
             DeploymentCheck();
+
+            //create DB singleton
+            DataB = DatabaseStorage.Instance;           
            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
-
-            //Self Explained
-            SettingsFolder();
-            //StartNoteSaveTask();
         }
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
@@ -122,49 +119,31 @@ namespace Scrivener.ViewModel
         //Deployment Systems
         private void DeploymentCheck()
         {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
-                log.Debug("uri.LocalPath: {0}", uri.LocalPath.ToString());
+            //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
+            var deployment = new DeploymentData(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
 
+            if (deployment.NetworkDeployed == true)
+            {
                 try
                 {
                     //Start auto update system and subscribe to event
-                    var updateManager = new UpdateManager(uri);
+                    var updateManager = new UpdateManager(deployment.UpdateLocation);
                     updateManager.UpdateComplete += UpdateComplete;
                 }
                 catch(Exception e)
                 {
                     log.Error(e);
-                }
-                
+                }                
                 try
                 {
                     //listen for DB updates
-                    var WatchDataBase = new DataBaseWatcher(uri);
+                    var WatchDataBase = new DataBaseWatcher(deployment.UpdateLocation);
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                 }
                 catch(Exception e)
                 {
                     log.Error(e);
                 }
-
-                if (uri.LocalPath == @"\\fs1\EdTech\ScrivenerDev\Scrivener.application")
-                {
-                    AppMode = "development";
-                }
-                else if (uri.LocalPath == (@"\\fs1\EdTech\Scrivener\Scrivener.application"))
-                {
-                    AppMode = "production";
-                }
-                else
-                {
-                    AppMode = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
-                }
-            }
-            else
-            {
-                AppMode = "debug";
             }
         }
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
@@ -431,10 +410,9 @@ namespace Scrivener.ViewModel
 
         #region Settings
 
-        private void SettingsFolder()
+        private void SettingsFolder(string settingsFolder)
         {
-            //check for settings folder. Create if missing.
-            var settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
+            //check for settings folder. Create if missing.            
             if (!Directory.Exists(settingsFolder))
             {
                 Directory.CreateDirectory(settingsFolder);
