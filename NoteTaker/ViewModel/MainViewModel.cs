@@ -173,6 +173,7 @@ namespace Scrivener.ViewModel
             if (deployment.NetworkDeployed == true)
             {
                 try
+
                 {
                     //Start auto update system and subscribe to event
                     var updateManager = new UpdateManager(deployment.UpdateLocation);

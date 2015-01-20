@@ -90,7 +90,7 @@ namespace Scrivener.Model
                     log.Error("Database is locked by another process!");
                 else
                     log.Error(ex);
-                
+                CreatesHistory();
             }
 
         }
