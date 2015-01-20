@@ -123,7 +123,7 @@ namespace Scrivener.ViewModel
             {
                 lastsaved = DateTime.Now;
                 RaiseNoteSave();
-                log.Debug("Saved note");
+                log.Trace("Saved note");
             }
         }
 
