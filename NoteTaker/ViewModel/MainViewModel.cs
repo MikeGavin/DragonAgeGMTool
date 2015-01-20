@@ -52,16 +52,11 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-        private bool _updated;
-        public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
-        private bool _dbupdated;
-        public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
+
         private RelayCommand _dbUpdated_Click;
         public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
 
-        private string appMode;
-        public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
-        
+
         //Constructor
         public MainViewModel(IDataService dataService)
         {
@@ -76,8 +71,8 @@ namespace Scrivener.ViewModel
             App.Fucked += (s,e) => SaveAllNotes();
             Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
-            //Checks deployment and enables update systems if necessary
-            DeploymentCheck();
+            //Checks deployment and enables update systems if not in debug
+            DeploymentSetup();
 
             //create DB singleton
             DataB = DatabaseStorage.Instance;           
@@ -164,7 +159,13 @@ namespace Scrivener.ViewModel
         }
 
         //Deployment Systems
-        private void DeploymentCheck()
+        private bool _updated;
+        public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
+        private bool _dbupdated;
+        public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
+        private string appMode;
+        public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
+        private void DeploymentSetup()
         {
             //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
             var deployment = new DeploymentData(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
@@ -173,7 +174,6 @@ namespace Scrivener.ViewModel
             if (deployment.NetworkDeployed == true)
             {
                 try
-
                 {
                     //Start auto update system and subscribe to event
                     var updateManager = new UpdateManager(deployment.UpdateLocation);
@@ -181,7 +181,7 @@ namespace Scrivener.ViewModel
                 }
                 catch(Exception e)
                 {
-                    log.Error(e);
+                    log.Fatal(e);
                 }                
                 try
                 {
@@ -191,7 +191,7 @@ namespace Scrivener.ViewModel
                 }
                 catch(Exception e)
                 {
-                    log.Error(e);
+                    log.Fatal(e);
                 }                
             }
         }
