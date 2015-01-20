@@ -84,47 +84,6 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
         }
 
-        private void SetLogFilePath(string targetName, string pathName)
-        {
-            string fileName = null;
-
-            if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
-            {
-                Target target = LogManager.Configuration.FindTargetByName(targetName);
-                if (target == null)
-                {
-                    throw new Exception("Could not find target named: " + targetName);
-                }
-
-                FileTarget fileTarget = null;
-                WrapperTargetBase wrapperTarget = target as WrapperTargetBase;
-
-                // Unwrap the target if necessary.
-                if (wrapperTarget == null)
-                {
-                    fileTarget = target as FileTarget;
-                }
-                else
-                {
-                    fileTarget = wrapperTarget.WrappedTarget as FileTarget;
-                }
-
-                if (fileTarget == null)
-                {
-                    throw new Exception("Could not get a FileTarget from " + target.GetType());
-                }
-
-                fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
-                log.Debug("logfile path set");
-                var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-                fileName = fileTarget.FileName.Render(logEventInfo);            
-            }
-            else
-            {
-                throw new Exception("LogManager contains no Configuration or there are no named targets");
-            }
-        }
-
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
         {
@@ -158,6 +117,7 @@ namespace Scrivener.ViewModel
 
         }
 
+        #region Deployment and Update
         //Deployment Systems
         private bool _updated;
         public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
@@ -165,6 +125,7 @@ namespace Scrivener.ViewModel
         public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
         private string appMode;
         public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
+        
         private void DeploymentSetup()
         {
             //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
@@ -195,6 +156,48 @@ namespace Scrivener.ViewModel
                 }                
             }
         }
+
+        private void SetLogFilePath(string targetName, string pathName)
+        {
+            string fileName = null;
+
+            if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
+            {
+                Target target = LogManager.Configuration.FindTargetByName(targetName);
+                if (target == null)
+                {
+                    throw new Exception("Could not find target named: " + targetName);
+                }
+
+                FileTarget fileTarget = null;
+                WrapperTargetBase wrapperTarget = target as WrapperTargetBase;
+
+                // Unwrap the target if necessary.
+                if (wrapperTarget == null)
+                {
+                    fileTarget = target as FileTarget;
+                }
+                else
+                {
+                    fileTarget = wrapperTarget.WrappedTarget as FileTarget;
+                }
+
+                if (fileTarget == null)
+                {
+                    throw new Exception("Could not get a FileTarget from " + target.GetType());
+                }
+
+                fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
+                log.Debug("logfile path set");
+                var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+                fileName = fileTarget.FileName.Render(logEventInfo);
+            }
+            else
+            {
+                throw new Exception("LogManager contains no Configuration or there are no named targets");
+            }
+        }
+
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
         {
                 Updated = true;
@@ -208,6 +211,8 @@ namespace Scrivener.ViewModel
 
                     });
         }
+        
+        #endregion
 
         //Singleton instance of the DB to sync data across view models
         //private Singleton _dataB;
