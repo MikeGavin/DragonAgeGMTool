@@ -24,7 +24,7 @@
     <RestorePackages>true</RestorePackages>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>95382808</NuGetPackageImportStamp>
-    <PublishUrl>\\fs1\EdTech\ScrivenerDev\</PublishUrl>
+    <PublishUrl>\\fs1\EdTech\Scrivener\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
