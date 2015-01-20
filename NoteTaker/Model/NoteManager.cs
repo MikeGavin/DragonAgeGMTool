@@ -91,8 +91,27 @@ namespace Scrivener.Model
                 else
                     log.Error(ex);
                 CreatesHistory();
-            }
+                
+                string writeerror = "SQL logic error or missing database\r\nno such table: OpenNotes";
+                string exstring = ex.ToString();
 
+                if(exstring.Contains(writeerror))
+                {
+                    Model.ExceptionReporting.Email(ex); 
+                }                
+            }
+            finally
+            {
+                using (SQLiteConnection conn = new SQLiteConnection((noteDatabase)))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(command, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+            }
         }
 
         private async Task SaveNote(INote n, string tablename)
