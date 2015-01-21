@@ -160,42 +160,47 @@ namespace Scrivener.ViewModel
         private void SetLogFilePath(string targetName, string pathName)
         {
             string fileName = null;
+            var fileTarget = LogReturn(targetName) as FileTarget;
+            fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
+            log.Debug("logfile path set");
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            fileName = fileTarget.FileName.Render(logEventInfo);
+        }
 
-            if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
+        private Target LogReturn(string targetName)
+        {
+            Target test = null;
+             if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
             {
                 Target target = LogManager.Configuration.FindTargetByName(targetName);
                 if (target == null)
                 {
                     throw new Exception("Could not find target named: " + targetName);
                 }
-
-                FileTarget fileTarget = null;
+        
                 WrapperTargetBase wrapperTarget = target as WrapperTargetBase;
 
                 // Unwrap the target if necessary.
                 if (wrapperTarget == null)
                 {
-                    fileTarget = target as FileTarget;
+                    test = target;
                 }
                 else
                 {
-                    fileTarget = wrapperTarget.WrappedTarget as FileTarget;
+                    test = wrapperTarget.WrappedTarget;
                 }
 
-                if (fileTarget == null)
+                if (target == null)
                 {
-                    throw new Exception("Could not get a FileTarget from " + target.GetType());
+                    throw new Exception("Could not get a Target from " + target.GetType());
                 }
 
-                fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
-                log.Debug("logfile path set");
-                var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-                fileName = fileTarget.FileName.Render(logEventInfo);
             }
             else
             {
                 throw new Exception("LogManager contains no Configuration or there are no named targets");
             }
+            return test;
         }
 
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
