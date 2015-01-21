@@ -44,7 +44,8 @@
                  Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" 
                  VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" 
-                 helpers:TextBoxBehaviour.ScrollOnTextChanged="True">
+                 >
+            <!--helpers:TextBoxBehaviour.ScrollOnTextChanged="True"-->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=DropCommand}"  />
