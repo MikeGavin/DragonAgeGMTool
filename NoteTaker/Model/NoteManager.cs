@@ -116,17 +116,15 @@ namespace Scrivener.Model
 
         private async Task SaveNote(INote n, string tablename)
         {
-            //String for creating time stamp
-
-            n.Text = n.Text.Replace("'","`");
+            
             var Date = n.LastUpdated.ToString("d");
             var Time = n.LastUpdated.ToString("T");
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
                                             SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
-                                            WHERE guid = '{5}';", tablename, n.Title, n.Text, Date, Time, n.Guid.ToString());
+                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "`"), n.Text.Replace("'", "`"), Date, Time, n.Guid.ToString());
             var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
-                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title, n.Text, Date, Time);
+                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "`"), n.Text.Replace("'", "`"), Date, Time);
             
             await WriteDatabase(update);
             await WriteDatabase(command);
