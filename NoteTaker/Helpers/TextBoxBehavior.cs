@@ -14,18 +14,18 @@ namespace Scrivener.Helpers
 
         public static bool GetScrollOnTextChanged(DependencyObject dependencyObject)
         {
-            return (bool)dependencyObject.GetValue(ScrollOnTextChangedProperty);
+            return (bool)dependencyObject.GetValue(ScrollOnTextAppendProperty);
         }
 
         public static void SetScrollOnTextChanged(DependencyObject dependencyObject, bool value)
         {
-            dependencyObject.SetValue(ScrollOnTextChangedProperty, value);
+            dependencyObject.SetValue(ScrollOnTextAppendProperty, value);
         }
 
-        public static readonly DependencyProperty ScrollOnTextChangedProperty =
-            DependencyProperty.RegisterAttached("ScrollOnTextChanged", typeof(bool), typeof(TextBoxBehaviour), new UIPropertyMetadata(false, OnScrollOnTextChanged));
+        public static readonly DependencyProperty ScrollOnTextAppendProperty =
+            DependencyProperty.RegisterAttached("ScrollOnTextAppend", typeof(bool), typeof(TextBoxBehaviour), new UIPropertyMetadata(false, OnScrollOnTextAppend));
 
-        static void OnScrollOnTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        static void OnScrollOnTextAppend(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var textBox = dependencyObject as TextBox;
             if (textBox == null)
@@ -79,7 +79,12 @@ namespace Scrivener.Helpers
 
             private void OnTextBoxOnTextChanged(object sender, TextChangedEventArgs args)
             {
-                TextBox.ScrollToEnd();
+                //Edited to only scroll only when the append is used.                 
+                if (args.Changes.Any( (p) => p.Offset == 0))
+                {
+                    TextBox.ScrollToEnd();
+                }
+                
             }
 
             public void Dispose()
@@ -88,5 +93,51 @@ namespace Scrivener.Helpers
             }
         }
 
-    }
+       
+
+
+
+        public static readonly DependencyProperty AlwaysScrollToEndProperty = DependencyProperty.RegisterAttached("AlwaysScrollToEnd", typeof(bool), typeof(TextBoxBehaviour), new PropertyMetadata(false, AlwaysScrollToEndChanged));
+
+        private static void AlwaysScrollToEndChanged(object sender, DependencyPropertyChangedEventArgs e)
+            {
+                TextBox tb = sender as TextBox;
+                if (tb != null) {
+                    bool alwaysScrollToEnd = (e.NewValue != null) && (bool)e.NewValue;
+                    if (alwaysScrollToEnd) {
+                        tb.ScrollToEnd();
+                        tb.TextChanged += TextChanged;
+                    } else {
+                        tb.TextChanged -= TextChanged;
+                    }
+                } else {
+                    throw new InvalidOperationException("The attached AlwaysScrollToEnd property can only be applied to TextBox instances.");
+                }
+            }
+
+            public static bool GetAlwaysScrollToEnd(TextBox textBox)
+            {
+                if (textBox == null) {
+                    throw new ArgumentNullException("textBox");
+                }
+
+                return (bool)textBox.GetValue(AlwaysScrollToEndProperty);
+            }
+
+            public static void SetAlwaysScrollToEnd(TextBox textBox, bool alwaysScrollToEnd)
+            {
+                if (textBox == null) {
+                    throw new ArgumentNullException("textBox");
+                }
+
+                textBox.SetValue(AlwaysScrollToEndProperty, alwaysScrollToEnd);
+            }
+
+            private static void TextChanged(object sender, TextChangedEventArgs e)
+            {
+                ((TextBox)sender).ScrollToEnd();
+            }
+            
+        }
+    
 }
