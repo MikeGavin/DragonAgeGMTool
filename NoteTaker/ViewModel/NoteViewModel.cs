@@ -196,12 +196,12 @@ namespace Scrivener.ViewModel
                         }
                         else if (Properties.Settings.Default.DashinNotes == true)
                         {
-                            Text +=  System.Environment.NewLine + "- " + note.Content;
+                            Text += "- " + note.Content + System.Environment.NewLine;
                             //SaveNotes();
                         }
                         else if (Properties.Settings.Default.DashinNotes == false)
                         {
-                            Text += System.Environment.NewLine + note.Content;
+                            Text += note.Content + System.Environment.NewLine;
                             //SaveNotes();
                         }
                     }
