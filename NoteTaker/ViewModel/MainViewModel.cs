@@ -160,47 +160,11 @@ namespace Scrivener.ViewModel
         private void SetLogFilePath(string targetName, string pathName)
         {
             string fileName = null;
-            var fileTarget = LogReturn(targetName) as FileTarget;
+            var fileTarget = Helpers.LoggingHelper.ReturnTarget(targetName) as FileTarget;
             fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
             log.Debug("logfile path set");
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
             fileName = fileTarget.FileName.Render(logEventInfo);
-        }
-
-        private Target LogReturn(string targetName)
-        {
-            Target test = null;
-             if (LogManager.Configuration != null && LogManager.Configuration.ConfiguredNamedTargets.Count != 0)
-            {
-                Target target = LogManager.Configuration.FindTargetByName(targetName);
-                if (target == null)
-                {
-                    throw new Exception("Could not find target named: " + targetName);
-                }
-        
-                WrapperTargetBase wrapperTarget = target as WrapperTargetBase;
-
-                // Unwrap the target if necessary.
-                if (wrapperTarget == null)
-                {
-                    test = target;
-                }
-                else
-                {
-                    test = wrapperTarget.WrappedTarget;
-                }
-
-                if (target == null)
-                {
-                    throw new Exception("Could not get a Target from " + target.GetType());
-                }
-
-            }
-            else
-            {
-                throw new Exception("LogManager contains no Configuration or there are no named targets");
-            }
-            return test;
         }
 
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
