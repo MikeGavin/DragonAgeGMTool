@@ -83,6 +83,21 @@ namespace Scrivener.Helpers
                 if (args.Changes.Any( (p) => p.Offset == 0))
                 {
                     TextBox.ScrollToEnd();
+                    TextBox.CaretIndex = TextBox.Text.Length;
+                    //System.Windows.Input.Keyboard.Focus(TextBox);
+                    //var test = TextBox.Focus();
+                    //Notearea.Focus();
+                    //Notearea.Focusable = false;
+                    //FocusManager.SetFocusedElement(this, Notearea); 
+                    //Keyboard.Focus(Notearea);
+                    
+                    //this is the only focus method I was able to get to work
+                    Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
+                    {
+                        TextBox.Focus();
+                    });
+
+
                 }
                 
             }
@@ -92,9 +107,6 @@ namespace Scrivener.Helpers
                 TextBox.TextChanged -= OnTextBoxOnTextChanged;
             }
         }
-
-       
-
 
 
         public static readonly DependencyProperty AlwaysScrollToEndProperty = DependencyProperty.RegisterAttached("AlwaysScrollToEnd", typeof(bool), typeof(TextBoxBehaviour), new PropertyMetadata(false, AlwaysScrollToEndChanged));
