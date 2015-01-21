@@ -122,9 +122,9 @@ namespace Scrivener.Model
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
                                             SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
-                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "`"), n.Text.Replace("'", "`"), Date, Time, n.Guid.ToString());
+                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time, n.Guid.ToString());
             var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
-                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "`"), n.Text.Replace("'", "`"), Date, Time);
+                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time);
             
             await WriteDatabase(update);
             await WriteDatabase(command);
@@ -172,7 +172,7 @@ namespace Scrivener.Model
                     var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
                     try
                     {
-                        openNotes.Add(new NoteType(Guid.Parse(guid), title, text.Replace("`", "'"), datetime));                    
+                        openNotes.Add(new NoteType(Guid.Parse(guid), title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime));                    
                     }
                     catch(Exception ex)
                     {
@@ -216,7 +216,7 @@ namespace Scrivener.Model
                     var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
                     try
                     {
-                        archiveSearch.Add(new NoteType(title, text.Replace("`", "'"), datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
+                        archiveSearch.Add(new NoteType(title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
                     }
                     catch (Exception ex)
                     {
