@@ -69,6 +69,18 @@ namespace Scrivener.UserControls
 
                 }
             }          
+        }
+
+        private void TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            var oldIndex = Notearea.CaretIndex;
+            Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
+            {
+                //Keyboard.Focus(Notearea);
+                Notearea.Focus();
+                //Notearea.CaretIndex = index;
+            });
         }    
     }
 }

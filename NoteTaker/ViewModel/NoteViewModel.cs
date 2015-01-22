@@ -73,7 +73,7 @@ namespace Scrivener.ViewModel
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
         private int _caretindex;
-        public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        public int CaretIndex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged();} }
         #endregion        
 
         
@@ -182,28 +182,34 @@ namespace Scrivener.ViewModel
         //Append
         private RelayCommand<QuickItem> _appendQuickItem;
         public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
-        public void AppendQuickItem(QuickItem note)
+        public void AppendQuickItem(QuickItem qi)
         {
-            if (note != null)
+            if (qi != null)
             {
                 try
                 {
-                    if (note.SubItems.Count == 0) // causes crash if null
+                    if (qi.SubItems.Count == 0) // causes crash if null
                     {
+
+                        string dataInserted = string.Empty;
+                        var caret = CaretIndex;
+                        
                         if (Keyboard.Modifiers == ModifierKeys.Control)
                         {
-                            Text += " " + note.Content;
+                            dataInserted = qi.Content + " ";
                         }
                         else if (Properties.Settings.Default.DashinNotes == true)
                         {
-                            Text += "- " + note.Content + System.Environment.NewLine;
+                            dataInserted = qi.Content + System.Environment.NewLine;
                             //SaveNotes();
                         }
                         else if (Properties.Settings.Default.DashinNotes == false)
                         {
-                            Text += note.Content + System.Environment.NewLine;
+                            dataInserted = "- " + qi.Content + System.Environment.NewLine;
                             //SaveNotes();
                         }
+                        Text = Text.Insert(CaretIndex, dataInserted);
+                        //CaretIndex = caret + dataInserted.Length;
                     }
                 }
                 catch (Exception e)
@@ -212,6 +218,7 @@ namespace Scrivener.ViewModel
                     var temp = MetroMessageBox.Show("NOPE!", e.ToString());
                 }
             }
+            
         }
 
         private RelayCommand _copyQuickItemCommand;

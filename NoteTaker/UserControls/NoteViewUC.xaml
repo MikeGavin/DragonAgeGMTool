@@ -29,7 +29,12 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <!--<Toolkit:RichTextBox Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" SpellCheck.IsEnabled="True" AllowDrop="True" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" IsUndoEnabled="True" PreviewKeyDown="Noteareakeydown">
+        <!--<Toolkit:RichTextBox Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}"
+                             SpellCheck.IsEnabled="True" AllowDrop="True" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" 
+                             VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" IsUndoEnabled="True" 
+
+                             >
             <Toolkit:RichTextBox.TextFormatter>
                 <Toolkit:PlainTextFormatter />
             </Toolkit:RichTextBox.TextFormatter>
@@ -39,13 +44,25 @@
                 </Style>
             </RichTextBox.Resources>
         </Toolkit:RichTextBox>-->
-        <TextBox helpers:CaretBehavior.ObserveCaret="True" FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+        
+<!--helpers:CaretBehavior.ObserveCaret="True" helpers:CaretBehavior.CaretIndex="{Binding CaretIndex, Mode=TwoWay, BindsDirectlyToSource=True, UpdateSourceTrigger=PropertyChanged}"-->
+        <!--helpers:TextBoxBehaviour.PlaceCusrorAtInsert="{Binding Text,StringFormat=0.00,
+                                                                          UpdateSourceTrigger=PropertyChanged,
+                                                                          Mode=TwoWay}"--><TextBox 
+            helpers:CaretBehavior.CaretIndex="{Binding CaretIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                              helpers:CaretBehavior.ObserveCaret="True"
+                 helpers:TextBoxBehaviour.PlaceCusrorAtInsert="{Binding Text,StringFormat=0.00,
+                                                                          UpdateSourceTrigger=PropertyChanged,
+                                                                          Mode=TwoWay}"
+                 Text="{Binding Text, StringFormat=0.00, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
             AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" 
-                 Text="{Binding Text, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 
                  SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" 
-                 VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" 
+                 VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" TextChanged="TextChanged" 
                  >
             <!--helpers:TextBoxBehaviour.ScrollOnTextChanged="True"-->
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=DropCommand}"  />
