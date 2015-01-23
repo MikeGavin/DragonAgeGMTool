@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace Scrivener.Helpers
 {
@@ -73,4 +75,6 @@ namespace Scrivener.Helpers
             return (int)element.GetValue(LineIndexProperty);
         }
     }
+
+ 
 }

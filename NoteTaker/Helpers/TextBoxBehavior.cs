@@ -203,19 +203,19 @@ namespace Scrivener.Helpers
                      DependencyPropertyChangedEventArgs e)
         {
             var textBox = sender as TextBox;
-            if (textBox == null) return;
+            if (textBox == null || e.OldValue == null) return;
             var caretIndex = textBox.CaretIndex;
             var selectionStart = textBox.SelectionStart;
             var selectionLength = textBox.SelectionLength;
             textBox.Text = (string)e.NewValue;
-            if (e.OldValue != null && e.OldValue.ToString().Length > 1)
+            if (e.OldValue.ToString().Length >= 1)
             {
                 var diff = textBox.Text.Length - ((string)e.OldValue).Length;
-                if (diff >= 0)
+                if (diff > 0)
                 {
-                    textBox.CaretIndex = caretIndex + diff;
-                    textBox.SelectionStart = selectionStart + diff;
-                    textBox.SelectionLength = selectionLength;
+                    textBox.CaretIndex = caretIndex + diff -1;
+                    //textBox.SelectionStart = selectionStart + diff;
+                    //textBox.SelectionLength = selectionLength;
                 }
             }
             }

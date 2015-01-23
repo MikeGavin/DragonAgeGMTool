@@ -191,25 +191,29 @@ namespace Scrivener.ViewModel
                     if (qi.SubItems.Count == 0) // causes crash if null
                     {
 
-                        string dataInserted = string.Empty;
-                        var caret = CaretIndex;
+                        Text += qi.Content;
+
+                        //string dataInserted = string.Empty;
                         
-                        if (Keyboard.Modifiers == ModifierKeys.Control)
-                        {
-                            dataInserted = qi.Content + " ";
-                        }
-                        else if (Properties.Settings.Default.DashinNotes == true)
-                        {
-                            dataInserted = qi.Content + System.Environment.NewLine;
-                            //SaveNotes();
-                        }
-                        else if (Properties.Settings.Default.DashinNotes == false)
-                        {
-                            dataInserted = "- " + qi.Content + System.Environment.NewLine;
-                            //SaveNotes();
-                        }
-                        Text = Text.Insert(CaretIndex, dataInserted);
-                        //CaretIndex = caret + dataInserted.Length;
+                        //if (Keyboard.Modifiers == ModifierKeys.Control)
+                        //{
+                        //    dataInserted = qi.Content + " ";
+                        //}
+                        //else if (Properties.Settings.Default.DashinNotes == true)
+                        //{
+                        //    dataInserted = "- " + qi.Content + System.Environment.NewLine;
+                        //}
+                        //else if (Properties.Settings.Default.DashinNotes == false)
+                        //{
+                        //    dataInserted = qi.Content + System.Environment.NewLine; 
+                        //}
+                        //Text = Text.Insert(CaretIndex, dataInserted);
+
+                        //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
+                        //the cursor position to reset we were forced to rely on the messager service here to 
+                        //access the append and inset methods
+                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content);
+
                     }
                 }
                 catch (Exception e)
