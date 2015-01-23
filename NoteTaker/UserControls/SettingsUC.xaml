@@ -163,26 +163,21 @@
                     </Grid>
                 </ScrollViewer>
             </controls:MetroTabItem>
-            <!--<controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">-->
-            <!--<controls:MetroTabItem.ToolTip>
-                <ToolTip>
-                    <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
-                </ToolTip>
-            </controls:MetroTabItem.ToolTip>-->
-            <!--<Grid MinWidth="600" MaxWidth="600">
+            <controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <Grid MinWidth="300" MaxWidth="300" Margin="0,60,0,0" >
                 <TabControl>
                     <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
                         <Grid>
-                            <Grid.RowDitefinions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDitefinions>
-                            <Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="1" Grid.Column="0"  Text="Please replace:"></TextBlock>-->
-            <!--<ListView Grid.Row="2" Grid.Column="0" vm:Name="bflistView" Width="100" SelectionMode="Multiple" HorizontalAlignment="Center"> 
+                            <TextBlock Grid.Row="1" Grid.Column="0"  Text="Please replace:"></TextBlock>
+                            <ListView Grid.Row="2" Grid.Column="0" vm:Name="bflistView" Width="100" SelectionMode="Multiple" HorizontalAlignment="Center"> 
                                 <ListViewItem Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
                                 <ListViewItem Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
                                 <ListViewItem Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
@@ -195,13 +190,26 @@
                                 <ListViewItem Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
                                 <ListViewItem Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
                                 <ListViewItem Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                            </ListView>-->
-            <!--</Grid>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
+                            </ListView>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
+                            </Grid>
+                        
+                    </TabItem>
+                    <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
+                        <Grid Width="300" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
+                                <StackPanel Margin="0,15,0,0">                                    
+                                    <RadioButton vm:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" Visibility="{Binding ClassContentVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"/>
+                                    <RadioButton vm:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" Visibility="{Binding MCCAVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
+                                    <RadioButton vm:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxSiteVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
+                                    <RadioButton vm:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxAccountVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
+                                    <RadioButton vm:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" Visibility="{Binding DiscBoardVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
+                                </StackPanel>
+                            </Grid>
                     </TabItem>
                 </TabControl>
             </Grid>
-        </controls:MetroTabItem>-->
+        </controls:MetroTabItem>
             <!--<TabItem Header="Templates" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>

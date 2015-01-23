@@ -78,8 +78,8 @@ namespace Scrivener.ViewModel
             DataB = DatabaseStorage.Instance;           
            
             //Listen for note collection change
-            Notes.CollectionChanged += OnNotesChanged;           
-            
+            Notes.CollectionChanged += OnNotesChanged;
+
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
         }
@@ -480,6 +480,72 @@ namespace Scrivener.ViewModel
 
             Properties.Settings.Default.Default_Note_Template = SelectedNote.Text;
             Properties.Settings.Default.Save();
+        }
+
+        private RelayCommand _curriculumarcommand;
+        public RelayCommand CurriculumARCommand { get { return _curriculumarcommand ?? (_curriculumarcommand = new RelayCommand(CurriculumAR)); } }
+        public void CurriculumAR()
+        {
+            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Collapsed || Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed ||  Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
+            {
+                Properties.Settings.Default.ClassContentChecked = false;
+                Properties.Settings.Default.MCCAChecked = false;
+                Properties.Settings.Default.AuxSiteChecked = false;
+                Properties.Settings.Default.AuxAccountChecked = false;
+                Properties.Settings.Default.DiscBoardChecked = false;
+
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Visible;
+                Properties.Settings.Default.MCCAVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
+            }
+            else if (Properties.Settings.Default.ClassContentChecked == true)
+            {
+                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
+            }
+            else if (Properties.Settings.Default.MCCAChecked == true)
+            {
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
+            }
+            else if (Properties.Settings.Default.AuxSiteChecked == true)
+            {
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;                
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
+            }            
+            else if (Properties.Settings.Default.AuxAccountChecked == true)
+            {
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
+            }
+            else if (Properties.Settings.Default.DiscBoardChecked == true)
+            {
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Properties.Settings.Default.ClassContentVisibility = Visibility.Visible;
+                Properties.Settings.Default.MCCAVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxSiteVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
+                Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
+            }
+
+
+
         }
 
         //Allows getting of current version

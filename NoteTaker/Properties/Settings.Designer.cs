@@ -432,12 +432,132 @@ namespace Scrivener.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public string Settings_Visibility {
+        public global::System.Windows.Visibility Settings_Visibility {
             get {
-                return ((string)(this["Settings_Visibility"]));
+                return ((global::System.Windows.Visibility)(this["Settings_Visibility"]));
             }
             set {
                 this["Settings_Visibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility ClassContentVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["ClassContentVisibility"]));
+            }
+            set {
+                this["ClassContentVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility MCCAVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["MCCAVisibility"]));
+            }
+            set {
+                this["MCCAVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility AuxSiteVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["AuxSiteVisibility"]));
+            }
+            set {
+                this["AuxSiteVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility AuxAccountVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["AuxAccountVisibility"]));
+            }
+            set {
+                this["AuxAccountVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility DiscBoardVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["DiscBoardVisibility"]));
+            }
+            set {
+                this["DiscBoardVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ClassContentChecked {
+            get {
+                return ((bool)(this["ClassContentChecked"]));
+            }
+            set {
+                this["ClassContentChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MCCAChecked {
+            get {
+                return ((bool)(this["MCCAChecked"]));
+            }
+            set {
+                this["MCCAChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AuxSiteChecked {
+            get {
+                return ((bool)(this["AuxSiteChecked"]));
+            }
+            set {
+                this["AuxSiteChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AuxAccountChecked {
+            get {
+                return ((bool)(this["AuxAccountChecked"]));
+            }
+            set {
+                this["AuxAccountChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DiscBoardChecked {
+            get {
+                return ((bool)(this["DiscBoardChecked"]));
+            }
+            set {
+                this["DiscBoardChecked"] = value;
             }
         }
     }

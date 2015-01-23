@@ -99,12 +99,12 @@ namespace Scrivener.ViewModel
             Regex sepid = new Regex(@"[a-z]{2,3}[0-9]{5,6} ", RegexOptions.IgnoreCase);
 
 
-            MatchCollection mc = ip.Matches(Text);
+            //MatchCollection mc = ip.Matches(Text);
 
-            foreach (Match m in mc)
-            {
+            //foreach (Match m in mc)
+            //{
 
-            }
+            //}
 
             if (_titlechanged == false) //Changes Title to first SEP entered then stops.
             {
