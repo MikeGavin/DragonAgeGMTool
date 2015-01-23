@@ -160,6 +160,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvvmLightLibs.5.0.2.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\packages\AvalonEdit.5.0.2\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="LogentriesCore, Version=2.6.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\logentries.core.2.6.1\lib\net40\LogentriesCore.dll</HintPath>
@@ -264,13 +267,14 @@
     </ApplicationDefinition>
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\AvalonTextBehavior.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\CaretBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MouseDoubleClick.cs" />
-    <Compile Include="Helpers\SetCaretBehavior.cs" />
+    <Compile Include="Helpers\TextEditorBehavior.cs" />
     <Compile Include="Helpers\TextBoxBehavior.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\DeploymentData.cs" />

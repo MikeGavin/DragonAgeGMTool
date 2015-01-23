@@ -67,6 +67,9 @@ namespace Scrivener.ViewModel
         private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
+
+        //private ICSharpCode.AvalonEdit.Document.TextDocument document;
+        //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private DateTime _lastUpdated;

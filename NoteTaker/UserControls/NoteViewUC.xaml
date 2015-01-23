@@ -54,8 +54,20 @@
                  helpers:TextBoxBehaviour.PlaceCusrorAtInsert="{Binding Text,StringFormat=0.00,
                                                                           UpdateSourceTrigger=PropertyChanged,
                                                                           Mode=TwoWay}"-->
-        
-        <TextBox 
+
+        <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+            Name="textEditor"
+            FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource TextBrush}"
+                               Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" BorderBrush="{DynamicResource AccentColorBrush4}"
+                               Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" PreviewKeyDown="Noteareakeydown" WordWrap="True"
+                               
+                                >
+            <i:Interaction.Behaviors>
+                <helpers:AvalonEditBehaviour GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </i:Interaction.Behaviors>
+        </avalonEdit:TextEditor>
+
+        <!--<TextBox 
                  Text="{Binding Text, StringFormat=0.00, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 
                  FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
             AutoWordSelection="True" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Name="Notearea" BorderBrush="{DynamicResource AccentColorBrush4}" 
@@ -63,14 +75,14 @@
                  SpellCheck.IsEnabled="True" AllowDrop="True" TextWrapping="Wrap" AcceptsReturn="True" Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" 
                  VerticalScrollBarVisibility="Auto" controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True" PreviewKeyDown="Noteareakeydown" IsUndoEnabled="True" TextChanged="TextChanged" 
                  >
-            <!--helpers:TextBoxBehaviour.ScrollOnTextChanged="True"-->
+            --><!--helpers:TextBoxBehaviour.ScrollOnTextChanged="True"--><!--
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=DropCommand}"  />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-        </TextBox>
+        </TextBox>-->
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
         <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" 
                   Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" 

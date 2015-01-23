@@ -40,7 +40,7 @@ namespace Scrivener.UserControls
 
         private object ReceiveMessage(string action)
         {
-            Notearea.AppendText(action);
+            //Notearea.AppendText(action);
             return null;
         }
 
@@ -87,7 +87,17 @@ namespace Scrivener.UserControls
             Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
             {
                 //Keyboard.Focus(Notearea);
-                Notearea.Focus();
+                //Notearea.Focus();
+                //Notearea.CaretIndex = index;
+            });
+        }
+
+        private void textEditor_TextChanged(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
+            {
+                Keyboard.Focus(textEditor);
+                //Notearea.Focus();
                 //Notearea.CaretIndex = index;
             });
         }    
