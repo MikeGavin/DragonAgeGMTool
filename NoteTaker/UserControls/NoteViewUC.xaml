@@ -55,17 +55,19 @@
                                                                           UpdateSourceTrigger=PropertyChanged,
                                                                           Mode=TwoWay}"-->
 
-        <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-            Name="textEditor"
+        <helpers:MvvmTextEditor
+            x:Name="textEditor"
             FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource TextBrush}"
                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" BorderBrush="{DynamicResource AccentColorBrush4}"
                                Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" PreviewKeyDown="Noteareakeydown" WordWrap="True"
+                               Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ReturnFocus="True"
                                
-                                >
+                               >
             <i:Interaction.Behaviors>
-                <helpers:AvalonEditBehaviour GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<helpers:AvalonEditBehaviour GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReturnFocus="True"/>-->
             </i:Interaction.Behaviors>
-        </avalonEdit:TextEditor>
+        </helpers:MvvmTextEditor>
 
         <!--<TextBox 
                  Text="{Binding Text, StringFormat=0.00, BindsDirectlyToSource=True, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" 

@@ -194,7 +194,7 @@ namespace Scrivener.ViewModel
                     if (qi.SubItems.Count == 0) // causes crash if null
                     {
 
-                        Text += qi.Content;
+                        //Text += qi.Content + CaretIndex.ToString();
 
                         //string dataInserted = string.Empty;
                         
@@ -215,7 +215,7 @@ namespace Scrivener.ViewModel
                         //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
                         //the cursor position to reset we were forced to rely on the messager service here to 
                         //access the append and inset methods
-                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content);
+                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content);
 
                     }
                 }

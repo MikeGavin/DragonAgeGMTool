@@ -40,7 +40,11 @@ namespace Scrivener.UserControls
 
         private object ReceiveMessage(string action)
         {
-            //Notearea.AppendText(action);
+            //var test = textEditor.CaretOffset;
+            //textEditor.AppendText(action);
+            //textEditor.CaretOffset = test;
+            textEditor.Document.Insert(textEditor.TextArea.Caret.Offset, action);
+
             return null;
         }
 
@@ -96,7 +100,7 @@ namespace Scrivener.UserControls
         {
             Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
             {
-                Keyboard.Focus(textEditor);
+                //Keyboard.Focus(textEditor);
                 //Notearea.Focus();
                 //Notearea.CaretIndex = index;
             });

@@ -247,13 +247,11 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\AvalonTextBehavior.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
-    <Compile Include="Helpers\CaretBehavior.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MouseDoubleClick.cs" />
-    <Compile Include="Helpers\TextEditorBehavior.cs" />
-    <Compile Include="Helpers\TextBoxBehavior.cs" />
+    <Compile Include="Helpers\MVVMTextEditor.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\DeploymentData.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
