@@ -31,22 +31,24 @@ namespace Scrivener.UserControls
             {
                 log.Error(e.Message);
             }
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>
-            (
-                 this,
-                 (action) => ReceiveMessage(action)
-            );
+            
+            //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "insert", (action) => InsertQI(action));
+            //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));
         }
 
-        private object ReceiveMessage(string action)
-        {
-            //var test = textEditor.CaretOffset;
-            //textEditor.AppendText(action);
-            //textEditor.CaretOffset = test;
-            textEditor.Document.Insert(textEditor.TextArea.Caret.Offset, action);
-
-            return null;
-        }
+        //private void InsertQI(string qi)
+        //{
+        //    textEditor.Document.Insert(textEditor.TextArea.Caret.Offset, qi);
+        //}
+        
+        //private void AppendQI(string qi)
+        //{
+        //    textEditor.AppendText(qi);
+        //    textEditor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+        //    textEditor.ScrollToEnd(); //Scrolls window but does not set caret.
+        //    textEditor.CaretOffset = textEditor.Text.Length;
+            
+        //}
 
         private void Noteareakeydown(object sender, KeyEventArgs e)
         {
