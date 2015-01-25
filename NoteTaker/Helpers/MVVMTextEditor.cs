@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Scrivener.Helpers
@@ -15,35 +16,25 @@ namespace Scrivener.Helpers
     {
        public  MvvmTextEditor() : base()
         {
+            //Allows for recieving two different message types from VM
+            // 2 type may not be necessary if all test control is handeled in this custom control
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "insert", (action) => InsertQI(action));
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));
-
             
+            //Necessary for spell check system.
+            this.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
+            this.Loaded += MvvmTextEditor_Loaded;
         }
 
-        /// <summary>
-        /// A bindable Text property
-        /// </summary>
-        public new string Text
-        {
-            get { return base.Text; }
-            set { base.Text = value; }
-        }
-
-        /// <summary>
-        /// The bindable text property dependency property
-        /// </summary>
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(MvvmTextEditor), new PropertyMetadata((obj, args) =>
-            {
-                var target = (MvvmTextEditor)obj;
-                target.Text = (string)args.NewValue;
-            }));
+       void MvvmTextEditor_Loaded(object sender, RoutedEventArgs e)
+       {
+           LoadContextStandards();
+       }
 
         protected override void OnTextChanged(EventArgs e)
-        {
+        {          
             RaisePropertyChanged("Text");
-            base.OnTextChanged(e);
+            
             if (ReturnFocus)
             {
                 Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
@@ -51,6 +42,7 @@ namespace Scrivener.Helpers
                     Keyboard.Focus(this);
                 });
             }
+            base.OnTextChanged(e);
         }
 
         public bool ReturnFocus
@@ -59,7 +51,7 @@ namespace Scrivener.Helpers
             set { SetValue(ReturnFocusProperty, value); }
         }
         public static readonly DependencyProperty ReturnFocusProperty =
-            DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
+            DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(MvvmTextEditor),
             new PropertyMetadata(false));
 
 
@@ -76,6 +68,50 @@ namespace Scrivener.Helpers
             this.ScrollToEnd(); //Scrolls window but does not set caret.
             this.CaretOffset = this.Text.Length;
         }
+
+        private void LoadContextStandards()
+        {
+
+
+            
+            this.ContextMenu = new ContextMenu();
+            //Common Edit MenuItems.
+
+            this.ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Undo });
+            this.ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Redo });
+
+            this.ContextMenu.Items.Add(new Separator());
+
+            //Cut
+            MenuItem cutMenuItem = new MenuItem();
+            cutMenuItem.Command = ApplicationCommands.Cut;
+            this.ContextMenu.Items.Add(cutMenuItem);
+            //Copy
+            MenuItem copyMenuItem = new MenuItem();
+            copyMenuItem.Command = ApplicationCommands.Copy;
+            this.ContextMenu.Items.Add(copyMenuItem);
+
+            //Paste
+            MenuItem pasteMenuItem = new MenuItem();
+            pasteMenuItem.Command = ApplicationCommands.Paste;
+            this.ContextMenu.Items.Add(pasteMenuItem);
+
+            this.ContextMenu.Items.Add(new Separator());
+
+            //Delete
+            MenuItem deleteMenuItem = new MenuItem();
+            deleteMenuItem.Command = ApplicationCommands.Delete;
+            this.ContextMenu.Items.Add(deleteMenuItem);
+
+            this.ContextMenu.Items.Add(new Separator());
+
+            //Select All
+            MenuItem selectAllMenuItem = new MenuItem();
+            selectAllMenuItem.Command = ApplicationCommands.SelectAll;
+            this.ContextMenu.Items.Add(selectAllMenuItem);
+
+        }
+
 
 
         /// <summary>

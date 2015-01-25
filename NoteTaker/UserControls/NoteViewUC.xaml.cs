@@ -31,7 +31,7 @@ namespace Scrivener.UserControls
             {
                 log.Error(e.Message);
             }
-            
+            //Moved to custom control backend
             //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "insert", (action) => InsertQI(action));
             //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));
         }

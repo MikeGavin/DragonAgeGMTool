@@ -51,7 +51,6 @@ namespace Scrivener.Helpers
                 if (textEditor.Document != null)
                 {
                     GiveMeTheText = textEditor.Document.Text;
-                    //GiveMeTheCaretOffset = textEditor.CaretOffset;
                 }
 
                 if (ReturnFocus)
@@ -91,37 +90,6 @@ namespace Scrivener.Helpers
             DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
             new PropertyMetadata(false));
 
-
-        #region CaretOffsetProperty
-
-        //public int GiveMeTheCaretOffset
-        //{
-        //    get { return (int)GetValue(GiveMeTheCaretOffsetProperty); }
-        //    set { SetValue(GiveMeTheCaretOffsetProperty, value); }
-        //}
-
-        //public static DependencyProperty GiveMeTheCaretOffsetProperty =
-        //    DependencyProperty.Register("GiveMeTheCaretOffset", typeof(int), typeof(AvalonEditBehaviour),
-        //    // binding changed callback: set value of underlying property
-        //    new PropertyMetadata((obj, args) =>
-        //    {
-        //        MvvmTextEditor target = (MvvmTextEditor)obj;
-        //        target.CaretOffset = (int)args.NewValue;
-                
-        //    })
-        //);
-
-
-        //private static void OnCaretOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    var textEditor = (TextEditor)e.NewValue;
-        //    if (textEditor != null)
-        //    {
-                
-        //    }
-        //}
-
-        #endregion
 
     }
 }
