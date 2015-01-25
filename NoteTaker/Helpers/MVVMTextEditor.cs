@@ -16,7 +16,9 @@ namespace Scrivener.Helpers
        public  MvvmTextEditor() : base()
         {
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "insert", (action) => InsertQI(action));
-            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));           
+            GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));
+
+            
         }
 
         /// <summary>
