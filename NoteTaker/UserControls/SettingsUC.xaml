@@ -196,17 +196,51 @@
                         
                     </TabItem>
                     <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
-                        <Grid Width="300" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
-                                <StackPanel Margin="0,15,0,0">                                    
-                                    <RadioButton vm:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" Visibility="{Binding ClassContentVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"/>
-                                    <RadioButton vm:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" Visibility="{Binding MCCAVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
-                                    <RadioButton vm:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxSiteVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
-                                    <RadioButton vm:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxAccountVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
-                                    <RadioButton vm:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" Visibility="{Binding DiscBoardVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged }"></RadioButton>
-                                </StackPanel>
-                            </Grid>
-                    </TabItem>
+                            <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" >
+                                <Grid Height="Auto" Width="auto">
+                                    <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
+                                    <StackPanel Margin="0,15,0,0">
+                                        <RadioButton vm:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" Visibility="{Binding ClassContentVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" Visibility="{Binding MCCAVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxSiteVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxAccountVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" Visibility="{Binding DiscBoardVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Grid vm:Name="ClassContentGrid" Margin="0,10,0,0" Visibility="{Binding CCGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Width="270" Text="{Binding CCURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class or Gradebook URL" Margin="0,0,0,0"/>
+                                            <TextBox Width="270" Text="{Binding CCName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding CCBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding CCPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding CCFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding CCFinalEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding CreateCCCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                            <Button Command="{Binding AddCCCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding CCAddEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding ResetCCCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                            <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                            <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Assignment &gt; Dropbox"/></TextBlock>
+                                            <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
+                                            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap"><Run Text="Curriculum &gt; Student &gt; Gradebook"/></TextBlock>
+
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
                 </TabControl>
             </Grid>
         </controls:MetroTabItem>

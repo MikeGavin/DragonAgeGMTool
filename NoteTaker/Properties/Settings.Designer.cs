@@ -560,5 +560,41 @@ namespace Scrivener.Properties {
                 this["DiscBoardChecked"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility CCGridVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["CCGridVisibility"]));
+            }
+            set {
+                this["CCGridVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CCFinalEnabled {
+            get {
+                return ((bool)(this["CCFinalEnabled"]));
+            }
+            set {
+                this["CCFinalEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CCAddEnabled {
+            get {
+                return ((bool)(this["CCAddEnabled"]));
+            }
+            set {
+                this["CCAddEnabled"] = value;
+            }
+        }
     }
 }

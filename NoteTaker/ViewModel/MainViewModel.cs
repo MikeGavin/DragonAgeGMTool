@@ -482,11 +482,32 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.Save();
         }
 
+        //Allows getting of current version
+        public string AssemblyVersion { get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(); } }
+        public string PublishVersion 
+        { 
+            get 
+            { 
+                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) 
+                {
+                    return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                }
+                else
+                {
+                    return "unplublished";
+                }
+            }
+        }
+
+        #endregion
+
+        #region QuickAR
+
         private RelayCommand _curriculumarcommand;
         public RelayCommand CurriculumARCommand { get { return _curriculumarcommand ?? (_curriculumarcommand = new RelayCommand(CurriculumAR)); } }
         public void CurriculumAR()
         {
-            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Collapsed || Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed ||  Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
+            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Collapsed || Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed || Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
             {
                 Properties.Settings.Default.ClassContentChecked = false;
                 Properties.Settings.Default.MCCAChecked = false;
@@ -499,6 +520,8 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.AuxSiteVisibility = Visibility.Visible;
                 Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
                 Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
+
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
             }
             else if (Properties.Settings.Default.ClassContentChecked == true)
             {
@@ -517,10 +540,10 @@ namespace Scrivener.ViewModel
             else if (Properties.Settings.Default.AuxSiteChecked == true)
             {
                 Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;                
+                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
-            }            
+            }
             else if (Properties.Settings.Default.AuxAccountChecked == true)
             {
                 Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
@@ -543,28 +566,51 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
                 Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
             }
-
-
-
-        }
-
-        //Allows getting of current version
-        public string AssemblyVersion { get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(); } }
-        public string PublishVersion 
-        { 
-            get 
-            { 
-                if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) 
-                {
-                    return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-                }
-                else
-                {
-                    return "unplublished";
-                }
+            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Visible && Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed && Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed && Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed && Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
+            {
+                Properties.Settings.Default.CCGridVisibility = Visibility.Visible;
             }
         }
 
+        private string ccurl;
+        public string CCURL { get { return ccurl; } set { ccurl = value; RaisePropertyChanged(); } }
+        private string ccname;
+        public string CCName { get { return ccname; } set { ccname = value; RaisePropertyChanged(); } }
+        private string ccbrowser;
+        public string CCBrowser { get { return ccbrowser; } set { ccbrowser = value; RaisePropertyChanged(); } }
+        private string ccpath;
+        public string CCPath { get { return ccpath; } set { ccpath = value; RaisePropertyChanged(); } }
+        private string ccfinal;
+        public string CCFinal { get { return ccfinal; } set { ccfinal = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _createcccommand;
+        public RelayCommand CreateCCCommand { get { return _createcccommand ?? (_createcccommand = new RelayCommand(CreateCC)); } }
+        public void CreateCC()
+        {
+            Properties.Settings.Default.CCFinalEnabled = true;
+            CCFinal = "Class URL: " + CCURL + Environment.NewLine + Environment.NewLine + "Teachers Name: " + CCName + Environment.NewLine + Environment.NewLine + "Browser: " + CCBrowser + Environment.NewLine + Environment.NewLine + "Path: " + CCPath + Environment.NewLine + Environment.NewLine + "_______________________________________________________________";
+            Properties.Settings.Default.CCAddEnabled = true;
+        }
+
+        private RelayCommand _resetcccommand;
+        public RelayCommand ResetCCCommand { get { return _resetcccommand ?? (_resetcccommand = new RelayCommand(ResetCC)); } }
+        public void ResetCC()
+        {
+            CCFinal = "";
+            CCURL = "";
+            CCName = "";
+            CCBrowser = "";
+            CCPath = "";
+            Properties.Settings.Default.CCFinalEnabled = false;
+            Properties.Settings.Default.CCAddEnabled = false;
+        }
+
+        private RelayCommand _addcccommand;
+        public RelayCommand AddCCCommand { get { return _addcccommand ?? (_addcccommand = new RelayCommand(AddCC)); } }
+        public void AddCC()
+        {
+            SelectedNote.Text = CCFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
+        } 
         #endregion
 
         #region Call history
