@@ -21,9 +21,7 @@
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
+                <ResourceDictionary Source="Resources/MahApps.xaml" />               
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="EditableTabHeaderControl" TargetType="{x:Type helpers:EditableTabHeaderControl}"/>
 
@@ -36,10 +34,6 @@
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
-
-            <Style x:Key="FontAwesome">
-                <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/Resources/#FontAwesome" />
             </Style>
 
             <Style x:Key="EditableLabelStyle" TargetType="{x:Type Label}">
@@ -101,25 +95,25 @@
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Style="{StaticResource MetroCommandButton}">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">New Tab<LineBreak/>Ctrl+T</TextBlock>                        
                     </ToolTip>                    
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"/>
-            <Button Content="&#xf017;" ToolTip="Break Clock" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Click="Open_Break_Clock"/>
+            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Style="{StaticResource MetroCommandButton}"/>
+            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button>
-                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}">
+                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" >
                     <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                         <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
+                            <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuButton}">
                                 <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
                                 <Setter Property="CommandParameter" Value="{Binding Content}"/>
                                 <Setter Property="FontSize" Value="12"/>
@@ -158,22 +152,22 @@
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
             </TextBox>
-            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Style="{StaticResource MetroCommandButton}">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">QuickNotes<LineBreak/>Ctrl+Q</TextBlock>
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Style="{StaticResource MetroCommandButton}">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
-            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+            <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Style="{StaticResource MetroCommandButton}" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Style="{StaticResource MetroCommandButton}" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 

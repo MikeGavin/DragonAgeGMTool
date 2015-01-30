@@ -21,9 +21,6 @@ namespace Scrivener.Helpers
         //private string customDictionary = @"c:\temp\custom.lex";
         private string customDictionary = Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
 
-
-
-
         protected override void OnAttached()
         {                       
             textEditor = AssociatedObject;
@@ -109,9 +106,7 @@ namespace Scrivener.Helpers
                         this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
                     }
                 }
-                this.textEditor.ContextMenu.Items.Add(new Separator());
-
-                
+                this.textEditor.ContextMenu.Items.Add(new Separator());               
             }
              
             this.AddStandards();
