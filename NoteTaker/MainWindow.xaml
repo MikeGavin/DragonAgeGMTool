@@ -109,11 +109,11 @@
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button>
+            <Button Style="{StaticResource MetroCommandButton}">
                 <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" >
                     <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                         <MenuItem.ItemContainerStyle>
-                            <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuButton}">
+                            <Style TargetType="MenuItem" >
                                 <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
                                 <Setter Property="CommandParameter" Value="{Binding Content}"/>
                                 <Setter Property="FontSize" Value="12"/>
@@ -127,7 +127,7 @@
                     </MenuItem>
                 </Menu>
             </Button>
-            <Button>
+            <Button Style="{StaticResource MetroCommandButton}">
                 <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="phone" Background="{x:Null}">
                     <MenuItem Style="{x:Null}" Header="&#xf095;" ToolTip="Phone Directory" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Phoneitems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">                        
                         <MenuItem.ItemContainerStyle>
