@@ -166,7 +166,7 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xF013;" Command="{Binding SettingsButtonCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>
@@ -204,9 +204,11 @@
         <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />
         <KeyBinding Command="{Binding SelectedNote.CloseNoteCommand}" Key="W" Modifiers="Ctrl"/>
         <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
-        <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F1" />
         <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
         <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
+        
+        <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F1" />
         <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F2"/>
+        <KeyBinding Command="{Binding OpenQuickARCommand}" Key="F3"/>
     </controls:MetroWindow.InputBindings>
 </controls:MetroWindow>

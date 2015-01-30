@@ -163,48 +163,47 @@
                     </Grid>
                 </ScrollViewer>
             </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            <controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding QuickARVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid MinWidth="300" MaxWidth="300" Margin="0,60,0,0" >
                 <TabControl>
                     <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
-                        <Grid>
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="1" Grid.Column="0"  Text="Please replace:"></TextBlock>
-                            <ListView Grid.Row="2" Grid.Column="0" vm:Name="bflistView" Width="100" SelectionMode="Multiple" HorizontalAlignment="Center"> 
-                                <ListViewItem Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                                <ListViewItem Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
-                            </ListView>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="1" Grid.Column="0"  Text="Please replace:"></TextBlock>
+                                <ListView Grid.Row="2" Grid.Column="0" vm:Name="bflistView" Width="100" SelectionMode="Multiple" HorizontalAlignment="Center">
+                                    <ListViewItem Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                    <ListViewItem Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch"></ListViewItem>
+                                </ListView>
                                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
                             </Grid>
-                        
-                    </TabItem>
-                    <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
+                        </TabItem>
+                        <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
                             <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" >
                                 <Grid Height="Auto" Width="auto">
                                     <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
                                     <StackPanel Margin="0,15,0,0">
-                                        <RadioButton vm:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" Visibility="{Binding ClassContentVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <RadioButton vm:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" Visibility="{Binding MCCAVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <RadioButton vm:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxSiteVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <RadioButton vm:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" Visibility="{Binding AuxAccountVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <RadioButton vm:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" Visibility="{Binding DiscBoardVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <RadioButton vm:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                                         <Grid vm:Name="ClassContentGrid" Margin="0,10,0,0" Visibility="{Binding CCGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="auto"/>
@@ -233,15 +232,80 @@
                                             <Button Command="{Binding ResetCCCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
                                             <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
                                             <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Assignment &gt; Dropbox"/></TextBlock>
-                                            <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
-                                            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap"><Run Text="Curriculum &gt; Student &gt; Gradebook"/></TextBlock>
+                                            <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
+                                            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Gradebook"/></TextBlock>
+
+                                        </Grid>
+                                        <Grid vm:Name="MessageCenterGrid" Margin="0,10,0,0" Visibility="{Binding MCGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Width="270" Text="{Binding MCURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class URL" Margin="0,0,0,0"/>
+                                            <TextBox Width="270" Text="{Binding MCName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding MCSubject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Subject (Title) of Message or Announcement" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding MCDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Date/Time of Message or Announcement" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding MCFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding MCFinalEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding CreateMCCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                            <Button Command="{Binding AddMCCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding MCAddEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding ResetMCCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                            <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                            <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > Homeroom > Message Center"/></TextBlock>
+                                            <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > Course Material > Other"/></TextBlock>
+
+                                        </Grid>
+                                        <Grid vm:Name="AuxSiteGrid" Margin="0,10,0,0" Visibility="{Binding AuxGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Width="270" Text="{Binding AuxURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class URL" Margin="0,0,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxSite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Site URL/Program Name" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path to Issue on Site (Be Specific)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxCBR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Best Contact Phone Number" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AuxFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding AuxFinalEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding CreateAuxCommand}" Grid.Row="7" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                            <Button Command="{Binding AddAuxCommand}" Grid.Row="7" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding AuxAddEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding ResetAuxCommand}" Grid.Row="7" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                            <TextBlock Grid.Row="8" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                            <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Other"/></TextBlock>
+                                            <TextBlock Grid.Row="10" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Study Island"/></TextBlock>
 
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
                             </ScrollViewer>
                         </TabItem>
-                </TabControl>
+                    </TabControl>
             </Grid>
         </controls:MetroTabItem>
             <!--<TabItem Header="Templates" VerticalAlignment="Top">

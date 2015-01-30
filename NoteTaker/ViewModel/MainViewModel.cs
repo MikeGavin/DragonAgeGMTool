@@ -117,6 +117,11 @@ namespace Scrivener.ViewModel
 
         }
 
+        //Singleton instance of the DB to sync data across view models
+        //private Singleton _dataB;
+        //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
+        public DatabaseStorage DataB { get; set; }
+
         #region Deployment and Update
         //Deployment Systems
         private bool _updated;
@@ -183,11 +188,7 @@ namespace Scrivener.ViewModel
         
         #endregion
 
-        //Singleton instance of the DB to sync data across view models
-        //private Singleton _dataB;
-        //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
-        public DatabaseStorage DataB { get; set; }
-          
+        #region NoteCommands
         //Note Collection
         private MTObservableCollection<NoteViewModel> _Notes = new MTObservableCollection<NoteViewModel>();
         public MTObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
@@ -216,11 +217,11 @@ namespace Scrivener.ViewModel
         private void note_SaveNoteRequest(object sender, EventArgs e)
         {
             // this uses a task to save every time a change is detected in order to prevent sluggy database issues. 
-            Task t = Task.Factory.StartNew(async () => 
+            Task t = Task.Factory.StartNew(async () =>
             {
                 await noteManager.SaveCurrent(sender as NoteViewModel);
             });
-           
+
         }
         void OnNoteRequestClose(object sender, EventArgs e)
         {
@@ -273,8 +274,8 @@ namespace Scrivener.ViewModel
 
         //New Notes
         private RelayCommand<INote> _newNoteCommand;
-        public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm) )); } }
-        private async void NewNote([CallerMemberName]string memberName = "", INote note = null )
+        public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm))); } }
+        private async void NewNote([CallerMemberName]string memberName = "", INote note = null)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -290,7 +291,7 @@ namespace Scrivener.ViewModel
         public RelayCommand<string> RecallNoteCommand { get { return _RecallNoteCommand ?? (_RecallNoteCommand = new RelayCommand<string>(async (parm) => await RecallNote("RecallNote"))); } }
         private async Task RecallNote([CallerMemberName]string memberName = "")
         {
-            await Task.Factory.StartNew(() => 
+            await Task.Factory.StartNew(() =>
             {
                 if (lastClosedNote != null)
                 {
@@ -299,8 +300,8 @@ namespace Scrivener.ViewModel
                     lastClosedNote = null;
                 }
             });
-        }
-
+        } 
+        #endregion
 
         #region ToolBar Items
 
@@ -319,62 +320,76 @@ namespace Scrivener.ViewModel
             }
         }
 
+        private RelayCommand _settingsbuttonCommand;
+        public RelayCommand SettingsButtonCommand { get { return _settingsbuttonCommand ?? (_settingsbuttonCommand = new RelayCommand(SettingsButton)); } }
+        public void SettingsButton()
+        {
+            if (Properties.Settings.Default.SettingsExpanded == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = false;
+            }
+
+            else if (Properties.Settings.Default.SettingsExpanded == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+            }
+        }
+
         private RelayCommand _SettingsExpandCommand;
         public RelayCommand SettingsExpandCommand { get { return _SettingsExpandCommand ?? (_SettingsExpandCommand = new RelayCommand(SettingsExpand)); } }
         public void SettingsExpand()
         {
-            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == false)
+            if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == true)
             {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = false;                
+                Properties.Settings.Default.SettingsExpanded = false;
             }
 
+            else if (Properties.Settings.Default.SettingsExpanded == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+            }
+
+            Properties.Settings.Default.HistoryVisibility = false;
+            Properties.Settings.Default.QuickARVisibility = false;
+            Properties.Settings.Default.SettingsVisibility = true;
         }
 
         private RelayCommand _openHistoryCommand;
         public RelayCommand OpenHistoryCommand { get { return _openHistoryCommand ?? (_openHistoryCommand = new RelayCommand(OpenHistory)); } }
         public void OpenHistory()
         {
-            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }            
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == true)
+            if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == true)
             {
                 Properties.Settings.Default.SettingsExpanded = false;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
             }
 
+            else if (Properties.Settings.Default.SettingsExpanded == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+            }
+
+            Properties.Settings.Default.HistoryVisibility = true;
+            Properties.Settings.Default.QuickARVisibility = false;
+            Properties.Settings.Default.SettingsVisibility = false;        
+        }
+
+        private RelayCommand _openQuickARCommand;
+        public RelayCommand OpenQuickARCommand { get { return _openQuickARCommand ?? (_openQuickARCommand = new RelayCommand(OpenQuickAR)); } }
+        public void OpenQuickAR()
+        {
+            if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.QuickARVisibility == true)
+            {
+                Properties.Settings.Default.SettingsExpanded = false;
+            }
+
+            else if (Properties.Settings.Default.SettingsExpanded == false)
+            {
+                Properties.Settings.Default.SettingsExpanded = true;
+            }
+
+            Properties.Settings.Default.HistoryVisibility = false;
+            Properties.Settings.Default.QuickARVisibility = true;
+            Properties.Settings.Default.SettingsVisibility = false;
         }
 
         //Search EKB
@@ -503,72 +518,36 @@ namespace Scrivener.ViewModel
 
         #region QuickAR
 
+        //Controls visibility for Curriculum AR Bullets
         private RelayCommand _curriculumarcommand;
         public RelayCommand CurriculumARCommand { get { return _curriculumarcommand ?? (_curriculumarcommand = new RelayCommand(CurriculumAR)); } }
         public void CurriculumAR()
         {
-            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Collapsed || Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed || Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed || Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
+           
+            if (Properties.Settings.Default.ClassContentChecked == true)
             {
-                Properties.Settings.Default.ClassContentChecked = false;
-                Properties.Settings.Default.MCCAChecked = false;
-                Properties.Settings.Default.AuxSiteChecked = false;
-                Properties.Settings.Default.AuxAccountChecked = false;
-                Properties.Settings.Default.DiscBoardChecked = false;
-
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Visible;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Visible;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Visible;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
-
-                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.CCGridVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
             }
-            else if (Properties.Settings.Default.ClassContentChecked == true)
-            {
-                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
-            }
+
             else if (Properties.Settings.Default.MCCAChecked == true)
             {
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Visible;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
             }
             else if (Properties.Settings.Default.AuxSiteChecked == true)
             {
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
-            }
-            else if (Properties.Settings.Default.AuxAccountChecked == true)
-            {
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Collapsed;
-            }
-            else if (Properties.Settings.Default.DiscBoardChecked == true)
-            {
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Collapsed;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Visible;
             }
             else
             {
-                Properties.Settings.Default.ClassContentVisibility = Visibility.Visible;
-                Properties.Settings.Default.MCCAVisibility = Visibility.Visible;
-                Properties.Settings.Default.AuxSiteVisibility = Visibility.Visible;
-                Properties.Settings.Default.AuxAccountVisibility = Visibility.Visible;
-                Properties.Settings.Default.DiscBoardVisibility = Visibility.Visible;
-            }
-            if (Properties.Settings.Default.ClassContentVisibility == Visibility.Visible && Properties.Settings.Default.MCCAVisibility == Visibility.Collapsed && Properties.Settings.Default.AuxSiteVisibility == Visibility.Collapsed && Properties.Settings.Default.AuxAccountVisibility == Visibility.Collapsed && Properties.Settings.Default.DiscBoardVisibility == Visibility.Collapsed)
-            {
-                Properties.Settings.Default.CCGridVisibility = Visibility.Visible;
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
             }
         }
 
@@ -583,6 +562,7 @@ namespace Scrivener.ViewModel
         private string ccfinal;
         public string CCFinal { get { return ccfinal; } set { ccfinal = value; RaisePropertyChanged(); } }
 
+        //Create class content notes
         private RelayCommand _createcccommand;
         public RelayCommand CreateCCCommand { get { return _createcccommand ?? (_createcccommand = new RelayCommand(CreateCC)); } }
         public void CreateCC()
@@ -592,6 +572,7 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.CCAddEnabled = true;
         }
 
+        //Resets class content form
         private RelayCommand _resetcccommand;
         public RelayCommand ResetCCCommand { get { return _resetcccommand ?? (_resetcccommand = new RelayCommand(ResetCC)); } }
         public void ResetCC()
@@ -605,12 +586,108 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.CCAddEnabled = false;
         }
 
+        //Appends class contents notes to main note field
         private RelayCommand _addcccommand;
         public RelayCommand AddCCCommand { get { return _addcccommand ?? (_addcccommand = new RelayCommand(AddCC)); } }
         public void AddCC()
         {
             SelectedNote.Text = CCFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
         } 
+
+        private string mcurl;
+        public string MCURL { get { return mcurl; } set { mcurl = value; RaisePropertyChanged(); } }
+        private string mcname;
+        public string MCName { get { return mcname; } set { mcname = value; RaisePropertyChanged(); } }
+        private string mcsubject;
+        public string MCSubject { get { return mcsubject; } set { mcsubject = value; RaisePropertyChanged(); } }
+        private string mcdate;
+        public string MCDate { get { return mcdate; } set { mcdate = value; RaisePropertyChanged(); } }
+        private string mcfinal;
+        public string MCFinal { get { return mcfinal; } set { mcfinal = value; RaisePropertyChanged(); } }
+
+        //Create class content notes
+        private RelayCommand _createmccommand;
+        public RelayCommand CreateMCCommand { get { return _createmccommand ?? (_createmccommand = new RelayCommand(CreateMC)); } }
+        public void CreateMC()
+        {
+            Properties.Settings.Default.MCFinalEnabled = true;
+            MCFinal = "Class URL: " + MCURL + Environment.NewLine + Environment.NewLine + "Teachers Name: " + MCName + Environment.NewLine + Environment.NewLine + "Subject: " + MCSubject + Environment.NewLine + Environment.NewLine + "Date: " + MCDate + Environment.NewLine + Environment.NewLine + "_______________________________________________________________";
+            Properties.Settings.Default.MCAddEnabled = true;
+        }
+
+        //Resets class content form
+        private RelayCommand _resetmccommand;
+        public RelayCommand ResetMCCommand { get { return _resetmccommand ?? (_resetmccommand = new RelayCommand(ResetMC)); } }
+        public void ResetMC()
+        {
+            MCFinal = "";
+            MCURL = "";
+            MCName = "";
+            MCSubject = "";
+            MCDate = "";
+            Properties.Settings.Default.MCFinalEnabled = false;
+            Properties.Settings.Default.MCAddEnabled = false;
+        }
+
+        //Appends class contents notes to main note field
+        private RelayCommand _addmccommand;
+        public RelayCommand AddMCCommand { get { return _addmccommand ?? (_addmccommand = new RelayCommand(AddMC)); } }
+        public void AddMC()
+        {
+            SelectedNote.Text = MCFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
+        }
+
+
+        private string auxurl;
+        public string AuxURL { get { return auxurl; } set { auxurl = value; RaisePropertyChanged(); } }
+        private string auxname;
+        public string AuxName { get { return auxname; } set { auxname = value; RaisePropertyChanged(); } }
+        private string auxbrowser;
+        public string AuxBrowser { get { return auxbrowser; } set { auxbrowser = value; RaisePropertyChanged(); } }
+        private string auxsite;
+        public string AuxSite { get { return auxsite; } set { auxsite = value; RaisePropertyChanged(); } }
+        private string auxpath;
+        public string AuxPath { get { return auxpath; } set { auxpath = value; RaisePropertyChanged(); } }
+        private string auxcbr;
+        public string AuxCBR { get { return auxcbr; } set { auxcbr = value; RaisePropertyChanged(); } }
+        private string auxfinal;
+        public string AuxFinal { get { return auxfinal; } set { auxfinal = value; RaisePropertyChanged(); } }
+
+        //Create class content notes
+        private RelayCommand _createauxcommand;
+        public RelayCommand CreateAuxCommand { get { return _createauxcommand ?? (_createauxcommand = new RelayCommand(CreateAux)); } }
+        public void CreateAux()
+        {
+            Properties.Settings.Default.AuxFinalEnabled = true;
+            AuxFinal = "Class URL: " + AuxURL + Environment.NewLine + Environment.NewLine + "Teachers Name: " + AuxName + Environment.NewLine + Environment.NewLine + "Browser: " + AuxBrowser + Environment.NewLine + Environment.NewLine + "Site URL: " + AuxSite + Environment.NewLine + Environment.NewLine + "Path: " + AuxPath + Environment.NewLine + Environment.NewLine + "Best contact number: " + AuxCBR + Environment.NewLine + Environment.NewLine + "_______________________________________________________________";
+            Properties.Settings.Default.AuxAddEnabled = true;
+        }
+
+        //Resets class content form
+        private RelayCommand _resetauxcommand;
+        public RelayCommand ResetAuxCommand { get { return _resetauxcommand ?? (_resetauxcommand = new RelayCommand(ResetAux)); } }
+        public void ResetAux()
+        {
+            AuxFinal = "";
+            AuxURL = "";
+            AuxName = "";
+            AuxBrowser = "";
+            AuxPath = "";
+            AuxSite = "";
+            AuxCBR = "";
+            Properties.Settings.Default.AuxFinalEnabled = false;
+            Properties.Settings.Default.AuxAddEnabled = false;
+        }
+
+        //Appends class contents notes to main note field
+        private RelayCommand _addauxcommand;
+        public RelayCommand AddAuxCommand { get { return _addauxcommand ?? (_addauxcommand = new RelayCommand(AddAux)); } }
+        public void AddAux()
+        {
+            SelectedNote.Text = AuxFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
+        } 
+
+
         #endregion
 
         #region Call history

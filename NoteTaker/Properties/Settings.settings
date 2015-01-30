@@ -107,21 +107,6 @@
     <Setting Name="Settings_Visibility" Type="System.Windows.Visibility" Scope="User">
       <Value Profile="(Default)">Visible</Value>
     </Setting>
-    <Setting Name="ClassContentVisibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="MCCAVisibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="AuxSiteVisibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="AuxAccountVisibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="DiscBoardVisibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
     <Setting Name="ClassContentChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -144,6 +129,27 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CCAddEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MCGridVisibility" Type="System.Windows.Visibility" Scope="User">
+      <Value Profile="(Default)">Collapsed</Value>
+    </Setting>
+    <Setting Name="MCFinalEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MCAddEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="QuickARVisibility" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AuxGridVisibility" Type="System.Windows.Visibility" Scope="User">
+      <Value Profile="(Default)">Collapsed</Value>
+    </Setting>
+    <Setting Name="AuxFinalEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AuxAddEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

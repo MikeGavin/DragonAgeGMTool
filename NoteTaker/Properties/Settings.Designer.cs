@@ -443,66 +443,6 @@ namespace Scrivener.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public global::System.Windows.Visibility ClassContentVisibility {
-            get {
-                return ((global::System.Windows.Visibility)(this["ClassContentVisibility"]));
-            }
-            set {
-                this["ClassContentVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public global::System.Windows.Visibility MCCAVisibility {
-            get {
-                return ((global::System.Windows.Visibility)(this["MCCAVisibility"]));
-            }
-            set {
-                this["MCCAVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public global::System.Windows.Visibility AuxSiteVisibility {
-            get {
-                return ((global::System.Windows.Visibility)(this["AuxSiteVisibility"]));
-            }
-            set {
-                this["AuxSiteVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public global::System.Windows.Visibility AuxAccountVisibility {
-            get {
-                return ((global::System.Windows.Visibility)(this["AuxAccountVisibility"]));
-            }
-            set {
-                this["AuxAccountVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
-        public global::System.Windows.Visibility DiscBoardVisibility {
-            get {
-                return ((global::System.Windows.Visibility)(this["DiscBoardVisibility"]));
-            }
-            set {
-                this["DiscBoardVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ClassContentChecked {
             get {
@@ -594,6 +534,90 @@ namespace Scrivener.Properties {
             }
             set {
                 this["CCAddEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility MCGridVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["MCGridVisibility"]));
+            }
+            set {
+                this["MCGridVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MCFinalEnabled {
+            get {
+                return ((bool)(this["MCFinalEnabled"]));
+            }
+            set {
+                this["MCFinalEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MCAddEnabled {
+            get {
+                return ((bool)(this["MCAddEnabled"]));
+            }
+            set {
+                this["MCAddEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool QuickARVisibility {
+            get {
+                return ((bool)(this["QuickARVisibility"]));
+            }
+            set {
+                this["QuickARVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility AuxGridVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["AuxGridVisibility"]));
+            }
+            set {
+                this["AuxGridVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AuxFinalEnabled {
+            get {
+                return ((bool)(this["AuxFinalEnabled"]));
+            }
+            set {
+                this["AuxFinalEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AuxAddEnabled {
+            get {
+                return ((bool)(this["AuxAddEnabled"]));
+            }
+            set {
+                this["AuxAddEnabled"] = value;
             }
         }
     }
