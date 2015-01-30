@@ -76,7 +76,6 @@ namespace Scrivener.ViewModel
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
         #endregion        
-
         
         #region EventBased Actions
         //Text change events for note
@@ -191,26 +190,10 @@ namespace Scrivener.ViewModel
                 {
                     if (qi.SubItems.Count == 0) // causes crash if null
                     {
-                        //if (Keyboard.Modifiers == ModifierKeys.Control)
-                        //{
-                        //    dataInserted = qi.Content + " ";
-                        //}
-                        //else if (Properties.Settings.Default.DashinNotes == true)
-                        //{
-                        //    dataInserted = "- " + qi.Content + System.Environment.NewLine;
-                        //}
-                        //else if (Properties.Settings.Default.DashinNotes == false)
-                        //{
-                        //    dataInserted = qi.Content + System.Environment.NewLine; 
-                        //}
-                        //Text = Text.Insert(CaretIndex, dataInserted);
-
                         //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
                         //the cursor position to reset we were forced to rely on the messager service here to 
                         //access the append and inset methods
-                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "insert");
-                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "append");
-
+                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
                     }
                 }
                 catch (Exception e)
