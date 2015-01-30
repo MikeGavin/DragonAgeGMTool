@@ -12,6 +12,7 @@ namespace Scrivener.Helpers
     {
         private static readonly TextBox staticTextBox = new TextBox();
         private readonly TextDecorationCollection collection;
+        private string customDictionary = System.IO.Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
 
         public SpellingErrorColorizer()
         {
@@ -35,7 +36,11 @@ namespace Scrivener.Helpers
             lock (staticTextBox)
             {
                 var dictionaries = SpellCheck.GetCustomDictionaries(staticTextBox);
-                dictionaries.Add(new Uri(@"C:\Users\Cain\Desktop\MyCustomDictionary.lex"));
+                dictionaries.Add(new Uri(@"pack://application:,,,/Scrivener;component/Resources/defaultDictionary.lex"));
+                if (System.IO.File.Exists(customDictionary))
+                {
+                    dictionaries.Add(new Uri(customDictionary));
+                }
                 staticTextBox.Text = CurrentContext.Document.Text;
                 int start = line.Offset;
                 int end = line.EndOffset;

@@ -13,7 +13,7 @@ using System.Windows.Interactivity;
 namespace Scrivener.Helpers
 {
     // http://stackoverflow.com/a/18969007
-
+    
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
         protected override void OnAttached()
@@ -105,7 +105,7 @@ namespace Scrivener.Helpers
             }
         }
 
-        private void LoadContextStandards(object sender)
+        public void LoadContextStandards(object sender)
         {
             var textEditor = sender as TextEditor;
             if (textEditor != null)

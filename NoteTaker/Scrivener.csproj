@@ -369,11 +369,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Resources\1422222136_undo.png" />
-    <Resource Include="Resources\1422222156_redo.png" />
-    <Resource Include="Resources\1422222167_cut.png" />
-    <Resource Include="Resources\1422222181_copy.png" />
-    <Resource Include="Resources\1422222305_cllipboard.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -388,6 +383,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Scrivener.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\defaultDictionary.lex">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Scrivener_TemporaryKey.pfx" />
