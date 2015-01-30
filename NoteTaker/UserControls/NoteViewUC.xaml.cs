@@ -51,7 +51,7 @@ namespace Scrivener.UserControls
         //}
 
         private void Noteareakeydown(object sender, KeyEventArgs e)
-        {
+         {
             //if (Properties.Settings.Default.DashinNotes == true)
             //{
             //    if (e.Key == Key.Enter && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))

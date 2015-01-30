@@ -4,14 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:vm="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ignore="http://www.ignore.com"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
         xmlns:helpers="clr-namespace:Scrivener.Helpers"       
         xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:UserControls="clr-namespace:Scrivener.UserControls"
         xmlns:Properties="clr-namespace:Scrivener.Properties" 
-        xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" vm:Class="Scrivener.MainWindow"
+        xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" x:Class="Scrivener.MainWindow"
         xmlns:model="clr-namespace:Scrivener.Model"
         mc:Ignorable=" ignore"
         Height="500.3"
@@ -26,9 +25,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style vm:Key="EditableTabHeaderControl" TargetType="{vm:Type helpers:EditableTabHeaderControl}"/>
+            <Style x:Key="EditableTabHeaderControl" TargetType="{x:Type helpers:EditableTabHeaderControl}"/>
 
-            <Style vm:Key="ItemContainerStyle" TargetType="{vm:Type TabItem}">
+            <Style x:Key="ItemContainerStyle" TargetType="{x:Type TabItem}">
                 <Setter Property="HeaderTemplate">
                     <Setter.Value>
                         <DataTemplate>
@@ -39,19 +38,19 @@
                 </Setter>
             </Style>
 
-            <Style vm:Key="FontAwesome">
+            <Style x:Key="FontAwesome">
                 <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/Resources/#FontAwesome" />
             </Style>
 
-            <Style vm:Key="EditableLabelStyle" TargetType="{vm:Type Label}">
+            <Style x:Key="EditableLabelStyle" TargetType="{x:Type Label}">
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{vm:Type Label}">
+                        <ControlTemplate TargetType="{x:Type Label}">
                             <Grid>
-                                <TextBox vm:Name="textBox"
+                                <TextBox x:Name="textBox"
             						Panel.ZIndex="1"
             						Padding="1,3,0,0"
-            						Text="{Binding Content, RelativeSource={RelativeSource AncestorType={vm:Type Label}}, UpdateSourceTrigger=PropertyChanged}"
+            						Text="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type Label}}, UpdateSourceTrigger=PropertyChanged}"
             						Opacity="0"/>
                                 <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
                                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -80,14 +79,14 @@
                                     </BeginStoryboard>
                                 </EventTrigger>
                                 <Trigger Property="IsEnabled" Value="false">
-                                    <Setter Property="Foreground" Value="{DynamicResource {vm:Static SystemColors.GrayTextBrushKey}}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
-            <BooleanToVisibilityConverter vm:Key="visibilityConverter" />
+            <BooleanToVisibilityConverter x:Key="visibilityConverter" />
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.DataContext>
@@ -95,7 +94,7 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout vm:Name="SettingsFlyout" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout x:Name="SettingsFlyout" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
         </controls:FlyoutsControl>
@@ -178,7 +177,7 @@
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>
 
-    <Grid vm:Name="LayoutRoot" Margin="0">
+    <Grid x:Name="LayoutRoot" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="248*"/>
             <ColumnDefinition Width="109*"/>
@@ -187,10 +186,10 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TabControl vm:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <TabControl x:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <UserControls:EditableTextBlockUC Text="{Binding Title, Mode=TwoWay}" Visibility="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+                    <UserControls:EditableTextBlockUC Text="{Binding Title, Mode=TwoWay}" Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
