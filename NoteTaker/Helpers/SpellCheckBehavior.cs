@@ -66,6 +66,8 @@ namespace Scrivener.Helpers
                 textBox.AcceptsTab = true;
                 textBox.SpellCheck.IsEnabled = true;
                 textBox.Text = textEditor.Text;
+                var dictionaries = SpellCheck.GetCustomDictionaries(textBox);
+                dictionaries.Add(new Uri(@"C:\Users\Cain\Desktop\MyCustomDictionary.lex"));
 
                 //Check for spelling errors
                 SpellingError error = textBox.GetSpellingError(newCaret);
@@ -87,17 +89,23 @@ namespace Scrivener.Helpers
 
                     this.textEditor.ContextMenu.Items.Add(new Separator());
                     //Adding the IgnoreAll menu item
-                    MenuItem IgnoreAllMenuItem = new MenuItem();
-                    IgnoreAllMenuItem.Header = "Ignore All";
-                    IgnoreAllMenuItem.IsEnabled = true;
+                    MenuItem AddToMenuItem = new MenuItem();
+                    AddToMenuItem.Header = "Add to dictionary";
+                    AddToMenuItem.IsEnabled = true;
+                    AddToMenuItem.Tag = new Tuple<int, int>(wordStartOffset, wordLength);
                     //IgnoreAllMenuItem.Command = EditingCommands.IgnoreSpellingError;
                     //IgnoreAllMenuItem.CommandTarget = textEditor;
-                    IgnoreAllMenuItem.Click += (object o, RoutedEventArgs rea) => 
+                    AddToMenuItem.Click += (object o, RoutedEventArgs rea) => 
                     {
+                        var item = o as MenuItem;
+                        var seg = item.Tag as Tuple<int, int>;
+                        this.textEditor.SelectionStart = seg.Item1;
+                        this.textEditor.SelectionLength = seg.Item2;
                         this.AddToDictionary(this.textEditor.SelectedText);
+                        textEditor.Document.Replace(seg.Item1, seg.Item2, this.textEditor.SelectedText); //causes refresh for check in underline system
                     };
 
-                    this.textEditor.ContextMenu.Items.Add(IgnoreAllMenuItem);
+                    this.textEditor.ContextMenu.Items.Add(AddToMenuItem);
 
                 }
                 else
@@ -118,7 +126,7 @@ namespace Scrivener.Helpers
         //Method to Add text to Dictionary
         private void AddToDictionary(string entry)
         {
-            using (StreamWriter streamWriter = new StreamWriter(@"C:\MyCustomDictionary.lex", true))
+            using (StreamWriter streamWriter = new StreamWriter(@"C:\Users\Cain\Desktop\MyCustomDictionary.lex", true))
             {
                 streamWriter.WriteLine(entry);
             }

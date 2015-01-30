@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
+using System;
 
 namespace Scrivener.Helpers
 {
@@ -25,12 +26,16 @@ namespace Scrivener.Helpers
             staticTextBox.AcceptsReturn = true;
             staticTextBox.AcceptsTab = true;
             staticTextBox.SpellCheck.IsEnabled = true;
+
+            
         }
 
         protected override void ColorizeLine(DocumentLine line)
         {
             lock (staticTextBox)
             {
+                var dictionaries = SpellCheck.GetCustomDictionaries(staticTextBox);
+                dictionaries.Add(new Uri(@"C:\Users\Cain\Desktop\MyCustomDictionary.lex"));
                 staticTextBox.Text = CurrentContext.Document.Text;
                 int start = line.Offset;
                 int end = line.EndOffset;

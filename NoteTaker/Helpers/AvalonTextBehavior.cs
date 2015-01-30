@@ -167,7 +167,7 @@ namespace Scrivener.Helpers
             if (behavior.AssociatedObject != null)
             {
                 var editor = behavior.AssociatedObject as TextEditor;
-                if (editor.Document != null)
+                if (editor.Document != null && dependencyPropertyChangedEventArgs.NewValue != null)
                 {
                     //var caretOffset = editor.CaretOffset;
                     editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
