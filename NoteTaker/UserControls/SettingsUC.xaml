@@ -301,6 +301,67 @@
                                             <TextBlock Grid.Row="10" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Study Island"/></TextBlock>
 
                                         </Grid>
+                                        <Grid vm:Name="AccountGrid" Margin="0,10,0,0" Visibility="{Binding AccountGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Width="270" Text="{Binding AccountURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Site URL/Program Name" Margin="0,0,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AccountName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Username/Password tested" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AccountCBR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Best Contact Phone Number" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding AccountFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding AccountFinalEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding CreateAccountCommand}" Grid.Row="4" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                            <Button Command="{Binding AddAccountCommand}" Grid.Row="4" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding AccountAddEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding ResetAccountCommand}" Grid.Row="4" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                            <TextBlock Grid.Row="5" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                            <TextBlock Grid.Row="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Other"/></TextBlock>
+                                            <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Study Island"/></TextBlock>
+
+                                        </Grid>
+
+                                        <Grid vm:Name="DiscGrid" Margin="0,10,0,0" Visibility="{Binding DiscGridVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Width="270" Text="{Binding DiscURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class or Gradebook URL" Margin="0,0,0,0"/>
+                                            <TextBox Width="270" Text="{Binding DiscName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding DiscBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding DiscPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path" Margin="0,5,0,0"/>
+                                            <TextBox Width="270" Text="{Binding DiscFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding DiscFinalEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding CreateDiscCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                            <Button Command="{Binding AddDiscCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding DiscAddEnabled, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button Command="{Binding ResetDiscCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                            <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                            <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
+                                        </Grid>
                                     </StackPanel>
                                 </Grid>
                             </ScrollViewer>

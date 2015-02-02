@@ -529,6 +529,8 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.CCGridVisibility = Visibility.Visible;
                 Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Collapsed;
             }
 
             else if (Properties.Settings.Default.MCCAChecked == true)
@@ -536,18 +538,41 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.MCGridVisibility = Visibility.Visible;
                 Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Collapsed;
             }
             else if (Properties.Settings.Default.AuxSiteChecked == true)
             {
                 Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.AuxGridVisibility = Visibility.Visible;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Collapsed;
             }
+            else if (Properties.Settings.Default.AuxAccountChecked == true)
+            {
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Visible;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Collapsed;
+            }
+            else if (Properties.Settings.Default.DiscBoardChecked == true)
+            {
+                Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Visible;
+            }
+                
             else
             {
                 Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.AuxGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
+                Properties.Settings.Default.DiscGridVisibility = Visibility.Collapsed;
             }
         }
 
@@ -584,6 +609,13 @@ namespace Scrivener.ViewModel
             CCPath = "";
             Properties.Settings.Default.CCFinalEnabled = false;
             Properties.Settings.Default.CCAddEnabled = false;
+
+            Properties.Settings.Default.MCCAChecked = false;
+            Properties.Settings.Default.ClassContentChecked = false;
+            Properties.Settings.Default.AuxSiteChecked = false;
+            Properties.Settings.Default.AuxAccountChecked = false;
+            Properties.Settings.Default.DiscBoardChecked = false;
+            CurriculumAR();
         }
 
         //Appends class contents notes to main note field
@@ -627,6 +659,13 @@ namespace Scrivener.ViewModel
             MCDate = "";
             Properties.Settings.Default.MCFinalEnabled = false;
             Properties.Settings.Default.MCAddEnabled = false;
+
+            Properties.Settings.Default.MCCAChecked = false;
+            Properties.Settings.Default.ClassContentChecked = false;
+            Properties.Settings.Default.AuxSiteChecked = false;
+            Properties.Settings.Default.AuxAccountChecked = false;
+            Properties.Settings.Default.DiscBoardChecked = false;
+            CurriculumAR();
         }
 
         //Appends class contents notes to main note field
@@ -653,7 +692,7 @@ namespace Scrivener.ViewModel
         private string auxfinal;
         public string AuxFinal { get { return auxfinal; } set { auxfinal = value; RaisePropertyChanged(); } }
 
-        //Create class content notes
+        //Create aux site notes
         private RelayCommand _createauxcommand;
         public RelayCommand CreateAuxCommand { get { return _createauxcommand ?? (_createauxcommand = new RelayCommand(CreateAux)); } }
         public void CreateAux()
@@ -677,6 +716,13 @@ namespace Scrivener.ViewModel
             AuxCBR = "";
             Properties.Settings.Default.AuxFinalEnabled = false;
             Properties.Settings.Default.AuxAddEnabled = false;
+
+            Properties.Settings.Default.MCCAChecked = false;
+            Properties.Settings.Default.ClassContentChecked = false;
+            Properties.Settings.Default.AuxSiteChecked = false;
+            Properties.Settings.Default.AuxAccountChecked = false;
+            Properties.Settings.Default.DiscBoardChecked = false;
+            CurriculumAR();
         }
 
         //Appends class contents notes to main note field
@@ -685,8 +731,105 @@ namespace Scrivener.ViewModel
         public void AddAux()
         {
             SelectedNote.Text = AuxFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
-        } 
+        }
 
+
+        private string accounturl;
+        public string AccountURL { get { return accounturl; } set { accounturl = value; RaisePropertyChanged(); } }
+        private string accountname;
+        public string AccountName { get { return accountname; } set { accountname = value; RaisePropertyChanged(); } }
+        private string accountcbr;
+        public string AccountCBR { get { return accountcbr; } set { accountcbr = value; RaisePropertyChanged(); } }
+        private string accountfinal;
+        public string AccountFinal { get { return accountfinal; } set { accountfinal = value; RaisePropertyChanged(); } }
+
+        //Create class content notes
+        private RelayCommand _createaccountcommand;
+        public RelayCommand CreateAccountCommand { get { return _createaccountcommand ?? (_createaccountcommand = new RelayCommand(CreateAccount)); } }
+        public void CreateAccount()
+        {
+            Properties.Settings.Default.AccountFinalEnabled = true;
+            AccountFinal = "Site URL/Program Name: " + AccountURL + Environment.NewLine + Environment.NewLine + "Username/Password tested: " + AccountName + Environment.NewLine + Environment.NewLine + "Best Contact Phone Number: " + AccountCBR + Environment.NewLine + Environment.NewLine  + "_______________________________________________________________";
+            Properties.Settings.Default.AccountAddEnabled = true;
+        }
+
+        //Resets class content form
+        private RelayCommand _resetaccountcommand;
+        public RelayCommand ResetAccountCommand { get { return _resetaccountcommand ?? (_resetaccountcommand = new RelayCommand(ResetAccount)); } }
+        public void ResetAccount()
+        {
+            AccountFinal = "";
+            AccountURL = "";
+            AccountName = "";
+            AccountCBR = "";
+            Properties.Settings.Default.AccountFinalEnabled = false;
+            Properties.Settings.Default.AccountAddEnabled = false;
+
+            Properties.Settings.Default.MCCAChecked = false;
+            Properties.Settings.Default.ClassContentChecked = false;
+            Properties.Settings.Default.AuxSiteChecked = false;
+            Properties.Settings.Default.AuxAccountChecked = false;
+            Properties.Settings.Default.DiscBoardChecked = false;
+            CurriculumAR();
+        }
+
+        //Appends class contents notes to main note field
+        private RelayCommand _addaccountcommand;
+        public RelayCommand AddAccountCommand { get { return _addaccountcommand ?? (_addaccountcommand = new RelayCommand(AddAccount)); } }
+        public void AddAccount()
+        {
+            SelectedNote.Text = AccountFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
+        }
+
+        private string discurl;
+        public string DiscURL { get { return discurl; } set { discurl = value; RaisePropertyChanged(); } }
+        private string discname;
+        public string DiscName { get { return discname; } set { discname = value; RaisePropertyChanged(); } }
+        private string discbrowser;
+        public string DiscBrowser { get { return discbrowser; } set { discbrowser = value; RaisePropertyChanged(); } }
+        private string discpath;
+        public string DiscPath { get { return discpath; } set { discpath = value; RaisePropertyChanged(); } }
+        private string discfinal;
+        public string DiscFinal { get { return discfinal; } set { discfinal = value; RaisePropertyChanged(); } }
+
+        //Create class content notes
+        private RelayCommand _createdisccommand;
+        public RelayCommand CreateDiscCommand { get { return _createdisccommand ?? (_createdisccommand = new RelayCommand(CreateDisc)); } }
+        public void CreateDisc()
+        {
+            Properties.Settings.Default.DiscFinalEnabled = true;
+            DiscFinal = "Class URL: " + DiscURL + Environment.NewLine + Environment.NewLine + "Teachers Name: " + DiscName + Environment.NewLine + Environment.NewLine + "Browser: " + DiscBrowser + Environment.NewLine + Environment.NewLine + "Path: " + DiscPath + Environment.NewLine + Environment.NewLine + "_______________________________________________________________";
+            Properties.Settings.Default.DiscAddEnabled = true;
+        }
+
+        //Resets class content form
+        private RelayCommand _resetdisccommand;
+        public RelayCommand ResetDiscCommand { get { return _resetdisccommand ?? (_resetdisccommand = new RelayCommand(ResetDisc)); } }
+        public void ResetDisc()
+        {
+            DiscFinal = "";
+            DiscURL = "";
+            DiscName = "";
+            DiscBrowser = "";
+            DiscPath = "";
+            Properties.Settings.Default.DiscFinalEnabled = false;
+            Properties.Settings.Default.DiscAddEnabled = false;
+
+            Properties.Settings.Default.MCCAChecked = false;
+            Properties.Settings.Default.ClassContentChecked = false;
+            Properties.Settings.Default.AuxSiteChecked = false;
+            Properties.Settings.Default.AuxAccountChecked = false;
+            Properties.Settings.Default.DiscBoardChecked = false;
+            CurriculumAR();
+        }
+
+        //Appends class contents notes to main note field
+        private RelayCommand _adddisccommand;
+        public RelayCommand AddDiscCommand { get { return _adddisccommand ?? (_adddisccommand = new RelayCommand(AddDisc)); } }
+        public void AddDisc()
+        {
+            SelectedNote.Text = DiscFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
+        } 
 
         #endregion
 

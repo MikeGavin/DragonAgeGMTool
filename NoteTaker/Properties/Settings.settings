@@ -152,5 +152,23 @@
     <Setting Name="AuxAddEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="AccountGridVisibility" Type="System.Windows.Visibility" Scope="User">
+      <Value Profile="(Default)">Collapsed</Value>
+    </Setting>
+    <Setting Name="AccountFinalEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AccountAddEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DiscGridVisibility" Type="System.Windows.Visibility" Scope="User">
+      <Value Profile="(Default)">Collapsed</Value>
+    </Setting>
+    <Setting Name="DiscFinalEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DiscAddEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

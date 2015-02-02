@@ -620,5 +620,77 @@ namespace Scrivener.Properties {
                 this["AuxAddEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility AccountGridVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["AccountGridVisibility"]));
+            }
+            set {
+                this["AccountGridVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AccountFinalEnabled {
+            get {
+                return ((bool)(this["AccountFinalEnabled"]));
+            }
+            set {
+                this["AccountFinalEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AccountAddEnabled {
+            get {
+                return ((bool)(this["AccountAddEnabled"]));
+            }
+            set {
+                this["AccountAddEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Collapsed")]
+        public global::System.Windows.Visibility DiscGridVisibility {
+            get {
+                return ((global::System.Windows.Visibility)(this["DiscGridVisibility"]));
+            }
+            set {
+                this["DiscGridVisibility"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DiscFinalEnabled {
+            get {
+                return ((bool)(this["DiscFinalEnabled"]));
+            }
+            set {
+                this["DiscFinalEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DiscAddEnabled {
+            get {
+                return ((bool)(this["DiscAddEnabled"]));
+            }
+            set {
+                this["DiscAddEnabled"] = value;
+            }
+        }
     }
 }
