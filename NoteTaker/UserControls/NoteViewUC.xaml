@@ -34,11 +34,12 @@
             x:Name="textEditor"
             FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource TextBrush}"
                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" BorderBrush="{DynamicResource AccentColorBrush4}"
-                               Margin="2,0,2,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" WordWrap="True">
+                               Margin="5,0,5,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" WordWrap="True">
             <i:Interaction.Behaviors>
                 <!--Custom behaviors attached to editor-->
                 <helpers:AvalonEditBehaviour GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReturnFocus="True"/>
-                <helpers:SpellCheckBehavior />
+                <!--<helpers:AvalonEditBehaviour2 GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                <!--<helpers:SpellCheckBehavior />-->
             </i:Interaction.Behaviors>
         </avalonEdit:TextEditor>
         

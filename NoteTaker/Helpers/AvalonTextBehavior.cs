@@ -169,9 +169,9 @@ namespace Scrivener.Helpers
                 var editor = behavior.AssociatedObject as TextEditor;
                 if (editor.Document != null && dependencyPropertyChangedEventArgs.NewValue != null)
                 {
-                    //var caretOffset = editor.CaretOffset;
+                    var caretOffset = editor.CaretOffset;
                     editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-                    //editor.CaretOffset = caretOffset;
+                    editor.CaretOffset = caretOffset;
                 }
             }
         }
