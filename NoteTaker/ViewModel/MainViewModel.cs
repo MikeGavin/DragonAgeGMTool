@@ -53,10 +53,6 @@ namespace Scrivener.ViewModel
         ////}
         #endregion
 
-        private RelayCommand _dbUpdated_Click;
-        public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
-
-
         //Constructor
         public MainViewModel(IDataService dataService)
         {
@@ -125,6 +121,9 @@ namespace Scrivener.ViewModel
         public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
         private string appMode;
         public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _dbUpdated_Click;
+        public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
         
         private void DeploymentSetup()
         {
@@ -187,7 +186,9 @@ namespace Scrivener.ViewModel
         //private Singleton _dataB;
         //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
         public DatabaseStorage DataB { get; set; }
-          
+
+        #region Note System
+
         //Note Collection
         private MTObservableCollection<NoteViewModel> _Notes = new MTObservableCollection<NoteViewModel>();
         public MTObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
@@ -222,7 +223,7 @@ namespace Scrivener.ViewModel
             });
            
         }
-        void OnNoteRequestClose(object sender, EventArgs e)
+        private void OnNoteRequestClose(object sender, EventArgs e)
         {
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
@@ -301,6 +302,7 @@ namespace Scrivener.ViewModel
             });
         }
 
+        #endregion
 
         #region ToolBar Items
 
@@ -432,15 +434,6 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Settings
-
-        private void SettingsFolder(string settingsFolder)
-        {
-            //check for settings folder. Create if missing.            
-            if (!Directory.Exists(settingsFolder))
-            {
-                Directory.CreateDirectory(settingsFolder);
-            }
-        }
 
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
