@@ -103,7 +103,7 @@
                 </Button.ToolTip>
             </Button>
             <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Style="{StaticResource MetroCommandButton}"/>
-            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}"/>
+            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}" Click="Open_Break_Clock"/>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 

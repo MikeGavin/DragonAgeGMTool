@@ -280,7 +280,7 @@
     <Compile Include="UserControls\SettingsUC.xaml.cs">
       <DependentUpon>SettingsUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Break_Clock.xaml.cs">
+    <Compile Include="View\Break_Clock.xaml.cs">
       <DependentUpon>Break_Clock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\INote.cs" />
@@ -354,7 +354,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewModel\Break_Clock.xaml">
+    <Page Include="View\Break_Clock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
