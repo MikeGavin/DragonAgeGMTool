@@ -1,1 +1,9 @@
 CRM
+IQity
+SEP
+ECOT
+DameWare
+LabTech
+Quicktime
+K-lite
+LMS
