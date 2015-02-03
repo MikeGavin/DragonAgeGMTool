@@ -72,6 +72,8 @@ namespace Scrivener.ViewModel
         //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int caretPosition;
+        public int CaretPoisition { get { return caretPosition; } set { caretPosition = value; RaisePropertyChanged(); } }
         private DateTime _lastUpdated;
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
@@ -193,7 +195,21 @@ namespace Scrivener.ViewModel
                         //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
                         //the cursor position to reset we were forced to rely on the messager service here to 
                         //access the append and inset methods
-                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
+                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
+
+
+                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                        {
+                            var temp = CaretPoisition;
+                            Text = Text.Insert(CaretPoisition, qi.Content);
+                            CaretPoisition = temp + qi.Content.Length;
+                        }
+                        else
+                        {
+                            Text += Environment.NewLine + qi.Content;
+                            CaretPoisition = Text.Length;
+                            
+                        }
                     }
                 }
                 catch (Exception e)

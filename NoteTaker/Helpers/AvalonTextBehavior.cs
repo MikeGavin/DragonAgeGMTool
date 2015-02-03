@@ -24,8 +24,23 @@ namespace Scrivener.Helpers
                 AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;
                 AssociatedObject.KeyDown += AssociatedObject_KeyDown;
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
-                GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
+                AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
+                //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
             }
+        }
+
+        void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+                        var textEditor = sender as TextEditor;
+                        if (textEditor != null)
+                        {
+                            if (textEditor.Document != null)
+                            {
+                                
+                                CaretPosition = textEditor.CaretOffset;
+                                
+                            }
+                        }
         }
 
         protected override void OnDetaching()
@@ -35,6 +50,9 @@ namespace Scrivener.Helpers
             {
                 AssociatedObject.TextChanged -= AssociatedObjectOnTextChanged;
                 AssociatedObject.KeyDown -= AssociatedObject_KeyDown;
+                AssociatedObject.Loaded -= AssociatedObject_Loaded;
+                AssociatedObject.PreviewMouseLeftButtonUp -= AssociatedObject_MouseDown;
+                
             }
         }
 
@@ -50,7 +68,9 @@ namespace Scrivener.Helpers
             {
                 if (textEditor.Document != null)
                 {
-                    GiveMeTheText = textEditor.Document.Text;
+                    var caretOffset = textEditor.CaretOffset;
+                    GiveMeTheText = textEditor.Document.Text;                    
+                    textEditor.CaretOffset = caretOffset;
                 }
 
                 if (ReturnFocus)
@@ -161,18 +181,45 @@ namespace Scrivener.Helpers
 
         private static void PropertyChangedCallback(
             DependencyObject dependencyObject,
-            DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+            DependencyPropertyChangedEventArgs args)
         {
             var behavior = dependencyObject as AvalonEditBehaviour;
             if (behavior.AssociatedObject != null)
             {
                 var editor = behavior.AssociatedObject as TextEditor;
 
-                if (editor.Document != null && dependencyPropertyChangedEventArgs.NewValue != null)
+                if (editor.Document != null && args.NewValue != null)
+                {            
+                    //var caretOffset = editor.CaretOffset;
+                    editor.Document.Text = args.NewValue.ToString();
+                    //editor.CaretOffset = caretOffset;
+                }
+            }
+        }
+
+
+        public static readonly DependencyProperty CaretPositionProperity =
+            DependencyProperty.Register("CaretPosition", typeof(int), typeof(AvalonEditBehaviour),
+            new FrameworkPropertyMetadata(default(int), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertyChangedCallback2));
+
+        public int CaretPosition
+        {
+            get { return (int)GetValue(CaretPositionProperity); }
+            set { SetValue(CaretPositionProperity, value); }
+        }
+
+        private static void PropertyChangedCallback2(
+            DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs args)
+        {
+            var behavior = dependencyObject as AvalonEditBehaviour;
+            if (behavior.AssociatedObject != null)
+            {
+                var editor = behavior.AssociatedObject as TextEditor;
+
+                if (editor.Document != null && args.NewValue != null)
                 {
-                    var caretOffset = editor.CaretOffset;
-                    editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-                    editor.CaretOffset = caretOffset;
+                    editor.CaretOffset = (int)args.NewValue;
                 }
             }
         }
@@ -187,20 +234,20 @@ namespace Scrivener.Helpers
             DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
             new PropertyMetadata(false));
 
-        private void ProcessQI(string qi)
-        {
-            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-            {
-                var orgCaret = AssociatedObject.TextArea.Caret.Offset;
-                AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, qi);
-                AssociatedObject.TextArea.Caret.Offset = orgCaret + qi.Length;               
-            }
-            else
-            {
-                AssociatedObject.AppendText(qi);
-                AssociatedObject.ScrollToEnd();
-                AssociatedObject.CaretOffset = AssociatedObject.Text.Length;
-            }
-        }
+        //private void ProcessQI(string qi)
+        //{
+        //    if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+        //    {
+        //        var orgCaret = AssociatedObject.TextArea.Caret.Offset;
+        //        AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, qi);
+        //        AssociatedObject.TextArea.Caret.Offset = orgCaret + qi.Length;               
+        //    }
+        //    else
+        //    {
+        //        AssociatedObject.AppendText(Environment.NewLine + qi);
+        //        AssociatedObject.ScrollToEnd();
+        //        AssociatedObject.CaretOffset = AssociatedObject.Text.Length;
+        //    }
+        //}
     }
 }

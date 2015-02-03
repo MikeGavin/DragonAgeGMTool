@@ -30,19 +30,20 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <helpers:MvvmTextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        <avalonEdit:TextEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             x:Name="textEditor"
             FontSize="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource TextBrush}"
                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" BorderBrush="{DynamicResource AccentColorBrush4}"
-                               Margin="5,0,5,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" WordWrap="True" ReturnFocus="True"
-                                Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                               Margin="5,0,5,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" WordWrap="True"
+                               
+                               >
             <i:Interaction.Behaviors>
                 <!--Custom behaviors attached to editor-->
-                <!--<helpers:AvalonEditBehaviour GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ReturnFocus="True"/>-->
+                <helpers:AvalonEditBehaviour ReturnFocus="True" GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" CaretPosition="{Binding CaretPoisition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--<helpers:AvalonEditBehaviour2 GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-                <helpers:SpellCheckBehavior />
+                <!--<helpers:SpellCheckBehavior />-->
             </i:Interaction.Behaviors>
-        </helpers:MvvmTextEditor>
+        </avalonEdit:TextEditor>
         
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
         <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" 
