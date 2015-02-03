@@ -18,6 +18,20 @@ namespace Scrivener.Helpers
     /// </summary>
     public class MvvmTextEditor : TextEditor, INotifyPropertyChanged
     {
+        #region RaiseProperityChange
+        /// <summary>
+        /// Implement the INotifyPropertyChanged event handler.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void RaisePropertyChanged([CallerMemberName] string caller = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(caller));
+        }
+
+        #endregion
+
         /// <summary>
         /// Default constructor to set up event handlers.
         /// </summary>
@@ -25,10 +39,13 @@ namespace Scrivener.Helpers
         {
             GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
             TextArea.SelectionChanged += TextArea_SelectionChanged;
-            Loaded += TextArea_Loaded;
+            Loaded += MvvmTextEditor_Loaded;
         }
 
-        void TextArea_Loaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler to load default content menu on load.
+        /// </summary>
+        void MvvmTextEditor_Loaded(object sender, RoutedEventArgs e)
         {
             LoadContextStandards(sender);
         }
@@ -42,7 +59,7 @@ namespace Scrivener.Helpers
             this.SelectionLength = SelectionLength;
         }
 
-        #region Text.
+        #region Text
         /// <summary>
         /// Dependancy property for the editor text property binding.
         /// </summary>
@@ -88,7 +105,7 @@ namespace Scrivener.Helpers
         }
         #endregion // Text.
 
-        #region Caret Offset.
+        #region Caret Offset
         /// <summary>
         /// DependencyProperty for the TextEditorCaretOffset binding. 
         /// </summary>
@@ -110,7 +127,7 @@ namespace Scrivener.Helpers
         }
         #endregion // Caret Offset.
 
-        #region Selection.
+        #region Selection
         /// <summary>
         /// DependencyProperty for the TextEditor SelectionLength property. 
         /// </summary>
@@ -152,16 +169,19 @@ namespace Scrivener.Helpers
         }
         #endregion // Selection.
 
+        #region Return Focus
         /// <summary>
-        /// Implement the INotifyPropertyChanged event handler.
+        /// DependencyProperty for the TextEditor returnfocus property. 
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged([CallerMemberName] string caller = null)
+        public static readonly DependencyProperty ReturnFocusProperty =
+            DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
+            new PropertyMetadata(false));
+        public bool ReturnFocus
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(caller));
+            get { return (bool)GetValue(ReturnFocusProperty); }
+            set { SetValue(ReturnFocusProperty, value); }
         }
+        #endregion
 
         private void ProcessQI(string qi)
         {
@@ -178,15 +198,6 @@ namespace Scrivener.Helpers
                 base.CaretOffset = base.Text.Length;
             }
         }
-
-        public bool ReturnFocus
-        {
-            get { return (bool)GetValue(ReturnFocusProperty); }
-            set { SetValue(ReturnFocusProperty, value); }
-        }
-        public static readonly DependencyProperty ReturnFocusProperty =
-            DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
-            new PropertyMetadata(false));
 
         public void LoadContextStandards(object sender)
         {
