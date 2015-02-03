@@ -29,7 +29,7 @@ namespace Scrivener.Helpers
                 textBox = new TextBox();
                 textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
                 textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
-                AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
+                //AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
             }
             base.OnAttached();
         }
@@ -49,8 +49,6 @@ namespace Scrivener.Helpers
             //Reset the context menu
             //textEditor.ContextMenu = defaultMenu;
         }
-
-
 
         private void textEditor_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
@@ -161,7 +159,7 @@ namespace Scrivener.Helpers
 
             this.textEditor.ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Undo });
             this.textEditor.ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Redo });
-
+            
             this.textEditor.ContextMenu.Items.Add(new Separator());
 
             //Cut
