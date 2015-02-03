@@ -5,6 +5,7 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using System;
+using 
 
 namespace Scrivener.Helpers
 {
@@ -41,9 +42,9 @@ namespace Scrivener.Helpers
                 {
                     dictionaries.Add(new Uri(customDictionary));
                 }
-                staticTextBox.Text = CurrentContext.Document.Text;
-                int start = line.Offset;
-                int end = line.EndOffset;
+                staticTextBox.Text = CurrentContext.Document.GetText(line);
+                int start = 0;
+                int end = line.Length;
                 start = staticTextBox.GetNextSpellingErrorCharacterIndex(start, LogicalDirection.Forward);
                 while (start < end)
                 {
@@ -55,12 +56,34 @@ namespace Scrivener.Helpers
                     SpellingError error = staticTextBox.GetSpellingError(start);
                     if (error != null)
                     {
-                        base.ChangeLinePart(start, wordEnd,(VisualLineElement element) => element.TextRunProperties.SetTextDecorations(collection));
+                        base.ChangeLinePart(start, wordEnd, (VisualLineElement element) => element.TextRunProperties.SetTextDecorations(collection));
                     }
 
                     start = staticTextBox.GetNextSpellingErrorCharacterIndex(wordEnd, LogicalDirection.Forward);
                 }
             }
+
+            var aff = new Uri("pack://application:,,,/Resources/en_US.aff", UriKind.Absolute);
+            var dic = new Uri("pack://application:,,,/Resources/en_US.dic", UriKind.Absolute);
+
+            var engine = new Hunspell();
+
+            //int lineStartOffset = line.Offset;
+            //string text = CurrentContext.Document.GetText(line);
+            //int starts = 0;
+            //int index;
+            //while ((index = text.IndexOf("AvalonEdit", starts)) >= 0)
+            //{
+
+            //    base.ChangeLinePart(
+            //        lineStartOffset + index, // startOffset
+            //        lineStartOffset + index + 10, // endOffset
+            //        (VisualLineElement element) =>
+            //        {
+            //            element.TextRunProperties.SetTextDecorations(collection);
+            //        });
+            //    starts = index + 1; // search for next occurrence
+            //}
         }
     }
 }

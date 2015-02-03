@@ -217,9 +217,13 @@ namespace Scrivener.Helpers
             {
                 var editor = behavior.AssociatedObject as TextEditor;
 
-                if (editor.Document != null && args.NewValue != null)
+                if (editor.Document != null && args.NewValue != null && (int)args.NewValue <= editor.CaretOffset)
                 {
-                    editor.CaretOffset = (int)args.NewValue;
+                    editor.CaretOffset = (int)args.NewValue;                    
+                }
+                else
+                {
+                    editor.ScrollToEnd();
                 }
             }
         }
