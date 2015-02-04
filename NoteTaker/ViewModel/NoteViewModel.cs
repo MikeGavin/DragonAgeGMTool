@@ -51,6 +51,7 @@ namespace Scrivener.ViewModel
                         
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+
         }
 
         private string _minionVisibility;
@@ -67,15 +68,17 @@ namespace Scrivener.ViewModel
         private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
+
+        //private ICSharpCode.AvalonEdit.Document.TextDocument document;
+        //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int caretPosition;
+        public int CaretPoisition { get { return caretPosition; } set { caretPosition = value; RaisePropertyChanged(); } }
         private DateTime _lastUpdated;
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
-        private int _caretindex;
-        public int Caretindex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         #endregion        
-
         
         #region EventBased Actions
         //Text change events for note
@@ -123,7 +126,7 @@ namespace Scrivener.ViewModel
             {
                 lastsaved = DateTime.Now;
                 RaiseNoteSave();
-                log.Debug("Saved note");
+                log.Trace("Saved note");
             }
         }
 
@@ -182,27 +185,31 @@ namespace Scrivener.ViewModel
         //Append
         private RelayCommand<QuickItem> _appendQuickItem;
         public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
-        public void AppendQuickItem(QuickItem note)
+        public void AppendQuickItem(QuickItem qi)
         {
-            if (note != null)
+            if (qi != null)
             {
                 try
                 {
-                    if (note.SubItems.Count == 0) // causes crash if null
+                    if (qi.SubItems.Count == 0) // causes crash if null
                     {
-                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
+                        //the cursor position to reset we were forced to rely on the messager service here to 
+                        //access the append and inset methods
+                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
+
+
+                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                         {
-                            Text += " " + note.Content;
+                            var temp = CaretPoisition;
+                            Text = Text.Insert(CaretPoisition, qi.Content);
+                            CaretPoisition = temp + qi.Content.Length;
                         }
-                        else if (Properties.Settings.Default.DashinNotes == true)
+                        else
                         {
-                            Text +=  System.Environment.NewLine + "- " + note.Content;
-                            //SaveNotes();
-                        }
-                        else if (Properties.Settings.Default.DashinNotes == false)
-                        {
-                            Text += System.Environment.NewLine + note.Content;
-                            //SaveNotes();
+                            Text += Environment.NewLine + qi.Content;
+                            CaretPoisition = Text.Length;
+                            
                         }
                     }
                 }
@@ -212,6 +219,7 @@ namespace Scrivener.ViewModel
                     var temp = MetroMessageBox.Show("NOPE!", e.ToString());
                 }
             }
+            
         }
 
         private RelayCommand _copyQuickItemCommand;

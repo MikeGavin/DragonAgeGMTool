@@ -29,6 +29,9 @@ using System.Deployment.Application;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
+using NLog.Targets;
+using NLog;
+using NLog.Targets.Wrappers;
 
 
 namespace Scrivener.ViewModel
@@ -38,6 +41,8 @@ namespace Scrivener.ViewModel
 
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        
+        
         private readonly IDataService _dataService; // Used by MVVMLight 
 
         ////public override void Cleanup()
@@ -47,16 +52,7 @@ namespace Scrivener.ViewModel
         ////    base.Cleanup();
         ////}
         #endregion
-        private bool _updated;
-        public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
-        private bool _dbupdated;
-        public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
-        private RelayCommand _dbUpdated_Click;
-        public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
 
-        private string appMode;
-        public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
-        
         //Constructor
         public MainViewModel(IDataService dataService)
         {
@@ -71,21 +67,19 @@ namespace Scrivener.ViewModel
             App.Fucked += (s,e) => SaveAllNotes();
             Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
-            DataB = DatabaseStorage.Instance;
-            
-            //Checks deployment and enables update systems if necessary
-            DeploymentCheck();
+            //Checks deployment and enables update systems if not in debug
+            DeploymentSetup();
+
+            //create DB singleton
+            DataB = DatabaseStorage.Instance;           
            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
-
-            //Self Explained
-            SettingsFolder();
-            //StartNoteSaveTask();
         }
+
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
         public async void WindowLoaded()
         {
@@ -119,54 +113,59 @@ namespace Scrivener.ViewModel
 
         }
 
+        #region Deployment and Update
         //Deployment Systems
-        private void DeploymentCheck()
-        {
-            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
-            {
-                Uri uri = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.UpdateLocation;
-                log.Debug("uri.LocalPath: {0}", uri.LocalPath.ToString());
+        private bool _updated;
+        public bool Updated { get { return _updated; } protected set { _updated = value; RaisePropertyChanged(); } }
+        private bool _dbupdated;
+        public bool DBUpdated { get { return _dbupdated; } protected set { _dbupdated = value; RaisePropertyChanged(); } }
+        private string appMode;
+        public string AppMode { get { return appMode; } protected set { appMode = value; RaisePropertyChanged(); } }
 
+        private RelayCommand _dbUpdated_Click;
+        public RelayCommand DBUpdated_Click { get { return _dbUpdated_Click ?? (_dbUpdated_Click = new RelayCommand(() => DBUpdated = false)); } }
+        
+        private void DeploymentSetup()
+        {
+            //Creates instance to define settings folder in a location and create it based on name of App and if Dev deployment
+            var deployment = new DeploymentData(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            SetLogFilePath("LogFile", deployment.SettingsFolder);
+            AppMode = deployment.Mode;
+            if (deployment.NetworkDeployed == true)
+            {
                 try
                 {
                     //Start auto update system and subscribe to event
-                    var updateManager = new UpdateManager(uri);
+                    var updateManager = new UpdateManager(deployment.UpdateLocation);
                     updateManager.UpdateComplete += UpdateComplete;
                 }
                 catch(Exception e)
                 {
-                    log.Error(e);
-                }
-                
+                    log.Fatal(e);
+                }                
                 try
                 {
                     //listen for DB updates
-                    var WatchDataBase = new DataBaseWatcher(uri);
+                    var WatchDataBase = new DataBaseWatcher(deployment.UpdateLocation);
                     DataBaseWatcher.DataBaseUpdated += (o, e) => { this.ReloadData(o, e.FullPath); DBUpdated = true; };
                 }
                 catch(Exception e)
                 {
-                    log.Error(e);
-                }
-
-                if (uri.LocalPath == @"\\fs1\EdTech\ScrivenerDev\Scrivener.application")
-                {
-                    AppMode = "development";
-                }
-                else if (uri.LocalPath == (@"\\fs1\EdTech\Scrivener\Scrivener.application"))
-                {
-                    AppMode = "production";
-                }
-                else
-                {
-                    AppMode = uri.LocalPath.ToLower().Replace("scrivener.application", string.Empty);
-                }
-            }
-            else
-            {
-                AppMode = "debug";
+                    log.Fatal(e);
+                }                
             }
         }
+
+        private void SetLogFilePath(string targetName, string pathName)
+        {
+            string fileName = null;
+            var fileTarget = Helpers.LoggingHelper.ReturnTarget(targetName) as FileTarget;
+            fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
+            log.Debug("logfile path set");
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            fileName = fileTarget.FileName.Render(logEventInfo);
+        }
+
         void UpdateComplete(object sender, AsyncCompletedEventArgs e)
         {
                 Updated = true;
@@ -180,12 +179,16 @@ namespace Scrivener.ViewModel
 
                     });
         }
+        
+        #endregion
 
         //Singleton instance of the DB to sync data across view models
         //private Singleton _dataB;
         //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
         public DatabaseStorage DataB { get; set; }
-          
+
+        #region Note System
+
         //Note Collection
         private MTObservableCollection<NoteViewModel> _Notes = new MTObservableCollection<NoteViewModel>();
         public MTObservableCollection<NoteViewModel> Notes { get { return _Notes; } set { _Notes = value; RaisePropertyChanged(); } }
@@ -220,7 +223,7 @@ namespace Scrivener.ViewModel
             });
            
         }
-        void OnNoteRequestClose(object sender, EventArgs e)
+        private void OnNoteRequestClose(object sender, EventArgs e)
         {
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
@@ -299,6 +302,7 @@ namespace Scrivener.ViewModel
             });
         }
 
+        #endregion
 
         #region ToolBar Items
 
@@ -430,16 +434,6 @@ namespace Scrivener.ViewModel
         #endregion
 
         #region Settings
-
-        private void SettingsFolder()
-        {
-            //check for settings folder. Create if missing.
-            var settingsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Scrivener");
-            if (!Directory.Exists(settingsFolder))
-            {
-                Directory.CreateDirectory(settingsFolder);
-            }
-        }
 
         //Listener for settings changed properity in order to clear out imports
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

@@ -117,17 +117,17 @@ namespace Scrivener.Model
 
         
 
-        private HistoryItem _HistoryItems;
-        public HistoryItem HistoryItems { get { return _HistoryItems; } private set { _HistoryItems = value; RaisePropertyChanged(); } }
-        public async Task LoadHistoryItems()
-        {
-            HistoryItems = await DataBaseReader.ReturnHistory();
-        }
+        //private HistoryItem _HistoryItems;
+        //public HistoryItem HistoryItems { get { return _HistoryItems; } private set { _HistoryItems = value; RaisePropertyChanged(); } }
+        //public async Task LoadHistoryItems()
+        //{
+        //    HistoryItems = await DataBaseReader.ReturnHistory();
+        //}
 
         public async Task LoadAll()
         {
             await LoadMinionCommands();
-            await LoadHistoryItems();
+         //await LoadHistoryItems();   
             await LoadQuickItems();
             await LoadPhoneDirectory();            
             await LoadSites(); //For some reason loading this item first causes the binding to not work.        

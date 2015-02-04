@@ -18,7 +18,8 @@ namespace Scrivener.Model
         //Constructor
         public NoteManager()
         {
-            AppDomain.CurrentDomain.SetData("DataDirectory", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
             Task.Run(async () => await CreatesHistory());
         }
 
@@ -28,7 +29,7 @@ namespace Scrivener.Model
         private string MainTableName { get { return "OpenNotes"; } }
         private string ArchiveTableName { get { return "NoteArchive"; } }
         //private SQLiteConnection noteDatabase = new SQLiteConnection(@"Data Source=|DataDirectory|\Scrivener\userdata.db;Version=3;New=True;Compress=True;");
-        private string noteDatabase = @"Data Source=|DataDirectory|\Scrivener\notedata.db;Version=3;New=True;Compress=True;";
+        private string noteDatabase = @"Data Source=|DataDirectory|\notedata.db;Version=3;New=True;Compress=True;";
 
         ///<summary>
         ///<para>creates Call History Database and populates table with todays date if none exist</para>
@@ -89,23 +90,42 @@ namespace Scrivener.Model
                     log.Error("Database is locked by another process!");
                 else
                     log.Error(ex);
+                CreatesHistory();
                 
-            }
+                string writeerror = "SQL logic error or missing database\r\nno such table: OpenNotes";
+                string exstring = ex.ToString();
 
+                if(exstring.Contains(writeerror))
+                {
+                    Model.ExceptionReporting.Email(ex); 
+                }                
+            }
+            finally
+            {
+                using (SQLiteConnection conn = new SQLiteConnection((noteDatabase)))
+                {
+                    conn.Open();
+                    using (SQLiteCommand cmd = new SQLiteCommand(command, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+            }
         }
 
         private async Task SaveNote(INote n, string tablename)
         {
-            //String for creating time stamp
+            
             var Date = n.LastUpdated.ToString("d");
             var Time = n.LastUpdated.ToString("T");
 
             var update = string.Format(@"UPDATE OR IGNORE {0}
                                             SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
-                                            WHERE guid = '{5}';", tablename, n.Title, n.Text, Date, Time, n.Guid.ToString());
+                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time, n.Guid.ToString());
             var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
-                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title, n.Text, Date, Time);
-
+                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time);
+            
             await WriteDatabase(update);
             await WriteDatabase(command);
 
@@ -152,7 +172,7 @@ namespace Scrivener.Model
                     var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
                     try
                     {
-                        openNotes.Add(new NoteType(Guid.Parse(guid), title, text, datetime));                    
+                        openNotes.Add(new NoteType(Guid.Parse(guid), title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime));                    
                     }
                     catch(Exception ex)
                     {
@@ -196,7 +216,7 @@ namespace Scrivener.Model
                     var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
                     try
                     {
-                        archiveSearch.Add(new NoteType(title, text, datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
+                        archiveSearch.Add(new NoteType(title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
                     }
                     catch (Exception ex)
                     {

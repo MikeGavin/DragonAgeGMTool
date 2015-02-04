@@ -32,6 +32,8 @@ namespace Scrivener.Model
                 oMsg.Display(false);
                 // Add a recipient.
                 oMsg.To = "edtechsupport@ecotoh.org";
+                // Add a CC
+                oMsg.CC = "michael.gavin@ecotoh.org";
                 //Subject line
                 oMsg.Subject = string.Format("[Scrivener] {0}", e.Message);
                 //add the body of the email
