@@ -10,6 +10,7 @@ using System;
 
 using NHunspell;
 using System.IO;
+using System.Collections.Generic;
 namespace Scrivener.Helpers
 {
     public class SpellingErrorColorizer : DocumentColorizingTransformer
@@ -37,6 +38,45 @@ namespace Scrivener.Helpers
 
         protected override void ColorizeLine(DocumentLine line)
         {
+
+
+            var aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
+            var dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
+
+            var engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+
+            var text = CurrentContext.Document.GetText(line).ToString();
+            string[] test = text.Split(' ');
+
+            var list = new List<string>();
+            foreach (var word in test)
+            {
+                if(engine.Spell(word))
+                {
+                    list.Add(word);
+                }
+            }
+            foreach (var word in list)
+            {
+                int lineStartOffset = line.Offset;
+                int starts = 0;
+                int index;
+                while ((index = text.IndexOf("AvalonEdit", starts)) >= 0)
+                {
+
+                    base.ChangeLinePart(
+                        lineStartOffset + index, // startOffset
+                        lineStartOffset + index + 10, // endOffset
+                        (VisualLineElement element) =>
+                        {
+                            element.TextRunProperties.SetTextDecorations(collection);
+                        });
+                    starts = index + 1; // search for next occurrence
+                }
+            }
+
+
+
             //lock (staticTextBox)
             //{
             //    var dictionaries = SpellCheck.GetCustomDictionaries(staticTextBox);

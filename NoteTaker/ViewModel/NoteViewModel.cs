@@ -52,10 +52,6 @@ namespace Scrivener.ViewModel
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
 
-            var aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
-            var dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
-
-            var engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
         }
 
         private string _minionVisibility;
