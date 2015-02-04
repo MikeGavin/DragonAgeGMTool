@@ -5,8 +5,11 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Rendering;
 using System;
-using 
+ 
 
+
+using NHunspell;
+using System.IO;
 namespace Scrivener.Helpers
 {
     public class SpellingErrorColorizer : DocumentColorizingTransformer
@@ -34,39 +37,41 @@ namespace Scrivener.Helpers
 
         protected override void ColorizeLine(DocumentLine line)
         {
-            lock (staticTextBox)
-            {
-                var dictionaries = SpellCheck.GetCustomDictionaries(staticTextBox);
-                dictionaries.Add(new Uri(@"pack://application:,,,/Scrivener;component/Resources/defaultDictionary.lex"));
-                if (System.IO.File.Exists(customDictionary))
-                {
-                    dictionaries.Add(new Uri(customDictionary));
-                }
-                staticTextBox.Text = CurrentContext.Document.GetText(line);
-                int start = 0;
-                int end = line.Length;
-                start = staticTextBox.GetNextSpellingErrorCharacterIndex(start, LogicalDirection.Forward);
-                while (start < end)
-                {
-                    if (start == -1)
-                        break;
+            //lock (staticTextBox)
+            //{
+            //    var dictionaries = SpellCheck.GetCustomDictionaries(staticTextBox);
+            //    dictionaries.Add(new Uri(@"pack://application:,,,/Scrivener;component/Resources/defaultDictionary.lex"));
+            //    if (System.IO.File.Exists(customDictionary))
+            //    {
+            //        dictionaries.Add(new Uri(customDictionary));
+            //    }
+            //    staticTextBox.Text = CurrentContext.Document.GetText(line);
+            //    int start = 0;
+            //    int end = line.Length;
+            //    start = staticTextBox.GetNextSpellingErrorCharacterIndex(start, LogicalDirection.Forward);
+            //    while (start < end)
+            //    {
+            //        if (start == -1)
+            //            break;
 
-                    int wordEnd = start + staticTextBox.GetSpellingErrorLength(start);
+            //        int wordEnd = start + staticTextBox.GetSpellingErrorLength(start);
 
-                    SpellingError error = staticTextBox.GetSpellingError(start);
-                    if (error != null)
-                    {
-                        base.ChangeLinePart(start, wordEnd, (VisualLineElement element) => element.TextRunProperties.SetTextDecorations(collection));
-                    }
+            //        SpellingError error = staticTextBox.GetSpellingError(start);
+            //        if (error != null)
+            //        {
+            //            base.ChangeLinePart(start, wordEnd, (VisualLineElement element) => element.TextRunProperties.SetTextDecorations(collection));
+            //        }
 
-                    start = staticTextBox.GetNextSpellingErrorCharacterIndex(wordEnd, LogicalDirection.Forward);
-                }
-            }
+            //        start = staticTextBox.GetNextSpellingErrorCharacterIndex(wordEnd, LogicalDirection.Forward);
+            //    }
+            //}
 
-            var aff = new Uri("pack://application:,,,/Resources/en_US.aff", UriKind.Absolute);
-            var dic = new Uri("pack://application:,,,/Resources/en_US.dic", UriKind.Absolute);
+            //var aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
+            //var dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) +  "/Resources/en_US.dic", UriKind.Absolute);
 
-            var engine = new Hunspell();
+            //var engine = new Hunspell(aff.LocalPath, dic.LocalPath);
+
+            //System.Diagnostics.Debugger.Break();
 
             //int lineStartOffset = line.Offset;
             //string text = CurrentContext.Document.GetText(line);
