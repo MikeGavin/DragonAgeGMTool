@@ -29,7 +29,7 @@ namespace Scrivener.Helpers
                 textBox = new TextBox();
                 textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
                 textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
-                //AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
+                AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
             }
             base.OnAttached();
         }
@@ -57,8 +57,6 @@ namespace Scrivener.Helpers
             textEditor.ContextMenu = new ContextMenu();   
             if (pos != null)
             {            
-   
-
                 //Get the new caret position
                 int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
                 

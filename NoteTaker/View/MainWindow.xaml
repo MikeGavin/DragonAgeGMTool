@@ -188,7 +188,11 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <UserControls:NoteViewUC Margin="0"/>
+                    <!--<helpers:CachedContentPresenter>
+                        <DataTemplate>-->
+                            <UserControls:NoteViewUC Margin="0"/>
+                        <!--</DataTemplate>
+                    </helpers:CachedContentPresenter>-->                 
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
