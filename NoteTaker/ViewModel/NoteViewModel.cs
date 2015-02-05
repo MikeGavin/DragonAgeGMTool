@@ -199,17 +199,34 @@ namespace Scrivener.ViewModel
                         //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
 
 
+
+
                         if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                         {
                             var temp = CaretPoisition;
-                            Text = Text.Insert(CaretPoisition, qi.Content);
+                            if(Text[CaretPoisition - 1] == ' ')
+                            {
+                                Text = Text.Insert(CaretPoisition, qi.Content);
+                                
+                            }
+                            else
+                            {
+                                Text = Text.Insert(CaretPoisition, " " + qi.Content);
+                                temp++;
+                            }
                             CaretPoisition = temp + qi.Content.Length;
                         }
                         else
                         {
-                            Text += Environment.NewLine + qi.Content;
-                            CaretPoisition = Text.Length;
-                            
+                            if (Properties.Settings.Default.DashinNotes)
+                            {
+                                Text += Environment.NewLine + "- " + qi.Content;
+                            }
+                            else
+                            {
+                                Text += Environment.NewLine + qi.Content;
+                            }
+                            CaretPoisition = Text.Length;                           
                         }
                     }
                 }
