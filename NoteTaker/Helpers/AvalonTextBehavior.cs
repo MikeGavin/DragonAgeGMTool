@@ -88,6 +88,8 @@ namespace Scrivener.Helpers
                     textEditor.CaretOffset = caretOffset;
                 }
 
+                CaretPosition = textEditor.CaretOffset;
+
                 if (ReturnFocus)
                 {
                     Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
