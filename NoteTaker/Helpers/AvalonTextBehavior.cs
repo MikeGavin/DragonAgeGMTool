@@ -1,7 +1,9 @@
 ﻿using ICSharpCode.AvalonEdit;
+using Scrivener.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,15 @@ namespace Scrivener.Helpers
     
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
+
+        public DatabaseStorage DataB { get; set; }
+
+        Uri aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
+        Uri dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
+
+        NHunspell.Hunspell engine;
+
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -27,6 +38,8 @@ namespace Scrivener.Helpers
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
                 //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
+                DataB = DatabaseStorage.Instance;
+                engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
             }
         }
 
@@ -83,6 +96,26 @@ namespace Scrivener.Helpers
                     });
                 }
             }
+
+
+
+                string[] test = textEditor.Text.Split(' ');
+                var distinctWords = new List<string>(test.Distinct());
+
+                foreach (var word in test)
+                {
+                    if (word == string.Empty) { return; }
+                    if (!DataB.List.Contains(word))
+                    {
+                        if (engine.Spell(word))
+                        {
+                            DataB.List.Add(word);
+                        }
+                    }
+                }
+         
+
+
         }
 
         private void AssociatedObject_KeyDown(object sender, KeyEventArgs e)

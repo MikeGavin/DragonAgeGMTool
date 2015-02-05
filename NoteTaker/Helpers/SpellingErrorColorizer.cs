@@ -11,13 +11,17 @@ using System;
 using NHunspell;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Scrivener.Model;
 namespace Scrivener.Helpers
 {
     public class SpellingErrorColorizer : DocumentColorizingTransformer
     {
-        private static readonly TextBox staticTextBox = new TextBox();
         private readonly TextDecorationCollection collection;
         private string customDictionary = System.IO.Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
+
+        public DatabaseStorage DataB { get; set; }
+
 
         public SpellingErrorColorizer()
         {
@@ -28,10 +32,7 @@ namespace Scrivener.Helpers
             dec.PenThicknessUnit = TextDecorationUnit.FontRecommended;
             collection.Add(dec);
 
-            // Set the static text box properties
-            staticTextBox.AcceptsReturn = true;
-            staticTextBox.AcceptsTab = true;
-            staticTextBox.SpellCheck.IsEnabled = true;
+            DataB = DatabaseStorage.Instance;
 
             
         }
@@ -40,33 +41,42 @@ namespace Scrivener.Helpers
         {
 
 
-            var aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
-            var dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
+            //var aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
+            //var dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
 
-            var engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
-
+            //var engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+            //var list = new List<string>();
             var text = CurrentContext.Document.GetText(line).ToString();
-            string[] test = text.Split(' ');
+            //if (text == string.Empty) { return; }
+            //await Task.Factory.StartNew(() => 
+            //{ 
 
-            var list = new List<string>();
-            foreach (var word in test)
-            {
-                if(engine.Spell(word))
-                {
-                    list.Add(word);
-                }
-            }
-            foreach (var word in list)
+
+            //string[] test = text.Split(' ');
+
+            
+            //foreach (var word in test)
+            //{
+            //    if (word == string.Empty) { return; }
+            //    if(engine.Spell(word))
+            //    {
+            //        list.Add(word);
+            //    }
+            //}
+            //});
+            
+
+            foreach (var word in DataB.List)
             {
                 int lineStartOffset = line.Offset;
                 int starts = 0;
                 int index;
-                while ((index = text.IndexOf("AvalonEdit", starts)) >= 0)
+                while ((index = text.IndexOf(word, starts)) >= 0)
                 {
 
                     base.ChangeLinePart(
                         lineStartOffset + index, // startOffset
-                        lineStartOffset + index + 10, // endOffset
+                        lineStartOffset + index + word.Length, // endOffset
                         (VisualLineElement element) =>
                         {
                             element.TextRunProperties.SetTextDecorations(collection);

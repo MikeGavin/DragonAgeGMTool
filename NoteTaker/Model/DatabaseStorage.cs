@@ -50,6 +50,9 @@ namespace Scrivener.Model
 
         private DataBaseReader DataBaseReader = new DataBaseReader();
 
+        
+        private List<string> _list = new List<string>();
+        public List<string> List { get { return _list; } set { _list = value; RaisePropertyChanged(); } }
 
         private ObservableCollection<RoleItem> _roles;
         public ObservableCollection<RoleItem> Roles { get { return _roles; } private set { _roles = value; RaisePropertyChanged(); } }
