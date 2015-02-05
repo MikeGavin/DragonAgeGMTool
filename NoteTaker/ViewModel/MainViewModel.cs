@@ -529,6 +529,8 @@ namespace Scrivener.ViewModel
         //    BFPhone.Handled = regex.IsMatch(BFPhone);
         //}
 
+
+
         private RelayCommand _createbreakfixCommand;
         public RelayCommand CreateBreakfixCommand { get { return _createbreakfixCommand ?? (_createbreakfixCommand = new RelayCommand(CreateBreakfix)); } }
         public void CreateBreakfix()
