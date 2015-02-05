@@ -692,5 +692,209 @@ namespace Scrivener.Properties {
                 this["DiscAddEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ContextMenuOpen {
+            get {
+                return ((bool)(this["ContextMenuOpen"]));
+            }
+            set {
+                this["ContextMenuOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DatePickerOpen {
+            get {
+                return ((bool)(this["DatePickerOpen"]));
+            }
+            set {
+                this["DatePickerOpen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Towervisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Towervisible"]));
+            }
+            set {
+                this["Towervisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Monitorvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Monitorvisible"]));
+            }
+            set {
+                this["Monitorvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Printervisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Printervisible"]));
+            }
+            set {
+                this["Printervisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Keyboardvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Keyboardvisible"]));
+            }
+            set {
+                this["Keyboardvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Mousevisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Mousevisible"]));
+            }
+            set {
+                this["Mousevisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Mousepadvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Mousepadvisible"]));
+            }
+            set {
+                this["Mousepadvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Headsetvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Headsetvisible"]));
+            }
+            set {
+                this["Headsetvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Speakersrvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Speakersrvisible"]));
+            }
+            set {
+                this["Speakersrvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Ethernetcablevisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Ethernetcablevisible"]));
+            }
+            set {
+                this["Ethernetcablevisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Usbcablevisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Usbcablevisible"]));
+            }
+            set {
+                this["Usbcablevisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Vgacablevisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Vgacablevisible"]));
+            }
+            set {
+                this["Vgacablevisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Powerstripvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Powerstripvisible"]));
+            }
+            set {
+                this["Powerstripvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Tabletvisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Tabletvisible"]));
+            }
+            set {
+                this["Tabletvisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Tabletchargervisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Tabletchargervisible"]));
+            }
+            set {
+                this["Tabletchargervisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Visible")]
+        public global::System.Windows.Visibility Routervisible {
+            get {
+                return ((global::System.Windows.Visibility)(this["Routervisible"]));
+            }
+            set {
+                this["Routervisible"] = value;
+            }
+        }
     }
 }

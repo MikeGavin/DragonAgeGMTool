@@ -82,6 +82,8 @@ namespace Scrivener.ViewModel
 
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
+            BFReplace = "";
         }
 
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
@@ -518,12 +520,311 @@ namespace Scrivener.ViewModel
 
         #region QuickAR
 
+        #region Breakfixform
+        //private RelayCommand _phonenumberregexCommand;
+        //public RelayCommand PhoneNumberRegexCommand { get { return _phonenumberregexCommand ?? (_phonenumberregexCommand = new RelayCommand(PhoneNumberRegex)); } }
+        //public void PhoneNumberRegex()
+        //{
+        //    Regex regex = new Regex("[^0-9]+");
+        //    BFPhone.Handled = regex.IsMatch(BFPhone);
+        //}
+
+        private RelayCommand _createbreakfixCommand;
+        public RelayCommand CreateBreakfixCommand { get { return _createbreakfixCommand ?? (_createbreakfixCommand = new RelayCommand(CreateBreakfix)); } }
+        public void CreateBreakfix()
+        {
+
+
+        }        
+
+        #region Publicproperties
+        private string bfreplace;
+        public string BFReplace { get { return bfreplace; } set { bfreplace = value; RaisePropertyChanged(); } }
+
+        #endregion
+      
+        #region Replaceitemvisibility
+        private RelayCommand _towerbreakfixCommand;
+        public RelayCommand TowerBreakfixCommand { get { return _towerbreakfixCommand ?? (_towerbreakfixCommand = new RelayCommand(TowerBreakfix)); } }
+        public void TowerBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Routervisible = Visibility.Collapsed;        
+        }
+
+        private RelayCommand _canceltowerbreakfixCommand;
+        public RelayCommand CancelTowerBreakfixCommand { get { return _canceltowerbreakfixCommand ?? (_canceltowerbreakfixCommand = new RelayCommand(CancelTowerBreakfix)); } }
+        public void CancelTowerBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Visible;
+            Properties.Settings.Default.Routervisible = Visibility.Visible;
+        }
+
+        private RelayCommand _monitorbreakfixCommand;
+        public RelayCommand MonitorBreakfixCommand { get { return _monitorbreakfixCommand ?? (_monitorbreakfixCommand = new RelayCommand(MonitorBreakfix)); } }
+        public void MonitorBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Routervisible = Visibility.Collapsed;
+        }
+
+        private RelayCommand _cancelmonitorbreakfixCommand;
+        public RelayCommand CancelMonitorBreakfixCommand { get { return _cancelmonitorbreakfixCommand ?? (_cancelmonitorbreakfixCommand = new RelayCommand(CancelMonitorBreakfix)); } }
+        public void CancelMonitorBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Visible;
+            Properties.Settings.Default.Routervisible = Visibility.Visible;
+        }
+
+        private RelayCommand _printerbreakfixCommand;
+        public RelayCommand PrinterBreakfixCommand { get { return _printerbreakfixCommand ?? (_printerbreakfixCommand = new RelayCommand(PrinterBreakfix)); } }
+        public void PrinterBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Routervisible = Visibility.Collapsed;
+        }
+
+        private RelayCommand _cancelprinterbreakfixCommand;
+        public RelayCommand CancelPrinterBreakfixCommand { get { return _cancelprinterbreakfixCommand ?? (_cancelprinterbreakfixCommand = new RelayCommand(CancelPrinterBreakfix)); } }
+        public void CancelPrinterBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Visible;
+            Properties.Settings.Default.Routervisible = Visibility.Visible;
+        }
+
+        private RelayCommand _keyboardbreakfixCommand;
+        public RelayCommand KeyboardBreakfixCommand { get { return _keyboardbreakfixCommand ?? (_keyboardbreakfixCommand = new RelayCommand(KeyboardBreakfix)); } }
+        public void KeyboardBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Routervisible = Visibility.Collapsed;
+        }
+
+        private RelayCommand _cancelkeyboardbreakfixCommand;
+        public RelayCommand CancelKeyboardBreakfixCommand { get { return _cancelkeyboardbreakfixCommand ?? (_cancelkeyboardbreakfixCommand = new RelayCommand(CancelKeyboardBreakfix)); } }
+        public void CancelKeyboardBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Visible;
+            Properties.Settings.Default.Routervisible = Visibility.Visible;
+        }
+
+        private RelayCommand _speakerbreakfixCommand;
+        public RelayCommand SpeakerBreakfixCommand { get { return _speakerbreakfixCommand ?? (_speakerbreakfixCommand = new RelayCommand(SpeakerBreakfix)); } }
+        public void SpeakerBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Monitorvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Printervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Mousevisible = Visibility.Collapsed;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Headsetvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Collapsed;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Collapsed;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Collapsed;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletvisible = Visibility.Collapsed;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Collapsed;
+            Properties.Settings.Default.Routervisible = Visibility.Collapsed;
+        }
+
+        private RelayCommand _cancelspeakerbreakfixCommand;
+        public RelayCommand CancelSpeakerBreakfixCommand { get { return _cancelspeakerbreakfixCommand ?? (_cancelspeakerbreakfixCommand = new RelayCommand(CancelSpeakerBreakfix)); } }
+        public void CancelSpeakerBreakfix()
+        {
+            Properties.Settings.Default.Towervisible = Visibility.Visible;
+            Properties.Settings.Default.Monitorvisible = Visibility.Visible;
+            Properties.Settings.Default.Printervisible = Visibility.Visible;
+            Properties.Settings.Default.Keyboardvisible = Visibility.Visible;
+            Properties.Settings.Default.Mousevisible = Visibility.Visible;
+            Properties.Settings.Default.Mousepadvisible = Visibility.Visible;
+            Properties.Settings.Default.Headsetvisible = Visibility.Visible;
+            Properties.Settings.Default.Speakersrvisible = Visibility.Visible;
+            Properties.Settings.Default.Ethernetcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Usbcablevisible = Visibility.Visible;
+            Properties.Settings.Default.Vgacablevisible = Visibility.Visible;
+            Properties.Settings.Default.Powerstripvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletvisible = Visibility.Visible;
+            Properties.Settings.Default.Tabletchargervisible = Visibility.Visible;
+            Properties.Settings.Default.Routervisible = Visibility.Visible;
+        }
+        #endregion
+        
+        #region Addressandphoneformatting
+        private string bfaddress;
+        public string BFAddress { get { return bfaddress; } set { bfaddress = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _replacebgaddressCommand;
+        public RelayCommand ReplaceBGAddressCommand { get { return _replacebgaddressCommand ?? (_replacebgaddressCommand = new RelayCommand(ReplaceBFAddress)); } }
+        public void ReplaceBFAddress()
+        {
+            if (BFAddress == "v" || BFAddress == "V")
+            {
+                BFAddress = "Verified physical address.";
+            }
+        }
+
+        private string bfphone;
+        public string BFPhone { get { return bfphone; } set { bfphone = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _formatbfphoneCommand;
+        public RelayCommand FormatBFPhoneCommand { get { return _formatbfphoneCommand ?? (_formatbfphoneCommand = new RelayCommand(FormatBFPhone)); } }
+        public void FormatBFPhone()
+        {
+            if (BFPhone == null || BFPhone == "")
+            {
+
+            }
+
+            else if (BFPhone != null || BFPhone != "")
+            {
+                string[] split = BFPhone.Split(new char[] { '-', '(', ')', ' ', '.' });
+                // remove all old format,if your phone number is like(001)123-456-789
+                StringBuilder bfpn = new StringBuilder();
+                foreach (string s in split)
+                {
+                    if (s.Trim() != "")
+                    {
+                        bfpn.Append(s);
+                    }
+                }
+
+                if (bfpn.Length == 10)
+                {
+                    BFPhone = String.Format("{0:(000) 000-0000}", double.Parse(bfpn.ToString()));
+                }
+                else if (bfpn.Length == 11)
+                {
+                    BFPhone = String.Format("{0:0(000) 000-0000}", double.Parse(bfpn.ToString()));
+                }
+
+                else if (bfpn.Length == 7)
+                {
+                    MessageBox.Show("Invalid phone number, please include area code");
+                }
+
+                else if (bfpn.Length < 10 | bfpn.Length >= 12)
+                {
+                    MessageBox.Show("Invalid phone number, please correct");
+                }
+            }
+        }  
+        #endregion
+
+        #endregion
+
+        #region Curriculumform
         //Controls visibility for Curriculum AR Bullets
         private RelayCommand _curriculumarcommand;
         public RelayCommand CurriculumARCommand { get { return _curriculumarcommand ?? (_curriculumarcommand = new RelayCommand(CurriculumAR)); } }
         public void CurriculumAR()
         {
-           
+
             if (Properties.Settings.Default.ClassContentChecked == true)
             {
                 Properties.Settings.Default.MCGridVisibility = Visibility.Collapsed;
@@ -565,7 +866,7 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.AccountGridVisibility = Visibility.Collapsed;
                 Properties.Settings.Default.DiscGridVisibility = Visibility.Visible;
             }
-                
+
             else
             {
                 Properties.Settings.Default.CCGridVisibility = Visibility.Collapsed;
@@ -624,7 +925,7 @@ namespace Scrivener.ViewModel
         public void AddCC()
         {
             SelectedNote.Text = CCFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
-        } 
+        }
 
         private string mcurl;
         public string MCURL { get { return mcurl; } set { mcurl = value; RaisePropertyChanged(); } }
@@ -749,7 +1050,7 @@ namespace Scrivener.ViewModel
         public void CreateAccount()
         {
             Properties.Settings.Default.AccountFinalEnabled = true;
-            AccountFinal = "Site URL/Program Name: " + AccountURL + Environment.NewLine + Environment.NewLine + "Username/Password tested: " + AccountName + Environment.NewLine + Environment.NewLine + "Best Contact Phone Number: " + AccountCBR + Environment.NewLine + Environment.NewLine  + "_______________________________________________________________";
+            AccountFinal = "Site URL/Program Name: " + AccountURL + Environment.NewLine + Environment.NewLine + "Username/Password tested: " + AccountName + Environment.NewLine + Environment.NewLine + "Best Contact Phone Number: " + AccountCBR + Environment.NewLine + Environment.NewLine + "_______________________________________________________________";
             Properties.Settings.Default.AccountAddEnabled = true;
         }
 
@@ -829,7 +1130,8 @@ namespace Scrivener.ViewModel
         public void AddDisc()
         {
             SelectedNote.Text = DiscFinal + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
-        } 
+        }  
+        #endregion
 
         #endregion
 

@@ -57,5 +57,11 @@ namespace Scrivener.UserControls
             var theme = ThemeManager.DetectAppStyle(Application.Current);
             ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme(string.Format("Base{0}", ThemeBox.SelectedItem)));
         }
+
+        private void Phoneregex(object sender, TextCompositionEventArgs e)
+        {
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }
