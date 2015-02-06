@@ -767,7 +767,7 @@ namespace Scrivener.ViewModel
         {
             if (BFAddress == "v" || BFAddress == "V")
             {
-                BFAddress = "Verified physical address.";
+                BFAddress = "Verified in CRM";
             }
         }
 

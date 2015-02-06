@@ -58,7 +58,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            
+
                             <Label Content="Role" FontSize="15" FontWeight="Medium" Grid.Column="0" Grid.Row="3" Width="auto" Margin="0,5,0,5"/>
                             <ComboBox vm:Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding RolesView}" DisplayMemberPath="Name"
 								SelectedItem="{Binding CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -165,8 +165,8 @@
             </controls:MetroTabItem>
             <controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding QuickARVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid MinWidth="300" MaxWidth="300" Margin="0,60,0,0" >
-                <TabControl>
-                    <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
+                    <TabControl>
+                        <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
                             <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto" >
                                 <Grid Height="Auto" Width="auto">
                                     <Grid.RowDefinitions>
@@ -184,29 +184,29 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>                                        
+                                        <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0"  Text="Please replace:" HorizontalAlignment="Center"></TextBlock>
                                     <TextBlock Grid.Row="0" Grid.Column="1"  Text="Scheduled for:" HorizontalAlignment="Center"></TextBlock>
                                     <ListBox Grid.Row="1" Grid.RowSpan="10" Grid.Column="0" vm:Name="bflistbox" Width="150" Height="290" SelectionMode="Multiple" HorizontalAlignment="Center" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top">
-                                        <ListBoxItem Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Towervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Monitorvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Printervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Keyboardvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousepadvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <ListBoxItem Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Headsetvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Speakersrvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Ethernetcablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Usbcablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Vgacablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Powerstripvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletchargervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
-                                        <ListBoxItem Content="ECOT Router" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Routervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"></ListBoxItem>
+                                        <ListBoxItem vm:Name="TowerLBI" Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Towervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="MonitorLBI" Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Monitorvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="PrinterLBI" Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Printervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="KeyboardLBI" Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Keyboardvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="MouseLBI" Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="MousePadLBI" Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousepadvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="HeadsetLBI" Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Headsetvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="SpeakersLBI" Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Speakersrvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="SpeakerSelected" Unselected="SpeakerDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="EthernetLBI" Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Ethernetcablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="USBLBI" Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Usbcablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="VGALBI" Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Vgacablevisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="PowerLBI" Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Powerstripvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="TabletLBI" Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletvisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="ChargerLBI" Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletchargervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                                        <ListBoxItem vm:Name="RouterLBI" Content="ECOT Router" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Routervisible, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
                                     </ListBox>
-                                    <DatePicker Name="BFDate" Grid.Row="1" Grid.Column="1" SelectedDateFormat="Short" DisplayDateStart="{vm:Static sys:DateTime.Now}" Margin="5,0,0,0" BorderThickness="0"/>
-                                    <ComboBox Name="StartTime" Grid.Row="2" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0">
+                                    <DatePicker Name="BFDate" Grid.Row="1" Grid.Column="1" SelectedDateFormat="Short" DisplayDateStart="{vm:Static sys:DateTime.Now}" Margin="5,0,0,0" BorderThickness="0" IsEnabled="False"/>
+                                    <ComboBox Name="StartTime" Grid.Row="2" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
                                         <ComboBoxItem Content="Start Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
@@ -222,7 +222,7 @@
                                         <ComboBoxItem Content="5:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
                                     </ComboBox>
-                                    <ComboBox Name="StopTime" Grid.Row="3" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0">
+                                    <ComboBox Name="StopTime" Grid.Row="3" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
                                         <ComboBoxItem Content="Stop Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
@@ -238,26 +238,26 @@
                                         <ComboBoxItem Content="5:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
                                     </ComboBox>
-                                    <TextBox Grid.Row="4" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Shipment ID" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" Width="110"/>
-                                    <TextBox Name="BFAddy" Text="{Binding BFAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Address" ToolTip="Simply typing ''V'' or ''v'' will result in ''Verified physical address.''" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110">
+                                    <TextBox Name="BFShipment" Grid.Row="4" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Shipment ID" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                                    <TextBox Name="BFAddy" Text="{Binding BFAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Address" ToolTip="Simply typing ''V'' or ''v'' will result in ''Address: Verified in CRM''" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="LostFocus" >
                                                 <i:InvokeCommandAction Command="{Binding ReplaceBGAddressCommand}"/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
-                                    <TextBox Name="BFNumber" Text="{Binding BFPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Phone Number" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" PreviewTextInput="Phoneregex">
-                                    <i:Interaction.Triggers>
+                                    <TextBox Name="BFNumber" Text="{Binding BFPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Phone Number" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" PreviewTextInput="Phoneregex" IsEnabled="False">
+                                        <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="LostFocus" >
                                                 <i:InvokeCommandAction Command="{Binding FormatBFPhoneCommand}"/>
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
-                                    <TextBox Grid.Row="7" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Asset Tag" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110"/>
-                                    <TextBox Grid.Row="8" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Model" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110"/>
-                                    <TextBox Grid.Row="9" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Serial #" VerticalContentAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110"/>
+                                    <TextBox Name="BFAsset" Grid.Row="7" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Asset Tag" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                                    <TextBox Name="BFModel" Grid.Row="8" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Model" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                                    <TextBox Name="BFSerial" Grid.Row="9" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Serial #" VerticalContentAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
                                     <Button Grid.Row="10" Grid.Column="0" Content="Create AR" Click="CompileBF"></Button>
-                                    
+
                                 </Grid>
                             </ScrollViewer>
                         </TabItem>
@@ -434,8 +434,8 @@
                             </ScrollViewer>
                         </TabItem>
                     </TabControl>
-            </Grid>
-        </controls:MetroTabItem>
+                </Grid>
+            </controls:MetroTabItem>
             <!--<TabItem Header="Templates" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>
@@ -466,13 +466,13 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-            </Grid.RowDefinitions>            
+            </Grid.RowDefinitions>
             <Label Content="Deployment" FontSize="10" Grid.Column="0" Padding="5,0"/>
             <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10" Padding="5,0"/>
             <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10" Padding="5,0"/>
             <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10" Padding="5,0"/>
             <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10" Padding="5,0"/>
-            <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10" Padding="5,0"/>            
+            <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10" Padding="5,0"/>
         </Grid>
     </Grid>
 </UserControl>
