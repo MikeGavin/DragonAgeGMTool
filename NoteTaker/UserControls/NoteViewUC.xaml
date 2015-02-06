@@ -42,7 +42,7 @@
                 <helpers:AvalonEditBehaviour ReturnFocus="True" GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                  CaretPosition="{Binding CaretPoisition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <!--<helpers:AvalonEditBehaviour2 GiveMeTheText="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-                <helpers:SpellCheckBehavior />
+                <!--<helpers:SpellCheckBehavior />-->
             </i:Interaction.Behaviors>
         </avalonEdit:TextEditor>
         

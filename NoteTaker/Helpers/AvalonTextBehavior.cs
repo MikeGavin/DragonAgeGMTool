@@ -22,7 +22,8 @@ namespace Scrivener.Helpers
             if (AssociatedObject != null)
             {
                 AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;
-                AssociatedObject.KeyDown += AssociatedObject_KeyDown;
+                //AssociatedObject.KeyDown += AssociatedObject_KeyDown;
+                AssociatedObject.PreviewKeyDown += AssociatedObject_KeyDown;
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
                 //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
@@ -49,7 +50,8 @@ namespace Scrivener.Helpers
             if (AssociatedObject != null)
             {
                 AssociatedObject.TextChanged -= AssociatedObjectOnTextChanged;
-                AssociatedObject.KeyDown -= AssociatedObject_KeyDown;
+                //AssociatedObject.KeyDown -= AssociatedObject_KeyDown;
+                AssociatedObject.PreviewKeyDown -= AssociatedObject_KeyDown;
                 AssociatedObject.Loaded -= AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp -= AssociatedObject_MouseDown;
                 
@@ -72,6 +74,8 @@ namespace Scrivener.Helpers
                     GiveMeTheText = textEditor.Document.Text;                    
                     textEditor.CaretOffset = caretOffset;
                 }
+
+                CaretPosition = textEditor.CaretOffset;
 
                 if (ReturnFocus)
                 {
