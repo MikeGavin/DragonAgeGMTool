@@ -95,27 +95,25 @@ namespace Scrivener.Helpers
             if (textEditor.Text != null && textEditor.Text != string.Empty)
             {
                 char test = textEditor.Text[textEditor.Text.Length - 1];
-                if (char.IsWhiteSpace(test) || char.IsPunctuation(test))
-                {
-                    Regex words = new Regex(@"\w+-\w+|[\w\S]+[^\W\d_]", RegexOptions.IgnoreCase);
-                    DataB.List.Clear();
-                    _errors.Clear();
-                    MatchCollection mc = words.Matches(new string(textEditor.Text.Where(c => !char.IsPunctuation(c)).ToArray()));
-                    var uniqueMatches = mc.OfType<Match>().Select(m => m.Value).Distinct();
-                    var matchlist = uniqueMatches.ToList();
+                //if (char.IsWhiteSpace(test) || char.IsPunctuation(test))                
+                Regex words = new Regex(@"\w+-\w+|[\w\S]+[^\W\d_]", RegexOptions.IgnoreCase);
+                DataB.List.Clear();
+                _errors.Clear();
+                MatchCollection mc = words.Matches(new string(textEditor.Text.Where(c => !char.IsPunctuation(c)).ToArray()));
+                var uniqueMatches = mc.OfType<Match>().Select(m => m.Value).Distinct();
+                var matchlist = uniqueMatches.ToList();
 
-                    foreach (var word in matchlist)
+                foreach (var word in matchlist)
+                {
+                    if (word == string.Empty) { return; }
+                    if (!DataB.List.Contains(word))
                     {
-                        if (word == string.Empty) { return; }
-                        if (!DataB.List.Contains(word))
+                        if (!hunspell.Spell(word))
                         {
-                            if (!hunspell.Spell(word))
-                            {
-                                DataB.List.Add(word);
-                            }
+                            DataB.List.Add(word);
                         }
                     }
-                }
+                }                
             }
         }
     
