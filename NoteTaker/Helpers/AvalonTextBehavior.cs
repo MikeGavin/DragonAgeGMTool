@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,15 +19,6 @@ namespace Scrivener.Helpers
     
     public sealed class AvalonEditBehaviour : Behavior<TextEditor>
     {
-
-        public DatabaseStorage DataB { get; set; }
-
-        Uri aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
-        Uri dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
-
-        NHunspell.Hunspell engine;
-
-
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -37,10 +29,20 @@ namespace Scrivener.Helpers
                 AssociatedObject.PreviewKeyDown += AssociatedObject_KeyDown;
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
+                //AssociatedObject.TextArea.Caret.PositionChanged += Caret_PositionChanged;
                 //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
-                DataB = DatabaseStorage.Instance;
-                engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+
             }
+        }
+
+        void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            var caret = sender as ICSharpCode.AvalonEdit.Editing.Caret;
+            if (caret != null)
+            {
+                 CaretPosition = caret.Offset; 
+            }
+            
         }
 
         void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
@@ -88,7 +90,7 @@ namespace Scrivener.Helpers
                     textEditor.CaretOffset = caretOffset;
                 }
 
-                CaretPosition = textEditor.CaretOffset;
+                
 
                 if (ReturnFocus)
                 {
@@ -97,27 +99,8 @@ namespace Scrivener.Helpers
                         Keyboard.Focus(textEditor);
                     });
                 }
+                AssociatedObject.TextArea.Caret.BringCaretToView();
             }
-
-
-
-                string[] test = textEditor.Text.Split(' ');
-                var distinctWords = new List<string>(test.Distinct());
-
-                foreach (var word in test)
-                {
-                    if (word == string.Empty) { return; }
-                    if (!DataB.List.Contains(word))
-                    {
-                        if (engine.Spell(word))
-                        {
-                            DataB.List.Add(word);
-                        }
-                    }
-                }
-         
-
-
         }
 
         private void AssociatedObject_KeyDown(object sender, KeyEventArgs e)
@@ -159,6 +142,7 @@ namespace Scrivener.Helpers
 
                     }
                 }
+                AssociatedObject.TextArea.Caret.BringCaretToView();
             }
         }
 

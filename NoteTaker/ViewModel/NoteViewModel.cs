@@ -198,9 +198,6 @@ namespace Scrivener.ViewModel
                         //access the append and inset methods
                         //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
 
-
-
-
                         if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                         {
                             var temp = CaretPoisition;

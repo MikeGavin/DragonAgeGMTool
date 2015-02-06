@@ -9,6 +9,8 @@ using System.Windows.Documents;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.RegularExpressions;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace Scrivener.Helpers
 {
@@ -16,23 +18,41 @@ namespace Scrivener.Helpers
     //Modifited to reset menu to default and add detaching
     internal class SpellCheckBehavior : Behavior<TextEditor>
     {
-        private TextBox textBox;
+        
         private TextEditor textEditor;
         //private string customDictionary = @"c:\temp\custom.lex";
-        private string customDictionary = Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
+        //private string customDictionary = Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
+
+        public Scrivener.Model.DatabaseStorage DataB { get; set; }
+        private static List<string> _errors = new List<string>();
+        public static List<string> Errors { get { return _errors; } }
+
+        Uri aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
+        Uri dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
+
+        NHunspell.Hunspell engine;
+
+
 
         protected override void OnAttached()
         {                       
             textEditor = AssociatedObject;
             if (textEditor != null)
             {
-                textBox = new TextBox();
+                
                 textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
                 textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
+
+                DataB = Scrivener.Model.DatabaseStorage.Instance;
+                engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+                textEditor.TextChanged += textEditor_TextChanged;
+                
+
                 AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
             }
             base.OnAttached();
         }
+
         protected override void OnDetaching()
         {
             textEditor = AssociatedObject;
@@ -40,8 +60,43 @@ namespace Scrivener.Helpers
             {
                 textEditor.ContextMenuOpening -= textEditor_ContextMenuOpening;
                 textEditor.ContextMenuClosing -= textEditor_ContextMenuClosing;
+                textEditor.TextChanged -= textEditor_TextChanged;
             }
             base.OnDetaching();
+        }
+
+        void textEditor_TextChanged(object sender, EventArgs e)
+        {
+            LiveSpellCheck();
+        }
+
+        private void LiveSpellCheck()
+        {
+            if (textEditor.Text != null && textEditor.Text != string.Empty)
+            {
+                char test = textEditor.Text[textEditor.Text.Length - 1];
+                if (char.IsWhiteSpace(test) || char.IsPunctuation(test))
+                {
+                    Regex words = new Regex(@"\w+-\w+|[\w\S]+[^\W\d_]", RegexOptions.IgnoreCase);
+                    DataB.List.Clear();
+                    _errors.Clear();
+                    MatchCollection mc = words.Matches(new string(textEditor.Text.Where(c => !char.IsPunctuation(c)).ToArray()));
+                    var uniqueMatches = mc.OfType<Match>().Select(m => m.Value).Distinct();
+                    var matchlist = uniqueMatches.ToList();
+
+                    foreach (var word in matchlist)
+                    {
+                        if (word == string.Empty) { return; }
+                        if (!DataB.List.Contains(word))
+                        {
+                            if (!engine.Spell(word))
+                            {
+                                DataB.List.Add(word);
+                            }
+                        }
+                    }
+                }
+            }
         }
     
         void textEditor_ContextMenuClosing(object sender, ContextMenuEventArgs e)
@@ -54,57 +109,51 @@ namespace Scrivener.Helpers
         {
             TextViewPosition? pos = textEditor.TextArea.TextView.GetPosition(new Point(e.CursorLeft, e.CursorTop));
             //Reset the context menu
-            textEditor.ContextMenu = new ContextMenu();   
+            textEditor.ContextMenu = new ContextMenu();
             if (pos != null)
-            {            
+            {
                 //Get the new caret position
                 int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
-                
-                //Text box properties
-                textBox.AcceptsReturn = true;
-                textBox.AcceptsTab = true;
-                textBox.SpellCheck.IsEnabled = true;
-                textBox.Text = textEditor.Text;
-                var dictionaries = SpellCheck.GetCustomDictionaries(textBox);
-                dictionaries.Add(new Uri(@"pack://application:,,,/Scrivener;component/Resources/defaultDictionary.lex"));
-                if (File.Exists(customDictionary))
+
+                var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
+                if (wordEnd < 0)
                 {
-                    dictionaries.Add(new Uri(customDictionary));
+                    wordEnd = textEditor.Text.Length;
+                }
+                var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordStart);
+                var wordLength = wordEnd - wordStartOffset;
+                var word = textEditor.Text.Substring(wordStartOffset, wordLength);
+                var suggestions = new List<string>();
+                if (!engine.Spell(word))
+                {
+                    suggestions = engine.Suggest(word);
                 }
 
-                //Check for spelling errors
-                SpellingError error = textBox.GetSpellingError(newCaret);
-                int wordStartOffset = textBox.GetSpellingErrorStart(newCaret);
-                if (wordStartOffset >= 0)
+                //If there is a spelling mistake
+                if (suggestions != null && suggestions.Count() >= 1)
                 {
-                    int wordLength = textBox.GetSpellingErrorLength(wordStartOffset);
-                    //If there is a spelling mistake
-                    if (error != null && error.Suggestions.Count() >= 1)
+                    textEditor.ContextMenu = new ContextMenu();
+
+                    foreach (string err in suggestions)
                     {
-                        textEditor.ContextMenu = new ContextMenu();
-
-                        foreach (string err in error.Suggestions)
-                        {
-                            var item = new MenuItem { Header = err };
-                            var t = new Tuple<int, int>(wordStartOffset, wordLength);
-                            item.Tag = t;
-                            item.Click += item_Click;
-                            textEditor.ContextMenu.Items.Add(item);
-                        }
-
-                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-
+                        var item = new MenuItem { Header = err };
+                        var t = new Tuple<int, int>(wordStartOffset, wordLength);
+                        item.Tag = t;
+                        item.Click += item_Click;
+                        textEditor.ContextMenu.Items.Add(item);
                     }
-                    else
-                    {
-                        //No Suggestions found, add a disabled NoSuggestions menuitem.
-                        this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
-                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-                    }
+
+                    this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+
                 }
-                this.textEditor.ContextMenu.Items.Add(new Separator());               
+                else
+                {
+                    //No Suggestions found, add a disabled NoSuggestions menuitem.
+                    this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
+                    this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+                }
+                this.textEditor.ContextMenu.Items.Add(new Separator());
             }
-             
             this.AddStandards();
 
         }
@@ -115,7 +164,7 @@ namespace Scrivener.Helpers
             //Adding the IgnoreAll menu item
             MenuItem AddToMenuItem = new MenuItem();
             AddToMenuItem.Header = "Add to dictionary";
-            AddToMenuItem.IsEnabled = true;
+            AddToMenuItem.IsEnabled = false;
             AddToMenuItem.Tag = new Tuple<int, int>(wordStartOffset, wordLength);
             //IgnoreAllMenuItem.Command = EditingCommands.IgnoreSpellingError;
             //IgnoreAllMenuItem.CommandTarget = textEditor;
@@ -134,10 +183,10 @@ namespace Scrivener.Helpers
         //Method to Add text to Dictionary
         private void AddToDictionary(string entry)
         {
-            using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
-            {
-                streamWriter.WriteLine(entry);
-            }
+            //using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
+            //{
+            //    streamWriter.WriteLine(entry);
+            //}
         }
 
         //Click event of the context menu
