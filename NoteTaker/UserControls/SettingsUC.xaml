@@ -38,7 +38,7 @@
 
     <Grid Margin="0,-50,0,0">
 
-        <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+        <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,-10,0,10">
             <controls:MetroTabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
@@ -180,6 +180,7 @@
                                         <RowDefinition Height="40"/>
                                         <RowDefinition Height="30"/>
                                         <RowDefinition Height="30"/>
+                                        <RowDefinition Height="auto"/>
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -207,7 +208,7 @@
                                     </ListBox>
                                     <DatePicker Name="BFDate" Grid.Row="1" Grid.Column="1" SelectedDateFormat="Short" DisplayDateStart="{vm:Static sys:DateTime.Now}" Margin="5,0,0,0" BorderThickness="0" IsEnabled="False"/>
                                     <ComboBox Name="StartTime" Grid.Row="2" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
-                                        <ComboBoxItem Content="Start Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
+                                        <ComboBoxItem Name="Startdefault" Content="Start Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="8:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
@@ -223,7 +224,7 @@
                                         <ComboBoxItem Content="6:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
                                     </ComboBox>
                                     <ComboBox Name="StopTime" Grid.Row="3" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
-                                        <ComboBoxItem Content="Stop Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
+                                        <ComboBoxItem Name="Stopdefault" Content="Stop Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
                                         <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
                                         <ComboBoxItem Content="8:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
@@ -256,7 +257,18 @@
                                     <TextBox Name="BFAsset" Grid.Row="7" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Asset Tag" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
                                     <TextBox Name="BFModel" Grid.Row="8" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Model" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
                                     <TextBox Name="BFSerial" Grid.Row="9" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Serial #" VerticalContentAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
-                                    <Button Grid.Row="10" Grid.Column="0" Content="Create AR" Click="CompileBF"></Button>
+                                    <TextBox Name="BFFinal" Text="{Binding BFReplace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Height="auto" controls:TextBoxHelper.Watermark="Click ''CREATE AR'' to preview BreakFix." VerticalContentAlignment="Top" TextWrapping="Wrap" Margin="5,5,0,0" BorderThickness="0" Width="270" IsEnabled="False"/>
+                                    <Grid Margin="0,5,0,0" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Width="270">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button Grid.Row="0" Grid.Column="0" Content="Create AR" Click="CompileBF" Margin="2,0"></Button>
+                                        <Button Name="BFAdd" Grid.Row="0" Grid.Column="1" Content="Add to notes" Command="{Binding CreateBreakfixCommand}" Margin="2,0" IsEnabled="False"></Button>
+                                        <Button Grid.Row="0" Grid.Column="2" Content="Reset" Click="ResetBF" Margin="2,0"></Button>
+                                    </Grid>
+                                    
 
                                 </Grid>
                             </ScrollViewer>

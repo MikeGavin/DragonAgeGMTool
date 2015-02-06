@@ -316,7 +316,9 @@ namespace Scrivener.UserControls
             }
             else
             {
-                MessageBox.Show(replaceitems + bfdate + bftime + bfshipment + bfnumber + bfaddy + bfasset + bfmodel + bfserial);
+                BFFinal.IsEnabled = true;
+                BFAdd.IsEnabled = true;
+                BFFinal.Text = replaceitems + bfasset + bfmodel + bfserial + bfnumber + bfaddy + bfshipment + bfdate + bftime;
             }
         }
 
@@ -494,6 +496,64 @@ namespace Scrivener.UserControls
                 BFAddy.IsEnabled = false;
                 BFNumber.IsEnabled = false;
             }
+        }
+
+        private void ResetBF(object sender, RoutedEventArgs e)
+        {
+            TowerLBI.IsEnabled = true;
+            MonitorLBI.IsEnabled = true;
+            PrinterLBI.IsEnabled = true;
+            KeyboardLBI.IsEnabled = true;
+            MouseLBI.IsEnabled = true;
+            MousePadLBI.IsEnabled = true;
+            HeadsetLBI.IsEnabled = true;
+            SpeakersLBI.IsEnabled = true;
+            EthernetLBI.IsEnabled = true;
+            USBLBI.IsEnabled = true;
+            VGALBI.IsEnabled = true;
+            PowerLBI.IsEnabled = true;
+            TabletLBI.IsEnabled = true;
+            ChargerLBI.IsEnabled = true;
+            RouterLBI.IsEnabled = true;
+
+            TowerLBI.IsSelected = false;
+            MonitorLBI.IsSelected = false;
+            PrinterLBI.IsSelected = false;
+            KeyboardLBI.IsSelected = false;
+            MouseLBI.IsSelected = false;
+            MousePadLBI.IsSelected = false;
+            HeadsetLBI.IsSelected = false;
+            SpeakersLBI.IsSelected = false;
+            EthernetLBI.IsSelected = false;
+            USBLBI.IsSelected = false;
+            VGALBI.IsSelected = false;
+            PowerLBI.IsSelected = false;
+            TabletLBI.IsSelected = false;
+            ChargerLBI.IsSelected = false;
+            RouterLBI.IsSelected = false;
+
+            BFAddy.IsEnabled = false;
+            BFAsset.IsEnabled = false;
+            BFDate.IsEnabled = false;
+            BFModel.IsEnabled = false;
+            BFNumber.IsEnabled = false;
+            BFSerial.IsEnabled = false;
+            StartTime.IsEnabled = false;
+            StopTime.IsEnabled = false;
+            BFShipment.IsEnabled = false;
+
+            BFAddy.Text = "";
+            BFAsset.Text = "";
+            BFDate.Text = "";
+            BFModel.Text = "";
+            BFNumber.Text = "";
+            BFSerial.Text = "";
+            StartTime.SelectedItem = Startdefault;
+            StopTime.SelectedItem = Stopdefault;
+            BFShipment.Text = "";
+            BFFinal.Text = "";
+            BFFinal.IsEnabled = false;
+            BFAdd.IsEnabled = false;
         }
     }
 }

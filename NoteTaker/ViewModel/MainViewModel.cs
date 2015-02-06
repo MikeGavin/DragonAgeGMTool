@@ -535,8 +535,7 @@ namespace Scrivener.ViewModel
         public RelayCommand CreateBreakfixCommand { get { return _createbreakfixCommand ?? (_createbreakfixCommand = new RelayCommand(CreateBreakfix)); } }
         public void CreateBreakfix()
         {
-
-
+            SelectedNote.Text = BFReplace + Environment.NewLine + Environment.NewLine + SelectedNote.Text;
         }        
 
         #region Publicproperties
