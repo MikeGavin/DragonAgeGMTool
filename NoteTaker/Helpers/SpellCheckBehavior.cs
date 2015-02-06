@@ -30,24 +30,20 @@ namespace Scrivener.Helpers
         Uri aff = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.aff", UriKind.Absolute);
         Uri dic = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "/Resources/en_US.dic", UriKind.Absolute);
 
-        NHunspell.Hunspell engine;
 
-
+        NHunspell.Hunspell hunspell;
 
         protected override void OnAttached()
         {                       
             textEditor = AssociatedObject;
             if (textEditor != null)
             {
-                
-                textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
-                textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
-
                 DataB = Scrivener.Model.DatabaseStorage.Instance;
                 ReadCustomDictionary();
 
+                textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
+                textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
                 textEditor.TextChanged += textEditor_TextChanged;
-                
 
                 AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
             }
@@ -71,17 +67,26 @@ namespace Scrivener.Helpers
             LiveSpellCheck();
         }
 
-
         private void ReadCustomDictionary()
         {
-            engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+            hunspell = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
             if (File.Exists(customDictionary))
             {
                 string[] lines = System.IO.File.ReadAllLines(customDictionary);
                 foreach (var line in lines)
                 {
-                    engine.Add(line);
+                    hunspell.Add(line);
                 }
+            }
+        }
+
+        //Method to Add text to Dictionary
+        private void AddToCustomDictionary(string entry)
+        {
+            hunspell.Add(entry); //adds to live hunspell instance to effect live spellcheck.
+            using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
+            {
+                streamWriter.WriteLine(entry);
             }
         }
 
@@ -104,7 +109,7 @@ namespace Scrivener.Helpers
                         if (word == string.Empty) { return; }
                         if (!DataB.List.Contains(word))
                         {
-                            if (!engine.Spell(word))
+                            if (!hunspell.Spell(word))
                             {
                                 DataB.List.Add(word);
                             }
@@ -125,10 +130,11 @@ namespace Scrivener.Helpers
             TextViewPosition? pos = textEditor.TextArea.TextView.GetPosition(new Point(e.CursorLeft, e.CursorTop));
             //Reset the context menu
             textEditor.ContextMenu = new ContextMenu();
-            if (pos != null)
-            {
+            if (pos == null) { AddStandards(); return; }
+                
                 //Get the new caret position
                 int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+
 
                 var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
                 if (wordEnd < 0)
@@ -137,14 +143,21 @@ namespace Scrivener.Helpers
                 }
                 var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordStart);
                 var wordLength = wordEnd - wordStartOffset;
+                if (wordStartOffset < 0) { AddStandards(); 
+                    return; } // Prevent crash if data is blank
+
                 var word = textEditor.Text.Substring(wordStartOffset, wordLength);
                 var suggestions = new List<string>();
-                if (!engine.Spell(word)) //If there is a spelling mistake
+                
+                if (word.Contains(Environment.NewLine) || string.IsNullOrWhiteSpace(word)) { AddStandards(); 
+                    return; }
+                
+                if (!hunspell.Spell(word)) //If there is a spelling mistake
                 {
-                    suggestions = engine.Suggest(word);
+                    suggestions = hunspell.Suggest(word);
                     if (suggestions != null && suggestions.Count() >= 1)
                     {
-                        textEditor.ContextMenu = new ContextMenu();
+                        
 
                         foreach (string err in suggestions)
                         {
@@ -156,7 +169,6 @@ namespace Scrivener.Helpers
                         }
 
                         this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-
                     }
                     else
                     {
@@ -166,9 +178,11 @@ namespace Scrivener.Helpers
                     }
                     this.textEditor.ContextMenu.Items.Add(new Separator());
                 }
-            }
-            this.AddStandards();
-
+                this.AddStandards();
+            
+            
+            
+          
         }
 
         private MenuItem AddToDictionaryMenuItem(int wordStartOffset, int wordLength)
@@ -188,21 +202,10 @@ namespace Scrivener.Helpers
                 var seg = item.Tag as Tuple<int, int>;
                 this.textEditor.SelectionStart = seg.Item1;
                 this.textEditor.SelectionLength = seg.Item2;
-                this.AddToDictionary(this.textEditor.SelectedText); //writes to custom dictionary file
-                engine.Add(this.textEditor.SelectedText); //adds to live hunspell instance
+                this.AddToCustomDictionary(this.textEditor.SelectedText); //writes to custom dictionary file
                 textEditor.Document.Replace(seg.Item1, seg.Item2, this.textEditor.SelectedText); //causes refresh for check in underline system
-
             };
             return AddToMenuItem;
-        }
-
-        //Method to Add text to Dictionary
-        private void AddToDictionary(string entry)
-        {
-            using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
-            {
-                streamWriter.WriteLine(entry);
-            }
         }
 
         //Click event of the context menu
