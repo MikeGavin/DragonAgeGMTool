@@ -215,13 +215,23 @@ namespace Scrivener.ViewModel
                         }
                         else
                         {
-                            if (Properties.Settings.Default.DashinNotes)
+                            var substring = Text.Substring(Text.Length - 2, 2);
+                            if (substring == "\r\n" || substring == "- ")
                             {
-                                Text += Environment.NewLine + "- " + qi.Content;
+                                Text += qi.Content;
                             }
                             else
                             {
-                                Text += Environment.NewLine + qi.Content;
+                                if (Properties.Settings.Default.DashinNotes)
+                                {
+
+                                    Text += Environment.NewLine + "- " + qi.Content;
+                                }
+                                else
+                                {
+
+                                    Text += Environment.NewLine + qi.Content;
+                                }
                             }
                             CaretPoisition = Text.Length;                           
                         }
