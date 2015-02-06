@@ -4,11 +4,13 @@ using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace Scrivener.Model
 {
@@ -151,6 +153,7 @@ namespace Scrivener.Model
             List<QuickItemDBPull> Sub9uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_9).Select(p => p.First()).ToList();
             List<QuickItemDBPull> Sub10uniqueitems = CommandList.GroupBy(s => s.Sub_Folder_10).Select(p => p.First()).ToList();
 
+
             #region Fill Tree
             var root = new QuickItem() { Title = "Menu" };
 
@@ -283,12 +286,11 @@ namespace Scrivener.Model
                 root.SubItems.Add(Root_Item);
                 }                
             }
-            
+        //http://blog.clauskonrad.net/2011/04/how-to-make-hierarchical-treeview.html
+#endregion  
             return root;
-
-#endregion
         }
-
+         
         public async Task<Siteitem> ReturnSiteItems(RoleItem role)
         {
             log.Debug("Getting SiteItems for {0}", role.Name);
@@ -487,8 +489,6 @@ namespace Scrivener.Model
 
             #endregion
         }
-
-        
-           
+         
     }
 }
