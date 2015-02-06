@@ -31,32 +31,7 @@ namespace Scrivener.Helpers
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
                 //AssociatedObject.TextArea.Caret.PositionChanged += Caret_PositionChanged;
                 //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
-
             }
-        }
-
-        void Caret_PositionChanged(object sender, EventArgs e)
-        {
-            var caret = sender as ICSharpCode.AvalonEdit.Editing.Caret;
-            if (caret != null)
-            {
-                 CaretPosition = caret.Offset; 
-            }
-            
-        }
-
-        void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-                        var textEditor = sender as TextEditor;
-                        if (textEditor != null)
-                        {
-                            if (textEditor.Document != null)
-                            {
-                                
-                                CaretPosition = textEditor.CaretOffset;
-                                
-                            }
-                        }
         }
 
         protected override void OnDetaching()
@@ -73,6 +48,31 @@ namespace Scrivener.Helpers
             }
         }
 
+        void Caret_PositionChanged(object sender, EventArgs e)
+        {
+            var caret = sender as ICSharpCode.AvalonEdit.Editing.Caret;
+            if (caret != null)
+            {
+                CaretPosition = caret.Offset;
+            }
+
+        }
+
+        void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var textEditor = sender as TextEditor;
+            if (textEditor != null)
+            {
+                if (textEditor.Document != null)
+                {
+
+                    CaretPosition = textEditor.CaretOffset;
+
+                }
+            }
+        }
+        
+        
         void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             LoadContextStandards(sender);
@@ -210,10 +210,14 @@ namespace Scrivener.Helpers
                 var editor = behavior.AssociatedObject as TextEditor;
 
                 if (editor.Document != null && args.NewValue != null)
-                {            
-                    //var caretOffset = editor.CaretOffset;
-                    editor.Document.Text = args.NewValue.ToString();
-                    //editor.CaretOffset = caretOffset;
+                {
+                    // without this if statement the following line will make the drag and drop move copy rather than move. 
+                    // However removing the code causes the VM to be unable to update the binding.
+                    if (args.NewValue.ToString() != editor.Document.Text) 
+                    {
+                        editor.Document.Text = args.NewValue.ToString(); 
+                    }
+                    
                 }
             }
         }

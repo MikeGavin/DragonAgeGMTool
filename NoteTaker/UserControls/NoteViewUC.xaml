@@ -36,6 +36,7 @@
                                Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" BorderBrush="{DynamicResource AccentColorBrush4}"
                                Margin="5,0,5,2" MinWidth="200" MinHeight="21" Height="Auto" BorderThickness="0" VerticalScrollBarVisibility="Auto" WordWrap="True"
                                
+                               
                                >
             <i:Interaction.Behaviors>
                 <!--Custom behaviors attached to editor-->

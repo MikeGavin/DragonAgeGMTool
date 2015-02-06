@@ -21,7 +21,7 @@ namespace Scrivener.Helpers
         
         private TextEditor textEditor;
         //private string customDictionary = @"c:\temp\custom.lex";
-        //private string customDictionary = Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
+        private string customDictionary = Path.Combine(new Scrivener.Model.DeploymentData(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))).SettingsFolder, "CustomDictionary.lex");
 
         public Scrivener.Model.DatabaseStorage DataB { get; set; }
         private static List<string> _errors = new List<string>();
@@ -45,6 +45,12 @@ namespace Scrivener.Helpers
 
                 DataB = Scrivener.Model.DatabaseStorage.Instance;
                 engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+                string[] lines = System.IO.File.ReadAllLines(customDictionary);
+                foreach (var line in lines)
+                {
+                    engine.Add(line);
+                }
+
                 textEditor.TextChanged += textEditor_TextChanged;
                 
 
@@ -124,35 +130,33 @@ namespace Scrivener.Helpers
                 var wordLength = wordEnd - wordStartOffset;
                 var word = textEditor.Text.Substring(wordStartOffset, wordLength);
                 var suggestions = new List<string>();
-                if (!engine.Spell(word))
+                if (!engine.Spell(word)) //If there is a spelling mistake
                 {
                     suggestions = engine.Suggest(word);
-                }
-
-                //If there is a spelling mistake
-                if (suggestions != null && suggestions.Count() >= 1)
-                {
-                    textEditor.ContextMenu = new ContextMenu();
-
-                    foreach (string err in suggestions)
+                    if (suggestions != null && suggestions.Count() >= 1)
                     {
-                        var item = new MenuItem { Header = err };
-                        var t = new Tuple<int, int>(wordStartOffset, wordLength);
-                        item.Tag = t;
-                        item.Click += item_Click;
-                        textEditor.ContextMenu.Items.Add(item);
+                        textEditor.ContextMenu = new ContextMenu();
+
+                        foreach (string err in suggestions)
+                        {
+                            var item = new MenuItem { Header = err };
+                            var t = new Tuple<int, int>(wordStartOffset, wordLength);
+                            item.Tag = t;
+                            item.Click += item_Click;
+                            textEditor.ContextMenu.Items.Add(item);
+                        }
+
+                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+
                     }
-
-                    this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-
+                    else
+                    {
+                        //No Suggestions found, add a disabled NoSuggestions menuitem.
+                        this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
+                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+                    }
+                    this.textEditor.ContextMenu.Items.Add(new Separator());
                 }
-                else
-                {
-                    //No Suggestions found, add a disabled NoSuggestions menuitem.
-                    this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
-                    this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-                }
-                this.textEditor.ContextMenu.Items.Add(new Separator());
             }
             this.AddStandards();
 
@@ -160,11 +164,12 @@ namespace Scrivener.Helpers
 
         private MenuItem AddToDictionaryMenuItem(int wordStartOffset, int wordLength)
         {
+            
             this.textEditor.ContextMenu.Items.Add(new Separator());
             //Adding the IgnoreAll menu item
             MenuItem AddToMenuItem = new MenuItem();
             AddToMenuItem.Header = "Add to dictionary";
-            AddToMenuItem.IsEnabled = false;
+            AddToMenuItem.IsEnabled = true;
             AddToMenuItem.Tag = new Tuple<int, int>(wordStartOffset, wordLength);
             //IgnoreAllMenuItem.Command = EditingCommands.IgnoreSpellingError;
             //IgnoreAllMenuItem.CommandTarget = textEditor;
@@ -174,8 +179,10 @@ namespace Scrivener.Helpers
                 var seg = item.Tag as Tuple<int, int>;
                 this.textEditor.SelectionStart = seg.Item1;
                 this.textEditor.SelectionLength = seg.Item2;
-                this.AddToDictionary(this.textEditor.SelectedText);
+                this.AddToDictionary(this.textEditor.SelectedText); //writes to custom dictionary file
+                engine.Add(this.textEditor.SelectedText); //adds to live hunspell instance
                 textEditor.Document.Replace(seg.Item1, seg.Item2, this.textEditor.SelectedText); //causes refresh for check in underline system
+
             };
             return AddToMenuItem;
         }
@@ -183,10 +190,10 @@ namespace Scrivener.Helpers
         //Method to Add text to Dictionary
         private void AddToDictionary(string entry)
         {
-            //using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
-            //{
-            //    streamWriter.WriteLine(entry);
-            //}
+            using (StreamWriter streamWriter = new StreamWriter(customDictionary, true))
+            {
+                streamWriter.WriteLine(entry);
+            }
         }
 
         //Click event of the context menu
