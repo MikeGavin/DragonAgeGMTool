@@ -44,12 +44,7 @@ namespace Scrivener.Helpers
                 textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
 
                 DataB = Scrivener.Model.DatabaseStorage.Instance;
-                engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
-                string[] lines = System.IO.File.ReadAllLines(customDictionary);
-                foreach (var line in lines)
-                {
-                    engine.Add(line);
-                }
+                ReadCustomDictionary();
 
                 textEditor.TextChanged += textEditor_TextChanged;
                 
@@ -74,6 +69,20 @@ namespace Scrivener.Helpers
         void textEditor_TextChanged(object sender, EventArgs e)
         {
             LiveSpellCheck();
+        }
+
+
+        private void ReadCustomDictionary()
+        {
+            engine = new NHunspell.Hunspell(aff.LocalPath, dic.LocalPath);
+            if (File.Exists(customDictionary))
+            {
+                string[] lines = System.IO.File.ReadAllLines(customDictionary);
+                foreach (var line in lines)
+                {
+                    engine.Add(line);
+                }
+            }
         }
 
         private void LiveSpellCheck()
