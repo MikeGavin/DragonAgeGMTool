@@ -14,10 +14,9 @@
         xmlns:model="clr-namespace:Scrivener.Model"
         mc:Ignorable=" ignore"
         Height="500.3"
-        Width="722" 
-        
+        Width="722"         
         SaveWindowPosition="True" Margin="0"
-        ShowIconOnTitleBar="False" RightWindowCommandsOverlayBehavior="HiddenTitleBar">
+        RightWindowCommandsOverlayBehavior="Never">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -88,7 +87,9 @@
     </controls:MetroWindow.DataContext>
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
-            <controls:Flyout x:Name="SettingsFlyout" Position="Right" TitleVisibility="Collapsed"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
+            <controls:Flyout x:Name="SettingsFlyout" Position="Right" TitleVisibility="Collapsed" CloseButtonVisibility="Collapsed" Theme="Adapt" 
+                             IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" 
+                             ScrollViewer.CanContentScroll="True" Width="300" >
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
             <controls:Flyout x:Name="ARFlyout" Position="Left" TitleVisibility="Hidden"  Width="auto" Theme="Adapt" IsOpen="True" ScrollViewer.CanContentScroll="True">

@@ -310,59 +310,42 @@ namespace Scrivener.ViewModel
         public RelayCommand SettingsExpandCommand { get { return _SettingsExpandCommand ?? (_SettingsExpandCommand = new RelayCommand(SettingsExpand)); } }
         public void SettingsExpand()
         {
-            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == false)
-            {
+            if (Properties.Settings.Default.SettingsExpanded == false)
                 Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.SettingsVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.SettingsVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = false;                
-            }
-
-        }
-
-        private RelayCommand _openHistoryCommand;
-        public RelayCommand OpenHistoryCommand { get { return _openHistoryCommand ?? (_openHistoryCommand = new RelayCommand(OpenHistory)); } }
-        public void OpenHistory()
-        {
-            if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == true)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == false)
-            {
-                Properties.Settings.Default.SettingsExpanded = true;
-                Properties.Settings.Default.HistoryVisibility = true;
-                Properties.Settings.Default.SettingsVisibility = false;
-            }            
-            else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == true)
-            {
+            else
                 Properties.Settings.Default.SettingsExpanded = false;
-                Properties.Settings.Default.HistoryVisibility = false;
-                Properties.Settings.Default.SettingsVisibility = true;
-            }
-
         }
+
+        //private RelayCommand _openHistoryCommand;
+        //public RelayCommand OpenHistoryCommand { get { return _openHistoryCommand ?? (_openHistoryCommand = new RelayCommand(OpenHistory)); } }
+        //public void OpenHistory()
+        //{
+        //    if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == false)
+        //    {
+        //        Properties.Settings.Default.SettingsExpanded = true;
+        //        Properties.Settings.Default.HistoryVisibility = true;
+        //        Properties.Settings.Default.SettingsVisibility = false;
+        //    }
+        //    else if (Properties.Settings.Default.SettingsExpanded == false && Properties.Settings.Default.HistoryVisibility == true)
+        //    {
+        //        Properties.Settings.Default.SettingsExpanded = true;
+        //        Properties.Settings.Default.HistoryVisibility = true;
+        //        Properties.Settings.Default.SettingsVisibility = false;
+        //    }
+        //    else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == false)
+        //    {
+        //        Properties.Settings.Default.SettingsExpanded = true;
+        //        Properties.Settings.Default.HistoryVisibility = true;
+        //        Properties.Settings.Default.SettingsVisibility = false;
+        //    }            
+        //    else if (Properties.Settings.Default.SettingsExpanded == true && Properties.Settings.Default.HistoryVisibility == true)
+        //    {
+        //        Properties.Settings.Default.SettingsExpanded = false;
+        //        Properties.Settings.Default.HistoryVisibility = false;
+        //        Properties.Settings.Default.SettingsVisibility = true;
+        //    }
+
+        //}
 
         //Search EKB
         private string _searchData;

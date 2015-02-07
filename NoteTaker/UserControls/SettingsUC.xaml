@@ -18,6 +18,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
+                <ResourceDictionary Source="/Scrivener;component/Resources/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
@@ -36,16 +37,17 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="0,-50,0,0">
-
-        <controls:MetroTabControl TabStripPlacement="Right" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,-10,0,10">
-            <controls:MetroTabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+    <Grid>
+        <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Style="{StaticResource MetroCommandButton}" FontFamily ="pack://application:,,,/Resources/#FontAwesome"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,-35,0,0" FontSize="21"/>
+        <controls:MetroTabControl TabStripPlacement="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">F1</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto" Margin="0,60,0,0">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="0" Width="auto">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -121,51 +123,71 @@
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
-            </controls:MetroTabItem>
-            <controls:MetroTabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            </TabItem>
+            <TabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-                <ScrollViewer MaxWidth="250" Margin="0,60,0,0" MinWidth="300" >
-                    <Grid Width="300" Height="auto">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="150"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
 
-                        <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" DisplayDateEnd="{vm:Static sys:DateTime.Now}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectedDateChanged">
-                                    <i:InvokeCommandAction Command="{Binding HistoryLookupCommand}" CommandParameter="{Binding SelectedDate, ElementName=datePicker}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </DatePicker>
-                        <Button Grid.Column="1" Content="Re-Open" Grid.Row="0" IsEnabled="{Binding SelectedItems.Count, ElementName=listView}" Command="{Binding NewNoteCommand}" CommandParameter="{Binding SelectedHistoryNote}" Width="80" HorizontalAlignment="Center" BorderThickness="0" VerticalAlignment="Center"/>
-                        <ListView vm:Name="listView" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" ItemsSource="{Binding HistoricNotes}" HorizontalAlignment="Center" Width="160">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <WrapPanel>
-                                        <TextBlock Text="{Binding Title}"/>
-                                        <TextBlock Text=" "/>
-                                        <TextBlock Text="{Binding LastUpdated, StringFormat=T}"/>
-                                    </WrapPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap"/>
-                    </Grid>
-                </ScrollViewer>
-            </controls:MetroTabItem>
-            <controls:MetroTabItem Header="Quick AR" VerticalAlignment="Top" IsSelected="{Binding QuickARVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                
-            </controls:MetroTabItem>
+                <Grid Width="300" Height="auto" HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" DisplayDateEnd="{vm:Static sys:DateTime.Now}" BorderThickness="0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectedDateChanged">
+                                <i:InvokeCommandAction Command="{Binding HistoryLookupCommand}" CommandParameter="{Binding SelectedDate, ElementName=datePicker}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </DatePicker>
+
+                    <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" 
+                              ItemsSource="{Binding HistoricNotes}" BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding Title}"/>
+                                    <TextBlock Text=" "/>
+                                    <TextBlock Text="{Binding LastUpdated, StringFormat=T}"/>
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBox BorderThickness="0" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                                 Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap" Margin="2,0,0,0"
+                                 IsReadOnly="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="About" VerticalAlignment="Top">
+                <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="150">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Deployment" FontSize="10" Grid.Column="0" Padding="5,0"/>
+                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10" Padding="5,0"/>
+                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10" Padding="5,0"/>
+                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10" Padding="5,0"/>
+                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10" Padding="5,0"/>
+                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10" Padding="5,0"/>
+                </Grid>
+            </TabItem>
+
             <!--<TabItem Header="Templates" VerticalAlignment="Top">
             <Grid MinWidth="400">
                 <Grid.RowDefinitions>
@@ -186,23 +208,5 @@
             </Grid>
         </TabItem>-->
         </controls:MetroTabControl>
-        <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="150" Margin="60,-10,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Content="Deployment" FontSize="10" Grid.Column="0" Padding="5,0"/>
-            <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="0" FontSize="10" Padding="5,0"/>
-            <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="10" Padding="5,0"/>
-            <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" FontSize="10" Padding="5,0"/>
-            <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="10" Padding="5,0"/>
-            <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2" FontSize="10" Padding="5,0"/>
-        </Grid>
     </Grid>
 </UserControl>
