@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Properties="clr-namespace:Scrivener.Properties"
+             xmlns:helpers="clr-namespace:Scrivener.Helpers"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:MahControls="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -20,7 +21,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
                 <ResourceDictionary Source="/Scrivener;component/Resources/MahApps.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
+            <helpers:ExpandedConverter x:Key="ExpandedConverter" />
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="FontWeight" Value="Medium"/>
@@ -47,8 +48,8 @@
                     <TextBlock TextAlignment="Center">F1</TextBlock>
                 </ToolTip>
             </controls:MetroTabItem.ToolTip>-->
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="0" Width="auto">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto" >
+                    <StackPanel Margin="0" Width="auto" >
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -68,14 +69,19 @@
                               />
 
                         </Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
-                            <Button Content="&#xF0C7;" Background="{vm:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
-                        </StackPanel>
-                        <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Expander Header="Fonts" Margin="0">
+                        <!--https://code.msdn.microsoft.com/windowsdesktop/Grouping-Expanders-just-b1bbba57-->
+                        <Expander Header="Text" Margin="0" IsExpanded="{Binding CurrentExpanded, Converter={StaticResource ExpandedConverter}, ConverterParameter=1}" BorderThickness="0">
+                            <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
+                                <Button Content="&#xF0C7;" Background="{vm:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
+                            </StackPanel>
+                            <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Fonts" Margin="0" IsExpanded="{Binding CurrentExpanded, Converter={StaticResource ExpandedConverter}, ConverterParameter=2}" BorderThickness="0">
                             <Grid Width="auto">
                                 <Grid.RowDefinitions >
                                     <RowDefinition/>
@@ -96,13 +102,7 @@
                                 <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                             </Grid>
                         </Expander>
-                        <!--<controls:ToggleSwitch Header="QuickNote" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding QuicknoteVisibility, Mode=TwoWay, Converter={StaticResource visibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>-->
-
-                        <!--<controls:ToggleSwitch Header="Minion" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Minion_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>
-                    <controls:ToggleSwitch Header="Note Area" OnLabel="Visible" OffLabel="Hidden" IsChecked="{Binding Note_WorkSpace_Visibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}"/>-->
-
-
-                        <Expander Header="Theme" Margin="0">
+                        <Expander Header="Theme" Margin="0" IsExpanded="{Binding CurrentExpanded, Converter={StaticResource ExpandedConverter}, ConverterParameter=3}" BorderThickness="0">
                             <Grid>
                                 <Grid.RowDefinitions >
                                     <RowDefinition/>

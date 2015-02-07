@@ -172,6 +172,10 @@ namespace Scrivener.ViewModel
         //public Singleton DataB { get { return _dataB ?? (_dataB = Singleton.Instance); RaisePropertyChanged(); } }
         public DatabaseStorage DataB { get; set; }
 
+        //https://code.msdn.microsoft.com/windowsdesktop/Grouping-Expanders-just-b1bbba57
+        string _CurrentExpanded;
+        public string CurrentExpanded { get { return _CurrentExpanded; } set { if (_CurrentExpanded != value) { _CurrentExpanded = value; RaisePropertyChanged(); } } }
+
         #region Note System
 
         //Note Collection
