@@ -1,37 +1,22 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using Minion;
 using Scrivener.Model;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Windows;
-using System.Windows.Input;
 using System.Linq;
 using Scrivener.Helpers;
 using System.Collections.Specialized;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using Scrivener.UserControls;
-using System.Data.SQLite;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
-using NLog.Config;
-using Minion.ListItems;
 using System.ComponentModel;
 using System.Windows.Data;
 using System.Runtime.CompilerServices;
-using System.Deployment.Application;
 using System.IO;
-using System.Reactive;
 using System.Reactive.Linq;
 using NLog.Targets;
 using NLog;
-using NLog.Targets.Wrappers;
 
 
 namespace Scrivener.ViewModel

@@ -1,0 +1,295 @@
+﻿<UserControl x:Class="Scrivener.UserControls.QuickAR"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"  
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:Properties="clr-namespace:Scrivener.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid MinWidth="300" MaxWidth="300" Margin="0,60,0,0" >
+        <TabControl>
+            <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
+                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto" >
+                    <Grid Height="Auto" Width="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0"  Text="Please replace:" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1"  Text="Scheduled for:" HorizontalAlignment="Center"></TextBlock>
+                        <ListBox Grid.Row="1" Grid.RowSpan="10" Grid.Column="0" x:Name="bflistbox" Width="150" Height="290" SelectionMode="Multiple" HorizontalAlignment="Center" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top">
+                            <ListBoxItem x:Name="TowerLBI" Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Towervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="MonitorLBI" Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Monitorvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="PrinterLBI" Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Printervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="KeyboardLBI" Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Keyboardvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="MouseLBI" Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="MousePadLBI" Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousepadvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="HeadsetLBI" Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Headsetvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="SpeakersLBI" Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Speakersrvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="SpeakerSelected" Unselected="SpeakerDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="EthernetLBI" Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Ethernetcablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="USBLBI" Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Usbcablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="VGALBI" Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Vgacablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="PowerLBI" Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Powerstripvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="TabletLBI" Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="ChargerLBI" Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletchargervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="RouterLBI" Content="ECOT Router" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Routervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                        </ListBox>
+                        <DatePicker Name="BFDate" Grid.Row="1" Grid.Column="1" SelectedDateFormat="Short" DisplayDateStart="{x:Static sys:DateTime.Now}" Margin="5,0,0,0" BorderThickness="0" IsEnabled="False"/>
+                        <ComboBox Name="StartTime" Grid.Row="2" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
+                            <ComboBoxItem Name="Startdefault" Content="Start Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
+                            <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="8:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="9:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="10:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="11:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="12:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="1:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="2:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="3:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="4:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="5:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="6:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                        </ComboBox>
+                        <ComboBox Name="StopTime" Grid.Row="3" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
+                            <ComboBoxItem Name="Stopdefault" Content="Stop Time" HorizontalAlignment="Center" IsSelected="True"></ComboBoxItem>
+                            <ComboBoxItem Content="6:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="7:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="8:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="9:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="10:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="11:00 AM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="12:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="1:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="2:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="3:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="4:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="5:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                            <ComboBoxItem Content="6:00 PM" HorizontalAlignment="Center"></ComboBoxItem>
+                        </ComboBox>
+                        <TextBox Name="BFShipment" Grid.Row="4" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Shipment ID" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                        <TextBox Name="BFAddy" Text="{Binding BFAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Address" ToolTip="Simply typing ''V'' or ''v'' will result in ''Address: Verified in CRM''" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus" >
+                                    <i:InvokeCommandAction Command="{Binding ReplaceBGAddressCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <TextBox Name="BFNumber" Text="{Binding BFPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Phone Number" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" PreviewTextInput="Phoneregex" IsEnabled="False">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus" >
+                                    <i:InvokeCommandAction Command="{Binding FormatBFPhoneCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <TextBox Name="BFAsset" Grid.Row="7" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Asset Tag" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                        <TextBox Name="BFModel" Grid.Row="8" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Model" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                        <TextBox Name="BFSerial" Grid.Row="9" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Serial #" VerticalContentAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="110" IsEnabled="False"/>
+                        <TextBox Name="BFFinal" Text="{Binding BFReplace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Height="auto" controls:TextBoxHelper.Watermark="Click ''CREATE AR'' to preview BreakFix." VerticalContentAlignment="Top" TextWrapping="Wrap" Margin="5,5,0,0" BorderThickness="0" Width="270" IsEnabled="False"/>
+                        <Grid Margin="0,5,0,0" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Width="270">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Row="0" Grid.Column="0" Content="Create AR" Click="CompileBF" Margin="2,0"></Button>
+                            <Button Name="BFAdd" Grid.Row="0" Grid.Column="1" Content="Add to notes" Command="{Binding CreateBreakfixCommand}" Margin="2,0" IsEnabled="False"></Button>
+                            <Button Grid.Row="0" Grid.Column="2" Content="Reset" Click="ResetBF" Margin="2,0"></Button>
+                        </Grid>
+
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
+                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" >
+                    <Grid Height="Auto" Width="auto">
+                        <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
+                        <StackPanel Margin="0,15,0,0">
+                            <RadioButton x:Name="ClassContentRadio" Content="Class Content, Gradebook or Dashboard" Command="{Binding CurriculumARCommand}" IsChecked="{Binding ClassContentChecked, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <RadioButton x:Name="MessageCenterRadio" Content="Message Center/Class Announcments" Command="{Binding CurriculumARCommand}" IsChecked="{Binding MCCAChecked, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <RadioButton x:Name="AuxilarySiteRadio" Content="Auxilary Site Content" Command="{Binding CurriculumARCommand}" IsChecked="{Binding AuxSiteChecked, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <RadioButton x:Name="AuxilarySiteAccountRadio" Content="Auxilary Site Account Issues" Command="{Binding CurriculumARCommand}" IsChecked="{Binding AuxAccountChecked, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <RadioButton x:Name="DiscussionBoardRadio" Content="Discussion Board" Command="{Binding CurriculumARCommand}" IsChecked="{Binding DiscBoardChecked, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Grid x:Name="ClassContentGrid" Margin="0,10,0,0" Visibility="{Binding CCGridVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Width="270" Text="{Binding CCURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class or Gradebook URL" Margin="0,0,0,0"/>
+                                <TextBox Width="270" Text="{Binding CCName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding CCBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding CCPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding CCFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding CCFinalEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding CreateCCCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                <Button Command="{Binding AddCCCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding CCAddEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding ResetCCCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Assignment &gt; Dropbox"/></TextBlock>
+                                <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
+                                <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Gradebook"/></TextBlock>
+
+                            </Grid>
+                            <Grid x:Name="MessageCenterGrid" Margin="0,10,0,0" Visibility="{Binding MCGridVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Width="270" Text="{Binding MCURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class URL" Margin="0,0,0,0"/>
+                                <TextBox Width="270" Text="{Binding MCName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding MCSubject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Subject (Title) of Message or Announcement" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding MCDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Date/Time of Message or Announcement" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding MCFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding MCFinalEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding CreateMCCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                <Button Command="{Binding AddMCCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding MCAddEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding ResetMCCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > Homeroom > Message Center"/></TextBlock>
+                                <TextBlock Grid.Row="8" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > Course Material > Other"/></TextBlock>
+
+                            </Grid>
+                            <Grid x:Name="AuxSiteGrid" Margin="0,10,0,0" Visibility="{Binding AuxGridVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Width="270" Text="{Binding AuxURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class URL" Margin="0,0,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxSite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Site URL/Program Name" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path to Issue on Site (Be Specific)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxCBR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Best Contact Phone Number" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AuxFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding AuxFinalEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding CreateAuxCommand}" Grid.Row="7" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                <Button Command="{Binding AddAuxCommand}" Grid.Row="7" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding AuxAddEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding ResetAuxCommand}" Grid.Row="7" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                <TextBlock Grid.Row="8" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                <TextBlock Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Other"/></TextBlock>
+                                <TextBlock Grid.Row="10" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Study Island"/></TextBlock>
+
+                            </Grid>
+                            <Grid x:Name="AccountGrid" Margin="0,10,0,0" Visibility="{Binding AccountGridVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Width="270" Text="{Binding AccountURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Site URL/Program Name" Margin="0,0,0,0"/>
+                                <TextBox Width="270" Text="{Binding AccountName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Username/Password tested" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AccountCBR, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Best Contact Phone Number" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding AccountFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding AccountFinalEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding CreateAccountCommand}" Grid.Row="4" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                <Button Command="{Binding AddAccountCommand}" Grid.Row="4" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding AccountAddEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding ResetAccountCommand}" Grid.Row="4" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                <TextBlock Grid.Row="5" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                <TextBlock Grid.Row="6" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Other"/></TextBlock>
+                                <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum > Student > External Website > Study Island"/></TextBlock>
+
+                            </Grid>
+
+                            <Grid x:Name="DiscGrid" Margin="0,10,0,0" Visibility="{Binding DiscGridVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Width="270" Text="{Binding DiscURL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Class or Gradebook URL" Margin="0,0,0,0"/>
+                                <TextBox Width="270" Text="{Binding DiscName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Teacher Name (First Name and Last Name)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding DiscBrowser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Browser Version (If using a Home PC)" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding DiscPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" controls:TextBoxHelper.Watermark="Path" Margin="0,5,0,0"/>
+                                <TextBox Width="270" Text="{Binding DiscFinal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.ColumnSpan="3" Height="75" Grid.Column="0" controls:TextBoxHelper.Watermark="Hit 'Create AR' to preview the AR here..." Margin="0,5,0,0" IsEnabled="{Binding DiscFinalEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding CreateDiscCommand}" Grid.Row="5" Grid.Column="0" Margin="0,20,0,0" Content="Create AR"/>
+                                <Button Command="{Binding AddDiscCommand}" Grid.Row="5" Grid.Column="1" Margin="0,20,0,0" Content="Add to notes" IsEnabled="{Binding DiscAddEnabled, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Command="{Binding ResetDiscCommand}" Grid.Row="5" Grid.Column="2" Margin="0,20,0,0" Content="Reset"/>
+                                <TextBlock Grid.Row="6" Grid.ColumnSpan="3" Margin="0,20,0,0"><Run Text="AR Types:"/></TextBlock>
+                                <TextBlock Grid.Row="7" Grid.ColumnSpan="3" TextWrapping="Wrap" Width="270"><Run Text="Curriculum &gt; Student &gt; Course Material &gt; Other"/></TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

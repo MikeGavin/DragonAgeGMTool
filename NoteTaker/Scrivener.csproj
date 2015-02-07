@@ -283,6 +283,9 @@
     <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="Model\UpdateManager.cs" />
+    <Compile Include="UserControls\QuickAR.xaml.cs">
+      <DependentUpon>QuickAR.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SettingsUC.xaml.cs">
       <DependentUpon>SettingsUC.xaml</DependentUpon>
     </Compile>
@@ -312,6 +315,10 @@
     <Compile Include="View\logging.xaml.cs">
       <DependentUpon>logging.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\QuickAR.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
