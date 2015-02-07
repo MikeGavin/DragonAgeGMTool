@@ -51,6 +51,7 @@ namespace Scrivener.ViewModel
                         
             this.TextChanged += Note_TextChanged;
             NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+
         }
 
         private string _minionVisibility;
@@ -67,15 +68,17 @@ namespace Scrivener.ViewModel
         private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
+
+        //private ICSharpCode.AvalonEdit.Document.TextDocument document;
+        //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private string text;
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int caretPosition;
+        public int CaretPoisition { get { return caretPosition; } set { caretPosition = value; RaisePropertyChanged(); } }
         private DateTime _lastUpdated;
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 
-        private int _caretindex;
-        public int CaretIndex { get { return _caretindex; } set { _caretindex = value; RaisePropertyChanged();} }
         #endregion        
-
         
         #region EventBased Actions
         //Text change events for note
@@ -190,26 +193,48 @@ namespace Scrivener.ViewModel
                 {
                     if (qi.SubItems.Count == 0) // causes crash if null
                     {
+                        //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
+                        //the cursor position to reset we were forced to rely on the messager service here to 
+                        //access the append and inset methods
+                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
 
-                        string dataInserted = string.Empty;
-                        var caret = CaretIndex;
-                        
-                        if (Keyboard.Modifiers == ModifierKeys.Control)
+                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                         {
-                            dataInserted = qi.Content + " ";
+                            var temp = CaretPoisition;
+                            if(Text[CaretPoisition - 1] == ' ')
+                            {
+                                Text = Text.Insert(CaretPoisition, qi.Content);
+                                
+                            }
+                            else
+                            {
+                                Text = Text.Insert(CaretPoisition, " " + qi.Content);
+                                temp++;
+                            }
+                            CaretPoisition = temp + qi.Content.Length;
                         }
-                        else if (Properties.Settings.Default.DashinNotes == true)
+                        else
                         {
-                            dataInserted = qi.Content + System.Environment.NewLine;
-                            //SaveNotes();
+                            var substring = Text.Substring(Text.Length - 2, 2);
+                            if (substring == "\r\n" || substring == "- ")
+                            {
+                                Text += qi.Content;
+                            }
+                            else
+                            {
+                                if (Properties.Settings.Default.DashinNotes)
+                                {
+
+                                    Text += Environment.NewLine + "- " + qi.Content;
+                                }
+                                else
+                                {
+
+                                    Text += Environment.NewLine + qi.Content;
+                                }
+                            }
+                            CaretPoisition = Text.Length;                           
                         }
-                        else if (Properties.Settings.Default.DashinNotes == false)
-                        {
-                            dataInserted = "- " + qi.Content + System.Environment.NewLine;
-                            //SaveNotes();
-                        }
-                        Text = Text.Insert(CaretIndex, dataInserted);
-                        //CaretIndex = caret + dataInserted.Length;
                     }
                 }
                 catch (Exception e)

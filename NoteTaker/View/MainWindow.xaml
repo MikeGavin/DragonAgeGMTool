@@ -1,0 +1,211 @@
+﻿<controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:ignore="http://www.ignore.com"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                
+        xmlns:helpers="clr-namespace:Scrivener.Helpers"       
+        xmlns:mvvmcmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+        xmlns:UserControls="clr-namespace:Scrivener.UserControls"
+        xmlns:Properties="clr-namespace:Scrivener.Properties" 
+        xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" x:Class="Scrivener.View.MainWindow"
+        xmlns:model="clr-namespace:Scrivener.Model"
+        mc:Ignorable=" ignore"
+        Height="500.3"
+        Width="722" 
+        
+        SaveWindowPosition="True" Margin="0"
+        ShowIconOnTitleBar="False" RightWindowCommandsOverlayBehavior="HiddenTitleBar">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Scrivener;component/Resources/MahApps.xaml" />               
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="EditableTabHeaderControl" TargetType="{x:Type helpers:EditableTabHeaderControl}"/>
+
+            <Style x:Key="ItemContainerStyle" TargetType="{x:Type TabItem}">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <helpers:EditableTabHeaderControl
+            					Style="{StaticResource EditableTabHeaderControl}" Content="{Binding Name, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="EditableLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Label}">
+                            <Grid>
+                                <TextBox x:Name="textBox"
+            						Panel.ZIndex="1"
+            						Padding="1,3,0,0"
+            						Text="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type Label}}, UpdateSourceTrigger=PropertyChanged}"
+            						Opacity="0"/>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+
+                                <EventTrigger RoutedEvent="Control.MouseDoubleClick">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames                                          
+            									Storyboard.TargetName="textBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <DiscreteDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="UIElement.LostFocus">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames                                          
+            									Storyboard.TargetName="textBox" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                <DiscreteDoubleKeyFrame KeyTime="00:00:01" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <BooleanToVisibilityConverter x:Key="visibilityConverter" />
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <controls:MetroWindow.DataContext>
+        <Binding Path="Main" Source="{StaticResource Locator}"/>
+    </controls:MetroWindow.DataContext>
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+            <controls:Flyout x:Name="SettingsFlyout" Position="Right" TitleVisibility="Visible"  Width="auto" Theme="Adapt" IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True">
+                <UserControls:SettingsUC HorizontalAlignment="Left"/>
+            </controls:Flyout>
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    <controls:MetroWindow.LeftWindowCommands>
+        <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
+            <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Style="{StaticResource MetroCommandButton}">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">New Tab<LineBreak/>Ctrl+T</TextBlock>                        
+                    </ToolTip>                    
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Style="{StaticResource MetroCommandButton}"/>
+            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}" Click="Open_Break_Clock"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.LeftWindowCommands>
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
+            <Button Style="{StaticResource MetroCommandButton}">
+                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" >
+                    <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem" >
+                                <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+                                <Setter Property="CommandParameter" Value="{Binding Content}"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        <MenuItem.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                            </HierarchicalDataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </Menu>
+            </Button>
+            <Button Style="{StaticResource MetroCommandButton}">
+                <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="phone" Background="{x:Null}">
+                    <MenuItem Style="{x:Null}" Header="&#xf095;" ToolTip="Phone Directory" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Phoneitems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">                        
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding Main.OpenCallCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
+                                <Setter Property="CommandParameter" Value="{Binding Content}"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        <MenuItem.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type MenuItem}" ItemsSource="{Binding SubItems}">
+                                <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Content}" />
+                            </HierarchicalDataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
+                </Menu>
+            </Button>
+            <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                     Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
+                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Search EKB">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Style="{StaticResource MetroCommandButton}">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">QuickNotes<LineBreak/>Ctrl+Q</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xf1c0;" ToolTip="Database Updated" Command="{Binding DBUpdated_Click}"  Style="{StaticResource MetroCommandButton}" Visibility="{Binding DBUpdated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+            <Button Content="&#xf071;" Foreground="Yellow" ToolTip="Restart Required"  Style="{StaticResource MetroCommandButton}" Visibility="{Binding Updated, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
+    <Grid x:Name="LayoutRoot" Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="248*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TabControl x:Name ="Tabs" IsSynchronizedWithCurrentItem="True" Padding="0" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" MinWidth="410" MinHeight="200" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderThickness="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <UserControls:EditableTextBlockUC Text="{Binding Title, Mode=TwoWay}" Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <!--<helpers:CachedContentPresenter>
+                        <DataTemplate>-->
+                    <UserControls:NoteViewUC Margin="0"/>
+                        <!--</DataTemplate>
+                    </helpers:CachedContentPresenter>-->                 
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+    <controls:MetroWindow.InputBindings>
+        <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />
+        <KeyBinding Command="{Binding SelectedNote.CloseNoteCommand}" Key="W" Modifiers="Ctrl"/>
+        <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
+        <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
+        <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
+        
+        <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F1" />
+        <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F2"/>
+        <KeyBinding Command="{Binding OpenQuickARCommand}" Key="F3"/>
+    </controls:MetroWindow.InputBindings>
+</controls:MetroWindow>

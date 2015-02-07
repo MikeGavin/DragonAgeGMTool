@@ -31,10 +31,27 @@ namespace Scrivener.UserControls
             {
                 log.Error(e.Message);
             }
+            //Moved to custom control backend
+            //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "insert", (action) => InsertQI(action));
+            //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "append", (action) => AppendQI(action));
         }
 
+        //private void InsertQI(string qi)
+        //{
+        //    textEditor.Document.Insert(textEditor.TextArea.Caret.Offset, qi);
+        //}
+        
+        //private void AppendQI(string qi)
+        //{
+        //    textEditor.AppendText(qi);
+        //    textEditor.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+        //    textEditor.ScrollToEnd(); //Scrolls window but does not set caret.
+        //    textEditor.CaretOffset = textEditor.Text.Length;
+            
+        //}
+
         private void Noteareakeydown(object sender, KeyEventArgs e)
-        {
+         {
             //if (Properties.Settings.Default.DashinNotes == true)
             //{
             //    if (e.Key == Key.Enter && Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
@@ -73,12 +90,20 @@ namespace Scrivener.UserControls
 
         private void TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            var oldIndex = Notearea.CaretIndex;
             Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
             {
                 //Keyboard.Focus(Notearea);
-                Notearea.Focus();
+                //Notearea.Focus();
+                //Notearea.CaretIndex = index;
+            });
+        }
+
+        private void textEditor_TextChanged(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.BeginInvoke((System.Threading.ThreadStart)delegate
+            {
+                //Keyboard.Focus(textEditor);
+                //Notearea.Focus();
                 //Notearea.CaretIndex = index;
             });
         }    
