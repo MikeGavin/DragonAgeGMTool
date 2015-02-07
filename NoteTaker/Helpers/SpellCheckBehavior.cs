@@ -42,12 +42,28 @@ namespace Scrivener.Helpers
                 ReadCustomDictionary();
 
                 textEditor.ContextMenuOpening += textEditor_ContextMenuOpening;
-                textEditor.ContextMenuClosing += textEditor_ContextMenuClosing;
                 textEditor.TextChanged += textEditor_TextChanged;
-
+                
                 AssociatedObject.TextArea.TextView.LineTransformers.Add(new SpellingErrorColorizer());
+                
             }
             base.OnAttached();
+        }
+
+        void textEditor_MouseHover(object sender, MouseEventArgs e)
+        {
+            var pos = textEditor.GetPositionFromPoint(e.GetPosition(textEditor));
+            if (pos != null)
+            {
+                int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+                if (newCaret >= textEditor.Document.TextLength)
+                    newCaret--;
+                var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
+                var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordBorder);
+                var wordLength = wordEnd - wordStartOffset;
+                var word = textEditor.Document.GetText(wordStartOffset, wordLength);
+            } 
+            
         }
 
         protected override void OnDetaching()
@@ -56,7 +72,6 @@ namespace Scrivener.Helpers
             if (textEditor != null)
             {
                 textEditor.ContextMenuOpening -= textEditor_ContextMenuOpening;
-                textEditor.ContextMenuClosing -= textEditor_ContextMenuClosing;
                 textEditor.TextChanged -= textEditor_TextChanged;
             }
             base.OnDetaching();
@@ -117,70 +132,71 @@ namespace Scrivener.Helpers
             }
         }
     
-        void textEditor_ContextMenuClosing(object sender, ContextMenuEventArgs e)
-        {
-            //Reset the context menu
-            //textEditor.ContextMenu = defaultMenu;
-        }
-
         private void textEditor_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            TextViewPosition? pos = textEditor.TextArea.TextView.GetPosition(new Point(e.CursorLeft, e.CursorTop));
+            TextViewPosition? pos = textEditor.GetPositionFromPoint(new Point(e.CursorLeft, e.CursorTop));
+
             //Reset the context menu
             textEditor.ContextMenu = new ContextMenu();
-            if (pos == null) { AddStandards(); return; }
-                
-                //Get the new caret position
-                int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+            if (pos != null)
+            {
+                ContextSpellCheck(pos);
+            }
+            this.AddStandards();
+        }
 
+        private void ContextSpellCheck(TextViewPosition? pos)
+        {
+            int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+            if (newCaret >= textEditor.Document.TextLength)
+                newCaret--;
+            var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
+            var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordBorder);
+            var wordLength = wordEnd - wordStartOffset;
+            var word = textEditor.Document.GetText(wordStartOffset, wordLength);            
+            if (wordStartOffset > 0)
+            {
+                GetClickWord(wordStartOffset, wordLength);
+            }
+        }
 
-                var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
-                if (wordEnd < 0)
-                {
-                    wordEnd = textEditor.Text.Length;
-                }
-                var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordStart);
-                var wordLength = wordEnd - wordStartOffset;
-                if (wordStartOffset < 0) { AddStandards(); 
-                    return; } // Prevent crash if data is blank
+        private void GetClickWord(int wordStartOffset, int wordLength)
+        {
+            var word = textEditor.Document.GetText(wordStartOffset, wordLength);
 
-                var word = textEditor.Text.Substring(wordStartOffset, wordLength);
-                var suggestions = new List<string>();
-                
-                if (word.Contains(Environment.NewLine) || string.IsNullOrWhiteSpace(word)) { AddStandards(); 
-                    return; }
-                
+            if (!word.Contains(Environment.NewLine))
+            {
                 if (!hunspell.Spell(word)) //If there is a spelling mistake
                 {
-                    suggestions = hunspell.Suggest(word);
-                    if (suggestions != null && suggestions.Count() >= 1)
-                    {
-                        
-
-                        foreach (string err in suggestions)
-                        {
-                            var item = new MenuItem { Header = err };
-                            var t = new Tuple<int, int>(wordStartOffset, wordLength);
-                            item.Tag = t;
-                            item.Click += item_Click;
-                            textEditor.ContextMenu.Items.Add(item);
-                        }
-
-                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-                    }
-                    else
-                    {
-                        //No Suggestions found, add a disabled NoSuggestions menuitem.
-                        this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
-                        this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
-                    }
+                    BuildSuggestionsMenu(wordStartOffset, wordLength, word);
                     this.textEditor.ContextMenu.Items.Add(new Separator());
                 }
-                this.AddStandards();
-            
-            
-            
-          
+               
+            }
+        }
+
+        private void BuildSuggestionsMenu(int wordStartOffset, int wordLength, string word)
+        {
+            var suggestions = hunspell.Suggest(word);
+            if (suggestions != null && suggestions.Count() >= 1)
+            {
+                foreach (string err in suggestions)
+                {
+                    var item = new MenuItem { Header = err };
+                    var t = new Tuple<int, int>(wordStartOffset, wordLength);
+                    item.Tag = t;
+                    item.Click += item_Click;
+                    textEditor.ContextMenu.Items.Add(item);
+                }
+
+                this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+            }
+            else
+            {
+                //No Suggestions found, add a disabled NoSuggestions menuitem.
+                this.textEditor.ContextMenu.Items.Add(new MenuItem { Header = "No Suggestions", IsEnabled = false });
+                this.textEditor.ContextMenu.Items.Add(AddToDictionaryMenuItem(wordStartOffset, wordLength));
+            }
         }
 
         private MenuItem AddToDictionaryMenuItem(int wordStartOffset, int wordLength)
