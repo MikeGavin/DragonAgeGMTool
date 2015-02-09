@@ -30,7 +30,7 @@ namespace Scrivener.Helpers
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
                 //AssociatedObject.TextArea.Caret.PositionChanged += Caret_PositionChanged;
-                //GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
+                GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
             }
         }
 
@@ -99,7 +99,7 @@ namespace Scrivener.Helpers
                         Keyboard.Focus(textEditor);
                     });
                 }
-                AssociatedObject.TextArea.Caret.BringCaretToView();
+                //AssociatedObject.TextArea.Caret.BringCaretToView();
             }
         }
 
@@ -263,20 +263,54 @@ namespace Scrivener.Helpers
             DependencyProperty.Register("ReturnFocus", typeof(bool), typeof(AvalonEditBehaviour),
             new PropertyMetadata(false));
 
-        //private void ProcessQI(string qi)
-        //{
-        //    if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-        //    {
-        //        var orgCaret = AssociatedObject.TextArea.Caret.Offset;
-        //        AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, qi);
-        //        AssociatedObject.TextArea.Caret.Offset = orgCaret + qi.Length;               
-        //    }
-        //    else
-        //    {
-        //        AssociatedObject.AppendText(Environment.NewLine + qi);
-        //        AssociatedObject.ScrollToEnd();
-        //        AssociatedObject.CaretOffset = AssociatedObject.Text.Length;
-        //    }
-        //}
+        private string DashCheck(string qn)
+        {
+            if (Properties.Settings.Default.DashinNotes)
+            {
+                return "- " + qn;
+            }
+            else
+            {
+                return qn;
+            }
+        }
+
+        private void ProcessQI(string qn)
+        {
+            if (AssociatedObject.Text.Length < 1)
+            {
+                AssociatedObject.AppendText(DashCheck(qn));
+            }
+            else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                var orgCaret = AssociatedObject.TextArea.Caret.Offset;
+                if (AssociatedObject.Text[AssociatedObject.CaretOffset - 1] == ' ')
+                {
+                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, qn);
+
+                }
+                else
+                {
+                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, " " + qn);                    
+                }
+
+                AssociatedObject.TextArea.Caret.Offset = orgCaret + qn.Length;                
+            }
+            else
+            {
+                var substring = AssociatedObject.Text.Substring(AssociatedObject.Text.Length - 2, 2);
+                if (substring == "\r\n" || substring == "- ")
+                {
+                    AssociatedObject.AppendText(qn);
+                }
+                else
+                {
+                    AssociatedObject.AppendText(Environment.NewLine + DashCheck(qn));
+                  
+                }
+                AssociatedObject.ScrollToEnd();                
+                AssociatedObject.CaretOffset = AssociatedObject.Text.Length;
+            }
+        }
     }
 }
