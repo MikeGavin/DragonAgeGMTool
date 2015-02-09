@@ -122,12 +122,13 @@ namespace Scrivener.Helpers
         private void textEditor_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             TextViewPosition? pos = textEditor.GetPositionFromPoint(new Point(e.CursorLeft, e.CursorTop));
-
+            
             //Reset the context menu
             textEditor.ContextMenu = new ContextMenu();
             if (pos != null)
             {
-                ContextSpellCheck(pos);
+                if (!pos.Value.IsAtEndOfLine)
+                    ContextSpellCheck(pos);
             }
             this.AddStandards();
         }
@@ -138,11 +139,12 @@ namespace Scrivener.Helpers
             if (newCaret >= textEditor.Document.TextLength)
                 newCaret--;
             var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
-            var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordBorder);
-            var wordLength = wordEnd - wordStartOffset;
-            var word = textEditor.Document.GetText(wordStartOffset, wordLength);
-            if (wordStartOffset > 0)
+            if (wordEnd > 0)
             {
+                var wordStartOffset = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Backward, CaretPositioningMode.WordBorder);
+                if (wordStartOffset < 0) { wordStartOffset++; }
+                var wordLength = wordEnd - wordStartOffset;
+
                 GetClickWord(wordStartOffset, wordLength);
             }
         }
