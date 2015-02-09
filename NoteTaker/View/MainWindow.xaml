@@ -92,8 +92,8 @@
                              ScrollViewer.CanContentScroll="True" Width="300" >
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
             </controls:Flyout>
-            <controls:Flyout x:Name="ARFlyout" Position="Left" TitleVisibility="Hidden"  Width="auto" Theme="Adapt" IsOpen="True" ScrollViewer.CanContentScroll="True">
-                <UserControls:QuickAR  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <controls:Flyout x:Name="ARFlyout" Position="Right" TitleVisibility="Collapsed" CloseButtonVisibility="Collapsed" Theme="Adapt" IsOpen="{Binding QARExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True" Width="300" >
+                <UserControls:QuickAR  HorizontalAlignment="Left" VerticalAlignment="Top"/> 
             </controls:Flyout>
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
@@ -163,7 +163,14 @@
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xf0cb;" Command="{Binding OpenQuickARCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">Quick AR Forms<LineBreak/>F1</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xF013;" Command="{Binding Settingsbuttoncommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>

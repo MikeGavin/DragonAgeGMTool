@@ -39,10 +39,10 @@
     </UserControl.Resources>
 
     <Grid>
-        <Button Content="&#xF013;" Command="{Binding SettingsExpandCommand}" Style="{StaticResource MetroCommandButton}" FontFamily ="pack://application:,,,/Resources/#FontAwesome"
+        <Button Content="&#xF013;" Command="{Binding Settingsbuttoncommand}" Style="{StaticResource MetroCommandButton}" FontFamily ="pack://application:,,,/Resources/#FontAwesome"
                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,-35,0,0" FontSize="21"/>
         <controls:MetroTabControl TabStripPlacement="Top" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsSelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">F1</TextBlock>
@@ -124,7 +124,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistoryVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+            <TabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistorySelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <!--<controls:MetroTabItem.ToolTip>
                 <ToolTip>
                     <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>

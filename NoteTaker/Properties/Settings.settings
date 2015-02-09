@@ -80,8 +80,8 @@
     <Setting Name="defrsd" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="History_Visibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Collapsed</Value>
+    <Setting Name="HistorySelected" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="History_Date" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
@@ -98,8 +98,8 @@
     <Setting Name="Closingall" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Settings_Visibility" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
+    <Setting Name="SettingsSelected" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ClassContentChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -170,50 +170,8 @@
     <Setting Name="DatePickerOpen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Towervisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Monitorvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Printervisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Keyboardvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Mousevisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Mousepadvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Headsetvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Speakersrvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Ethernetcablevisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Usbcablevisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Vgacablevisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Powerstripvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Tabletvisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Tabletchargervisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
-    </Setting>
-    <Setting Name="Routervisible" Type="System.Windows.Visibility" Scope="User">
-      <Value Profile="(Default)">Visible</Value>
+    <Setting Name="QARExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -9,9 +9,22 @@
              xmlns:Properties="clr-namespace:Scrivener.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid MinWidth="300" MaxWidth="300" Margin="0,60,0,0" >
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatSlider.xaml" />
+                <ResourceDictionary Source="/Scrivener;component/Resources/MahApps.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid MinWidth="300" MaxWidth="300" Margin="0,0,0,0" >
+        <Button Content="&#xf0cb;" Command="{Binding OpenQuickARCommand}" Style="{StaticResource MetroCommandButton}" FontFamily ="pack://application:,,,/Resources/#FontAwesome"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,-35,0,0" FontSize="21"/>
         <TabControl>
-            <TabItem Header="BreakFix" HorizontalContentAlignment="Left">
+            <TabItem Header="BreakFix" HorizontalContentAlignment="Left" controls:ControlsHelper.HeaderFontSize="16">
                 <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto" >
                     <Grid Height="Auto" Width="auto">
                         <Grid.RowDefinitions>
@@ -35,21 +48,21 @@
                         <TextBlock Grid.Row="0" Grid.Column="0"  Text="Please replace:" HorizontalAlignment="Center"></TextBlock>
                         <TextBlock Grid.Row="0" Grid.Column="1"  Text="Scheduled for:" HorizontalAlignment="Center"></TextBlock>
                         <ListBox Grid.Row="1" Grid.RowSpan="10" Grid.Column="0" x:Name="bflistbox" Width="150" Height="290" SelectionMode="Multiple" HorizontalAlignment="Center" BorderThickness="0" VerticalContentAlignment="Center" VerticalAlignment="Top">
-                            <ListBoxItem x:Name="TowerLBI" Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Towervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="MonitorLBI" Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Monitorvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="PrinterLBI" Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Printervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="KeyboardLBI" Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Keyboardvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="MouseLBI" Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="MousePadLBI" Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Mousepadvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="HeadsetLBI" Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Headsetvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="SpeakersLBI" Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Speakersrvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="SpeakerSelected" Unselected="SpeakerDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="EthernetLBI" Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Ethernetcablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="USBLBI" Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Usbcablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="VGALBI" Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Vgacablevisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="PowerLBI" Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Powerstripvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="TabletLBI" Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletvisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="ChargerLBI" Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Tabletchargervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
-                            <ListBoxItem x:Name="RouterLBI" Content="ECOT Router" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Visibility="{Binding Routervisible, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"></ListBoxItem>
+                            <ListBoxItem x:Name="TowerLBI" Content="Tower" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"/>
+                            <ListBoxItem x:Name="MonitorLBI" Content="Monitor" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"/>
+                            <ListBoxItem x:Name="PrinterLBI" Content="Printer" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="iDeliverEnableClick" Unselected="iDeliverDeselected"/>
+                            <ListBoxItem x:Name="KeyboardLBI" Content="Keyboard" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="MouseLBI" Content="Mouse" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="MousePadLBI" Content="Mouse Pad" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="HeadsetLBI" Content="Headset" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="SpeakersLBI" Content="Speakers" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="SpeakerSelected" Unselected="SpeakerDeselected"/>
+                            <ListBoxItem x:Name="EthernetLBI" Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="USBLBI" Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="VGALBI" Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="PowerLBI" Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="TabletLBI" Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"/>
+                            <ListBoxItem x:Name="ChargerLBI" Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"/>
+                            <ListBoxItem x:Name="RouterLBI" Content="ECOT Router" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"/>
                         </ListBox>
                         <DatePicker Name="BFDate" Grid.Row="1" Grid.Column="1" SelectedDateFormat="Short" DisplayDateStart="{x:Static sys:DateTime.Now}" Margin="5,0,0,0" BorderThickness="0" IsEnabled="False"/>
                         <ComboBox Name="StartTime" Grid.Row="2" Grid.Column="1" Height="25" VerticalAlignment="Top" Margin="5,5,0,0" BorderThickness="0" IsEnabled="False">
@@ -118,7 +131,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Curriculum" HorizontalContentAlignment="Left">
+            <TabItem Header="Curriculum" HorizontalContentAlignment="Left" controls:ControlsHelper.HeaderFontSize="16">
                 <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Width="auto" >
                     <Grid Height="Auto" Width="auto">
                         <Rectangle Height="2" Width="auto" VerticalAlignment="Top" StrokeThickness="2" Stroke="White"/>
