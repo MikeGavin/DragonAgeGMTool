@@ -196,45 +196,57 @@ namespace Scrivener.ViewModel
                         //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
                         //the cursor position to reset we were forced to rely on the messager service here to 
                         //access the append and inset methods
-                        //GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
+                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
+                        //if (text.Length < 2)
+                        //{
+                        //    if (Properties.Settings.Default.DashinNotes)
+                        //    {
+                        //        Text += "- " + qi.Content;
+                        //    }
+                        //    else
+                        //    {
+                        //        Text += qi.Content;
+                        //    }
+                        //    return;
+                        //}
 
-                        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                        {
-                            var temp = CaretPoisition;
-                            if(Text[CaretPoisition - 1] == ' ')
-                            {
-                                Text = Text.Insert(CaretPoisition, qi.Content);
+                        //if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                        //{
+                        //    var temp = CaretPoisition;
+                        //    if(Text[CaretPoisition - 1] == ' ')
+                        //    {
+                        //        Text = Text.Insert(CaretPoisition, qi.Content);
                                 
-                            }
-                            else
-                            {
-                                Text = Text.Insert(CaretPoisition, " " + qi.Content);
-                                temp++;
-                            }
-                            CaretPoisition = temp + qi.Content.Length;
-                        }
-                        else
-                        {
-                            var substring = Text.Substring(Text.Length - 2, 2);
-                            if (substring == "\r\n" || substring == "- ")
-                            {
-                                Text += qi.Content;
-                            }
-                            else
-                            {
-                                if (Properties.Settings.Default.DashinNotes)
-                                {
+                        //    }
+                        //    else
+                        //    {
+                        //        Text = Text.Insert(CaretPoisition, " " + qi.Content);
+                        //        temp++;
+                        //    }
+                        //    CaretPoisition = temp + qi.Content.Length;
+                        //}
+                        //else
+                        //{
+                        //    var substring = Text.Substring(Text.Length - 2, 2);
+                        //    if (substring == "\r\n" || substring == "- ")
+                        //    {
+                        //        Text += qi.Content;
+                        //    }
+                        //    else
+                        //    {
+                        //        if (Properties.Settings.Default.DashinNotes)
+                        //        {
 
-                                    Text += Environment.NewLine + "- " + qi.Content;
-                                }
-                                else
-                                {
+                        //            Text += Environment.NewLine + "- " + qi.Content;
+                        //        }
+                        //        else
+                        //        {
 
-                                    Text += Environment.NewLine + qi.Content;
-                                }
-                            }
-                            CaretPoisition = Text.Length;                           
-                        }
+                        //            Text += Environment.NewLine + qi.Content;
+                        //        }
+                        //    }
+                        //    CaretPoisition = Text.Length;                           
+                        //}
                     }
                 }
                 catch (Exception e)
