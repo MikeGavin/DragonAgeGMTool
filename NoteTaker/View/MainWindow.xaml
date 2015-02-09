@@ -16,7 +16,10 @@
         Height="500.3"
         Width="722"         
         SaveWindowPosition="True" Margin="0"
-        RightWindowCommandsOverlayBehavior="Never">
+        RightWindowCommandsOverlayBehavior="Never"
+    RenderOptions.ClearTypeHint="Enabled"
+        TextOptions.TextFormattingMode="Display">
+    
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
