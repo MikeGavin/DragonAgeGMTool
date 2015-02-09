@@ -316,6 +316,10 @@
     <Compile Include="View\logging.xaml.cs">
       <DependentUpon>logging.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\EditableTabHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\QuickAR.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
