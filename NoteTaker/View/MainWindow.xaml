@@ -114,14 +114,14 @@
             <Button Content="&#xf0cb;" Command="{Binding OpenQuickARCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
                 <Button.ToolTip>
                     <ToolTip>
-                        <TextBlock TextAlignment="Center">Quick AR Forms<LineBreak/>F1</TextBlock>
+                        <TextBlock TextAlignment="Center">Quick AR Forms<LineBreak/>F4</TextBlock>
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
             <Button Content="&#xF013;" Command="{Binding Settingsbuttoncommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
                 <Button.ToolTip>
                     <ToolTip>
-                        <TextBlock TextAlignment="Center">Settings<LineBreak/>F1</TextBlock>
+                        <TextBlock TextAlignment="Center">Settings<LineBreak/>F2</TextBlock>
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
