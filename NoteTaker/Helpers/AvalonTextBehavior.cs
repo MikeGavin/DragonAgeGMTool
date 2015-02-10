@@ -31,6 +31,7 @@ namespace Scrivener.Helpers
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
                 //AssociatedObject.TextArea.Caret.PositionChanged += Caret_PositionChanged;
                 GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
+                ICSharpCode.AvalonEdit.Search.SearchPanel.Install(AssociatedObject.TextArea);                
             }
         }
 
