@@ -90,11 +90,11 @@
                     <Label Content="Toggle About:" Grid.Row="10"  Grid.Column="0" FontSize="15"/>
                     <Label Content="F1" Grid.Row="10"  Grid.Column="2" FontSize="15"/>
                     <Label Content="Toggle Settings:" Grid.Row="11"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F2" Grid.Row="10"  Grid.Column="2" FontSize="15"/>
+                    <Label Content="F2" Grid.Row="11"  Grid.Column="2" FontSize="15"/>
                     <Label Content="Toggle History:" Grid.Row="12"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F3" Grid.Row="11"  Grid.Column="2" FontSize="15"/>
+                    <Label Content="F3" Grid.Row="12"  Grid.Column="2" FontSize="15"/>
                     <Label Content="Toggle Quick AR Forms:" Grid.Row="13"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F4" Grid.Row="12"  Grid.Column="2" FontSize="15"/>
+                    <Label Content="F4" Grid.Row="13"  Grid.Column="2" FontSize="15"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsSelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
