@@ -386,7 +386,7 @@ namespace Scrivener.ViewModel
         {             
             if (Properties.Settings.Default.SettingsExpanded == false)
             {
-                Properties.Settings.Default.QuickARVisibility = false;
+                Properties.Settings.Default.QARExpanded = false;
                 Properties.Settings.Default.SettingsExpanded = true;
                 Properties.Settings.Default.AboutExpanded = true;    
             }
