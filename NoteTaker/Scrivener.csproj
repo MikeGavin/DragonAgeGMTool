@@ -290,6 +290,7 @@
     <Compile Include="UserControls\SettingsUC.xaml.cs">
       <DependentUpon>SettingsUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\FlyoutViewModelBase.cs" />
     <Compile Include="View\Break_Clock.xaml.cs">
       <DependentUpon>Break_Clock.xaml</DependentUpon>
     </Compile>
