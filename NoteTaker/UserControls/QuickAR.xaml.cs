@@ -285,7 +285,7 @@ namespace Scrivener.UserControls
             {
                 BFFinal.IsEnabled = true;
                 BFAdd.IsEnabled = true;
-                BFFinal.Text = replaceitems + bfasset + bfmodel + bfserial + bfnumber + bfaddy + bfshipment + bfdate + bftime;
+                BFFinal.Text = replaceitems + bfmodel + bfasset + bfserial + bfaddy + bfnumber + bfshipment + bfdate + bftime;
             }
         }
 
