@@ -44,8 +44,7 @@ namespace Scrivener.Helpers
                 //AssociatedObject.KeyDown -= AssociatedObject_KeyDown;
                 AssociatedObject.PreviewKeyDown -= AssociatedObject_KeyDown;
                 AssociatedObject.Loaded -= AssociatedObject_Loaded;
-                AssociatedObject.PreviewMouseLeftButtonUp -= AssociatedObject_MouseDown;
-                
+                AssociatedObject.PreviewMouseLeftButtonUp -= AssociatedObject_MouseDown;               
             }
         }
 
@@ -277,7 +276,7 @@ namespace Scrivener.Helpers
 
         private void ProcessQI(string qn)
         {
-            if (AssociatedObject.Text.Length < 1)
+            if (AssociatedObject.Text.Length < 2)
             {
                 AssociatedObject.AppendText(DashCheck(qn));
             }
