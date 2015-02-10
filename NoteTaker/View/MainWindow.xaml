@@ -24,7 +24,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Scrivener;component/Resources/MahApps.xaml" />
-                <!--<ResourceDictionary Source="/Scrivener;component/Resources/EditableTabHeader.xaml" />-->
+                <ResourceDictionary Source="/Scrivener;component/Resources/EditableTabHeader.xaml" />
         </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="visibilityConverter" />
         </ResourceDictionary>
