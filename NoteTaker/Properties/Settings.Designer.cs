@@ -704,5 +704,17 @@ namespace Scrivener.Properties {
                 this["QARExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AboutExpanded {
+            get {
+                return ((bool)(this["AboutExpanded"]));
+            }
+            set {
+                this["AboutExpanded"] = value;
+            }
+        }
     }
 }
