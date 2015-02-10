@@ -377,14 +377,14 @@
                 </Label.ContextMenu>
             </Label>
         </StackPanel>
-        <ListBox Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" IsSynchronizedWithCurrentItem="True" 
-                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="0,0,3,0" Padding="2">
-            <ListBox.ItemTemplate>
+        <ItemsControl Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" 
+                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Width="auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,3,0" Padding="2">
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding }" Margin="0,0,4,0"/>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

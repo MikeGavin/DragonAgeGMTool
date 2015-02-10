@@ -186,7 +186,6 @@ namespace Scrivener.Helpers
                 MenuItem selectAllMenuItem = new MenuItem();
                 selectAllMenuItem.Command = ApplicationCommands.SelectAll;
                 textEditor.ContextMenu.Items.Add(selectAllMenuItem);
-
             }
         }
 
