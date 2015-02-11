@@ -80,6 +80,8 @@ namespace Scrivener.ViewModel
                 }
             }
             DataB.Role = Properties.Settings.Default.Role_Current;
+            ARHelperVisibility(Properties.Settings.Default.Role_Current);
+
             //Hack to set current role in combobox
             var role = DataB.Roles.First((i) => i.Name == Properties.Settings.Default.Role_Current.Name);
             RolesView.MoveCurrentTo(role);
@@ -174,8 +176,11 @@ namespace Scrivener.ViewModel
         public DatabaseStorage DataB { get; set; }
 
         //https://code.msdn.microsoft.com/windowsdesktop/Grouping-Expanders-just-b1bbba57
-        string _CurrentExpanded;
+        private string _CurrentExpanded;
         public string CurrentExpanded { get { return _CurrentExpanded; } set { if (_CurrentExpanded != value) { _CurrentExpanded = value; RaisePropertyChanged(); } } }
+
+        private bool _formsVisibility;
+        public bool FormsVisibility { get { return _formsVisibility; } set { _formsVisibility = value; RaisePropertyChanged(); } }
 
         #region Note System
 
@@ -877,9 +882,23 @@ namespace Scrivener.ViewModel
                 //reset roll properties to force updates.
                 ReloadData(sender, "scrivener.sqlite");
                 Properties.Settings.Default.Minion_Visibility = Properties.Settings.Default.Role_Current.Minion;
+
+                ARHelperVisibility(Properties.Settings.Default.Role_Current);
             }
             Properties.Settings.Default.Save();
             
+        }
+
+        private void ARHelperVisibility(RoleItem role)
+        {
+            if (role.Name.ToLower() == "Help Desk".ToLower())
+            {
+                FormsVisibility = true;
+            }
+            else
+            {
+                FormsVisibility = false;
+            }
         }
 
         private async void ReloadData(object o, string f)
