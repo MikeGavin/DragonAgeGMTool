@@ -716,5 +716,17 @@ namespace Scrivener.Properties {
                 this["AboutExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Saveonclose {
+            get {
+                return ((bool)(this["Saveonclose"]));
+            }
+            set {
+                this["Saveonclose"] = value;
+            }
+        }
     }
 }

@@ -222,26 +222,51 @@ namespace Scrivener.ViewModel
         {
             NoteViewModel note = sender as NoteViewModel;
             CloseNote(note);
-        }
+        }        
 
         private async Task CloseNote(NoteViewModel note)
         {
-            if (Scrivener.Properties.Settings.Default.Close_Warning == true)
+            if (Properties.Settings.Default.Saveonclose == false)
             {
-                var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
-                if (result == true)
+                if (Scrivener.Properties.Settings.Default.Close_Warning == true)
+                {
+                    var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
+                    if (result == true)
+                    {
+                        await SetLastSaveClose(note);
+                    }
+                }
+                else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
                 {
                     await SetLastSaveClose(note);
                 }
-            }
-            else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
-            {
-                await SetLastSaveClose(note);
-            }
 
-            if (Notes.Count == 0)
+                if (Notes.Count == 0)
+                {
+                    NewNote();
+                }
+            }
+            else if (Properties.Settings.Default.Saveonclose == true)
             {
-                NewNote();
+                CopyAll();
+                if (Scrivener.Properties.Settings.Default.Close_Warning == true)
+                {
+                    var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
+                    if (result == true)
+                    {
+                        await SetLastSaveClose(note);
+                    }
+                }
+                else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
+                {
+                    await SetLastSaveClose(note);
+                }
+
+                if (Notes.Count == 0)
+                {
+                    NewNote();
+                }
+
             }
         }
 
@@ -1006,6 +1031,8 @@ namespace Scrivener.ViewModel
             // do something here
         } 
         #endregion
+
+
 
     }
 }

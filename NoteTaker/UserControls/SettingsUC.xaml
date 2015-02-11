@@ -125,13 +125,14 @@
 
                         </Grid>
                         <!--https://code.msdn.microsoft.com/windowsdesktop/Grouping-Expanders-just-b1bbba57-->
-                        <Expander Header="Text" Margin="0" IsExpanded="{Binding CurrentExpanded, ConverterParameter=1, Converter={StaticResource ExpandedConverter}}" BorderThickness="0">
+                        <Expander Header="Notes" Margin="0" IsExpanded="{Binding CurrentExpanded, ConverterParameter=1, Converter={StaticResource ExpandedConverter}}" BorderThickness="0">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
                                     <Button Content="&#xF0C7;" Background="{vm:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
                                 </StackPanel>
                                 <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <controls:ToggleSwitch Header="Copy Notes on Close" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Saveonclose, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                                 <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                                 <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
