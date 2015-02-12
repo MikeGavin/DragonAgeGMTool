@@ -294,10 +294,13 @@ namespace Scrivener.ViewModel
         {
             await Task.Factory.StartNew(async () =>
             {
-                await noteManager.SaveCurrent(note);
-                lastClosedNote = note;
+                if (note.Text != "" && note.Text != Properties.Settings.Default.Default_Note_Template)
+                {
+                    await noteManager.SaveCurrent(note);
+                    lastClosedNote = note;
+                    await noteManager.ArchiveCurrent(note);
+                }
                 Notes.Remove(note);
-                await noteManager.ArchiveCurrent(note);
             });
         }
 
