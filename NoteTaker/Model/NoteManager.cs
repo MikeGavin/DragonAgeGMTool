@@ -20,7 +20,7 @@ namespace Scrivener.Model
         {
             var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
-            Task.Run(async () => await CreatesHistory());
+            Task.Run(async () => await CreatesHistory());            
         }
 
 
@@ -237,5 +237,23 @@ namespace Scrivener.Model
             return archiveSearch;
         }
 
+        public int count = 0;
+
+        public void getcallcount()
+        {
+            var db = new SQLiteConnection(noteDatabase);
+            db.OpenAsync();
+
+            using (SQLiteCommand cmd = db.CreateCommand())
+            {
+                
+                cmd.CommandText = string.Format("SELECT COUNT(Date) FROM {0} WHERE Date is '{1}'", ArchiveTableName, DateTime.Now.ToString("M/dd/yyyy"));
+                cmd.ExecuteNonQuery();
+                count = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            db.Close();
+
+            Properties.Settings.Default.Callcount = count;
+        }
     }
 }

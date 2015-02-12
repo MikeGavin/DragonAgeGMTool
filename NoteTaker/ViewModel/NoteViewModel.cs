@@ -36,7 +36,8 @@ namespace Scrivener.ViewModel
             {
                 Guid = Guid.NewGuid();
                 Text = Properties.Settings.Default.Default_Note_Template;
-                Title = string.Format("Note {0}", ++_number);
+                //Title = string.Format("Note {0}", ++_number);
+                Title = string.Format("New Note");
                 _titlechanged = false;
                 LastUpdated = DateTime.Now;
             }

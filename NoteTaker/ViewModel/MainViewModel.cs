@@ -57,13 +57,15 @@ namespace Scrivener.ViewModel
             DeploymentSetup();
 
             //create DB singleton
-            DataB = DatabaseStorage.Instance;           
+            DataB = DatabaseStorage.Instance;            
            
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
+            updatecounts();
         }
 
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
@@ -301,6 +303,7 @@ namespace Scrivener.ViewModel
                     await noteManager.ArchiveCurrent(note);
                 }
                 Notes.Remove(note);
+                updatecounts();
             });
         }
 
@@ -347,7 +350,16 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region ToolBar Items
+        #region ToolBar Items       
+ 
+        
+        private int _callcount;
+        public int Callcount { get { return _callcount; } set { _callcount = value; RaisePropertyChanged(); } }
+
+        public void updatecounts()
+        {
+            noteManager.getcallcount();            
+        }
 
         private RelayCommand _QuickNoteToggleCommand;
         public RelayCommand QuickNoteToggleCommand { get { return _QuickNoteToggleCommand ?? (_QuickNoteToggleCommand = new RelayCommand(QuickNoteToggle)); } }

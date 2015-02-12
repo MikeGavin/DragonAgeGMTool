@@ -728,5 +728,29 @@ namespace Scrivener.Properties {
                 this["Saveonclose"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Callcount {
+            get {
+                return ((int)(this["Callcount"]));
+            }
+            set {
+                this["Callcount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Notenumber {
+            get {
+                return ((int)(this["Notenumber"]));
+            }
+            set {
+                this["Notenumber"] = value;
+            }
+        }
     }
 }

@@ -15,9 +15,9 @@
              mc:Ignorable="d" Margin="0"
              >
     <UserControl.Resources>
-    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
-    
+
     <Grid MinWidth="400" Grid.IsSharedSizeScope="True" >
         <Grid.RowDefinitions>
             <RowDefinition Height="27"/>
@@ -46,16 +46,16 @@
                 <helpers:SpellCheckBehavior />
             </i:Interaction.Behaviors>
         </avalonEdit:TextEditor>
-        
+
         <ComboBox Visibility="Collapsed"  Grid.Row="0" Grid.Column="1" Height="20" VerticalAlignment="Top" Margin="0,0,2,-5" BorderThickness="0"/>
         <TreeView Name="mainTreeView" Visibility="{Binding Main.QuicknoteVisibility, Source={StaticResource Locator}}" 
                   Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" ItemsSource="{Binding DataB.QuickItems.SubItems}" 
                   Margin="0,2,0,20" Width="Auto" Height="Auto" HorizontalAlignment="Right" MinWidth="200" MaxWidth="250">
-            
+
             <i:Interaction.Behaviors>
                 <helpers:BindableSelectedItemBehavior SelectedItem="{Binding SelectedQuickItem, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
-            
+
             <i:Interaction.Triggers>
                 <!--<i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedQuickItem}"/>
@@ -67,9 +67,9 @@
             <!--<TreeView.InputBindings>
                 <KeyBinding Command="{Binding AppendQuickItemCommand}" CommandParameter="{Binding SelectedItem, ElementName=mainTreeView}" Key="Enter" />
             </TreeView.InputBindings>-->
-            
+
             <TreeView.ItemContainerStyle>
-                
+
                 <!--    This Style binds a TreeViewItem to a TreeViewItemViewModel.   -->
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn= "{ StaticResource {x:Type TreeViewItem}}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
@@ -105,10 +105,10 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-        
+
         <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding DataB.QuickItems.SubItems}">
         </ListBox>
-        
+
         <StackPanel Visibility="{Binding Minion_Visibility, Converter={StaticResource BoolToVis}, Source={vm:Static Properties:Settings.Default}}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
             <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">
                 <Expander.Header>
@@ -130,6 +130,20 @@
                 <UserControls:MinionViewUC HorizontalAlignment="Left"/>
             </Expander>
         </StackPanel>
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Right" Margin="0,12,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Calls Taken: " TextWrapping="Wrap" Grid.Column="0" Width="auto" Height="auto" HorizontalAlignment="Right"/>
+            <TextBlock TextWrapping="Wrap" Grid.Column="1" Width="auto" Height="auto" HorizontalAlignment="Right" Text="{Binding Callcount, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--<TextBlock Text=" | " TextWrapping="Wrap" Grid.Column="2" Width="auto" Height="auto" HorizontalAlignment="Right"/>-->
+            <!--<TextBlock Text="Character Count: " TextWrapping="Wrap" Grid.Column="3" Width="auto" Height="auto" HorizontalAlignment="Right"/>-->
+            <!--<TextBlock Text="" TextWrapping="Wrap" Grid.Column="4" Width="auto" Height="auto" HorizontalAlignment="Right"/>-->
+        </Grid>
     </Grid>
 
 </UserControl>
