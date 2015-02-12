@@ -38,7 +38,7 @@ namespace Scrivener.ViewModel
                 Text = Properties.Settings.Default.Default_Note_Template;
                 //Title = string.Format("Note {0}", ++_number);
                 Title = string.Format("New Note");
-                _titlechanged = false;
+                //_titlechanged = false;
                 LastUpdated = DateTime.Now;
             }
             else
@@ -46,7 +46,7 @@ namespace Scrivener.ViewModel
                 Guid = incomingNote.Guid;
                 Text = incomingNote.Text;
                 Title = incomingNote.Title;
-                _titlechanged = true;
+                //_titlechanged = true;
                 LastUpdated = incomingNote.LastUpdated;
             }
                         
@@ -65,10 +65,10 @@ namespace Scrivener.ViewModel
         public Guid Guid { get { return _guid; } protected set { _guid = value; RaisePropertyChanged(); } }
         
 
-        private static int _number = 0; // used to nuber default notes
-        private bool _titlechanged = false; // defines if note title has already been changed
+        //private static int _number = 0; // used to nuber default notes
+        //private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
-        public string Title { get { return title; } set { title = value; RaisePropertyChanged(); _titlechanged = true; } }
+        public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
 
         //private ICSharpCode.AvalonEdit.Document.TextDocument document;
         //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
@@ -111,13 +111,13 @@ namespace Scrivener.ViewModel
 
             //}
 
-            if (_titlechanged == false) //Changes Title to first SEP entered then stops.
+            if (Title.ToLower() == "New Note".ToLower()) //Changes Title to first SEP entered then stops.
             {
                 MatchCollection sepmatches = sepid.Matches(Text);
                 if (sepmatches.Count > 0)
                 {
                     Title = sepmatches[0].ToString().Trim();
-                    _titlechanged = true;
+                    //_titlechanged = true;
                 }
 
             }
