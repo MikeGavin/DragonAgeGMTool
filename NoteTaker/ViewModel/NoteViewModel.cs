@@ -95,6 +95,7 @@ namespace Scrivener.ViewModel
         public event EventHandler TextChanged;
         //listener runs regex checks on text change
         private DateTime lastsaved = DateTime.Now;
+        
         void Note_TextChanged(object sender, EventArgs e)
         {
             LastUpdated = DateTime.Now;
@@ -124,9 +125,12 @@ namespace Scrivener.ViewModel
             var oneSec = new TimeSpan(0,0,0,1);
             if (DateTime.Now > lastsaved + oneSec)
             {
-                lastsaved = DateTime.Now;
-                RaiseNoteSave();
-                log.Trace("Saved note");
+                if (Text != "" && Text != Properties.Settings.Default.Default_Note_Template)
+                {
+                    lastsaved = DateTime.Now;
+                    RaiseNoteSave();
+                    log.Trace("Saved note");
+                }
             }
         }
 

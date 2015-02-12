@@ -246,7 +246,7 @@ namespace Scrivener.ViewModel
                     NewNote();
                 }
             }
-            else if (Properties.Settings.Default.Saveonclose == true)
+            else if (Properties.Settings.Default.Saveonclose == true && SelectedNote.Text != "")
             {
                 CopyAll();
                 if (Scrivener.Properties.Settings.Default.Close_Warning == true)
@@ -267,6 +267,26 @@ namespace Scrivener.ViewModel
                     NewNote();
                 }
 
+            }
+            else
+            {
+                if (Scrivener.Properties.Settings.Default.Close_Warning == true)
+                {
+                    var result = await Helpers.MetroMessageBox.ShowResult("WARNING!", string.Format("Are you sure you want to close '{0}'?", note.Title));
+                    if (result == true)
+                    {
+                        await SetLastSaveClose(note);
+                    }
+                }
+                else if (Scrivener.Properties.Settings.Default.Close_Warning == false)
+                {
+                    await SetLastSaveClose(note);
+                }
+
+                if (Notes.Count == 0)
+                {
+                    NewNote();
+                }
             }
         }
 
@@ -380,14 +400,19 @@ namespace Scrivener.ViewModel
         public RelayCommand OpenQuickARCommand { get { return _OpenQuickARCommand ?? (_OpenQuickARCommand = new RelayCommand(OpenQuickAR)); } }
         public void OpenQuickAR()
         {
-            if (Properties.Settings.Default.QARExpanded == false)
+            if (FormsVisibility == false)
+            { }
+            else if (FormsVisibility == true)
             {
-                Properties.Settings.Default.SettingsExpanded = false;                
-                Properties.Settings.Default.QARExpanded = true;
-            }
-            else
-            {
-                Properties.Settings.Default.QARExpanded = false;
+                if (Properties.Settings.Default.QARExpanded == false)
+                {
+                    Properties.Settings.Default.SettingsExpanded = false;
+                    Properties.Settings.Default.QARExpanded = true;
+                }
+                else
+                {
+                    Properties.Settings.Default.QARExpanded = false;
+                }
             }
         }
 
@@ -980,7 +1005,10 @@ namespace Scrivener.ViewModel
         {
             foreach (NoteViewModel n in Notes)
             {
-                await noteManager.SaveCurrent(n);
+                if (n.Text != "" && n.Text != Properties.Settings.Default.Default_Note_Template)
+                {
+                    await noteManager.SaveCurrent(n);
+                }
             }
 
         }

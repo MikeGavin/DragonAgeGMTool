@@ -168,6 +168,6 @@
         <KeyBinding Command="{Binding OpenaboutCommand}" Key="F1" />
         <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F2"/>
         <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F3"/>
-        <KeyBinding Command="{Binding OpenQuickARCommand}" Key="F4"/>
+        <KeyBinding Command="{Binding OpenQuickARCommand}" Key="F4" />
     </controls:MetroWindow.InputBindings>
 </controls:MetroWindow>
