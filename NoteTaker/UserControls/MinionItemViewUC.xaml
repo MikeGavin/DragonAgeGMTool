@@ -53,117 +53,124 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Width="auto">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid HorizontalAlignment="Left" Width="auto" Height="auto" Grid.Column="0">
+
+        <Grid Width="auto" Height="auto" HorizontalAlignment="Left" Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto" MinWidth="100"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Left" Width="auto" Height="auto" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto" MinWidth="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Name" Foreground="Gray"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="User" Foreground="Gray"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Chip" Foreground="Gray"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="RAM" Foreground="Gray"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="OSBit" Foreground="Gray"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="BOD" Style="{StaticResource StaffHide}" Foreground="Gray"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
-            <Label Grid.Row="7" Grid.Column="0" Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="Name" Foreground="Gray"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="User" Foreground="Gray"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Chip" Foreground="Gray"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="RAM" Foreground="Gray"/>
+                <Label Grid.Row="4" Grid.Column="0" Content="OSBit" Foreground="Gray"/>
+                <Label Grid.Row="5" Grid.Column="0" Content="BOD" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+                <Label Grid.Row="6" Grid.Column="0" Content="Image" Style="{StaticResource StaffHide}" Foreground="Gray"/>
+                <Label Grid.Row="7" Grid.Column="0" Content="VPN" Style="{StaticResource StaffHide}" Foreground="Gray"/>
 
-            <Label Content="{Binding Machine.PCName}" Grid.Row="0" Grid.Column="1">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
-                        <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
-                        <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
-                        <MenuItem Header="Lock Taskbar" Command="{Binding LockTaskbarCommand}"/>
-                        <MenuItem Header="Unlock Taskbar" Command="{Binding UnlockTaskbarCommand}"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
-            <Label Content="{Binding Machine.CurrentUser}" Grid.Column="1" Grid.Row="1">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <Label.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
-                        <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
-                        <MenuItem Header="Backup Profile" Command="{Binding BackupProfileCommand}"/>
-                        <MenuItem Header="Enable Profile Wipe" Command="{Binding EnableProfileWipeCommand}"/>
-                        <MenuItem Header="Disable Profile Wipe" Command="{Binding DisableProfileWipeCommand}"/>
-                    </ContextMenu>
-                </Label.ContextMenu>
-            </Label>
-            <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.RAM}" Grid.Column="1" Grid.Row="3">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.OSBit}" Grid.Column="1" Grid.Row="4">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
-            <Label Content="{Binding Machine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Label>
+                <Label Content="{Binding Machine.PCName}" Grid.Row="0" Grid.Column="1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="DameWare" Command="{Binding OpenDamewareCommand}" />
+                            <MenuItem Header="CShare" Command="{Binding OpenCShareCommand}"/>
+                            <MenuItem Header="File Cleanup" Command="{Binding FileCleanupCommand}"/>
+                            <MenuItem Header="Lock Taskbar" Command="{Binding LockTaskbarCommand}"/>
+                            <MenuItem Header="Unlock Taskbar" Command="{Binding UnlockTaskbarCommand}"/>
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <Label Content="{Binding Machine.CurrentUser}" Grid.Column="1" Grid.Row="1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Label.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Open H Drive" Command="{Binding OpenHDriveCommand}"/>
+                            <MenuItem Header="Fix Background" Command="{Binding FixBackgroundCommand}"/>
+                            <MenuItem Header="Backup Profile" Command="{Binding BackupProfileCommand}"/>
+                            <MenuItem Header="Enable Profile Wipe" Command="{Binding EnableProfileWipeCommand}"/>
+                            <MenuItem Header="Disable Profile Wipe" Command="{Binding DisableProfileWipeCommand}"/>
+                        </ContextMenu>
+                    </Label.ContextMenu>
+                </Label>
+                <Label Content="{Binding Machine.ChipStyle}" Grid.Column="1" Grid.Row="2">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+                <Label Content="{Binding Machine.RAM}" Grid.Column="1" Grid.Row="3">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+                <Label Content="{Binding Machine.OSBit}" Grid.Column="1" Grid.Row="4">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+                <Label Content="{Binding Machine.BOD}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+                <Label Content="{Binding Machine.Image}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="6">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
+                <Label Content="{Binding Machine.VPN}" Style="{StaticResource StaffHide}" Grid.Column="1" Grid.Row="7">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding PasteCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Label}, Path=Content }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Label>
 
+            </Grid>
         </Grid>
-        <Grid Grid.Column="1" Width="auto" Height="auto">
+        <Grid Grid.Column="1" Width="auto" Height="auto" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto" MinWidth="120" />
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -394,18 +401,17 @@
                     </Label.ContextMenu>
                 </Label>
             </StackPanel>
-                
-    </Grid>
-        <Grid Grid.Column="2" Width="auto" Height="auto">
-            <ItemsControl ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" 
-                     Grid.RowSpan="2147483647" VerticalAlignment="Stretch" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Width="auto" Height="auto"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,3,0" Padding="2">
+
+            <ItemsControl Grid.Column="2" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" 
+                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Width="auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,3,0" Padding="2">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding }" Margin="0,0,4,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding }" Margin="0,0,4,0" TextWrapping="Wrap" Padding="3" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+            
         </Grid>
     </Grid>
 </UserControl>
