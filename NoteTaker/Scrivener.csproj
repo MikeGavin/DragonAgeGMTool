@@ -283,6 +283,7 @@
     <Compile Include="Model\SiteDBPull.CS" />
     <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
+    <Compile Include="Model\TreeNodeT.cs" />
     <Compile Include="Model\UpdateManager.cs" />
     <Compile Include="UserControls\QuickAR.xaml.cs">
       <DependentUpon>QuickAR.xaml</DependentUpon>
