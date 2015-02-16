@@ -378,11 +378,11 @@
             </Label>
         </StackPanel>
         <ItemsControl Grid.Column="4" ItemsSource="{Binding LogCollection, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, BindsDirectlyToSource=True}" 
-                 Grid.RowSpan="2147483647" VerticalAlignment="Top" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Width="auto"
+                 Grid.RowSpan="2147483647" VerticalAlignment="Stretch" MaxHeight="150" HorizontalAlignment="Stretch" FontSize="11" Width="auto" Height="auto"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,3,0" Padding="2">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding }" Margin="0,0,4,0"/>
+                    <TextBlock Text="{Binding }" Margin="0,0,4,0" TextWrapping="Wrap"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
