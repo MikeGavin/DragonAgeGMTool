@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using System.Windows.Media;
 
 namespace Scrivener.Helpers
 {
@@ -24,14 +25,16 @@ namespace Scrivener.Helpers
             base.OnAttached();
             if (AssociatedObject != null)
             {
-                AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;
-                //AssociatedObject.KeyDown += AssociatedObject_KeyDown;
+                AssociatedObject.TextChanged += AssociatedObjectOnTextChanged;                
                 AssociatedObject.PreviewKeyDown += AssociatedObject_KeyDown;
                 AssociatedObject.Loaded += AssociatedObject_Loaded;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseDown;
-                //AssociatedObject.TextArea.Caret.PositionChanged += Caret_PositionChanged;
+                //allows mainVM to talk to this object.
                 GalaSoft.MvvmLight.Messaging.Messenger.Default.Register<string>(this, "ProcessQI", (action) => ProcessQI(action));
-                ICSharpCode.AvalonEdit.Search.SearchPanel.Install(AssociatedObject.TextArea);                
+                //Adds ctrl-f function, looks terrible though
+                ICSharpCode.AvalonEdit.Search.SearchPanel.Install(AssociatedObject.TextArea);
+                //gets Man apps current color to define link color so it is easier to read.
+                AssociatedObject.TextArea.TextView.LinkTextForegroundBrush = (Brush)Application.Current.Resources["AccentColorBrush2"];
             }
         }
 
