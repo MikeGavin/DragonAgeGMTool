@@ -19,7 +19,7 @@ namespace Scrivener.Model
         //Temp until single DB instance
         //private static SQLiteConnection QuickNotesDB = new SQLiteConnection(string.Format(@"Data Source={0}\Resources\QuickNotes.db;Version=3;New=True;Compress=True;", Environment.CurrentDirectory));
         private string mainDB = string.Format(@"Data Source={0}\Resources\Scrivener.sqlite", Environment.CurrentDirectory);
-        private SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
+        //private SQLiteConnection CallHistory = new SQLiteConnection(string.Format("Data Source=Call_History.db;Version=3;New=True;Compress=True;"));
 
         public async Task<ObservableCollection<RoleItem>> ReturnRoles()
         {

@@ -18,7 +18,7 @@ namespace Scrivener.Model
                 return System.Deployment.Application.ApplicationDeployment.CurrentDeployment.
                     CurrentVersion.ToString();
             }
-            return string.Format("Not network deployed.{0)Executing Assembly: {1}", Environment.NewLine, Assembly.GetExecutingAssembly().GetName().Version);
+            return string.Format("Not network deployed.{0}Executing Assembly: {1}", Environment.NewLine, Assembly.GetExecutingAssembly().GetName().Version);
         }
 
         public static void Email(Exception e)
