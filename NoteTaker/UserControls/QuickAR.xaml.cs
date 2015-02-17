@@ -72,11 +72,22 @@ namespace Scrivener.UserControls
 
 
             bool ideliver = false;
-            if (replaceitems.Contains("Tower") || replaceitems.Contains("Monitor") || replaceitems.Contains("Printer"))
+            bool asset = false;
+            bool model = false;
+            bool serial = false;
+
+            if (replaceitems.Contains("Tower"))
+            {
+                ideliver = true;
+                asset = true;
+                model = true;
+                serial = true;
+            }
+
+            else if (replaceitems.Contains("Monitor") || replaceitems.Contains("Printer"))
             {
                 ideliver = true;
             }
-
 
             if (BFDate.SelectedDate != null && BFDate.IsEnabled == true)
             {
@@ -217,7 +228,7 @@ namespace Scrivener.UserControls
                 nonumber = "";
             }
 
-            if (BFAsset.Text == "" && ideliver == true)
+            if (BFAsset.Text == "" && asset == true)
             {
                 noasset = "Please include ''Asset Tag''" + Environment.NewLine + Environment.NewLine;
             }
@@ -226,7 +237,7 @@ namespace Scrivener.UserControls
                 noasset = "";
             }
 
-            if (BFModel.Text == "" && ideliver == true)
+            if (BFModel.Text == "" && model == true)
             {
                 nomodel = "Please include ''Model''" + Environment.NewLine + Environment.NewLine;
             }
@@ -235,7 +246,7 @@ namespace Scrivener.UserControls
                 nomodel = "";
             }
 
-            if (BFSerial.Text == "" && ideliver == true)
+            if (BFSerial.Text == "" && serial == true)
             {
                 noserial = "Please include ''Serial Number''" + Environment.NewLine + Environment.NewLine;
             }
@@ -269,15 +280,15 @@ namespace Scrivener.UserControls
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
-            else if (ideliver == true && BFAsset.Text == "")
+            else if (asset == true && BFAsset.Text == "")
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
-            else if (ideliver == true && BFModel.Text == "")
+            else if (model == true && BFModel.Text == "")
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
-            else if (ideliver == true && BFSerial.Text == "")
+            else if (serial == true && BFSerial.Text == "")
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
@@ -286,6 +297,11 @@ namespace Scrivener.UserControls
                 BFFinal.IsEnabled = true;
                 BFAdd.IsEnabled = true;
                 BFFinal.Text = replaceitems + bfmodel + bfasset + bfserial + bfaddy + bfnumber + bfshipment + bfdate + bftime;
+
+                if (replaceitems.Contains("Tower") || replaceitems.Contains("Monitor") || replaceitems.Contains("Printer"))
+                {
+                    idelbutton.IsEnabled = true;
+                }
             }
         }
 
@@ -296,7 +312,7 @@ namespace Scrivener.UserControls
 
         private void iDeliverSelected()
         {
-            if (TowerLBI.IsSelected == true || MonitorLBI.IsSelected == true || PrinterLBI.IsSelected == true)
+            if (TowerLBI.IsSelected == true)
             {
                 DisablespeakerLI();
                 DisableTabletChargerRouterLI();
@@ -306,6 +322,17 @@ namespace Scrivener.UserControls
                 BFModel.IsEnabled = true;
                 BFNumber.IsEnabled = true;
                 BFSerial.IsEnabled = true;
+                StartTime.IsEnabled = true;
+                StopTime.IsEnabled = true;
+                BFShipment.IsEnabled = true;
+            }
+            else if (MonitorLBI.IsSelected == true || PrinterLBI.IsSelected == true)
+            {
+                DisablespeakerLI();
+                DisableTabletChargerRouterLI();
+                BFAddy.IsEnabled = true;
+                BFDate.IsEnabled = true;
+                BFNumber.IsEnabled = true;
                 StartTime.IsEnabled = true;
                 StopTime.IsEnabled = true;
                 BFShipment.IsEnabled = true;
@@ -327,6 +354,13 @@ namespace Scrivener.UserControls
                 StartTime.IsEnabled = false;
                 StopTime.IsEnabled = false;
                 BFShipment.IsEnabled = false;
+            }           
+
+            else if (TowerLBI.IsSelected == false)
+            {
+                BFAsset.IsEnabled = false;
+                BFModel.IsEnabled = false;
+                BFSerial.IsEnabled = false;
             }
             PeripheralSelected();
         }
@@ -521,6 +555,40 @@ namespace Scrivener.UserControls
             BFFinal.Text = "";
             BFFinal.IsEnabled = false;
             BFAdd.IsEnabled = false;
+            idelbutton.IsEnabled = false;
+        }
+
+        public void idelnotes(object sender, RoutedEventArgs e)
+        {
+            string idelitems = "";
+            string idelasset = "";
+            string idelserial = "";
+
+            if (bflistbox.SelectedItems.Count != 0)
+            {
+                foreach (ListBoxItem selecteditems in bflistbox.SelectedItems)
+                {
+                    idelitems += selecteditems.Content.ToString() + ", ";
+                }
+                int i = idelitems.LastIndexOf(",");
+                if (i != -1)
+                {
+                    idelitems = idelitems.Remove(i);
+                }                
+            }
+
+            if (BFAsset.Text != "" && BFAsset.IsEnabled == true)
+            {
+                idelasset = "Asset: " + BFAsset.Text;
+            }            
+
+            if (BFSerial.Text != "" && BFSerial.IsEnabled == true)
+            {
+                idelserial = "Serial: " + BFSerial.Text;
+            }
+             
+            string idel = idelitems + idelasset + idelserial;
+            Clipboard.SetDataObject(idel);
         }
     }
 }

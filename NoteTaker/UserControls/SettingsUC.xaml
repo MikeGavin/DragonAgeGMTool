@@ -46,7 +46,8 @@
             <TabItem Header="About" VerticalAlignment="Top" IsSelected="{Binding AboutExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Width="auto">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="143"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
@@ -69,32 +70,32 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Deployment" FontSize="15" Grid.Column="0"/>
-                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" FontSize="15" Padding="5,0"/>
-                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="15"/>
-                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1" FontSize="15" Padding="5,0"/>
-                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="15"/>
-                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2" FontSize="15" Padding="5,0"/>
-                    <Rectangle Grid.Row="3" Height="2" Width="auto" Grid.ColumnSpan="3" Fill="White"/>
-                    <Label Content="Hotkeys:" Grid.Row="4"  Grid.ColumnSpan="3" FontSize="15"/>
-                    <Label Content="New tab:" Grid.Row="5"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="Ctrl + T" Grid.Row="5"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Close tab:" Grid.Row="6"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="Ctrl + W" Grid.Row="6"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Close all tabs:" Grid.Row="7"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="Ctrl + Shift + W" Grid.Row="7"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Open last note:" Grid.Row="8"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="Ctrl + Shift + T" Grid.Row="8"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Toggle Quicknotes:" Grid.Row="9"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="Ctrl + Q" Grid.Row="9"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Toggle About:" Grid.Row="10"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F1" Grid.Row="10"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Toggle Settings:" Grid.Row="11"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F2" Grid.Row="11"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Toggle History:" Grid.Row="12"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F3" Grid.Row="12"  Grid.Column="2" FontSize="15"/>
-                    <Label Content="Toggle Quick AR Forms:" Grid.Row="13"  Grid.Column="0" FontSize="15"/>
-                    <Label Content="F4" Grid.Row="13"  Grid.Column="2" FontSize="15"/>
+                    <Label Content="Deployment" FontSize="15" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="0" FontSize="15" Padding="5,0"/>
+                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="1" FontSize="15" Padding="5,0"/>
+                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="2" FontSize="15" Padding="5,0"/>
+                    <Rectangle Grid.Row="3" Height="2" Width="auto" Grid.ColumnSpan="4" Fill="White"/>
+                    <Label Content="Hotkeys:" Grid.Row="4"  Grid.ColumnSpan="4" FontSize="15"/>
+                    <Label Content="New tab:" Grid.Row="5"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + T" Grid.Row="5"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Close tab:" Grid.Row="6"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + W" Grid.Row="6"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Close all tabs:" Grid.Row="7"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + Shift + W" Grid.Row="7"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Open last note:" Grid.Row="8"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + Shift + T" Grid.Row="8"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Toggle Quicknotes:" Grid.Row="9"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + Q" Grid.Row="9"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Toggle About:" Grid.Row="10"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="F1" Grid.Row="10"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Toggle Settings:" Grid.Row="11"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="F2" Grid.Row="11"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Toggle History:" Grid.Row="12"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="F3" Grid.Row="12"  Grid.Column="3" FontSize="15"/>
+                    <Label Content="Toggle Quick AR Forms:" Grid.Row="13"  Grid.Column="0" FontSize="15" Grid.ColumnSpan="2"/>
+                    <Label Content="F4" Grid.Row="13"  Grid.Column="3" FontSize="15"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsSelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
