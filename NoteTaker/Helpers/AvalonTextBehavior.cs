@@ -285,23 +285,26 @@ namespace Scrivener.Helpers
             }
             else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
+                string inserted;
                 var orgCaret = AssociatedObject.TextArea.Caret.Offset;
-                if (AssociatedObject.Text[AssociatedObject.CaretOffset - 1] == ' ')
+                if (AssociatedObject.Text[AssociatedObject.CaretOffset - 1] == ' ' || AssociatedObject.Text.Substring(AssociatedObject.CaretOffset - 2, 2) == Environment.NewLine)
                 {
-                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, qn);
+                    inserted = qn;
+                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, inserted);
 
                 }
                 else
                 {
-                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, " " + qn);                    
+                    inserted = " " + qn;
+                    AssociatedObject.Document.Insert(AssociatedObject.TextArea.Caret.Offset, inserted);                    
                 }
 
-                AssociatedObject.TextArea.Caret.Offset = orgCaret + qn.Length;                
+                AssociatedObject.TextArea.Caret.Offset = orgCaret + inserted.Length;                
             }
             else
             {
                 var substring = AssociatedObject.Text.Substring(AssociatedObject.Text.Length - 2, 2);
-                if (substring == "\r\n" || substring == "- ")
+                if (substring == Environment.NewLine || substring == "- ")
                 {
                     AssociatedObject.AppendText(qn);
                 }
