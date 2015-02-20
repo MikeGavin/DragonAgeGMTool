@@ -396,7 +396,7 @@ namespace Scrivener.UserControls
 
         private void PeripheralSelected()
         {
-            if (KeyboardLBI.IsSelected == true || MouseLBI.IsSelected == true || MousePadLBI.IsSelected == true || HeadsetLBI.IsSelected == true || SpeakersLBI.IsSelected == true || EthernetLBI.IsSelected == true || USBLBI.IsSelected == true || VGALBI.IsSelected == true || PowerLBI.IsSelected == true || TabletLBI.IsSelected == true || ChargerLBI.IsSelected == true || RouterLBI.IsSelected == true)
+            if (KeyboardLBI.IsSelected == true || MouseLBI.IsSelected == true || MousePadLBI.IsSelected == true || HeadsetLBI.IsSelected == true || SpeakersLBI.IsSelected == true || EthernetLBI.IsSelected == true || USBLBI.IsSelected == true || VGALBI.IsSelected == true || PowerLBI.IsSelected == true || PowerCableLBI.IsSelected == true || TabletLBI.IsSelected == true || ChargerLBI.IsSelected == true || RouterLBI.IsSelected == true)
             {
                 DisablespeakerLI();
                 DisableTabletChargerRouterLI();
@@ -407,7 +407,7 @@ namespace Scrivener.UserControls
 
         private void PeripheralDeselected(object sender, RoutedEventArgs e)
         {
-            if (KeyboardLBI.IsSelected == false && MouseLBI.IsSelected == false && MousePadLBI.IsSelected == false && HeadsetLBI.IsSelected == false && SpeakersLBI.IsSelected == false && EthernetLBI.IsSelected == false && USBLBI.IsSelected == false && VGALBI.IsSelected == false && PowerLBI.IsSelected == false && TabletLBI.IsSelected == false && ChargerLBI.IsSelected == false && RouterLBI.IsSelected == false)
+            if (KeyboardLBI.IsSelected == false && MouseLBI.IsSelected == false && MousePadLBI.IsSelected == false && HeadsetLBI.IsSelected == false && SpeakersLBI.IsSelected == false && EthernetLBI.IsSelected == false && USBLBI.IsSelected == false && VGALBI.IsSelected == false && PowerLBI.IsSelected == false && PowerCableLBI.IsSelected == false && TabletLBI.IsSelected == false && ChargerLBI.IsSelected == false && RouterLBI.IsSelected == false)
             {
                 EnablespeakerLI();
                 EnableTabletChargerRouterLI();

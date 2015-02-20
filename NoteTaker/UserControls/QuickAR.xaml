@@ -60,6 +60,7 @@
                             <ListBoxItem x:Name="EthernetLBI" Content="Ethernet Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
                             <ListBoxItem x:Name="USBLBI" Content="USB Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
                             <ListBoxItem x:Name="VGALBI" Content="VGA Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
+                            <ListBoxItem x:Name="PowerCableLBI" Content="Power Cable" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
                             <ListBoxItem x:Name="PowerLBI" Content="Power Strip" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="EnabledPeripheralClick" Unselected="PeripheralDeselected"/>
                             <ListBoxItem x:Name="TabletLBI" Content="Tablet" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"/>
                             <ListBoxItem x:Name="ChargerLBI" Content="Tablet Charger" HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Selected="TabletChargerRouterSelected" Unselected="TabletChargerRouterDeselected"/>
