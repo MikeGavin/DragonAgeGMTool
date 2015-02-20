@@ -66,6 +66,8 @@ namespace Scrivener.ViewModel
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
             updatecounts();
+
+            
         }
 
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
