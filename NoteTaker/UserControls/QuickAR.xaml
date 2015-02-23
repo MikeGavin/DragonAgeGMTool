@@ -9,7 +9,7 @@
              xmlns:Properties="clr-namespace:Scrivener.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,7 +25,7 @@
                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,-35,0,0" FontSize="21"/>
         <TabControl>
             <TabItem Header="BreakFix" HorizontalContentAlignment="Left" controls:ControlsHelper.HeaderFontSize="16">
-                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto" >
+                <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Height="auto" Width="auto" Margin="0,0,0,0" >
                     <Grid Height="Auto" Width="auto">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20"/>
@@ -115,7 +115,14 @@
                             </i:Interaction.Triggers>
                         </TextBox>
                         <TextBox Name="BFAsset" Grid.Row="7" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Asset Tag" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="115" IsEnabled="False"/>
-                        <TextBox Name="BFModel" Grid.Row="8" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Model" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="115" IsEnabled="False"/>
+                        <ComboBox Name="BFModelPC" Grid.Row="8" Grid.Column="1" Height="25" VerticalAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="115" IsEnabled="False">
+                            <ComboBoxItem Name="DefaultModel" Content="Select Model" IsSelected="True"/>
+                            <ComboBoxItem Content="HP-3005"/>
+                            <ComboBoxItem Content="HP-4000"/>
+                            <ComboBoxItem Content="HP-505"/>
+                            <ComboBoxItem Name="Tiny" Content="Lenovo Tiny"/>
+                            <ComboBoxItem Name="TinyW" Content="Lenovo Tiny-W"/>
+                        </ComboBox>
                         <TextBox Name="BFSerial" Grid.Row="9" Grid.Column="1" Height="25" controls:TextBoxHelper.Watermark="Serial #" VerticalContentAlignment="Bottom" Margin="5,5,0,0" BorderThickness="0" Width="115" IsEnabled="False"/>
                         <TextBox Name="BFFinal" Text="{Binding BFReplace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Height="auto" controls:TextBoxHelper.Watermark="Click ''CREATE AR'' to preview BreakFix." VerticalContentAlignment="Top" TextWrapping="Wrap" Margin="5,5,0,0" BorderThickness="0" Width="270" IsEnabled="False"/>
                         <Grid Margin="0,5,0,0" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Width="270">
@@ -128,7 +135,7 @@
                             <Button Name="BFAdd" Grid.Row="0" Grid.Column="1" Content="Add to notes" Command="{Binding CreateBreakfixCommand}" Margin="2,0" IsEnabled="False"></Button>
                             <Button Grid.Row="0" Grid.Column="2" Content="Reset" Click="ResetBF" Margin="2,0"></Button>
                         </Grid>
-                        <Button Name="idelbutton" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Content="Copy iDeliver Notes" Width="200" Margin="2,0" Click="idelnotes"/>
+                        <Button Name="idelbutton" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2" Content="Copy iDeliver Notes" Width="200" Margin="2,0" Click="idelnotes" IsEnabled="False"/>
 
                     </Grid>
                 </ScrollViewer>

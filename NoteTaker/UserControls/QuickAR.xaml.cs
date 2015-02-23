@@ -25,12 +25,14 @@ namespace Scrivener.UserControls
             InitializeComponent();
         }
 
-                private void Phoneregex(object sender, TextCompositionEventArgs e)
+        private void Phoneregex(object sender, TextCompositionEventArgs e)
         {
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        public ComboBoxItem defaultmodel = null;
+        
         private void CompileBF(object sender, RoutedEventArgs e)
         {
             String replaceitems = "Please replace: ";
@@ -38,6 +40,7 @@ namespace Scrivener.UserControls
             String bftime = "";
             ComboBoxItem starttime = StartTime.SelectedItem as ComboBoxItem;
             ComboBoxItem stoptime = StopTime.SelectedItem as ComboBoxItem;
+            ComboBoxItem defaultmodel = BFModelPC.SelectedItem as ComboBoxItem;            
             String bfshipment = "";
             String bfnumber = "";
             String bfaddy = "";
@@ -144,9 +147,9 @@ namespace Scrivener.UserControls
                 bfasset = "";
             }
 
-            if (BFModel.Text != "" && BFModel.IsEnabled == true)
+            if (defaultmodel.Content.ToString() != "Select Model" && BFModelPC.IsEnabled == true)
             {
-                bfmodel = "Model: " + BFModel.Text + Environment.NewLine;
+                bfmodel = "Model: " + defaultmodel.Content.ToString() + Environment.NewLine;
             }
             else
             {
@@ -167,8 +170,8 @@ namespace Scrivener.UserControls
 
             //error checking
             if (bflistbox.SelectedItems.Count == 0)
-            { 
-                noitem = "Please select an item(s) to be replaced" + Environment.NewLine + Environment.NewLine; 
+            {
+                noitem = "Please select an item(s) to be replaced" + Environment.NewLine + Environment.NewLine;
             }
             else
             {
@@ -186,7 +189,7 @@ namespace Scrivener.UserControls
             if (starttime.Content.ToString() == "Start Time" && ideliver == true)
             {
                 nostarttime = "Please select ''Start Time''" + Environment.NewLine + Environment.NewLine;
-            }   
+            }
             else
             {
                 nostarttime = "";
@@ -237,7 +240,7 @@ namespace Scrivener.UserControls
                 noasset = "";
             }
 
-            if (BFModel.Text == "" && model == true)
+            if (defaultmodel.Content.ToString() == "Select Model" && model == true)
             {
                 nomodel = "Please include ''Model''" + Environment.NewLine + Environment.NewLine;
             }
@@ -265,9 +268,9 @@ namespace Scrivener.UserControls
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
             else if (ideliver == true && starttime.Content.ToString() == "Start Time")
-                {
-                    MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
-                }
+            {
+                MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
+            }
             else if (ideliver == true && stoptime.Content.ToString() == "Stop Time")
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
@@ -284,7 +287,7 @@ namespace Scrivener.UserControls
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
-            else if (model == true && BFModel.Text == "")
+            else if (model == true && defaultmodel.Content.ToString() == "Select Model")
             {
                 MessageBox.Show(noitem + nodate + nostarttime + nostoptime + noshipment + noaddy + nonumber + noasset + nomodel + noserial);
             }
@@ -296,12 +299,20 @@ namespace Scrivener.UserControls
             {
                 BFFinal.IsEnabled = true;
                 BFAdd.IsEnabled = true;
-                BFFinal.Text = replaceitems + bfmodel + bfasset + bfserial + bfaddy + bfnumber + bfshipment + bfdate + bftime;
-
+                idelbutton.IsEnabled = true;
                 if (replaceitems.Contains("Tower") || replaceitems.Contains("Monitor") || replaceitems.Contains("Printer"))
                 {
                     idelbutton.IsEnabled = true;
                 }
+                if (defaultmodel.Content.ToString() == "Lenovo Tiny")
+                {
+                    replaceitems = replaceitems.Replace("Tower", "Tiny");
+                }
+                if (defaultmodel.Content.ToString() == "Lenovo Tiny-W")
+                {
+                    replaceitems = replaceitems.Replace("Tower", "Tiny-W");
+                }
+                BFFinal.Text = replaceitems + bfmodel + bfasset + bfserial + bfaddy + bfnumber + bfshipment + bfdate + bftime;                
             }
         }
 
@@ -319,7 +330,7 @@ namespace Scrivener.UserControls
                 BFAddy.IsEnabled = true;
                 BFAsset.IsEnabled = true;
                 BFDate.IsEnabled = true;
-                BFModel.IsEnabled = true;
+                BFModelPC.IsEnabled = true;
                 BFNumber.IsEnabled = true;
                 BFSerial.IsEnabled = true;
                 StartTime.IsEnabled = true;
@@ -348,18 +359,18 @@ namespace Scrivener.UserControls
                 BFAddy.IsEnabled = false;
                 BFAsset.IsEnabled = false;
                 BFDate.IsEnabled = false;
-                BFModel.IsEnabled = false;
+                BFModelPC.IsEnabled = false;
                 BFNumber.IsEnabled = false;
                 BFSerial.IsEnabled = false;
                 StartTime.IsEnabled = false;
                 StopTime.IsEnabled = false;
                 BFShipment.IsEnabled = false;
-            }           
+            }
 
             else if (TowerLBI.IsSelected == false)
             {
                 BFAsset.IsEnabled = false;
-                BFModel.IsEnabled = false;
+                BFModelPC.IsEnabled = false;
                 BFSerial.IsEnabled = false;
             }
             PeripheralSelected();
@@ -445,7 +456,7 @@ namespace Scrivener.UserControls
             KeyboardLBI.IsEnabled = true;
             MouseLBI.IsEnabled = true;
             MousePadLBI.IsEnabled = true;
-            HeadsetLBI.IsEnabled = true;            
+            HeadsetLBI.IsEnabled = true;
             EthernetLBI.IsEnabled = true;
             USBLBI.IsEnabled = true;
             VGALBI.IsEnabled = true;
@@ -536,7 +547,7 @@ namespace Scrivener.UserControls
             BFAddy.IsEnabled = false;
             BFAsset.IsEnabled = false;
             BFDate.IsEnabled = false;
-            BFModel.IsEnabled = false;
+            BFModelPC.IsEnabled = false;
             BFNumber.IsEnabled = false;
             BFSerial.IsEnabled = false;
             StartTime.IsEnabled = false;
@@ -546,7 +557,7 @@ namespace Scrivener.UserControls
             BFAddy.Text = "";
             BFAsset.Text = "";
             BFDate.Text = "";
-            BFModel.Text = "";
+            BFModelPC.SelectedItem = DefaultModel;
             BFNumber.Text = "";
             BFSerial.Text = "";
             StartTime.SelectedItem = Startdefault;
@@ -563,6 +574,12 @@ namespace Scrivener.UserControls
             string idelitems = "";
             string idelasset = "";
             string idelserial = "";
+            string noitemormodel = "";
+            string noasset = "";
+            string noserial = "";
+            bool noassetorserial = false;
+
+            ComboBoxItem defaultmodel = BFModelPC.SelectedItem as ComboBoxItem;
 
             if (bflistbox.SelectedItems.Count != 0)
             {
@@ -574,21 +591,68 @@ namespace Scrivener.UserControls
                 if (i != -1)
                 {
                     idelitems = idelitems.Remove(i);
-                }                
+                }
+            }
+            if (defaultmodel.Content.ToString() == "Lenovo Tiny")
+            {
+                idelitems = idelitems.Replace("Tower", "Tiny");
+            }
+
+            if (defaultmodel.Content.ToString() == "Lenovo Tiny-W")
+            {
+                idelitems = idelitems.Replace("Tower", "Tiny-W");
             }
 
             if (BFAsset.Text != "" && BFAsset.IsEnabled == true)
             {
                 idelasset = "Asset: " + BFAsset.Text;
-            }            
+            }
 
             if (BFSerial.Text != "" && BFSerial.IsEnabled == true)
             {
                 idelserial = "Serial: " + BFSerial.Text;
             }
-             
-            string idel = idelitems + idelasset + idelserial;
-            Clipboard.SetDataObject(idel);
+
+            if (bflistbox.SelectedItems.Count == 0 || defaultmodel.Content.ToString() == "Select Model")
+            {
+                noitemormodel = "Please select an item to be replaced AND model to use this feature." + Environment.NewLine + Environment.NewLine;
+                noassetorserial = true;
+            }
+            else
+            {
+                noitemormodel = "";
+            }
+
+            if (BFAsset.Text == "" && BFAsset.IsEnabled == true)
+            {
+                noasset = "Please include asseet tag to use this feature." + Environment.NewLine + Environment.NewLine;
+                noassetorserial = true;
+            }
+            else
+            {
+                noasset = "";
+            }
+            
+            if (BFSerial.Text == "" && BFSerial.IsEnabled == true)
+            {
+                noserial = "Please include serial number to use this feature." + Environment.NewLine + Environment.NewLine;
+                noassetorserial = true;
+            }
+            else
+            {
+                noserial = "";
+            }
+
+            if (noassetorserial == true)
+            {
+                MessageBox.Show(noitemormodel + noasset + noserial);
+            }
+            else
+            {
+                string idel = idelitems + ", " + idelasset + ", " + idelserial;
+                Clipboard.SetDataObject(idel);
+            }
+            
         }
     }
 }
