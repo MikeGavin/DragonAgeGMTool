@@ -301,9 +301,13 @@ namespace Scrivener.Helpers
             else
             {
                 var substring = AssociatedObject.Text.Substring(AssociatedObject.Text.Length - 2, 2);
-                if (substring == "\r\n" || substring == "- ")
+                if (substring == "- ")
                 {
                     AssociatedObject.AppendText(qn);
+                }
+                else if (Environment.NewLine == substring)
+                {
+                    AssociatedObject.AppendText(DashCheck(qn));
                 }
                 else
                 {
