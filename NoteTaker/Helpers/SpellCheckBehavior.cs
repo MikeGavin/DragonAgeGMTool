@@ -16,8 +16,31 @@ namespace Scrivener.Helpers
 {
     //Orginal from http://www.codeproject.com/Tips/560292/AvalonEdit-and-Spell-check
     //Modifited to reset menu to default and add detaching
-    internal class SpellCheckBehavior : Behavior<TextEditor>
+    internal class SpellCheckBehavior : Behavior<TextEditor>, IDisposable
     {
+        private bool disposed = false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!this.disposed)
+            {
+                // If disposing equals true, dispose all managed 
+                // and unmanaged resources.
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    hunspell.Dispose();
+                }
+                // Release unmanaged resources. If disposing is false, 
+                // only the following code is executed.
+            }
+            disposed = true;
+        }
         
         private TextEditor textEditor;
         private string defaultDictionary = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"resources\defaultDictionary.lex");
@@ -128,14 +151,19 @@ namespace Scrivener.Helpers
             if (pos != null)
             {
                 if (!pos.Value.IsAtEndOfLine)
-                    ContextSpellCheck(pos);
+                {
+                    ContextSpellCheck(textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column));
+                }
+            }
+            else
+            {
+                ContextSpellCheck(textEditor.CaretOffset);
             }
             this.AddStandards();
         }
 
-        private void ContextSpellCheck(TextViewPosition? pos)
-        {
-            int newCaret = textEditor.Document.GetOffset(pos.Value.Line, pos.Value.Column);
+        private void ContextSpellCheck(int newCaret)
+        {         
             if (newCaret >= textEditor.Document.TextLength)
                 newCaret--;
             var wordEnd = TextUtilities.GetNextCaretPosition(textEditor.Document, newCaret, LogicalDirection.Forward, CaretPositioningMode.WordBorder);
