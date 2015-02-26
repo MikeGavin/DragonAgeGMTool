@@ -30,6 +30,8 @@ namespace Scrivener.UserControls
                     Properties.Settings.Default.Accent = 2;
                 }
 
+                datePicker.CalendarOpened += (s,e) => { datePicker.DisplayDateEnd = DateTime.Today; };
+
                //Theme Settings
                 ThemeBox.Items.Add("Dark");
                 ThemeBox.Items.Add("Light");

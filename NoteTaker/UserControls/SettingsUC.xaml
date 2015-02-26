@@ -198,7 +198,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" DisplayDateEnd="{vm:Static sys:DateTime.Now}" BorderThickness="0">
+                    <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" 
+                               BorderThickness="0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectedDateChanged">
                                 <i:InvokeCommandAction Command="{Binding HistoryLookupCommand}" CommandParameter="{Binding SelectedDate, ElementName=datePicker}"/>
