@@ -67,7 +67,6 @@ namespace Scrivener.ViewModel
 
             updatecounts();
 
-            
         }
 
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
@@ -477,6 +476,25 @@ namespace Scrivener.ViewModel
         //Search EKB
         private string _searchData;
         public string SearchData { get { return _searchData; } set { _searchData = value; RaisePropertyChanged(); } }
+
+        public bool FocusSearchBox { get { return Properties.Settings.Default.FocusSearch; } set { Properties.Settings.Default.FocusSearch = value; RaisePropertyChanged(); } }
+
+        private RelayCommand _searchboxfocuscommand;
+        public RelayCommand SearchBoxFocusCommand { get { return _searchboxfocuscommand ?? (_searchboxfocuscommand = new RelayCommand(SearchBoxFocus)); } }
+        public void SearchBoxFocus()
+        {
+                FocusSearchBox = true;
+                FocusSearchBox = false;
+        }
+
+        private RelayCommand _minionfocuscommand;
+        public RelayCommand MinionFocusCommand { get { return _minionfocuscommand ?? (_minionfocuscommand = new RelayCommand(MinionFocus)); } }
+        public void MinionFocus()
+        {
+            Properties.Settings.Default.FocusMinion = true;
+            Properties.Settings.Default.FocusMinion = false;
+        }
+
         private RelayCommand _searchboxcommand;
         public RelayCommand SearchBoxCommand { get { return _searchboxcommand ?? (_searchboxcommand = new RelayCommand(SearchKB)); } }
         public void SearchKB()

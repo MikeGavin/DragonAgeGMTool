@@ -110,14 +110,14 @@
         </ListBox>
 
         <StackPanel Visibility="{Binding Minion_Visibility, Converter={StaticResource BoolToVis}, Source={vm:Static Properties:Settings.Default}}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
-            <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}">
+            <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}" IsTabStop="False">
                 <Expander.Header>
                     <Grid>
                         <Grid>
-                            <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" helpers:FocusHelper.IsFocused="{Binding FocusMinion, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" 
                                      Margin="0" HorizontalAlignment="Left" BorderThickness="0"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
                                      VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" Background="{DynamicResource AccentColorBrush2}" 
-                                     controls:TextBoxHelper.Watermark="Search IP">
+                                     controls:TextBoxHelper.Watermark="Search IP" IsTabStop="False">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding AddCommand}" Key="Return"/>
                                 </TextBox.InputBindings>

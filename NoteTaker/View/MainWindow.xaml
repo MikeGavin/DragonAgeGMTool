@@ -48,23 +48,23 @@
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
             <Button Content="&#xF067;" Command="{Binding NewNoteCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Style="{StaticResource MetroCommandButton}"
-                     Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+                     Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"  IsTabStop="False">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">New Tab<LineBreak/>Ctrl+T</TextBlock>                        
                     </ToolTip>                    
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Style="{StaticResource MetroCommandButton}"/>
-            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}" Click="Open_Break_Clock"/>
+            <Button Content="&#xf0c5;" ToolTip="Copy All" Command="{Binding CopyAllCommand}" Style="{StaticResource MetroCommandButton}" IsTabStop="False"/>
+            <Button Content="&#xf017;" ToolTip="Break Clock" Style="{StaticResource MetroCommandButton}" Click="Open_Break_Clock" IsTabStop="False"/>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands FontFamily ="pack://application:,,,/Resources/#FontAwesome" HorizontalAlignment="Left">
-            <Button Style="{StaticResource MetroCommandButton}">
+            <Button Style="{StaticResource MetroCommandButton}"  IsTabStop="False">
                 <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="links" Background="{x:Null}" >
-                    <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                    <MenuItem Style="{x:Null}" Header="&#xf097;" ToolTip="Sites" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Sites.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsTabStop="False">
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem" >
                                 <Setter Property="Command" Value="{Binding Main.OpenLinkCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
@@ -80,9 +80,9 @@
                     </MenuItem>
                 </Menu>
             </Button>
-            <Button Style="{StaticResource MetroCommandButton}">
+            <Button Style="{StaticResource MetroCommandButton}"  IsTabStop="False">
                 <Menu Style="{x:Null}"  FontFamily ="pack://application:,,,/Resources/#FontAwesome" Name="phone" Background="{x:Null}">
-                    <MenuItem Style="{x:Null}" Header="&#xf095;" ToolTip="Phone Directory" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Phoneitems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">                        
+                    <MenuItem Style="{x:Null}" Header="&#xf095;" ToolTip="Phone Directory" FontSize="21" VerticalAlignment="Center" ItemsSource="{Binding DataB.Phoneitems.SubItems, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  IsTabStop="False">                        
                         <MenuItem.ItemContainerStyle>
                             <Style TargetType="MenuItem">
                                 <Setter Property="Command" Value="{Binding Main.OpenCallCommand, Mode=OneWay, Source={StaticResource Locator}}"/>
@@ -98,14 +98,14 @@
                     </MenuItem>
                 </Menu>
             </Button>
-            <TextBox Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Name="Searchtextbox" Text="{Binding SearchData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" helpers:FocusHelper.IsFocused="{Binding FocusSearchBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0" HorizontalAlignment="Left" Background="{DynamicResource AccentColorBrush2}"   BorderThickness="0" Padding="0"
-                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Search EKB">
+                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" controls:TextBoxHelper.Watermark="Search EKB"  IsTabStop="False">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding SearchBoxCommand}" Key="Return"/>
                 </TextBox.InputBindings>
             </TextBox>
-            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Style="{StaticResource MetroCommandButton}">
+            <Button Content="&#xF1BB;" Command="{Binding QuickNoteToggleCommand}" Style="{StaticResource MetroCommandButton}" IsTabStop="False">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">QuickNotes<LineBreak/>Ctrl+Q</TextBlock>
@@ -113,14 +113,14 @@
                 </Button.ToolTip>
             </Button>
             <Button Content="&#xf0cb;" Command="{Binding OpenQuickARCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"
-                   Visibility="{Binding FormsVisibility, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+                   Visibility="{Binding FormsVisibility, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"  IsTabStop="False">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">Quick AR Forms<LineBreak/>F4</TextBlock>
                     </ToolTip>
                 </Button.ToolTip>
             </Button>
-            <Button Content="&#xF013;" Command="{Binding Settingsbuttoncommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center">
+            <Button Content="&#xF013;" Command="{Binding Settingsbuttoncommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center"  IsTabStop="False">
                 <Button.ToolTip>
                     <ToolTip>
                         <TextBlock TextAlignment="Center">Settings<LineBreak/>F2</TextBlock>
@@ -164,7 +164,8 @@
         <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
         <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
         <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
-
+        <KeyBinding Command="{Binding SearchBoxFocusCommand}" Key="E" Modifiers="Control" />
+        <KeyBinding Command="{Binding MinionFocusCommand}" Key="M" Modifiers="Control" />
         <KeyBinding Command="{Binding OpenaboutCommand}" Key="F1" />
         <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F2"/>
         <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F3"/>

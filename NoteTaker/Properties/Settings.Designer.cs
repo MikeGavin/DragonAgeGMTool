@@ -752,5 +752,29 @@ namespace Scrivener.Properties {
                 this["Notenumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FocusSearch {
+            get {
+                return ((bool)(this["FocusSearch"]));
+            }
+            set {
+                this["FocusSearch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FocusMinion {
+            get {
+                return ((bool)(this["FocusMinion"]));
+            }
+            set {
+                this["FocusMinion"] = value;
+            }
+        }
     }
 }

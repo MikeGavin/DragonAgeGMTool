@@ -254,6 +254,7 @@
     <Compile Include="Helpers\CachedContentPresenter.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\ExpandConverter.cs" />
+    <Compile Include="Helpers\FocusHelper.cs" />
     <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MmvmTextEditor.cs" />
