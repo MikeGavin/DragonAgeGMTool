@@ -18,6 +18,7 @@ using System.Reactive.Linq;
 using NLog.Targets;
 using NLog;
 using System.Text;
+using System.Windows.Input;
 
 
 namespace Scrivener.ViewModel
@@ -351,7 +352,7 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region ToolBar Items       
+        #region ToolBar Items
  
         
         private int _callcount;
@@ -493,6 +494,8 @@ namespace Scrivener.ViewModel
         {
             Properties.Settings.Default.FocusMinion = true;
             Properties.Settings.Default.FocusMinion = false;
+            var e1 = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.End) { RoutedEvent = Keyboard.KeyDownEvent };
+            InputManager.Current.ProcessInput(e1);
         }
 
         private RelayCommand _searchboxcommand;
