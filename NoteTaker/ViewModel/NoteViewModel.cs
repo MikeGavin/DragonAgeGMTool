@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using Minion;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +12,6 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight;
 using Scrivener.Model;
-using Minion.ListItems;
 using Scrivener.Helpers;
 using System.IO;
 using System.Windows.Input;
@@ -51,7 +49,7 @@ namespace Scrivener.ViewModel
             }
                         
             this.TextChanged += Note_TextChanged;
-            NoteMinion.MinionCollection.CollectionChanged += MinionCollection_CollectionChanged;
+            
 
         }
 
@@ -150,36 +148,6 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region Minion
-        //Commands from constructor
-        //private ObservableCollection<MinionCommandItem> _minionCommands;
-        // local minion instance for this note.
-        private MinionViewModel _noteMinion;
-        public MinionViewModel NoteMinion { get { return _noteMinion ?? (_noteMinion = new MinionViewModel()); } set { _noteMinion = value; RaisePropertyChanged(); } }
-        //Register and Unregister Minion instances to allow writing to note
-        void MinionCollection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null && e.NewItems.Count != 0)
-                foreach (MinionItemViewModel minionItem in e.NewItems)
-                {
-                    minionItem.NoteWrite += minionItem_NoteWrite;
-                    minionItem.PasteRequest += (s, p) => Text += p.PasteData.PadLeft(p.PasteData.Length + 1).PadRight(p.PasteData.Length + 1);
-                }
-
-            if (e.OldItems != null && e.OldItems.Count != 0)
-                foreach (MinionItemViewModel minionItem in e.OldItems)
-                {
-                    minionItem.NoteWrite -= minionItem_NoteWrite;
-                    minionItem.PasteRequest -= (s, p) => Text += string.Format(" {0} ", p.PasteData);
-                }
-        }
-        //fires on event to write note from minion instance with message
-        void minionItem_NoteWrite(object sender, MinionArgs e)
-        {
-            Text += Environment.NewLine + e.Message;
-        } 
-        #endregion
-      
         #region QuickItems
         //Tree
         private QuickItem _root;

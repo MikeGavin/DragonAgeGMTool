@@ -63,22 +63,6 @@ namespace Scrivener.ViewModel
             }
         }
 
-        public MinionViewModel Minion
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MinionViewModel>();
-            }
-        }
-
-        public MinionItemViewModel MinionItem
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MinionItemViewModel>();
-            }
-        }
-
         /// <summary>
         /// Cleans up all the resources.
         /// </summary>

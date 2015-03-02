@@ -109,27 +109,6 @@
         <ListBox Visibility="Collapsed" Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Margin="0,0,0,2" ItemsSource="{Binding DataB.QuickItems.SubItems}">
         </ListBox>
 
-        <StackPanel Visibility="{Binding Minion_Visibility, Converter={StaticResource BoolToVis}, Source={vm:Static Properties:Settings.Default}}" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2">
-            <Expander DataContext="{Binding NoteMinion}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0" Grid.ColumnSpan="2" BorderThickness="0" BorderBrush="#FF2F2F2F" IsExpanded="{Binding IsExpanded, UpdateSourceTrigger=PropertyChanged}" IsTabStop="False">
-                <Expander.Header>
-                    <Grid>
-                        <Grid>
-                            <TextBox x:Name="IPInput" IsEnabled="{Binding MinionIPInputEnabeled, UpdateSourceTrigger=PropertyChanged}" helpers:FocusHelper.IsFocused="{Binding FocusMinion, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" 
-                                     Margin="0" HorizontalAlignment="Left" BorderThickness="0"  Text="{Binding NewMinionIPAddress, UpdateSourceTrigger=PropertyChanged}" 
-                                     VerticalAlignment="Center" Width="151" controls:TextBoxHelper.ClearTextButton="True" Background="{DynamicResource AccentColorBrush2}" 
-                                     controls:TextBoxHelper.Watermark="Search IP" IsTabStop="False">
-                                <TextBox.InputBindings>
-                                    <KeyBinding Command="{Binding AddCommand}" Key="Return"/>
-                                </TextBox.InputBindings>
-                            </TextBox>
-
-                            <controls:ProgressRing IsActive="{Binding MinionConnecting, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="14" Height="14" HorizontalAlignment="Right" Foreground="White"/>
-                        </Grid>
-                    </Grid>
-                </Expander.Header>
-                <UserControls:MinionViewUC HorizontalAlignment="Left"/>
-            </Expander>
-        </StackPanel>
         <Grid Grid.Row="3" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Right" Margin="0,12,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

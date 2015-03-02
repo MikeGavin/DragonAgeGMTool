@@ -1,6 +1,4 @@
-﻿using Minion;
-using Minion.ListItems;
-using Scrivener.ViewModel;
+﻿using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -100,17 +98,6 @@ namespace Scrivener.Model
             Sites = await DataBaseReader.ReturnSiteItems(Role);
         }
 
-        private ObservableCollection<MinionCommandItem> _minionCommands;
-        public ObservableCollection<MinionCommandItem> MinionCommands { get { return _minionCommands; } private set { _minionCommands = value; RaisePropertyChanged(); } }
-        public async Task LoadMinionCommands()
-        {
-            if (Sites != null)
-            {
-                Sites = null;
-            }
-            MinionCommands = await DataBaseReader.ReturnMinionCommands(Role);
-        }
-
         private Phoneitem _phoneitems;
         public Phoneitem Phoneitems { get { return _phoneitems; } private set { _phoneitems = value; RaisePropertyChanged(); } }
         public async Task LoadPhoneDirectory()
@@ -129,8 +116,7 @@ namespace Scrivener.Model
 
         public async Task LoadAll()
         {
-            await LoadMinionCommands();
-         //await LoadHistoryItems();   
+            //await LoadHistoryItems();   
             await LoadQuickItems();
             await LoadPhoneDirectory();            
             await LoadSites(); //For some reason loading this item first causes the binding to not work.        

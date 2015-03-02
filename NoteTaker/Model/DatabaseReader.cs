@@ -1,6 +1,4 @@
-﻿using Minion;
-using Minion.ListItems;
-using Scrivener.ViewModel;
+﻿using Scrivener.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,51 +64,7 @@ namespace Scrivener.Model
             }
             return result;       
         }       
-
-        public async Task<ObservableCollection<MinionCommandItem>> ReturnMinionCommands(RoleItem role)
-        {
-            log.Debug("Getting Minion Commands for {0}", role.Name);
-            var db = new SQLiteConnection(mainDB);
-            //Return empty command list if role does not allow minion access.
-            if (role == null || role.Minion == false || Properties.Settings.Default.Role_Current == null)
-            {
-                return new ObservableCollection<MinionCommandItem>();
-            }
-
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = "SELECT * FROM Minion_Commands";
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
-            var commandList = new ObservableCollection<MinionCommandItem>();
-            try
-            {
-                db.Open();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (await reader.ReadAsync())
-                    commandList.Add(new MinionCommandItem() 
-                    { 
-                        Name = reader["Name"].ToString().Trim(),
-                        Action = reader["Action"].ToString().Trim(),
-                        Version = reader["Version"].ToString().Trim(),
-                        CopyFrom = reader["CopyFrom"].ToString().Trim(),
-                        CopyTo = reader["CopyTo"].ToString().Replace("c:", string.Empty).Trim(),
-                        Command = reader["Command"].ToString().Trim(),
-                        Bit = reader["Bit"].ToString(),
-                    });
-                db.Close();  
-     
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                db.Close(); 
-                Model.ExceptionReporting.Email(e);
-            }
-            
-            return commandList;
-
-        }
-
+        
         public async Task<QuickItem> ReturnQuickItems(RoleItem role)
         {
             log.Debug("Returning QuickItems for {0}", role.Name);

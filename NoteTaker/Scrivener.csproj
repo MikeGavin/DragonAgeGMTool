@@ -116,10 +116,11 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D389C58118B05B28590E753510D0EC3D5217DCC8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4AE0B2E7C54EEC56ECA40C368DB7B23B0E1B55F9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Scrivener_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -297,8 +298,6 @@
       <DependentUpon>Break_Clock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\INote.cs" />
-    <Compile Include="ViewModel\MinionItemViewModel.cs" />
-    <Compile Include="ViewModel\MinionViewModel.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Depreciated\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">

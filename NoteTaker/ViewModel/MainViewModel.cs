@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Minion;
 using Scrivener.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
