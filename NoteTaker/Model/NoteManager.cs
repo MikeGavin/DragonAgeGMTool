@@ -248,7 +248,7 @@ namespace Scrivener.Model
             using (SQLiteCommand cmd = db.CreateCommand())
             {
                 
-                cmd.CommandText = string.Format("SELECT COUNT(Date) FROM {0} WHERE Date is '{1}'", ArchiveTableName, DateTime.Now.ToString("M/dd/yyyy"));
+                cmd.CommandText = string.Format("SELECT COUNT(Date) FROM {0} WHERE Date is '{1}'", ArchiveTableName, DateTime.Now.ToString("M/d/yyyy"));
                 cmd.ExecuteNonQuery();
                 count = Convert.ToInt32(cmd.ExecuteScalar());
             }
