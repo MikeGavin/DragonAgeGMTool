@@ -13,6 +13,33 @@ namespace Scrivener.Model
         public string Text { get; set; }
         public string Title { get; set; }
         public DateTime LastUpdated{ get; protected set; }
+        public int Communication { get; set; }
+        public int Speed { get; set; }
+        public int Constitution { get; set; }
+        public int Cunning { get; set; }
+        public int Dexterity { get; set; }
+        public int Defense { get; set; }
+        public int Magic { get; set; }
+        public int Perception { get; set; }
+        public int Armor { get; set; }
+        public int Strength { get; set; }
+        public int Willpower { get; set; }
+
+
+        public NoteType(int communication, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower)
+        {
+             Communication = communication;
+             Speed = speed;
+             Constitution = constitution;
+             Cunning = cunning;
+             Dexterity = dexterity;
+             Defense = defense;
+             Magic = magic;
+             Perception = perception;
+             Armor = armor;
+             Strength = strength;
+             Willpower = willpower;
+        }
 
         public NoteType(Guid guid, string title, string text, DateTime datetime)
         {

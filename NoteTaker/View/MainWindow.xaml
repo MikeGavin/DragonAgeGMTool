@@ -39,10 +39,7 @@
                              IsOpen="{Binding SettingsExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" 
                              ScrollViewer.CanContentScroll="True" Width="300" >
                 <UserControls:SettingsUC HorizontalAlignment="Left"/>
-            </controls:Flyout>
-            <controls:Flyout x:Name="ARFlyout" Position="Right" TitleVisibility="Collapsed" CloseButtonVisibility="Collapsed" Theme="Adapt" IsOpen="{Binding QARExpanded, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="True" Width="300" >
-                <UserControls:QuickAR  HorizontalAlignment="Left" VerticalAlignment="Top"/> 
-            </controls:Flyout>
+            </controls:Flyout>            
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <controls:MetroWindow.LeftWindowCommands>

@@ -287,30 +287,18 @@
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="Model\TreeNodeT.cs" />
     <Compile Include="Model\UpdateManager.cs" />
-    <Compile Include="UserControls\QuickAR.xaml.cs">
-      <DependentUpon>QuickAR.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\SettingsUC.xaml.cs">
       <DependentUpon>SettingsUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\FlyoutViewModelBase.cs" />
-    <Compile Include="View\Break_Clock.xaml.cs">
-      <DependentUpon>Break_Clock.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\INote.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="Model\Depreciated\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
       <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MinionItemViewUC.xaml.cs">
-      <DependentUpon>MinionItemViewUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\NoteViewUC.xaml.cs">
       <DependentUpon>NoteViewUC.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\MinionViewUC.xaml.cs">
-      <DependentUpon>MinionViewUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PasteEventArgs.cs" />
@@ -319,10 +307,6 @@
       <DependentUpon>logging.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\EditableTabHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\QuickAR.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -354,15 +338,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MinionItemViewUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UserControls\NoteViewUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\MinionViewUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -371,10 +347,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\SettingsUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Break_Clock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
