@@ -756,12 +756,12 @@ namespace Scrivener.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FocusSearch {
+        public bool SetCharacterFocus {
             get {
-                return ((bool)(this["FocusSearch"]));
+                return ((bool)(this["SetCharacterFocus"]));
             }
             set {
-                this["FocusSearch"] = value;
+                this["SetCharacterFocus"] = value;
             }
         }
         
@@ -774,6 +774,30 @@ namespace Scrivener.Properties {
             }
             set {
                 this["FocusMinion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CharacterNameBoxVis {
+            get {
+                return ((bool)(this["CharacterNameBoxVis"]));
+            }
+            set {
+                this["CharacterNameBoxVis"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NewName {
+            get {
+                return ((string)(this["NewName"]));
+            }
+            set {
+                this["NewName"] = value;
             }
         }
     }

@@ -46,12 +46,12 @@ namespace Scrivener.UserControls
                     AccentBox.Items.Add(accent);
                 }
         }
-
+         
         private void Accent_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var accent = (MahApps.Metro.Accent)AccentBox.SelectedItem;
             var theme = ThemeManager.DetectAppStyle(Application.Current);
-            ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
+            ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);            
         }
 
         private void Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)

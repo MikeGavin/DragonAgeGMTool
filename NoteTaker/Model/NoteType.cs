@@ -13,6 +13,9 @@ namespace Scrivener.Model
         public string Text { get; set; }
         public string Title { get; set; }
         public DateTime LastUpdated{ get; protected set; }
+        public int Life { get; set; }
+        public int Mana { get; set; }
+        public int Experience { get; set; }
         public int Communication { get; set; }
         public int Speed { get; set; }
         public int Constitution { get; set; }
@@ -26,8 +29,11 @@ namespace Scrivener.Model
         public int Willpower { get; set; }
 
 
-        public NoteType(int communication, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower)
+        public NoteType(int life, int mana, int communication, int experience, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower)
         {
+             Life = life;
+             Mana = mana;
+             Experience = experience;
              Communication = communication;
              Speed = speed;
              Constitution = constitution;

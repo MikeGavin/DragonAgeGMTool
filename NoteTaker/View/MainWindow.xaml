@@ -13,9 +13,11 @@
         xmlns:ViewModel="clr-namespace:Scrivener.ViewModel" x:Class="Scrivener.View.MainWindow"
         xmlns:model="clr-namespace:Scrivener.Model"
         mc:Ignorable=" ignore"
-        Height="500.3"
-        Width="722"         
-        SaveWindowPosition="True" Margin="0"
+        Height="500"
+        Width="365"
+    MinWidth="365"
+    MinHeight="500"
+        SaveWindowPosition="True" Margin="5"
                 RightWindowCommandsOverlayBehavior="Never"
     RenderOptions.ClearTypeHint="Enabled"
         TextOptions.TextFormattingMode="Display">
@@ -48,7 +50,7 @@
                      Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"  IsTabStop="False">
                 <Button.ToolTip>
                     <ToolTip>
-                        <TextBlock TextAlignment="Center">New Tab<LineBreak/>Ctrl+T</TextBlock>                        
+                        <TextBlock TextAlignment="Center">New Character<LineBreak/>Ctrl+N</TextBlock>                        
                     </ToolTip>                    
                 </Button.ToolTip>
             </Button>            
@@ -88,17 +90,46 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
+        <Grid Width="auto" Height="auto" Grid.ColumnSpan="2" Grid.RowSpan="2" Opacity=".8" Background="#FF252525" Visibility="{Binding CharacterNameBoxVis, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"/>
+        <Grid Width="300" Grid.ColumnSpan="4" Grid.RowSpan="10" Height="150" Visibility="{Binding CharacterNameBoxVis, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="{DynamicResource AccentColorBrush}" Grid.Row="0">
+                <TextBlock Text="Character Name?" FontSize="16" VerticalAlignment="Center"></TextBlock>
+                <Button Content="X" Background="{DynamicResource AccentColorBrush}" Command="{Binding CloseNameCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" HorizontalAlignment="Right" IsTabStop="False" Width="30" Height="30" Foreground="#FF252525" BorderThickness="0"/>
+            </Grid>
+            <Grid Background="#FF252525" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Label Content="What is the character's name?" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.ColumnSpan="2"></Label>
+                <TextBox Text="{Binding Main.NewName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource Locator}}" Height="30" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Width="200" HorizontalAlignment="Center" Margin="0,0,0,5" helpers:FocusHelper.IsFocused="{Binding CharacterNameBoxVis, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding Main.NewNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Key="Return"/>                    
+                        <KeyBinding Command="{Binding Main.CloseNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Key="Escape"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Content="Save" Command="{Binding Main.NewNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="0" Grid.Row="1" Height="30" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button Content="Cancel" Command="{Binding Main.CloseNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1" Grid.Row="1" Height="30" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
     </Grid>
     <controls:MetroWindow.InputBindings>
-        <KeyBinding Command="{Binding NewNoteCommand}" Key="T" Modifiers="Control" />
+        <KeyBinding Command="{Binding NewNoteCommand}" Key="N" Modifiers="Control" />
         <KeyBinding Command="{Binding SelectedNote.CloseNoteCommand}" Key="W" Modifiers="Ctrl"/>
         <KeyBinding Command="{Binding RecallNoteCommand}" Key="T" Modifiers="Shift+Ctrl" />
         <KeyBinding Command="{Binding QuickNoteToggleCommand}" Key="Q" Modifiers="Control" />
         <KeyBinding Command="{Binding CloseAllNotesCommand}" Key="W" Modifiers="Shift+Ctrl" />
         <KeyBinding Command="{Binding SearchBoxFocusCommand}" Key="E" Modifiers="Control" />
         <KeyBinding Command="{Binding MinionFocusCommand}" Key="M" Modifiers="Control" />
-        <KeyBinding Command="{Binding OpenaboutCommand}" Key="F1" />
-        <KeyBinding Command="{Binding SettingsExpandCommand}" Key="F2"/>
+        <KeyBinding Command="{Binding OpenaboutCommand}" Key="F1" />        
         <KeyBinding Command="{Binding OpenHistoryCommand}" Key="F3"/>
         <KeyBinding Command="{Binding OpenQuickARCommand}" Key="F4" />
     </controls:MetroWindow.InputBindings>

@@ -15,10 +15,11 @@
              mc:Ignorable="d" Margin="0"
              >
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
 
-    <Grid MinWidth="400" Grid.IsSharedSizeScope="True" >
+    <Grid MinWidth="365" Grid.IsSharedSizeScope="True" >
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="40"/>
@@ -36,38 +37,61 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label Content="Life" Foreground="White" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Center"/>
-        <Label Content="Mana" Foreground="White" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center"/>
-        <Label Content="Experience" Foreground="White" Width="100" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center"/>
-        <TextBox Width="100" Height="30" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0"/>
-        <TextBox Width="100" Height="30" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5,0"/>
+        <Grid Grid.ColumnSpan="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="115" />
+                <ColumnDefinition Width="115" />                
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Life" Foreground="White" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Center" TabIndex="10"/>
+        <Label Content="Mana" Foreground="White" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" TabIndex="11"/>
+        <Label Content="Experience" Foreground="White" Width="100" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" TabIndex="12"/>
+        <TextBox Width="100" Height="30" Grid.Column="0" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0" Text="{Binding Life, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" Margin="5,0" Text="{Binding Mana, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5,0" Text="{Binding Experience, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
         <Rectangle Height="2" Width="auto" Stroke="Black" Grid.ColumnSpan="4" Grid.Row="1"></Rectangle>
         <Rectangle Height="auto" Width="2" Stroke="Black" Grid.Column="2" Grid.RowSpan="8" Grid.Row="2" HorizontalAlignment="Center"></Rectangle>
-        <Label Content="Communication" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <Label Content="Communication" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" TabIndex="13"/>
         <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="2" Margin="5,0" Text="{Binding Communication, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Speed" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center"/>
-        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="3" Margin="5,0" Text="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label Content="Constitution" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="3" Margin="5,0" Text="{Binding Constitution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="3" Margin="5,0" Text="{Binding Constitution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="14"/>
         <Label Content="Cunning" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="4" Margin="5,0" Text="{Binding Cunning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="4" Margin="5,0" Text="{Binding Cunning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="15"/>
         <Label Content="Dexterity" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="5" Margin="5,0" Text="{Binding Dexterity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Defense" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="4" HorizontalContentAlignment="Center"/>
-        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="5" Margin="5,0" Text="{Binding Defense, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="5" Margin="5,0" Text="{Binding Dexterity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="16"/>
         <Label Content="Magic" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="6" Margin="5,0" Text="{Binding Magic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="6" Margin="5,0" Text="{Binding Magic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="17"/>
         <Label Content="Perception" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="7" Margin="5,0" Text="{Binding Perception, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Armor" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="6" HorizontalContentAlignment="Center"/>
-        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="7" Margin="5,0" Text="{Binding Armor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="7" Margin="5,0" Text="{Binding Perception, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="18"/>
         <Label Content="Strength" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="8" Margin="5,0" Text="{Binding Strength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="8" Margin="5,0" Text="{Binding Strength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="19"/>
         <Label Content="Willpower" Foreground="White" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
-        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="9" Margin="5,0" Text="{Binding Willpower, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Width="100" Height="30" Grid.Column="1" Grid.Row="9" Margin="5,0" Text="{Binding Willpower, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="20"/>
+        <Label Content="Speed" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="2" HorizontalContentAlignment="Center"/>
+        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="3" Margin="5,0" Text="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="21"/>
+        <Label Content="Defense" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="4" HorizontalContentAlignment="Center"/>
+        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="5" Margin="5,0" Text="{Binding Defense, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="22"/>
+        <Label Content="Armor" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="6" HorizontalContentAlignment="Center"/>
+        <TextBox Width="100" Height="30" Grid.Column="3" Grid.Row="7" Margin="5,0" Text="{Binding Armor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="23"/>
+        <Label Content="Money" Foreground="White" VerticalAlignment="Center" Grid.Column="3" Grid.Row="8" HorizontalContentAlignment="Center"/>
+        <Grid Grid.Column="3" Grid.Row="9">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="G" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+            <TextBox Width="30" Height="30" Grid.Column="1" Margin="1,0" Text="{Binding Armor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="23"/>
+            <Label Content="S" Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+            <TextBox Width="30" Height="30" Grid.Column="3" Margin="1,0" Text="{Binding Armor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="23"/>
+            <Label Content="C" Grid.Column="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"></Label>
+            <TextBox Width="30" Height="30" Grid.Column="5" Margin="1,0" Text="{Binding Armor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="23"/>
+        </Grid>
     </Grid>
 
 </UserControl>

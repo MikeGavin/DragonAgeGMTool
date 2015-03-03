@@ -7,6 +7,9 @@ namespace Scrivener.Model
         string Text { get; set; }
         string Title { get; set; }
         DateTime LastUpdated { get; }
+        int Life { get; set; }
+        int Mana { get; set; }
+        int Experience { get; set; }
         int Communication { get; set; }
         int Speed { get; set; }
         int Constitution { get; set; }

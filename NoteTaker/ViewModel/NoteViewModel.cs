@@ -43,7 +43,10 @@ namespace Scrivener.ViewModel
                 Perception = 0;
                 Armor = 0;
                 Strength = 0;
-                Willpower = 0;
+                Willpower = 0;                
+                Properties.Settings.Default.CharacterNameBoxVis = true;
+                Properties.Settings.Default.SetCharacterFocus = true;
+                Properties.Settings.Default.SetCharacterFocus = false;    
                 Title = string.Format("New Character");
                 
                 LastUpdated = DateTime.Now;
@@ -81,6 +84,13 @@ namespace Scrivener.ViewModel
         public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
         //private ICSharpCode.AvalonEdit.Document.TextDocument document;
         //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        
+        private int life;
+        public int Life { get { return life; } set { life = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int mana;
+        public int Mana { get { return mana; } set { mana = value; RaisePropertyChanged(); RaiseTextChanged(); } }
+        private int experience;
+        public int Experience { get { return experience; } set { experience = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private int communication;
         public int Communication { get { return communication; } set { communication = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private int speed;
@@ -109,6 +119,7 @@ namespace Scrivener.ViewModel
         #endregion        
         
         #region EventBased Actions
+
         //Text change events for note
         public void RaiseNoteSave()
         {
