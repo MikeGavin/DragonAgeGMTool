@@ -250,7 +250,6 @@
     </ApplicationDefinition>
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helpers\AvalonTextBehavior.cs" />
     <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\CachedContentPresenter.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
@@ -260,8 +259,6 @@
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MmvmTextEditor.cs" />
     <Compile Include="Helpers\MouseDoubleClick.cs" />
-    <Compile Include="Helpers\SpellCheckBehavior.cs" />
-    <Compile Include="Helpers\SpellingErrorColorizer.cs" />
     <Compile Include="Model\DataBaseWatcher.cs" />
     <Compile Include="Model\DeploymentData.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
@@ -273,8 +270,6 @@
     <Compile Include="Model\MTObservableCollection-T.cs" />
     <Compile Include="Model\NoteType.cs" />
     <Compile Include="Model\PasteEventArgs.cs" />
-    <Compile Include="Model\PhoneDBPull.cs" />
-    <Compile Include="Model\Phoneitem.cs" />
     <Compile Include="Model\QuickItem.cs" />
     <Compile Include="Model\RoleItem.cs" />
     <Compile Include="Model\QuickItemDBPull.cs" />
@@ -283,7 +278,6 @@
     <Compile Include="Model\MinionArgs.cs" />
     <Compile Include="Model\NoteManager.cs" />
     <Compile Include="Model\SiteDBPull.CS" />
-    <Compile Include="Model\Depreciated\Sitefiller.cs" />
     <Compile Include="Model\Siteitem.cs" />
     <Compile Include="Model\TreeNodeT.cs" />
     <Compile Include="Model\UpdateManager.cs" />
@@ -293,7 +287,6 @@
     <Compile Include="ViewModel\FlyoutViewModelBase.cs" />
     <Compile Include="Model\INote.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
-    <Compile Include="Model\Depreciated\Treefiller.cs" />
     <Compile Include="UserControls\EditableTextBlockUC.xaml.cs">
       <DependentUpon>EditableTextBlockUC.xaml</DependentUpon>
     </Compile>

@@ -28,18 +28,7 @@ namespace Scrivener.UserControls
                 if (Scrivener.Properties.Settings.Default.Accent == -1)
                 {
                     Properties.Settings.Default.Accent = 2;
-                }
-
-                datePicker.CalendarOpened += (s,e) => { datePicker.DisplayDateEnd = DateTime.Today; };
-
-               //Theme Settings
-                ThemeBox.Items.Add("Dark");
-                ThemeBox.Items.Add("Light");
-                if (Properties.Settings.Default.Theme == null)
-                    Properties.Settings.Default.Theme = "Dark";
-                ThemeBox.SelectedItem = Properties.Settings.Default.Theme;
-
-                //Accent Settings
+                }               
                 var accents = MahApps.Metro.ThemeManager.Accents.ToList();
                 foreach (var accent in accents) //Adds all accents to combobox.
                 {
@@ -54,10 +43,5 @@ namespace Scrivener.UserControls
             ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);            
         }
 
-        private void Theme_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var theme = ThemeManager.DetectAppStyle(Application.Current);
-            ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme(string.Format("Base{0}", ThemeBox.SelectedItem)));
-        }
     }
 }

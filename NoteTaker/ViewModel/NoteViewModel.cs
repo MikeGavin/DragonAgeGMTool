@@ -33,23 +33,30 @@ namespace Scrivener.ViewModel
             if (incomingNote == null)
             {
                 Guid = Guid.NewGuid();
+                Life = 0;
+                Mana = 0;
+                Experience = 0;
                 Communication = 0;
-                Speed = 0;
                 Constitution = 0;
                 Cunning = 0;
                 Dexterity = 0;
-                Defense = 0;
                 Magic = 0;
                 Perception = 0;
-                Armor = 0;
                 Strength = 0;
-                Willpower = 0;                
+                Willpower = 0;
+                Speed = 0;
+                Defense = 0;
+                Armor = 0;
+                Gold = 0;
+                Silver = 0;
+                Copper = 0;
+                
                 Properties.Settings.Default.CharacterNameBoxVis = true;
                 Properties.Settings.Default.SetCharacterFocus = true;
                 Properties.Settings.Default.SetCharacterFocus = false;    
                 Title = string.Format("New Character");
                 
-                LastUpdated = DateTime.Now;
+                //LastUpdated = DateTime.Now;
             }
             else
             {
@@ -113,6 +120,12 @@ namespace Scrivener.ViewModel
         public int Strength { get { return strength; } set { strength = value; RaisePropertyChanged(); } }
         private int willpower;
         public int Willpower { get { return willpower; } set { willpower = value; RaisePropertyChanged(); } }
+        private int gold;
+        public int Gold { get { return gold; } set { gold = value; RaisePropertyChanged(); } }
+        private int silver;
+        public int Silver { get { return silver; } set { silver = value; RaisePropertyChanged(); } }
+        private int copper;
+        public int Copper { get { return copper; } set { copper = value; RaisePropertyChanged(); } }
         private DateTime _lastUpdated;
         public DateTime LastUpdated { get { return _lastUpdated; } protected set { _lastUpdated = value; RaisePropertyChanged(); } }
 

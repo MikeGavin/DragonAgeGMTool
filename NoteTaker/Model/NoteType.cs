@@ -27,9 +27,11 @@ namespace Scrivener.Model
         public int Armor { get; set; }
         public int Strength { get; set; }
         public int Willpower { get; set; }
+        public int Gold { get; set; }
+        public int Silver { get; set; }
+        public int Copper { get; set; }
 
-
-        public NoteType(int life, int mana, int communication, int experience, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower)
+        public NoteType(int life, int mana, int communication, int experience, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower, int gold, int silver, int copper)
         {
              Life = life;
              Mana = mana;
@@ -45,6 +47,9 @@ namespace Scrivener.Model
              Armor = armor;
              Strength = strength;
              Willpower = willpower;
+             Gold = gold;
+             Silver = silver;
+             Copper = copper;
         }
 
         public NoteType(Guid guid, string title, string text, DateTime datetime)

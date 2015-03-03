@@ -21,6 +21,8 @@ namespace Scrivener.Model
         int Armor { get; set; }
         int Strength { get; set; }
         int Willpower { get; set; }
-
+        int Gold { get; set; }
+        int Silver { get; set; }
+        int Copper { get; set; }
     }
 }

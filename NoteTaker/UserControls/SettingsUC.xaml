@@ -27,12 +27,6 @@
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="FontWeight" Value="Medium"/>
             </Style>
-
-            <!--<Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-
-            </Style>-->
             <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{vm:Type TabItem}">
                 <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16"/>
             </Style>
@@ -73,46 +67,26 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Deployment" FontSize="13" Grid.Column="0" Grid.ColumnSpan="2"/>
-                    <Label Content="{Binding AppMode, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="0" FontSize="13" Padding="5,0"/>
-                    <Label Content="Version" Grid.Column="0" Grid.Row="1" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="{Binding PublishVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="1" FontSize="13" Padding="5,0"/>
-                    <Label Content="Assembly" Grid.Column="0" Grid.Row="2" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="{Binding AssemblyVersion, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="2" FontSize="13" Padding="5,0"/>
+                    <Label Content="Created by: Michael Gavin and JD Cain" FontSize="13" Grid.Column="0" Grid.ColumnSpan="4"/>
                     <Rectangle Grid.Row="3" Height="2" Width="auto" Grid.ColumnSpan="4" Fill="White"/>
                     <Label Content="Hotkeys:" Grid.Row="4"  Grid.ColumnSpan="4" FontSize="13"/>
-                    <Label Content="New tab:" Grid.Row="5"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + T" Grid.Row="5"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Close tab:" Grid.Row="6"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + W" Grid.Row="6"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Close all tabs:" Grid.Row="7"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + Shift + W" Grid.Row="7"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Open last note:" Grid.Row="8"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + Shift + T" Grid.Row="8"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Toggle Quicknotes:" Grid.Row="9"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + Q" Grid.Row="9"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Search EKB:" Grid.Row="10"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + E" Grid.Row="10"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Find:" Grid.Row="11"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + F" Grid.Row="11"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Input Minion IP:" Grid.Row="12"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="Ctrl + M" Grid.Row="12"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="New character:" Grid.Row="5"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + N" Grid.Row="5"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="Open character:" Grid.Row="6"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + O" Grid.Row="6"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="Close character:" Grid.Row="7"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + W" Grid.Row="7"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="Close all characters:" Grid.Row="8"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
+                    <Label Content="Ctrl + Shift + W" Grid.Row="8"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="Search Codex:" Grid.Row="10"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
+                    <Label Content="Not Ready" Grid.Row="10"  Grid.Column="3" FontSize="13"/>                    
                     <Label Content="Toggle About:" Grid.Row="13"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
                     <Label Content="F1" Grid.Row="13"  Grid.Column="3" FontSize="13"/>
                     <Label Content="Toggle Settings:" Grid.Row="14"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="F2" Grid.Row="14"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Toggle History:" Grid.Row="15"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="F3" Grid.Row="15"  Grid.Column="3" FontSize="13"/>
-                    <Label Content="Toggle Quick AR Forms:" Grid.Row="16"  Grid.Column="0" FontSize="13" Grid.ColumnSpan="2"/>
-                    <Label Content="F4" Grid.Row="16"  Grid.Column="3" FontSize="13"/>
+                    <Label Content="F2" Grid.Row="14"  Grid.Column="3" FontSize="13"/>                    
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" ScrollViewer.CanContentScroll="True" VerticalAlignment="Top" IsSelected="{Binding SettingsSelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                <!--<controls:MetroTabItem.ToolTip>
-                <ToolTip>
-                    <TextBlock TextAlignment="Center">F1</TextBlock>
-                </ToolTip>
-            </controls:MetroTabItem.ToolTip>-->
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" Width="300" VerticalScrollBarVisibility="Auto" >
                     <StackPanel Margin="0" Width="auto" >
                         <Grid>
@@ -126,31 +100,11 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-
-                            <Label Content="Role" FontSize="15" FontWeight="Medium" Grid.Column="0" Grid.Row="3" Width="auto" Margin="0,5,0,5"/>
-                            <ComboBox vm:Name="StupidFuckingComboBox" Height="20" ItemsSource="{Binding RolesView}" DisplayMemberPath="Name"
-								SelectedItem="{Binding CurrentRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-								IsSynchronizedWithCurrentItem="True" Grid.Column="1" Width="auto" Margin="5" Grid.Row="3"
-                              />
-
                         </Grid>
-                        <!--https://code.msdn.microsoft.com/windowsdesktop/Grouping-Expanders-just-b1bbba57-->
-                        <Expander Header="Notes" Margin="0" IsExpanded="{Binding CurrentExpanded, ConverterParameter=1, Converter={StaticResource ExpandedConverter}}" BorderThickness="0">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="Save Current Template" FontSize="15" FontWeight="Medium" />
-                                    <Button Content="&#xF0C7;" Background="{vm:Null}" Height="23" Width="23" BorderThickness="0" FontFamily ="pack://application:,,,/Resources/#FontAwesome" Command="{Binding SaveTemplateCommand}"  Margin="15,5,5,0" FontSize="21" Padding="0" VerticalAlignment="Center" ToolTip="Save Template"/>
-                                </StackPanel>
-                                <controls:ToggleSwitch Header="Close Warning" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Close_Warning, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                <controls:ToggleSwitch Header="Copy Notes on Close" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding Saveonclose, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                <controls:ToggleSwitch Header="Hyphen in notes" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding DashinNotes, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                                <controls:ToggleSwitch Header="Tabs" OnLabel="Enabled" OffLabel="Disable" Margin="5" IsChecked="{Binding TabVisibility, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="Fonts" Margin="0" IsExpanded="{Binding CurrentExpanded, ConverterParameter=2, Converter={StaticResource ExpandedConverter}}" BorderThickness="0">
                             <Grid Width="auto">
                                 <Grid.RowDefinitions >
-                                    <RowDefinition/>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions >
@@ -158,102 +112,19 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="Note Size" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                                <TextBox BorderThickness="0" Margin="4"
-									IsReadOnly="True" Grid.Row="0" Grid.Column="1" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                <!--<Label Content="Note Size" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                                <TextBox BorderThickness="0" Margin="4" IsReadOnly="True" Grid.Row="0" Grid.Column="1" Text="{Binding NoteFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                                 <Slider Grid.Row="0" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding NoteFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                                 <Label Content="Tab Size" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                                <TextBox BorderThickness="0" Margin="4"
-									IsReadOnly="True" Grid.Row="1" Grid.Column="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-                                <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-                            </Grid>
-                        </Expander>
-                        <Expander Header="Theme" Margin="0" IsExpanded="{Binding CurrentExpanded, ConverterParameter=3, Converter={StaticResource ExpandedConverter}}" BorderThickness="0">
-                            <Grid>
-                                <Grid.RowDefinitions >
-                                    <RowDefinition/>
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Label Content="Theme" Grid.Column="0" Grid.Row="0"/>
-                                <ComboBox vm:Name="ThemeBox" Grid.Column="1" Grid.Row="0" Height="20" SelectedItem="{Binding Theme, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Theme_SelectionChanged" Width="auto"/>
-
-                                <Label Content="Accent" Grid.Row="1" Grid.Column="0"/>
-                                <ComboBox Grid.Row="1" Grid.Column="1" DisplayMemberPath="Name" vm:Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged" Width="auto"/>
+                                <TextBox BorderThickness="0" Margin="4" IsReadOnly="True" Grid.Row="1" Grid.Column="1" Text="{Binding TabFontSize, Mode=OneWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                                <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>-->
+                                <Label Content="Accent" Grid.Row="3" Grid.Column="0"/>
+                                <ComboBox Grid.Row="3" Grid.Column="1" DisplayMemberPath="Name" vm:Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged" Width="auto"/>
 
                             </Grid>
-                        </Expander>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="History" VerticalAlignment="Top" IsSelected="{Binding HistorySelected, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                <!--<controls:MetroTabItem.ToolTip>
-                <ToolTip>
-                    <TextBlock TextAlignment="Center">Ctrl+H</TextBlock>
-                </ToolTip>
-            </controls:MetroTabItem.ToolTip>-->
-
-                <Grid Width="300" Height="auto" HorizontalAlignment="Left">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <DatePicker vm:Name="datePicker" Grid.Row="0" Grid.Column="0" SelectedDateFormat="Short" SelectedDate="{Binding HistoryDate}" 
-                               BorderThickness="0">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectedDateChanged">
-                                <i:InvokeCommandAction Command="{Binding HistoryLookupCommand}" CommandParameter="{Binding SelectedDate, ElementName=datePicker}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </DatePicker>
-
-                    <ListView vm:Name="listView" Grid.Row="1" Grid.Column="0" SelectedItem="{Binding SelectedHistoryNote}" 
-						ItemsSource="{Binding HistoricNotes}" BorderThickness="0">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <WrapPanel>
-                                    <TextBlock Text="{Binding Title}"/>
-                                    <TextBlock Text=" "/>
-                                    <TextBlock Text="{Binding LastUpdated, StringFormat=T}"/>
-                                </WrapPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                    <TextBox BorderThickness="0" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
-						Text="{Binding SelectedHistoryNote.Text}" TextWrapping="Wrap" Margin="2,0,0,0"
-						IsReadOnly="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-                </Grid>
-
-            </TabItem>
-
-            <!--<TabItem Header="Templates" VerticalAlignment="Top">
-            <Grid MinWidth="400">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
-                    <Button Content="New"/>
-                    <Button Content="Save"/>
-                    <Button Content="Delete"/>
-                </StackPanel>
-                <ListView Grid.Row="1" Grid.Column="0"/>
-                <TextBox Grid.Row="1" Grid.Column="1"/>
-            </Grid>
-        </TabItem>-->
         </controls:MetroTabControl>
     </Grid>
 </UserControl>

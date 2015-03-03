@@ -98,12 +98,6 @@ namespace Scrivener.Model
             Sites = await DataBaseReader.ReturnSiteItems(Role);
         }
 
-        private Phoneitem _phoneitems;
-        public Phoneitem Phoneitems { get { return _phoneitems; } private set { _phoneitems = value; RaisePropertyChanged(); } }
-        public async Task LoadPhoneDirectory()
-        {
-            Phoneitems = await DataBaseReader.ReturnPhoneItems();
-        }
 
         
 
@@ -118,7 +112,6 @@ namespace Scrivener.Model
         {
             //await LoadHistoryItems();   
             await LoadQuickItems();
-            await LoadPhoneDirectory();            
             await LoadSites(); //For some reason loading this item first causes the binding to not work.        
         }
       
