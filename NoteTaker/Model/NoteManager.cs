@@ -120,27 +120,27 @@ namespace Scrivener.Model
             var Date = n.LastUpdated.ToString("d");
             var Time = n.LastUpdated.ToString("T");
 
-            var update = string.Format(@"UPDATE OR IGNORE {0}
-                                            SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
-                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time, n.Guid.ToString());
-            var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
-                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time);
+//            var update = string.Format(@"UPDATE OR IGNORE {0}
+//                                            SET Title = '{1}', Notes = '{2}', Date = '{3}', Time = '{4}'
+//                                            WHERE guid = '{5}';", tablename, n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time, n.Guid.ToString());
+//            var command = string.Format(@"INSERT OR IGNORE INTO {0} (guid, Title, Notes, Date, Time) 
+//                                            VALUES ( '{1}', '{2}', '{3}', '{4}', '{5}' );", tablename, n.Guid.ToString(), n.Title.Replace("'", "&#39;"), n.Text.Replace("'", "&#39;"), Date, Time);
             
-            await WriteDatabase(update);
-            await WriteDatabase(command);
+//            await WriteDatabase(update);
+//            await WriteDatabase(command);
 
         }
 
         private async Task DeleteNote(INote n, string tableName)
         {
-            var deleteNote = string.Format("DELETE FROM {0} WHERE guid = '{1}';", tableName, n.Guid.ToString());
+            //var deleteNote = string.Format("DELETE FROM {0} WHERE guid = '{1}';", tableName, n.Guid.ToString());
 
-            await WriteDatabase(deleteNote);
+            //await WriteDatabase(deleteNote);
         }
 
         public async Task SaveCurrent(INote n)
         {
-            await SaveNote(n, MainTableName);
+            //await SaveNote(n, MainTableName);
         }
 
         public async Task ArchiveCurrent(INote n)
@@ -151,88 +151,88 @@ namespace Scrivener.Model
 
         public async Task<ObservableCollection<NoteType>> GetCurrentNotes()
         {
-            log.Debug("Getting Open Notes");
-            var db = new SQLiteConnection(noteDatabase);
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0}", MainTableName);
+            //log.Debug("Getting Open Notes");
+            //var db = new SQLiteConnection(noteDatabase);
+            //SQLiteCommand pullall = new SQLiteCommand();
+            //pullall.CommandText = string.Format("SELECT * FROM {0}", MainTableName);
 
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
+            //pullall.Connection = db;
+            //log.Debug(pullall.CommandText);
             var openNotes = new ObservableCollection<NoteType>();
-            try
-            {
-                log.Info("CommandText: {0}", pullall.CommandText.ToString());
-                await db.OpenAsync();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (await reader.ReadAsync())
-                {
-                    var guid = reader["guid"].ToString().Trim();
-                    var title = reader["Title"].ToString().Trim();
-                    var text = reader["Notes"].ToString().Trim();
-                    var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
-                    try
-                    {
-                        openNotes.Add(new NoteType(Guid.Parse(guid), title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime));                    
-                    }
-                    catch(Exception ex)
-                    {
-                        log.Error(ex);
-                    }
-                }
+            //try
+            //{
+            //    log.Info("CommandText: {0}", pullall.CommandText.ToString());
+            //    await db.OpenAsync();
+            //    SQLiteDataReader reader = pullall.ExecuteReader();
+            //    while (await reader.ReadAsync())
+            //    {
+            //        var guid = reader["guid"].ToString().Trim();
+            //        var title = reader["Title"].ToString().Trim();
+            //        var text = reader["Notes"].ToString().Trim();
+            //        var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
+            //        try
+            //        {
+            //            openNotes.Add(new NoteType(Guid.Parse(guid), title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime));                    
+            //        }
+            //        catch(Exception ex)
+            //        {
+            //            log.Error(ex);
+            //        }
+            //    }
 
-                db.Close();
+            //    db.Close();
 
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                log.Info("Closing {0}", db.DataSource);
-                db.Close();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //    log.Info("Closing {0}", db.DataSource);
+            //    db.Close();
+            //}
     
             return openNotes;
         }
 
         public async Task<ObservableCollection<NoteType>> GetArchivedNotes(DateTime searchDate)
         {
-            log.Debug("Searching Archive Notes");
-            var db = new SQLiteConnection(noteDatabase);
-            SQLiteCommand pullall = new SQLiteCommand();
-            pullall.CommandText = string.Format("SELECT * FROM {0} WHERE Date = '{1}'", ArchiveTableName, searchDate.ToString("d"));
+            //log.Debug("Searching Archive Notes");
+            //var db = new SQLiteConnection(noteDatabase);
+            //SQLiteCommand pullall = new SQLiteCommand();
+            //pullall.CommandText = string.Format("SELECT * FROM {0} WHERE Date = '{1}'", ArchiveTableName, searchDate.ToString("d"));
 
-            pullall.Connection = db;
-            log.Debug(pullall.CommandText);
+            //pullall.Connection = db;
+            //log.Debug(pullall.CommandText);
             var archiveSearch = new ObservableCollection<NoteType>();
-            try
-            {
-                log.Info("CommandText: {0}", pullall.CommandText.ToString());
-                await db.OpenAsync();
-                SQLiteDataReader reader = pullall.ExecuteReader();
-                while (await reader.ReadAsync())
-                {
-                    var guid = reader["guid"].ToString().Trim();
-                    var title = reader["Title"].ToString().Trim();
-                    var text = reader["Notes"].ToString().Trim();
-                    var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
-                    try
-                    {
-                        archiveSearch.Add(new NoteType(title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex);
-                    }
-                }
+            //try
+            //{
+            //    log.Info("CommandText: {0}", pullall.CommandText.ToString());
+            //    await db.OpenAsync();
+            //    SQLiteDataReader reader = pullall.ExecuteReader();
+            //    while (await reader.ReadAsync())
+            //    {
+            //        var guid = reader["guid"].ToString().Trim();
+            //        var title = reader["Title"].ToString().Trim();
+            //        var text = reader["Notes"].ToString().Trim();
+            //        var datetime = DateTime.Parse(string.Format("{0} {1}", reader["Date"].ToString().Trim(), reader["Time"].ToString().Trim()));
+            //        try
+            //        {
+            //            archiveSearch.Add(new NoteType(title.Replace("&#39;", "'"), text.Replace("&#39;", "'"), datetime)); //Forces generation of a new GUID to prevent updates to history while keeping datetime
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            log.Error(ex);
+            //        }
+            //    }
 
-                db.Close();
+            //    db.Close();
 
-            }
-            catch (Exception e)
-            {
-                log.Error(e);
-                log.Info("Closing {0}", db.DataSource);
-                db.Close();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    log.Error(e);
+            //    log.Info("Closing {0}", db.DataSource);
+            //    db.Close();
+            //}
 
             return archiveSearch;
         }

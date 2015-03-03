@@ -26,13 +26,9 @@ namespace Scrivener.ViewModel
         {
             //Creates a shared version of the menus
             DataB = DatabaseStorage.Instance;
-            //This creates a per instance version of the menus. 
-            Root = DataB.QuickItems;
-            //Used for saving unique notes
-            
+                        
             if (incomingNote == null)
             {
-                Guid = Guid.NewGuid();
                 Life = 0;
                 Mana = 0;
                 Experience = 0;
@@ -54,6 +50,7 @@ namespace Scrivener.ViewModel
                 Properties.Settings.Default.CharacterNameBoxVis = true;
                 Properties.Settings.Default.SetCharacterFocus = true;
                 Properties.Settings.Default.SetCharacterFocus = false;    
+                
                 Title = string.Format("New Character");
                 
                 //LastUpdated = DateTime.Now;
@@ -66,32 +63,15 @@ namespace Scrivener.ViewModel
                 ////_titlechanged = true;
                 //LastUpdated = incomingNote.LastUpdated;
             }
-                        
-            this.TextChanged += Note_TextChanged;
-            
 
         }
-
-        private string _minionVisibility;
-        public string MinionVisibility { get { return _minionVisibility; } set { _minionVisibility = value; RaisePropertyChanged(); } }
 
         #region Public Properties
         public DatabaseStorage DataB { get; set; }
 
-        private Guid _guid; // used for ID for note saving
-        public Guid Guid { get { return _guid; } protected set { _guid = value; RaisePropertyChanged(); } }
-        
-
-        //private static int _number = 0; // used to nuber default notes
-        //private bool _titlechanged = false; // defines if note title has already been changed
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
 
-        private string text;
-        public string Text { get { return text; } set { text = value; RaisePropertyChanged(); } }
-        //private ICSharpCode.AvalonEdit.Document.TextDocument document;
-        //public ICSharpCode.AvalonEdit.Document.TextDocument Document { get { return document; } set { document = value; RaisePropertyChanged(); RaiseTextChanged(); } }
-        
         private int life;
         public int Life { get { return life; } set { life = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private int mana;
@@ -145,50 +125,7 @@ namespace Scrivener.ViewModel
             if (TextChanged != null) { TextChanged(this, new EventArgs()); }
         }
         public event EventHandler TextChanged;
-        //listener runs regex checks on text change
-        private DateTime lastsaved = DateTime.Now;
         
-        void Note_TextChanged(object sender, EventArgs e)
-        {
-            LastUpdated = DateTime.Now;
-            Regex ip = new Regex(@"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b\s+");
-            Regex sepid = new Regex(@"[a-z]{2,3}[0-9]{5,6} ", RegexOptions.IgnoreCase);
-
-
-            //MatchCollection mc = ip.Matches(Text);
-
-            //foreach (Match m in mc)
-            //{
-
-            //}
-
-            if (Title.ToLower() == "New Note".ToLower()) //Changes Title to first SEP entered then stops.
-            {
-                MatchCollection sepmatches = sepid.Matches(Text);
-                if (sepmatches.Count > 0)
-                {
-                    Title = sepmatches[0].ToString().Trim();
-                    //_titlechanged = true;
-                }
-
-            }
-            
-            //Saves note on change if one secend has passed since the last save to prevent DB locks.
-            var oneSec = new TimeSpan(0,0,0,1);
-            if (DateTime.Now > lastsaved + oneSec)
-            {
-                if (Text != "" && Text != Properties.Settings.Default.Default_Note_Template)
-                {
-                    lastsaved = DateTime.Now;
-                    RaiseNoteSave();
-                    log.Trace("Saved note");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Raised when this workspace should be removed from the UI.
-        /// </summary>
         public event EventHandler RequestClose;
         void OnRequestClose()
         {
@@ -201,111 +138,5 @@ namespace Scrivener.ViewModel
 
         #endregion
 
-        #region QuickItems
-        //Tree
-        private QuickItem _root;
-        public QuickItem Root { get { return _root; } set { _root = value; RaisePropertyChanged(); } }
-        private QuickItem _selectedQuickItem;
-        public QuickItem SelectedQuickItem { get { return _selectedQuickItem; } set { _selectedQuickItem = value; RaisePropertyChanged(); } }
-        
-        //Append
-        private RelayCommand<QuickItem> _appendQuickItem;
-        public RelayCommand<QuickItem> AppendQuickItemCommand { get { return _appendQuickItem ?? (_appendQuickItem = new RelayCommand<QuickItem>((pram) => AppendQuickItem(pram))); } }
-        public void AppendQuickItem(QuickItem qi)
-        {
-            if (qi != null)
-            {
-                try
-                {
-                    if (qi.SubItems.Count == 0) // causes crash if null
-                    {
-                        //Due to Issues where the updating of a textbox or richtextbox via a binding would cause
-                        //the cursor position to reset we were forced to rely on the messager service here to 
-                        //access the append and inset methods
-                        GalaSoft.MvvmLight.Messaging.Messenger.Default.Send<string>(qi.Content, "ProcessQI");
-                        //if (text.Length < 2)
-                        //{
-                        //    if (Properties.Settings.Default.DashinNotes)
-                        //    {
-                        //        Text += "- " + qi.Content;
-                        //    }
-                        //    else
-                        //    {
-                        //        Text += qi.Content;
-                        //    }
-                        //    return;
-                        //}
-
-                        //if(Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                        //{
-                        //    var temp = CaretPoisition;
-                        //    if(Text[CaretPoisition - 1] == ' ')
-                        //    {
-                        //        Text = Text.Insert(CaretPoisition, qi.Content);
-                                
-                        //    }
-                        //    else
-                        //    {
-                        //        Text = Text.Insert(CaretPoisition, " " + qi.Content);
-                        //        temp++;
-                        //    }
-                        //    CaretPoisition = temp + qi.Content.Length;
-                        //}
-                        //else
-                        //{
-                        //    var substring = Text.Substring(Text.Length - 2, 2);
-                        //    if (substring == "\r\n" || substring == "- ")
-                        //    {
-                        //        Text += qi.Content;
-                        //    }
-                        //    else
-                        //    {
-                        //        if (Properties.Settings.Default.DashinNotes)
-                        //        {
-
-                        //            Text += Environment.NewLine + "- " + qi.Content;
-                        //        }
-                        //        else
-                        //        {
-
-                        //            Text += Environment.NewLine + qi.Content;
-                        //        }
-                        //    }
-                        //    CaretPoisition = Text.Length;                           
-                        //}
-                    }
-                }
-                catch (Exception e)
-                {
-                    log.Error(e);
-                    var temp = MetroMessageBox.Show("NOPE!", e.ToString());
-                }
-            }
-            
-        }
-
-        private RelayCommand _copyQuickItemCommand;
-        public RelayCommand CopyQuickItemCommand { get { return _copyQuickItemCommand ?? (_copyQuickItemCommand = new RelayCommand(CopyQuickItem)); } }
-        public void CopyQuickItem()
-        {
-            //if (_selectedQuickItem != null)
-            //{
-            //    if (SelectedQuickItem.SubItems.Count > 0)
-            //        return;
-            //    else
-            //    {
-            //        try
-            //        {
-            //            Clipboard.SetText(SelectedQuickItem.Content);
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            log.Error(e);
-            //        }
-
-            //    }
-            //}
-        } 
-        #endregion
     }
 }
