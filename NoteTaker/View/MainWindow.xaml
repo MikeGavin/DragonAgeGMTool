@@ -53,7 +53,23 @@
                         <TextBlock TextAlignment="Center">New Character<LineBreak/>Ctrl+N</TextBlock>                        
                     </ToolTip>                    
                 </Button.ToolTip>
-            </Button>            
+            </Button>
+            <Button Content="&#xf115;" Command="{Binding OpenCharacterCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Style="{StaticResource MetroCommandButton}"
+                     Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"  IsTabStop="False">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">Open Character<LineBreak/>Ctrl+O</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Button Content="&#xF0C7;" Command="{Binding SaveCharacterCommand}" Margin="0,0,0,0" FontSize="21" Padding="0" VerticalAlignment="Center" Style="{StaticResource MetroCommandButton}"
+                     Visibility="{Binding TabVisibility, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}"  IsTabStop="False">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <TextBlock TextAlignment="Center">Save Character<LineBreak/>Ctrl+S</TextBlock>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
 
@@ -119,6 +135,16 @@
                 <Button Content="Save" Command="{Binding Main.NewNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="0" Grid.Row="1" Height="30" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button Content="Cancel" Command="{Binding Main.CloseNameCommand, Mode=OneWay, Source={StaticResource Locator}}" Grid.Column="1" Grid.Row="1" Height="30" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
+        </Grid>
+        <Grid Width="auto" Height="auto" Grid.ColumnSpan="2" Grid.RowSpan="2" Visibility="{Binding WelcomeScreenVis, Mode=TwoWay, Source={x:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource visibilityConverter}}">
+            <TextBlock FontSize="25" Width="300" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,60" Text="Welcome to the Dragon Age Requiem GM Tool" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+            <TextBlock FontSize="18" Width="300" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,150" Text="Click here to create a new character" TextWrapping="Wrap"></TextBlock>
+            <Rectangle Width="2" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,10,0,0" Stroke="White"></Rectangle>
+            <TextBlock FontSize="16" Width="300" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="40,0,0,190" Text="Click here to open an existing character" TextWrapping="Wrap"></TextBlock>
+            <Rectangle Width="2" Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,10,0,0" Stroke="White"></Rectangle>
+            <TextBlock FontSize="18" Width="300" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="70,0,0,230" Text="Click here to save a character" TextWrapping="Wrap"></TextBlock>
+            <Rectangle Width="2" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="83,10,0,0" Stroke="White"></Rectangle>
+            <Image Source="DARLogo.png" Width="200" Height="163" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,39,0"></Image>
         </Grid>
     </Grid>
     <controls:MetroWindow.InputBindings>

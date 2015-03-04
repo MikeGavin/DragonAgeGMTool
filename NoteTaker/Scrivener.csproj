@@ -250,7 +250,6 @@
     </ApplicationDefinition>
     <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
     <Compile Include="Helpers\CachedContentPresenter.cs" />
     <Compile Include="Helpers\EditableTabHeaderControl.cs" />
     <Compile Include="Helpers\ExpandConverter.cs" />
@@ -259,28 +258,14 @@
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MmvmTextEditor.cs" />
     <Compile Include="Helpers\MouseDoubleClick.cs" />
-    <Compile Include="Model\DataBaseWatcher.cs" />
-    <Compile Include="Model\DeploymentData.cs" />
+    <Compile Include="Model\CharacterManager.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
-    <Compile Include="Model\DatabaseStorage.cs" />
-    <Compile Include="Model\DatabaseReader.cs" />
     <Compile Include="Model\DataItem.cs" />
     <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\HistoryItem.cs" />
     <Compile Include="Model\MTObservableCollection-T.cs" />
     <Compile Include="Model\NoteType.cs" />
-    <Compile Include="Model\PasteEventArgs.cs" />
-    <Compile Include="Model\QuickItem.cs" />
-    <Compile Include="Model\RoleItem.cs" />
-    <Compile Include="Model\QuickItemDBPull.cs" />
-    <Compile Include="Model\HistoryDBPull.cs" />
     <Compile Include="Model\IDataService.cs" />
-    <Compile Include="Model\MinionArgs.cs" />
     <Compile Include="Model\NoteManager.cs" />
-    <Compile Include="Model\SiteDBPull.CS" />
-    <Compile Include="Model\Siteitem.cs" />
-    <Compile Include="Model\TreeNodeT.cs" />
-    <Compile Include="Model\UpdateManager.cs" />
     <Compile Include="UserControls\SettingsUC.xaml.cs">
       <DependentUpon>SettingsUC.xaml</DependentUpon>
     </Compile>
@@ -362,6 +347,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="View\DARLogo.png" />
     <Content Include="Hunspellx64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

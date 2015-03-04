@@ -202,18 +202,7 @@ namespace Scrivener.Properties {
                 this["DashinNotes"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Scrivener.Model.RoleItem Role_Current {
-            get {
-                return ((global::Scrivener.Model.RoleItem)(this["Role_Current"]));
-            }
-            set {
-                this["Role_Current"] = value;
-            }
-        }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -798,6 +787,18 @@ namespace Scrivener.Properties {
             }
             set {
                 this["NewName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WelcomeScreenVis {
+            get {
+                return ((bool)(this["WelcomeScreenVis"]));
+            }
+            set {
+                this["WelcomeScreenVis"] = value;
             }
         }
     }

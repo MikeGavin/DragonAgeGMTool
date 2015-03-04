@@ -30,15 +30,9 @@ namespace Scrivener.ViewModel
         #region Boilerplate
         private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
         
-        
         private readonly IDataService _dataService; // Used by MVVMLight 
 
-        ////public override void Cleanup()
-        ////{
-        ////    // Clean up if needed4
-
-        ////    base.Cleanup();
-        ////}
+        private CharacterManager CharMan;
         #endregion
 
         //Constructor
@@ -55,14 +49,15 @@ namespace Scrivener.ViewModel
             App.Fucked += (s,e) => SaveAllNotes();
             //Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
-            //create DB singleton
-            DataB = DatabaseStorage.Instance;            
-           
             //Listen for note collection change
             Notes.CollectionChanged += OnNotesChanged;           
             
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
+            CharMan =  new CharacterManager();
+
+            Database();
 
             NewName = "";
 
@@ -74,22 +69,51 @@ namespace Scrivener.ViewModel
             var openNotes = await noteManager.GetCurrentNotes();
             if (openNotes.Count > 0)
             {
-                foreach (INote n in openNotes)
-                {                 
-                    Notes.Add( new NoteViewModel(n));
-                }
-                SelectedNote = Notes.FirstOrDefault();
+            //    foreach (INote n in openNotes)
+            //    {                 
+            //        Notes.Add( new NoteViewModel(n));
+            //    }
+            //    SelectedNote = Notes.FirstOrDefault();
             }
             if (Notes.Count == 0)
             {
-                NewNote();
+                Properties.Settings.Default.WelcomeScreenVis = true;
             }
 
         }
 
+        #region Database
+        public void Database()
+        {
+            CharMan.CreateDatebase();
+        } 
+
+        public void PassDBValues()
+        {
+            CharMan.WriteTitle = SelectedNote.Title;
+            CharMan.WriteLife = SelectedNote.Life;
+            CharMan.WriteMana = SelectedNote.Mana;
+            CharMan.WriteExperience = SelectedNote.Experience;
+            CharMan.WriteCommunication = SelectedNote.Communication;
+            CharMan.WriteConstitution = SelectedNote.Constitution;
+            CharMan.WriteCunning = SelectedNote.Cunning;
+            CharMan.WriteDexterity = SelectedNote.Dexterity;
+            CharMan.WriteMagic = SelectedNote.Magic;
+            CharMan.WritePerception = SelectedNote.Perception;
+            CharMan.WriteStrength = SelectedNote.Strength;
+            CharMan.WriteWillpower = SelectedNote.Willpower;
+            CharMan.WriteSpeed = SelectedNote.Speed;
+            CharMan.WriteDefense = SelectedNote.Defense;
+            CharMan.WriteArmor = SelectedNote.Armor;
+            CharMan.WriteGold = SelectedNote.Gold;
+            CharMan.WriteSilver = SelectedNote.Silver;
+            CharMan.WriteCopper = SelectedNote.Copper;
+        }
+        #endregion
+
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Save();            
         }
         
         private void SetLogFilePath(string targetName, string pathName)
@@ -101,8 +125,6 @@ namespace Scrivener.ViewModel
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
             fileName = fileTarget.FileName.Render(logEventInfo);
         }
-
-        public DatabaseStorage DataB { get; set; }
 
         #region Note System
 
@@ -154,7 +176,8 @@ namespace Scrivener.ViewModel
 
                 if (Notes.Count == 0)
                 {
-                    NewNote();
+                    Properties.Settings.Default.WelcomeScreenVis = true;
+                    Properties.Settings.Default.Save();
                 }
             }
 
@@ -245,7 +268,10 @@ namespace Scrivener.ViewModel
             {
                 SelectedNote.Title = NewName;
                 Properties.Settings.Default.CharacterNameBoxVis = false;
-                NewName = "";                
+                NewName = "";
+
+                PassDBValues();
+                CharMan.NewCharacter();
             }
         }
 
@@ -253,8 +279,16 @@ namespace Scrivener.ViewModel
         public RelayCommand CloseNameCommand { get { return _closeNameCommand ?? (_closeNameCommand = new RelayCommand(CloseName)); } }
         public void CloseName()
         {
-                Properties.Settings.Default.CharacterNameBoxVis = false;
-                NewName = "";
+            Properties.Settings.Default.CharacterNameBoxVis = false;
+            NewName = "";
+        }
+
+        private RelayCommand _saveCharacterCommand;
+        public RelayCommand SaveCharacterCommand { get { return _saveCharacterCommand ?? (_saveCharacterCommand = new RelayCommand(SaveCharacter)); } }
+        public void SaveCharacter()
+        {
+            PassDBValues();
+            CharMan.SaveCharacter();
         }
 
         private RelayCommand _closeAllNotesCommand;
@@ -273,6 +307,8 @@ namespace Scrivener.ViewModel
         public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm) )); } }
         private async void NewNote([CallerMemberName]string memberName = "", INote note = null )
         {
+            Properties.Settings.Default.WelcomeScreenVis = false;
+            Properties.Settings.Default.Save();
             await Task.Factory.StartNew(() =>
             {
                 log.Debug("{0} ran NewNote", memberName);

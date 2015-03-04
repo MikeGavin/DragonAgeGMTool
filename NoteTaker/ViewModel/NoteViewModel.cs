@@ -24,9 +24,6 @@ namespace Scrivener.ViewModel
       
         public NoteViewModel(INote incomingNote = null)
         {
-            //Creates a shared version of the menus
-            DataB = DatabaseStorage.Instance;
-                        
             if (incomingNote == null)
             {
                 Life = 0;
@@ -67,8 +64,7 @@ namespace Scrivener.ViewModel
         }
 
         #region Public Properties
-        public DatabaseStorage DataB { get; set; }
-
+        
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
 

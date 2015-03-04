@@ -94,5 +94,5 @@
             <TextBox Width="30" Height="30" Grid.Column="5" Margin="1,0" Text="{Binding Copper, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ControlValidationStyle}" TabIndex="26" PreviewTextInput="NumberRegex"/>
         </Grid>
     </Grid>
-
+    
 </UserControl>

@@ -18,9 +18,9 @@ namespace Scrivener.Model
         //Constructor
         public NoteManager()
         {
-            var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
-            Task.Run(async () => await CreatesHistory());            
+            //var deployment = new DeploymentData(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            //AppDomain.CurrentDomain.SetData("DataDirectory", deployment.SettingsFolder);
+            //Task.Run(async () => await CreatesHistory());            
         }
 
 
