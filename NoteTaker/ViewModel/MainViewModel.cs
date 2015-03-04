@@ -40,11 +40,7 @@ namespace Scrivener.ViewModel
         {
             //Retreave previous version settings.
             //http://stackoverflow.com/questions/622764/persisting-app-config-variables-in-updates-via-click-once-deployment/622813#622813
-            if (Properties.Settings.Default.UpgradeSettings)
-            {
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpgradeSettings = false;
-            }
+            
             //Event Listener to auto save notes if application failes through unhandeled expection
             App.Fucked += (s,e) => SaveAllNotes();
             //Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
@@ -77,7 +73,7 @@ namespace Scrivener.ViewModel
             }
             if (Notes.Count == 0)
             {
-                Properties.Settings.Default.WelcomeScreenVis = true;
+                Properties.Settings.Default.WelcomeScreenVis = false;
             }
 
         }
@@ -344,7 +340,6 @@ namespace Scrivener.ViewModel
         {
             if (Properties.Settings.Default.SettingsExpanded == false)
             {
-                Properties.Settings.Default.QARExpanded = false;
                 Properties.Settings.Default.SettingsExpanded = true;
             }
             else
@@ -359,7 +354,6 @@ namespace Scrivener.ViewModel
         {            
             if (Properties.Settings.Default.SettingsExpanded == false)
             {
-                Properties.Settings.Default.QARExpanded = false;
                 Properties.Settings.Default.SettingsExpanded = true;
                 Properties.Settings.Default.SettingsSelected = true;
             }

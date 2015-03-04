@@ -27,7 +27,7 @@ namespace Scrivener.UserControls
 
                 if (Scrivener.Properties.Settings.Default.Accent == -1)
                 {
-                    Properties.Settings.Default.Accent = 2;
+                    Properties.Settings.Default.Accent = 0;
                 }               
                 var accents = MahApps.Metro.ThemeManager.Accents.ToList();
                 foreach (var accent in accents) //Adds all accents to combobox.

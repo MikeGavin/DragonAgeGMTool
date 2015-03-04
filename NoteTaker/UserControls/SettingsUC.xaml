@@ -40,8 +40,7 @@
             <TabItem Header="About" VerticalAlignment="Top" IsSelected="{Binding AboutExpanded, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Width="auto">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="143"/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="143"/>                        
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>

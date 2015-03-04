@@ -28,11 +28,6 @@ namespace Scrivener.View
         {
             this.Loaded += MainWindow_Loaded;
 
-            if (Properties.Settings.Default.Role == -1)
-            {
-                LayoutRoot.Visibility = System.Windows.Visibility.Collapsed;
-            }
-  
             try
             {
                 InitializeComponent();
@@ -86,12 +81,5 @@ namespace Scrivener.View
             
         }
 
-        private void Roleupdated(object sender, SelectionChangedEventArgs e)
-        {
-            if (Properties.Settings.Default.Role == 0)
-            {
-                //LayoutRoot.Visibility = System.Windows.Visibility.Visible;
-            }
-        }        
     }
 }

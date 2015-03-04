@@ -236,25 +236,5 @@ namespace Scrivener.Model
 
             return archiveSearch;
         }
-
-        public int count = 0;
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        public void getcallcount()
-        {
-            var db = new SQLiteConnection(noteDatabase);
-            db.OpenAsync();
-
-            using (SQLiteCommand cmd = db.CreateCommand())
-            {
-                
-                cmd.CommandText = string.Format("SELECT COUNT(Date) FROM {0} WHERE Date is '{1}'", ArchiveTableName, DateTime.Now.ToString("M/d/yyyy"));
-                cmd.ExecuteNonQuery();
-                count = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-            db.Close();
-
-            Properties.Settings.Default.Callcount = count;
-        }
     }
 }

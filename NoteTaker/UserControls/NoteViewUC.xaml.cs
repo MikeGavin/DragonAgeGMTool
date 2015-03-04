@@ -26,5 +26,10 @@ namespace Scrivener.UserControls
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        private void Highlight(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
+        }
     }
 }
