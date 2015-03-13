@@ -14,7 +14,9 @@
             <!--Global View Model Locator-->
             <viewmodel:ViewModelLocator x:Key="Locator"
                              d:IsDataSource="True" />
-
+            <Style x:Key="Sharpfont">
+                <Setter Property="TextElement.FontFamily" Value="/Resources/#Ringbearer" />
+            </Style>
             <ResourceDictionary.MergedDictionaries>
                 
                     <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />

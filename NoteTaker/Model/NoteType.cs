@@ -8,6 +8,7 @@ namespace Scrivener.Model
 {
     public class NoteType: INote
     {
+        public int ID { get; set; }
         public string Title { get; set; }
         public DateTime LastUpdated{ get; protected set; }
         public int Life { get; set; }
@@ -28,8 +29,9 @@ namespace Scrivener.Model
         public int Silver { get; set; }
         public int Copper { get; set; }
 
-        public NoteType(int life, int mana, int communication, int experience, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower, int gold, int silver, int copper)
+        public NoteType(int id, int life, int mana, int communication, int experience, int speed, int constitution, int cunning, int dexterity, int defense, int magic, int perception, int armor, int strength, int willpower, int gold, int silver, int copper)
         {
+             ID = id;
              Life = life;
              Mana = mana;
              Experience = experience;

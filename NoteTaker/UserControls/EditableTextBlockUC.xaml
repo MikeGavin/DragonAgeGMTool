@@ -8,11 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
-        <TextBlock Name="textBlock" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0" MouseRightButtonUp="textBlock_MouseRightButtonUp" />
-        
-        <TextBox Name="editBox" Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <Button Command="{Binding CloseNoteCommand}" Content="X" DockPanel.Dock="Right" Focusable="False" FontWeight="Bold" Margin="0,1,0,0" Padding="0" VerticalContentAlignment="Center"  Width="15" Height="15" BorderThickness="0" FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome">
+        <Button Command="{Binding CloseNoteCommand}" Content="X" DockPanel.Dock="Left" Focusable="False" FontWeight="Bold" Margin="0,1,0,0" Padding="0" VerticalContentAlignment="Center"  Width="15" Height="15" BorderThickness="0" FontFamily="../Resources/fontawesome-webfont.ttf#FontAwesome">
             <Button.Style>
                 <Style TargetType="{x:Type Button}" BasedOn= "{ StaticResource {x:Type Button}}">
                     <Setter Property="Visibility" Value="Hidden"/>
@@ -20,7 +16,7 @@
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DockPanel}},Path=IsMouseOver}" Value="True">
                             <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
-                     </Style.Triggers>
+                    </Style.Triggers>
                 </Style>
             </Button.Style>
             <Button.ToolTip>
@@ -29,5 +25,11 @@
                 </ToolTip>
             </Button.ToolTip>
         </Button>
+
+        <TextBlock Name="textBlock" Style="{DynamicResource Sharpfont}" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0" MouseRightButtonUp="textBlock_MouseRightButtonUp" />
+
+        <TextBox Name="editBox" Style="{DynamicResource Sharpfont}" Visibility="Collapsed" LostFocus="editBox_LostFocus" PreviewKeyDown="editBox_enter" FontSize="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+
+        
     </DockPanel>
 </UserControl>

@@ -26,6 +26,7 @@ namespace Scrivener.ViewModel
         {
             if (incomingNote == null)
             {
+                ID = Properties.Settings.Default.IDCount;
                 Life = 0;
                 Mana = 0;
                 Experience = 0;
@@ -42,11 +43,7 @@ namespace Scrivener.ViewModel
                 Armor = 0;
                 Gold = 0;
                 Silver = 0;
-                Copper = 0;
-                
-                Properties.Settings.Default.CharacterNameBoxVis = true;
-                Properties.Settings.Default.SetCharacterFocus = true;
-                Properties.Settings.Default.SetCharacterFocus = false;    
+                Copper = 0;                
                 
                 Title = string.Format("New Character");
                 
@@ -64,10 +61,11 @@ namespace Scrivener.ViewModel
         }
 
         #region Public Properties
-        
+
+        private int id;
+        public int ID { get { return id; } set { id = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private string title;
         public string Title { get { return title; } set { title = value; RaisePropertyChanged(); } }
-
         private int life;
         public int Life { get { return life; } set { life = value; RaisePropertyChanged(); RaiseTextChanged(); } }
         private int mana;

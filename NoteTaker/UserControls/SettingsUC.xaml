@@ -119,8 +119,10 @@
                                 <Slider Grid.Row="1" Grid.Column="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="10" Maximum="40" TickFrequency="1" Value="{Binding TabFontSize, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>-->
                                 <Label Content="Accent" Grid.Row="3" Grid.Column="0"/>
                                 <ComboBox Grid.Row="3" Grid.Column="1" DisplayMemberPath="Name" vm:Name="AccentBox" Height="20" SelectedIndex="{Binding Accent, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}}" SelectionChanged="Accent_SelectionChanged" Width="auto"/>
-
-                            </Grid>
+                            <Label Content="Character Tab Width" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox BorderThickness="0" Margin="4" Grid.Row="0" Grid.Column="1" Text="{Binding CharTabWidth, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                            <Slider Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource FlatSlider}" IsSnapToTickEnabled="True" Minimum="50" Maximum="200" TickFrequency="1" Value="{Binding CharTabWidth, Mode=TwoWay, Source={vm:Static Properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" MinWidth="100" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

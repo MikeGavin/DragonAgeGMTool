@@ -51,6 +51,7 @@ namespace Scrivener.UserControls
         private void editBox_LostFocus(object sender, RoutedEventArgs e)
         {
             textBlock.Text = editBox.Text;
+            Properties.Settings.Default.UpdatedCharname = editBox.Text;
             textBlock.Visibility = System.Windows.Visibility.Visible;
             editBox.Visibility = System.Windows.Visibility.Collapsed;
         }

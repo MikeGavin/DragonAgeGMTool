@@ -8,12 +8,12 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Scrivener")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Dragon Age GM Tool")]
+[assembly: AssemblyDescription("GM Tool designed for Dragon Age RPG")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ecot")]
-[assembly: AssemblyProduct("Scrivener")]
-[assembly: AssemblyCopyright("Copyright © Ecot 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Dragon Age GM Tool")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

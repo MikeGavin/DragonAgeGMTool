@@ -27,6 +27,7 @@ namespace Scrivener.View
         public MainWindow()
         {
             this.Loaded += MainWindow_Loaded;
+            this.Width = Properties.Settings.Default.CharTabWidth + 400;
 
             try
             {
@@ -80,6 +81,11 @@ namespace Scrivener.View
             Properties.Settings.Default.Save();
             
         }
+
+        //private void ChangeColor(object sender, MouseButtonEventArgs e)
+        //{
+        //    ((Label)sender).Background = AccentColorBrush;
+        //}
 
     }
 }

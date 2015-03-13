@@ -3,6 +3,7 @@ namespace Scrivener.Model
 {
     public interface INote
     {
+        int ID { get; set; }
         string Title { get; set; }
         DateTime LastUpdated { get; }
         int Life { get; set; }

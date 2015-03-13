@@ -20,6 +20,7 @@ using System.Text;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Interactivity;
+using System.Globalization;
 
 
 namespace Scrivener.ViewModel
@@ -35,28 +36,29 @@ namespace Scrivener.ViewModel
         private CharacterManager CharMan;
         #endregion
 
-        //Constructor
+        #region Constructor
         public MainViewModel(IDataService dataService)
         {
             //Retreave previous version settings.
             //http://stackoverflow.com/questions/622764/persisting-app-config-variables-in-updates-via-click-once-deployment/622813#622813
-            
+
             //Event Listener to auto save notes if application failes through unhandeled expection
-            App.Fucked += (s,e) => SaveAllNotes();
+            App.Fucked += (s, e) => SaveAllNotes();
             //Application.Current.MainWindow.Closing += (s, e) => SaveAllNotes();
 
             //Listen for note collection change
-            Notes.CollectionChanged += OnNotesChanged;           
-            
+            Notes.CollectionChanged += OnNotesChanged;
+
             //Auto save settings on any change.
             Properties.Settings.Default.PropertyChanged += Settings_PropertyChanged;
 
-            CharMan =  new CharacterManager();
+            CharMan = new CharacterManager();
 
             Database();
 
             NewName = "";
 
+            MainGridWidth = 400;
         }
 
         //WindowLoaded runs functions only availalbe after window has loaded and are unavailable in constructor.
@@ -65,18 +67,19 @@ namespace Scrivener.ViewModel
             var openNotes = await noteManager.GetCurrentNotes();
             if (openNotes.Count > 0)
             {
-            //    foreach (INote n in openNotes)
-            //    {                 
-            //        Notes.Add( new NoteViewModel(n));
-            //    }
-            //    SelectedNote = Notes.FirstOrDefault();
+                //    foreach (INote n in openNotes)
+                //    {                 
+                //        Notes.Add( new NoteViewModel(n));
+                //    }
+                //    SelectedNote = Notes.FirstOrDefault();
             }
             if (Notes.Count == 0)
             {
-                Properties.Settings.Default.WelcomeScreenVis = false;
+                Properties.Settings.Default.WelcomeScreenVis = true;
             }
 
-        }
+        } 
+        #endregion
 
         #region Database
         public void Database()
@@ -84,45 +87,57 @@ namespace Scrivener.ViewModel
             CharMan.CreateDatebase();
         } 
 
-        public void PassDBValues()
+        public void PassDBValues(INote note)
         {
-            CharMan.WriteTitle = SelectedNote.Title;
-            CharMan.WriteLife = SelectedNote.Life;
-            CharMan.WriteMana = SelectedNote.Mana;
-            CharMan.WriteExperience = SelectedNote.Experience;
-            CharMan.WriteCommunication = SelectedNote.Communication;
-            CharMan.WriteConstitution = SelectedNote.Constitution;
-            CharMan.WriteCunning = SelectedNote.Cunning;
-            CharMan.WriteDexterity = SelectedNote.Dexterity;
-            CharMan.WriteMagic = SelectedNote.Magic;
-            CharMan.WritePerception = SelectedNote.Perception;
-            CharMan.WriteStrength = SelectedNote.Strength;
-            CharMan.WriteWillpower = SelectedNote.Willpower;
-            CharMan.WriteSpeed = SelectedNote.Speed;
-            CharMan.WriteDefense = SelectedNote.Defense;
-            CharMan.WriteArmor = SelectedNote.Armor;
-            CharMan.WriteGold = SelectedNote.Gold;
-            CharMan.WriteSilver = SelectedNote.Silver;
-            CharMan.WriteCopper = SelectedNote.Copper;
+            CharMan.WriteID = note.ID;
+            CharMan.WriteTitle = note.Title;
+            CharMan.WriteLife = note.Life;
+            CharMan.WriteMana = note.Mana;
+            CharMan.WriteExperience = note.Experience;
+            CharMan.WriteCommunication = note.Communication;
+            CharMan.WriteConstitution = note.Constitution;
+            CharMan.WriteCunning = note.Cunning;
+            CharMan.WriteDexterity = note.Dexterity;
+            CharMan.WriteMagic = note.Magic;
+            CharMan.WritePerception = note.Perception;
+            CharMan.WriteStrength = note.Strength;
+            CharMan.WriteWillpower = note.Willpower;
+            CharMan.WriteSpeed = note.Speed;
+            CharMan.WriteDefense = note.Defense;
+            CharMan.WriteArmor = note.Armor;
+            CharMan.WriteGold = note.Gold;
+            CharMan.WriteSilver = note.Silver;
+            CharMan.WriteCopper = note.Copper;
         }
         #endregion
 
+        #region Public Properties
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Properties.Settings.Default.Save();            
+            Properties.Settings.Default.Save();
         }
         
-        private void SetLogFilePath(string targetName, string pathName)
-        {
-            string fileName = null;
-            var fileTarget = Helpers.LoggingHelper.ReturnTarget(targetName) as FileTarget;
-            fileTarget.FileName = pathName + "/Logs/${shortdate}.log";
-            log.Debug("logfile path set");
-            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-            fileName = fileTarget.FileName.Render(logEventInfo);
-        }
+        private double _mainGridWidth;
+        public double MainGridWidth { get { return _mainGridWidth; } set { _mainGridWidth = value; RaisePropertyChanged(); } }
 
-        #region Note System
+        public double TabWidth { get { return Properties.Settings.Default.CharTabWidth; } set { Properties.Settings.Default.CharTabWidth = value; RaisePropertyChanged(); } }
+
+        private double _mainMinWidth;
+        public double MainMinWidth { get { return MainGridWidth + TabWidth; } protected set { _mainMinWidth = value; RaisePropertyChanged(); } }
+
+        private ObservableCollection<CharacterItem> _characterList;
+        public ObservableCollection<CharacterItem> CharacterList { get { return _characterList; } set { _characterList = value; RaisePropertyChanged(); } }
+
+        private CharacterItem _selectedCharacter;
+        public CharacterItem SelectedCharacter { get { return _selectedCharacter; } set { _selectedCharacter = value; RaisePropertyChanged(); } }
+
+        public bool NewEnabled { get { return Properties.Settings.Default.NewEnabledBool; } set { Properties.Settings.Default.NewEnabledBool = value; RaisePropertyChanged(); } }
+        public bool OpenEnabled { get { return Properties.Settings.Default.OpenEnabledBool; } set { Properties.Settings.Default.OpenEnabledBool = value; RaisePropertyChanged(); } }
+        public bool SaveEnabled { get { return Properties.Settings.Default.SaveEnabledBool; } set { Properties.Settings.Default.SaveEnabledBool = value; RaisePropertyChanged(); } }
+
+        #endregion
+
+        #region Character System
 
         //Note Collection
         private MTObservableCollection<NoteViewModel> _Notes = new MTObservableCollection<NoteViewModel>();
@@ -173,10 +188,12 @@ namespace Scrivener.ViewModel
                 if (Notes.Count == 0)
                 {
                     Properties.Settings.Default.WelcomeScreenVis = true;
+                    SaveEnabled = false;
                     Properties.Settings.Default.Save();
                 }
             }
 
+            #region CloseWarning
             //if (Properties.Settings.Default.Saveonclose == false)
             //{
             //    if (Scrivener.Properties.Settings.Default.Close_Warning == true)
@@ -237,37 +254,30 @@ namespace Scrivener.ViewModel
             //    {
             //        NewNote();
             //    }
-            //}
-        }
+            //} 
+            #endregion
 
-        private async Task SetLastSaveClose(NoteViewModel note)
-        {
-            //await Task.Factory.StartNew(async () =>
-            //{
-            //    if (note.Text != "" && note.Text != Properties.Settings.Default.Default_Note_Template)
-            //    {
-            //        await noteManager.SaveCurrent(note);
-            //        lastClosedNote = note;
-            //        await noteManager.ArchiveCurrent(note);
-            //    }
-            //    Notes.Remove(note);                
-            //});
         }
-
+        
         public string NewName { get { return Properties.Settings.Default.NewName; } set { if (value != Properties.Settings.Default.NewName) { Properties.Settings.Default.NewName = value; } RaisePropertyChanged(); } }
         
-        private RelayCommand _newNameCommand;
-        public RelayCommand NewNameCommand { get { return _newNameCommand ?? (_newNameCommand = new RelayCommand(NameChange)); } }
-        public void NameChange()
+        private RelayCommand<INote> _newNameCommand;
+        public RelayCommand<INote> NewNameCommand { get { return _newNameCommand ?? (_newNameCommand = new RelayCommand<INote>((pram)=>NameChange(pram))); } }
+        public void NameChange(INote note)
         {
             if (NewName != "")
             {
                 SelectedNote.Title = NewName;
                 Properties.Settings.Default.CharacterNameBoxVis = false;
                 NewName = "";
+                NewEnabled = true;
+                OpenEnabled = true;
+                if (Notes.Count != 0)
+                {
+                    SaveEnabled = true;
+                }
 
-                PassDBValues();
-                CharMan.NewCharacter();
+                PassDBValues(note);                
             }
         }
 
@@ -277,14 +287,39 @@ namespace Scrivener.ViewModel
         {
             Properties.Settings.Default.CharacterNameBoxVis = false;
             NewName = "";
+            NewEnabled = true;
+            OpenEnabled = true;
+            if(Notes.Count != 0)
+            {
+                SaveEnabled = true;
+            }
         }
 
-        private RelayCommand _saveCharacterCommand;
-        public RelayCommand SaveCharacterCommand { get { return _saveCharacterCommand ?? (_saveCharacterCommand = new RelayCommand(SaveCharacter)); } }
-        public void SaveCharacter()
+        private RelayCommand<INote> _saveCharacterCommand;
+        public RelayCommand<INote> SaveCharacterCommand { get { return _saveCharacterCommand ?? (_saveCharacterCommand = new RelayCommand<INote>((pram)=>SaveCharacter(pram))); } }
+        public void SaveCharacter(INote note)
         {
-            PassDBValues();
-            CharMan.SaveCharacter();
+            try
+            {
+                    PassDBValues(note);
+                    CharMan.SaveCharacter();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private RelayCommand _saveAllCharactersCommand;
+        public RelayCommand SaveAllCharactersCommand { get { return _saveAllCharactersCommand ?? (_saveAllCharactersCommand = new RelayCommand(SaveAllCharacters)); } }
+
+        private void SaveAllCharacters()
+        {
+            foreach (var n in Notes)
+            {
+                SaveCharacter(n);
+            }
         }
 
         private RelayCommand _closeAllNotesCommand;
@@ -303,6 +338,9 @@ namespace Scrivener.ViewModel
         public RelayCommand<INote> NewNoteCommand { get { return _newNoteCommand ?? (_newNoteCommand = new RelayCommand<INote>((parm) => NewNote("RelayCommand", parm) )); } }
         private async void NewNote([CallerMemberName]string memberName = "", INote note = null )
         {
+            CharMan.GetID();
+            Properties.Settings.Default.IDCount = CharMan.CurrentIDCount;
+
             Properties.Settings.Default.WelcomeScreenVis = false;
             Properties.Settings.Default.Save();
             await Task.Factory.StartNew(() =>
@@ -311,7 +349,92 @@ namespace Scrivener.ViewModel
                 Notes.Add(new NoteViewModel(note));
                 SelectedNote = Notes.Last();
             });
+
+            Properties.Settings.Default.CharacterNameBoxVis = true;
+            Properties.Settings.Default.SetCharacterFocus = true;
+            Properties.Settings.Default.SetCharacterFocus = false;
+            Properties.Settings.Default.Save();
+            NewEnabled = false;
+            OpenEnabled = false;
+            SaveEnabled = false;
         }
+
+        private RelayCommand _openCharacterBoxCommand;
+        public RelayCommand OpenCharacterBoxCommand { get { return _openCharacterBoxCommand ?? (_openCharacterBoxCommand = new RelayCommand(OpenCharacterBox)); } }
+
+        private void OpenCharacterBox()
+        {
+            if (Properties.Settings.Default.OpenCharacterBoxVis == false)
+            {
+                CharacterList = CharMan.ReturnCharacters();
+
+                Properties.Settings.Default.WelcomeScreenVis = false;
+                Properties.Settings.Default.OpenCharacterBoxVis = true;
+                NewEnabled = false;
+                SaveEnabled = false;
+                OpenEnabled = false;
+                Properties.Settings.Default.Save();
+            }
+            else if (Properties.Settings.Default.OpenCharacterBoxVis == true && Notes.Count == 0)
+            {
+                Properties.Settings.Default.OpenCharacterBoxVis = false;
+                Properties.Settings.Default.WelcomeScreenVis = true;
+                NewEnabled = true;
+                SaveEnabled = true;
+                OpenEnabled = true;
+            }
+            else if (Properties.Settings.Default.OpenCharacterBoxVis == true)
+            {
+                Properties.Settings.Default.OpenCharacterBoxVis = false;
+                NewEnabled = true;
+                SaveEnabled = true;
+                OpenEnabled = true;
+            }
+        }
+
+        private RelayCommand<INote> _openCharacterCommand;
+        public RelayCommand<INote> OpenCharacterCommand { get { return _openCharacterCommand ?? (_openCharacterCommand = new RelayCommand<INote>((parm) => OpenCharacter("RelayCommand", parm))); } }
+        private void OpenCharacter([CallerMemberName]string memberName = "", INote note = null)
+        {
+            Notes.Add(new NoteViewModel(note));
+            SelectedNote = Notes.Last();
+            SelectedNote.ID = SelectedCharacter.ID;
+            SelectedNote.Title = SelectedCharacter.Title;
+            SelectedNote.Life = SelectedCharacter.Life;
+            SelectedNote.Mana = SelectedCharacter.Mana;
+            SelectedNote.Experience = SelectedCharacter.Experience;
+            SelectedNote.Communication = SelectedCharacter.Communication;
+            SelectedNote.Speed = SelectedCharacter.Speed;
+            SelectedNote.Constitution = SelectedCharacter.Constitution;
+            SelectedNote.Cunning = SelectedCharacter.Cunning;
+            SelectedNote.Dexterity = SelectedCharacter.Dexterity;
+            SelectedNote.Defense = SelectedCharacter.Defense;
+            SelectedNote.Magic = SelectedCharacter.Magic;
+            SelectedNote.Perception = SelectedCharacter.Perception;
+            SelectedNote.Armor = SelectedCharacter.Armor;
+            SelectedNote.Strength = SelectedCharacter.Strength;
+            SelectedNote.Willpower = SelectedCharacter.Willpower;
+            SelectedNote.Gold = SelectedCharacter.Gold;
+            SelectedNote.Silver = SelectedCharacter.Silver;
+            SelectedNote.Copper = SelectedCharacter.Copper;
+
+
+            OpenCharacterBox();
+
+            SaveEnabled = true;            
+        }
+
+        private RelayCommand _deleteCharacterCommand;
+        public RelayCommand DeleteCharacterCommand { get { return _deleteCharacterCommand ?? (_deleteCharacterCommand = new RelayCommand(DeleteCharacter)); } }
+
+        private void DeleteCharacter()
+        {
+            CharMan.DeleteIndex = SelectedCharacter.ID;
+            CharMan.DBDeleteCharacter();
+            CharacterList = CharMan.ReturnCharacters();
+        }
+
+        
 
         private INote lastClosedNote;
         //Recall Notes
@@ -390,6 +513,20 @@ namespace Scrivener.ViewModel
 
         }
 
+        private async Task SetLastSaveClose(NoteViewModel note)
+        {
+            //await Task.Factory.StartNew(async () =>
+            //{
+            //    if (note.Text != "" && note.Text != Properties.Settings.Default.Default_Note_Template)
+            //    {
+            //        await noteManager.SaveCurrent(note);
+            //        lastClosedNote = note;
+            //        await noteManager.ArchiveCurrent(note);
+            //    }
+            //    Notes.Remove(note);                
+            //});
+        }
+
         private ObservableCollection<NoteType> _HistoricNotes;
         public ObservableCollection<NoteType> HistoricNotes { get { return _HistoricNotes; } set { _HistoricNotes = value; RaisePropertyChanged();  } }
         private NoteType _SelectedHistoryNote;
@@ -402,31 +539,7 @@ namespace Scrivener.ViewModel
             HistoricNotes = await noteManager.GetArchivedNotes(HistoryDate ?? DateTime.Now);
         }
         
-        //private void DumpNotes(object sender, EventArgs e)
-        //{
-        //    var crashTime = DateTime.Now;
-        //    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), crashTime.ToString().Replace(@"/", ".").Replace(":", ".")).Replace(" ", "_");
-        //    System.IO.Directory.CreateDirectory(path);
-        //    foreach (NoteViewModel note in Notes)
-        //    {
-        //        if (note.Text != string.Empty)
-        //        {
-        //            var p = Path.Combine(path, string.Format(@"{0}.txt", note.Title));
-        //            try
-        //            {
-        //                System.IO.File.WriteAllText(p, note.Text);
-        //            }
-        //            catch(Exception ex)
-        //            {
-        //                log.Fatal(ex);
-        //            }
-        //        }
-        //    }
-        //}
-
-
         #endregion
-
         
     }
 }

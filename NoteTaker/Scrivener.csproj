@@ -34,6 +34,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Dragon Age GM Tool</ProductName>
+    <PublisherName>Michael Gavin and JD Cain</PublisherName>
     <MinimumRequiredVersion>1.54.1.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
@@ -106,7 +108,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>View\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -257,6 +259,7 @@
     <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\MessageDialog.cs" />
     <Compile Include="Helpers\MmvmTextEditor.cs" />
+    <Compile Include="Model\CharacterItem.cs" />
     <Compile Include="Model\CharacterManager.cs" />
     <Compile Include="Model\ExceptionReporting.cs" />
     <Compile Include="Model\DataItem.cs" />
@@ -353,6 +356,7 @@
     <Content Include="Hunspellx86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="View\favicon.ico" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -378,8 +382,9 @@
     <Content Include="Resources\en_US.dic">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\dc_s.ttf" />
+    <Resource Include="Resources\RINGM___.TTF" />
     <None Include="Scrivener_TemporaryKey.pfx" />
-    <Resource Include="icon.ico" />
     <Content Include="Resources\FileDeleteList.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

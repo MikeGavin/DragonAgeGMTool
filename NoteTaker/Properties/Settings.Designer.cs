@@ -274,5 +274,77 @@ namespace Scrivener.Properties {
                 this["OpenCharacterBoxVis"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public double CharTabWidth {
+            get {
+                return ((double)(this["CharTabWidth"]));
+            }
+            set {
+                this["CharTabWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UpdatedCharname {
+            get {
+                return ((string)(this["UpdatedCharname"]));
+            }
+            set {
+                this["UpdatedCharname"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int IDCount {
+            get {
+                return ((int)(this["IDCount"]));
+            }
+            set {
+                this["IDCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SaveEnabledBool {
+            get {
+                return ((bool)(this["SaveEnabledBool"]));
+            }
+            set {
+                this["SaveEnabledBool"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NewEnabledBool {
+            get {
+                return ((bool)(this["NewEnabledBool"]));
+            }
+            set {
+                this["NewEnabledBool"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OpenEnabledBool {
+            get {
+                return ((bool)(this["OpenEnabledBool"]));
+            }
+            set {
+                this["OpenEnabledBool"] = value;
+            }
+        }
     }
 }
